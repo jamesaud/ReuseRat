@@ -6,7 +6,7 @@
 {% block title %}{% block head_title %}{% endblock head_title %}{% endblock title %}
 
 {% block pre-content %}
-
+{% if request.user.is_authenticated %}
       <div class="container">
         <div class="row">
           <h6>
@@ -16,7 +16,7 @@
           </h6>
          </div>
       </div> 
-
+{% endif %}
 {% endblock %}
 
 {% block content %}

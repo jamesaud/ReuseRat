@@ -110,3 +110,21 @@ $ docker-compose -f dev.yml up // site available at localhost:8000, localhost:80
 $   docker-compose -f dev.yml run django python manage.py makemigrations
 
 $   docker-compose -f dev.yml run django python manage.py migrate
+
+$   docker-compose -f dev.yml run django python manage.py createsuperuser
+
+Admin page:
+
+localhost:8000/admin  // Login with superuser account
+
+
+Adding a new app to the project
+^^^^^ 
+It's a bit different than normal django process.
+
+1.  Create a new folder in "reuserat" subfolder with the name of the new app
+2.  Copy the files  "reuserat/users/apps.py, reuserat/users/urls.py" to the subfolder you made.
+3. Add the app in "config/settings/common.py", under LOCAL_APPS
+4. Add the urls via "config/urls.py"
+5. Should be good to go and start writing views & templates.
+>>>>>>> master
