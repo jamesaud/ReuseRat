@@ -98,5 +98,10 @@ See detailed `cookiecutter-django Docker documentation`_.
 
 
 
-LiveReload
+Getting Set Up
 ^^^^^^
+
+> docker-compose -f dev.yml build // Run only Once
+
+> docker-compose -f dev.yml up // site available at localhost:8000, localhost:8025 the test mail server
+
