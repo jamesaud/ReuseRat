@@ -1,9 +1,11 @@
-{% extends "base.html" %}
+{% extends "base_profile.html" %}
 {% load static i18n %}
 {% block title %}Members{% endblock %}
 
 {% block content %}
 <div class="container">
+  <div class="row">
+    <div class="col-sm-12">
   <h2>Users</h2>
 
   <div class="list-group">
@@ -12,6 +14,8 @@
         <h4 class="list-group-item-heading">{{ user.username }}</h4>
       </a>
     {% endfor %}
+      </div>
+    </div>
   </div>
 </div>
 {% endblock content %}

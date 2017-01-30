@@ -1,9 +1,16 @@
-{% extends "base.html" %}
+{% extends "base_profile.html" %}
 {% load crispy_forms_tags %}
 
 {% block title %}{{ user.username }}{% endblock %}
 
+{% block breadcrumb %}
+/ <a class="nav-link" href="{% url 'users:update' %}">My Info</a>
+{% endblock %}
+
 {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
   <h1>{{ user.username }}</h1>
   <form class="form-horizontal" method="post" action="{% url 'users:update' %}">
     {% csrf_token %}
@@ -14,4 +21,7 @@
       </div>
     </div>
   </form>
-{% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock content %}

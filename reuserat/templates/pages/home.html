@@ -1,1 +1,208 @@
 {% extends "base.html" %}
+{% load static %}
+{% load staticfiles i18n compress%}
+    
+{% block css %}
+    {{ block.super }}
+   
+    {% compress css %}
+    <!-- SASS -->
+    <!-- This file stores project-specific CSS -->
+    <link type='text/scss' href="{% static 'sass/home.scss' %}" rel="stylesheet">
+    {% endcompress %}
+{% endblock %}
+
+{% block content-wrapper %}
+   <div class=''>
+
+    <div class="wrapper">
+        <div class="header header-filter" style="background-image: url('https://images.unsplash.com/photo-1423655156442-ccc11daa4e99?crop=entropy&dpr=2&fit=crop&fm=jpg&h=750&ixjsv=2.1.0&ixlib=rb-0.3.5&q=50&w=1450');">
+            <div class="container">
+                <div class="row">
+					<div class="col-md-6">
+						<h1 class="title">Ship Your Junk, Get Paid. It's That Easy.</h1>
+	                    <h4>
+                            100% of people keep useless stuff they no longer need. Selling online can be time consuming and confusing - we make it simple. 
+                        </h4>
+                  
+	                    <br />
+	                    <a href="#" class="btn btn-danger btn-raised btn-lg">
+							<i class="material-icons">launch</i>Let's Get Started
+						</a>
+					</div>
+                    <div class='header-cards col-md-4 col-md-offset-1 text-center'>
+                            <div class='card'>
+                                <div class='content'>
+                                    <i class="fa fa-gift fa-2x text-primary	"></i>
+                                    <h4>Pack Your Junk</h4>
+                                    <p>Anything you want - if it fits in a box, we'll take it</p>
+                                </div>
+                            </div>
+                            <div class='card'>
+                                <div class='content'>
+                                    <i class="fa fa-send fa-2x text-warning"></i>
+                                    <h4>Send With USPS</h4>
+                                    <p>We'll even pay for the shipping</p>
+                                </div>
+                            </div>
+                            <div class='card'>
+                                <div class='content'>
+                                    <i class="fa fa-money fa-2x text-success"></i>
+                                    <h4>Get Paid</h4>
+                                    <p>We sell your items on our online shop &amp; pay you</p>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+		<div class="main main-raised">
+			<div class="container">
+		    	<div class="section text-center section-landing">
+	                <div class="row">
+	                    <div class="col-md-8 col-md-offset-2">
+	                        <h2 class="title">Selling Has Never Been So Easy</h2>
+	                        <h5 class="description">9/10 financial experts agree: making money is better than not. Instead of letting your unused items collect dust in storage, let us sell it for you. Managing an Ebay or Amazon account can take hours and takes unneeded responsibility to ship items on time. We manage everything from selling&nbsp;-> packaging -> delivery -> service and keep it simple with 6 easy steps.</h5>
+	                    </div>
+	                </div>
+
+					<div class="features">
+						<div class="row">
+                            <div class="col-md-4">
+								<div class="info">
+									<div class="icon icon-info">
+										<i class="material-icons">chat</i>
+									</div>
+									<h4 class="info-title">1. Register Your Information</h4>
+									<p>We just need a few details from you to make sure the process goes smoothly and that we have a channel to contact you with updates.</p>
+                                    <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">Register now</a>
+								</div>
+		                    </div>
+		                    <div class="col-md-4">
+								<div class="info">
+									<div class="icon icon-primary">
+										<i class="material-icons">chat</i>
+									</div>
+									<h4 class="info-title">2. Pack Your Items</h4>
+									<p>Whether it's a new laptop or old toys, we believe that one man's trash is another man's treasure. 
+                                        Pack as much as you want into as many boxes as you need - we'll even send you boxes if you need them. </p>
+								</div>
+		                    </div>
+		                    <div class="col-md-4">
+								<div class="info">
+									<div class="icon icon-success">
+										<i class="material-icons">verified_user</i>
+									</div>
+									<h4 class="info-title">3. Print Your Free Shipping Label</h4>
+									<p>Simply print out the free shipping labels we provide you and stick them on your boxes. </p>
+								</div>
+		                    </div>
+						</div>
+
+                        <div class='row'>
+                            <div class="col-md-4">
+                                    <div class="info">
+                                        <div class="icon icon-danger">
+                                            <i class="material-icons">fingerprint</i>
+                                        </div>
+                                        <h4 class="info-title">4. Send It Off Via USPS</h4>
+                                        <p>Drop off the boxes at your mailbox, USPS drop box, or local post office. You won't have to pay a dime.</p>
+                                    </div>
+                            </div>
+
+                            <div class="col-md-4">
+								<div class="info">
+									<div class="icon icon-primary">
+										<i class="material-icons">chat</i>
+									</div>
+									<h4 class="info-title">5. ?????</h4>
+									<p>Time to sit back and relax. We'll do the work of handling the sales process. You can simply live your life, whether it's Binging Netflix or Extreme Snowboarding.</p>
+								</div>
+		                    </div>
+
+		                    <div class="col-md-4">
+								<div class="info">
+									<div class="icon icon-success">
+										<i class="material-icons">verified_user</i>
+									</div>
+									<h4 class="info-title">6. Profit</h4>
+									<p>Congratulations! You just made money by doing nothing. We sold your item and now it's time to get paid. We split it 50/50 and pay by Direct Deposit, Check, or Paypal.</p>
+								</div>
+		                    </div>
+                            
+                            
+                        </div>
+		                </div>
+
+	        	<div class="section text-center">
+	                <h2 class="title">Critics Everywhere Are Raving</h2>
+
+					<div class="team">
+						<div class="row">
+							<div class="col-md-4">
+			                    <div class="team-player">
+			                        <img src="{% static 'standalone/x_material_kit_free_v1.1.1/assets/img/avatar.jpg' %}" alt="Thumbnail Image" class="img-raised img-circle">
+			                        <h4 class="title">Gigi Hadid <br />
+										<small class="text-muted">Student</small>
+									</h4>
+			                        <p class="description">You can write here details about one of your team members. You can give more details about what they do. Feel free to add some <a href="#">links</a> for people to be able to follow them outside the site.</p>
+									<a href="#pablo" class="btn btn-simple btn-just-icon"><i class="fa fa-twitter"></i></a>
+									<a href="#pablo" class="btn btn-simple btn-just-icon"><i class="fa fa-instagram"></i></a>
+									<a href="#pablo" class="btn btn-simple btn-just-icon btn-default"><i class="fa fa-facebook-square"></i></a>
+			                    </div>
+			                </div>
+			                <div class="col-md-4">
+			                    <div class="team-player">
+			                        <img src="{% static 'standalone/x_material_kit_free_v1.1.1/assets/img/christian.jpg' %}" alt="Thumbnail Image" class="img-raised img-circle">
+			                        <h4 class="title">Christian Louboutin<br />
+										<small class="text-muted">Designer</small>
+									</h4>
+			                        <p class="description">You can write here details about one of your team members. You can give more details about what they do. Feel free to add some <a href="#">links</a> for people to be able to follow them outside the site.</p>
+									<a href="#pablo" class="btn btn-simple btn-just-icon"><i class="fa fa-twitter"></i></a>
+									<a href="#pablo" class="btn btn-simple btn-just-icon"><i class="fa fa-linkedin"></i></a>
+			                    </div>
+			                </div>
+			                <div class="col-md-4">
+			                    <div class="team-player">
+			                        <img src="{% static 'standalone/x_material_kit_free_v1.1.1/assets/img/kendall.jpg' %}" alt="Thumbnail Image" class="img-raised img-circle">
+			                        <h4 class="title">Kendall Jenner<br />
+										<small class="text-muted">Human Being</small>
+									</h4>
+                                    
+                                    <p class='description'> When it rains, I have good energy; I'm in a good mood. My ideal prom date would have to be cute, funny, sweet, nice.</p>
+									<a href="#pablo" class="btn btn-simple btn-just-icon"><i class="fa fa-google-plus"></i></a>
+									<a href="#pablo" class="btn btn-simple btn-just-icon"><i class="fa fa-youtube-play"></i></a>
+									<a href="#pablo" class="btn btn-simple btn-just-icon btn-default"><i class="fa fa-twitter"></i></a>
+			                    </div>
+			                </div>
+						</div>
+					</div>
+
+	            </div>
+
+
+	        	<div class="section landing-section">
+	                <div class="row">
+	                    <div class="col-md-8 col-md-offset-2">
+	                        <h2 class="text-center title">Let's Get Started</h2>
+							<h4 class="text-center description">
+                                Are you ready to start freeing up storage space and begin making money? Start the process with the button below. 
+                                One small click for you, a giant leap for your wallet.
+                            </h4>
+                             <button class="btn btn-primary btn-raised text-center">
+									Let's Go Make Some $$
+							</button>
+	                    </div>
+	                </div>
+
+	            </div>
+	        </div>
+
+		</div>
+
+	    
+
+	</div>
+   </div>
+{% endblock content-wrapper %}

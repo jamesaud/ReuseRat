@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% load staticfiles i18n compress%}
+
+
+{% block title %}{% block head_title %}{% endblock head_title %}{% endblock title %}
+
+{% block pre-content %}
+
+      <div class="container">
+        <div class="row">
+          <h6>
+            <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
+            {% block breadcrumb %}
+            {% endblock %}
+          </h6>
+         </div>
+      </div> 
+
+{% endblock %}
+
+{% block content %}
+
+
+{% endblock content %}       
+        
