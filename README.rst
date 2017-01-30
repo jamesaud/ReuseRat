@@ -113,6 +113,10 @@ $   docker-compose -f dev.yml run django python manage.py migrate
 
 $   docker-compose -f dev.yml run django python manage.py createsuperuser
 
+Admin page:
+
+localhost:8000/admin  // Login with superuser account
+
 
 Adding a new app to the project
 ^^^^^ 
