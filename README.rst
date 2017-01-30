@@ -111,6 +111,9 @@ $   docker-compose -f dev.yml run django python manage.py makemigrations
 
 $   docker-compose -f dev.yml run django python manage.py migrate
 
+$   docker-compose -f dev.yml run django python manage.py createsuperuser
+
+
 Adding a new app to the project
 ^^^^^ 
 It's a bit different than normal django process.
