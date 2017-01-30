@@ -116,7 +116,7 @@ Adding a new app to the project
 It's a bit different than normal django process.
 
 1.  Create a new folder in "reuserat" subfolder with the name of the new app
-2.  Copy the files  "reuserat/users/apps.py, reuserat/users/urls.py
+2.  Copy the files  "reuserat/users/apps.py, reuserat/users/urls.py" to the subfolder you made.
 3. Add the app in "config/settings/common.py", under LOCAL_APPS
 4. Add the urls via "config/urls.py"
 5. Should be good to go and start writing views & templates.
