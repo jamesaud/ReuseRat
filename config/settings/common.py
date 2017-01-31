@@ -46,6 +46,7 @@ THIRD_PARTY_APPS = (
 LOCAL_APPS = (
     # custom users app
     'reuserat.users.apps.UsersConfig',
+    'reuserat.shipments.apps.ShipmentsConfig',
     # Your stuff: custom apps go here
 )
 
