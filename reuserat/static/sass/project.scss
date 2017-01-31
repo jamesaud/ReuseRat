@@ -37,8 +37,8 @@
 
 
 .wrapper > .header{
-  height: 200px !important;
-  min-height: 200px !important;
+  height: 200px;
+  min-height: 200px;
   .btn-danger{
     i{margin-right: 4px;}
   }
@@ -48,4 +48,15 @@
 .main{
   padding-top: 40px;
     padding-bottom: 60px;
+}
+
+
+.form-group .help-block {
+    position: absolute;
+    display: inline; 
+    margin-bottom: 15px;
+    }
+
+.form-group label{
+  color: $grey-700;
 }

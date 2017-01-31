@@ -25,12 +25,12 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
 
     {% compress css %}
+    <!-- Material SASS Files -->
+    <link type='text/scss' href="{% static 'standalone/x_material_kit_free_v1.1.1/assets/sass/material-kit.scss' %}" rel="stylesheet"/>
+
     <!-- SASS -->
     <!-- This file stores project-specific CSS -->
     <link type='text/scss' href="{% static 'sass/project.scss' %}" rel="stylesheet">
-
-    <!-- Material SASS Files -->
-    <link type='text/scss' href="{% static 'standalone/x_material_kit_free_v1.1.1/assets/sass/material-kit.scss' %}" rel="stylesheet"/>
 
     {% endcompress %}
     {% endblock %}
@@ -127,6 +127,8 @@
         <div class="main main-raised">
           {% block pre-content %} {% endblock %}
           {% block content %} {% endblock %}
+          {% block post-content %} {% endblock %}
+
         </div>
         </div>
     
