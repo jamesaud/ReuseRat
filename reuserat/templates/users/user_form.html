@@ -3,9 +3,11 @@
 
 {% block title %}{{ user.username }}{% endblock %}
 
+
 {% block breadcrumb %}
 / <a class="nav-link" href="{% url 'users:update' %}">My Info</a>
 {% endblock %}
+
 
 {% block content %}
 <div class="container">
@@ -25,3 +27,9 @@
   </div>
 </div>
 {% endblock content %}
+
+
+{% block javascript %}
+{{block.super}}
+ {{ form.media }}
+{% endblock %}

@@ -46,6 +46,7 @@ THIRD_PARTY_APPS = (
 LOCAL_APPS = (
     # custom users app
     'reuserat.users.apps.UsersConfig',
+    'reuserat.address.apps.AddressConfig',
     # Your stuff: custom apps go here
 )
 
@@ -251,7 +252,7 @@ AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 # django-compressor
 # ------------------------------------------------------------------------------
 INSTALLED_APPS += (
-    "compressor", 
+    'compressor',
     # Social auth providers
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
@@ -270,8 +271,6 @@ ADMIN_URL = r'^admin/'
 
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
-GOOGLE_CLIENT_ID = '211068783443-vsjl6s5cqgmer2k15oh7a8s2th1bg996.apps.googleusercontent.com'
-GOOGLE_CLIENT_SECRET = 'Z2NXOFHuQmunrb1D2-sb4dRi'
 
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
@@ -309,3 +308,7 @@ SOCIALACCOUNT_PROVIDERS = \
         'VERIFIED_EMAIL': True,
         'VERSION': 'v2.4'}
         }
+
+
+# For the address form
+GOOGLE_MAPS_API_KEY = 'AIzaSyDYzt_yeSCulp826Q09us5EL-F7tur7fIE'

@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import User
 
+from config.settings.common import GOOGLE_MAPS_API_KEY
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
@@ -26,7 +27,7 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
 
-    fields = ['name', ]
+    fields = ['name', 'payment_type', 'phone', 'address']
 
     # we already imported User in the view code above, remember?
     model = User
@@ -40,6 +41,9 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         # Only get the User record for the user making the request
         return User.objects.get(username=self.request.user.username)
 
+    def get_context_data(self, **kwargs):
+        context = super(UserUpdateView, self).get_context_data(**kwargs)
+        return context
 
 class UserListView(LoginRequiredMixin, ListView):
     model = User
