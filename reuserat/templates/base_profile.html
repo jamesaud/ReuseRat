@@ -10,8 +10,8 @@
       <div class="container">
         <div class="row">
           <h6>
-            <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
             {% block breadcrumb %}
+            <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
             {% endblock %}
           </h6>
          </div>

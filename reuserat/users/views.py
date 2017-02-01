@@ -22,7 +22,7 @@ class UserCompleteSignupRequiredMixin(LoginRequiredMixin):
         if not (self.request.user.payment_type and self.request.user.address):
            return redirect('users:complete_signup', username=self.request.user.username)
 
-        return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super(UserCompleteSignupRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
 class UserCompleteSignupView(LoginRequiredMixin, UpdateView):
@@ -31,6 +31,8 @@ class UserCompleteSignupView(LoginRequiredMixin, UpdateView):
 
     # we already imported User in the view code above, remember?
     model = User
+
+    template_name_suffix = '_complete_signup_form'
 
     # send the user back to their own page after a successful update
     def get_success_url(self):
@@ -52,10 +54,6 @@ class UserDetailView(UserCompleteSignupRequiredMixin, DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
-    #def dispatch(self, request, *args, **kwargs):
-        #if not (self.request.user.payment_type and self.request.user.address):
-        #   return redirect('users:complete_signup')
-    #    return super(DetailView, self).dispatch(request, *args, **kwargs)
 
 class UserRedirectView(UserCompleteSignupRequiredMixin, RedirectView):
     permanent = False
@@ -87,7 +85,7 @@ class UserUpdateView(UserCompleteSignupRequiredMixin, UpdateView):
 
 
 
-class UserListView(LoginRequiredMixin, ListView):
+class UserListView(UserCompleteSignupRequiredMixin, ListView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = 'username'
