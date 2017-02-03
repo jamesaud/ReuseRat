@@ -5,12 +5,13 @@ from django.core.urlresolvers import reverse
 from django.views.generic import DetailView, ListView, RedirectView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
+from django.views.generic.edit import FormMixin
 
 from .models import User
+from .forms import UserCompleteSignupForm
 
 
-
-class UserCompleteSignupRequiredMixin(LoginRequiredMixin):
+class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
     """
     This should be inherited by Classes that should require a complete signup of user (payment info, etc.) before displaying
     """
@@ -22,16 +23,14 @@ class UserCompleteSignupRequiredMixin(LoginRequiredMixin):
         if not (self.request.user.payment_type and self.request.user.address):
            return redirect('users:complete_signup', username=self.request.user.username)
 
-        return super(UserCompleteSignupRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super(LoginUserCompleteSignupRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
 class UserCompleteSignupView(LoginRequiredMixin, UpdateView):
 
-    fields = ['name', 'payment_type', 'phone', 'address']
-
-    # we already imported User in the view code above, remember?
+    form_class = UserCompleteSignupForm
+    initial = {'payment_type': 'Paypal'}
     model = User
-
     template_name_suffix = '_complete_signup_form'
 
     # send the user back to their own page after a successful update
@@ -47,15 +46,18 @@ class UserCompleteSignupView(LoginRequiredMixin, UpdateView):
         context = super(UserCompleteSignupView, self).get_context_data(**kwargs)
         return context
 
+    #def get_initial(self):
+    #    return {'payment_type': 'Paypal'}
 
-class UserDetailView(UserCompleteSignupRequiredMixin, DetailView):
+
+class UserDetailView(LoginUserCompleteSignupRequiredMixin, DetailView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
 
-class UserRedirectView(UserCompleteSignupRequiredMixin, RedirectView):
+class UserRedirectView(LoginUserCompleteSignupRequiredMixin, RedirectView):
     permanent = False
 
     def get_redirect_url(self):
@@ -63,7 +65,7 @@ class UserRedirectView(UserCompleteSignupRequiredMixin, RedirectView):
                        kwargs={'username': self.request.user.username})
 
 
-class UserUpdateView(UserCompleteSignupRequiredMixin, UpdateView):
+class UserUpdateView(LoginUserCompleteSignupRequiredMixin, UpdateView):
 
     fields = ['name', 'payment_type', 'phone', 'address']
 
@@ -85,7 +87,7 @@ class UserUpdateView(UserCompleteSignupRequiredMixin, UpdateView):
 
 
 
-class UserListView(UserCompleteSignupRequiredMixin, ListView):
+class UserListView(LoginUserCompleteSignupRequiredMixin, ListView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = 'username'

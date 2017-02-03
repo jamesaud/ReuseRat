@@ -11,7 +11,7 @@ from reuserat.address.models import AddressField
 
 PAYMENT_CHOICES = (
     ('Check', 'Check'),
-    ('Paypayl', 'Paypal'),
+    ('Paypal', 'Paypal'),
 )
 
 def phone_validator(value):
@@ -24,7 +24,9 @@ class User(AbstractUser):
     # Refer to abstract user: https://docs.djangoproject.com/en/1.10/ref/contrib/auth/#django.contrib.auth.models.User
     # First Name and Last Name do not cover name patterns
     # around the globe.
-    name = models.CharField(_('Name of User'), blank=True, max_length=255)
+    first_name = models.CharField(_('First Name'), blank=True, max_length=255)
+    last_name = models.CharField(_('Last Name'), blank=True, max_length=255)
+
     payment_type = models.CharField(_('Payment Type'), choices=PAYMENT_CHOICES, max_length=255, blank=True)
     phone = models.CharField(validators=[phone_validator], max_length=15, blank=True)
     address = AddressField(related_name='+', blank=True, null=True)
