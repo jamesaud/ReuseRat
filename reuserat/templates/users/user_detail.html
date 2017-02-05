@@ -1,7 +1,17 @@
 {% extends "base_profile.html" %}
 {% load static %}
+{% load staticfiles i18n compress%}
 
 {% block title %}User: {{ object.username }}{% endblock %}
+
+{% block css %}
+{{block.super}}
+{% compress css %}
+    <!-- SASS -->
+    <link type='text/scss' href="{% static 'sass/users/user_detail.scss' %}" rel="stylesheet">
+
+  {% endcompress %}
+{% endblock css %}
 
 {% block content %}
 <div class="container">
@@ -12,23 +22,6 @@
       <h2>{{ object.username }}</h2>
       {% if object.name %}
         <p>{{ object.name }}</p>
-      {% endif %}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      {% if object.shipment_set.all %}
-        <h2>Shipments</h2>
-        {{object.shipments}}
-        <!---shipment_set is the name generated automatically for the FK in play here of the USER -->
-        {% for shipment in  object.shipment_set.all %}
-        <div class ="card">
-            <h3>Shipment Name:</h3><p>{{ shipment.name }}</p>
-
-            <h3> Shipment Description:</h3><p>{{ shipment.description }}</p>
-            <a class="btn btn-primary" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">Shipment Info</a>
-        </div>
-          {% endfor %}
       {% endif %}
     </div>
   </div>
@@ -47,6 +40,40 @@
 </div>
 <!-- End Action buttons -->
 {% endif %}
+
+<!--TEST --> 
+
+  <div class="card card-nav-tabs">
+			<div class="header-success">
+								<!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+        <button class="btn">Shipment Name  <i class="material-icons">arrow_forward</i><div class="ripple-container"></div></button>				
+			</div>
+
+			<div class="content">
+          <p> I will be the leader of a company that ends up being worth billions of dollars, because I got the answers. I understand culture. I am the nucleus. I think that’s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at. I think that’s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at. </p>					
+			</div>
+	</div>
+<!-- END TEST -->
+
+  <div class="row">
+    <div class="col-sm-12">
+      {% if object.shipment_set.all %}
+        <h2>Shipments</h2>
+        {{object.shipments}}
+        <!---shipment_set is the name generated automatically for the FK in play here of the USER -->
+        {% for shipment in  object.shipment_set.all %}
+        <div class ="card">
+            <h3>Shipment Name:</h3><p>{{ shipment.name }}</p>
+
+            <h3> Shipment Description:</h3><p>{{ shipment.description }}</p>
+            <a class="btn btn-primary" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">Shipment Info</a>
+        </div>
+          {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+
+
 
 
 </div>
