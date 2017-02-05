@@ -67,7 +67,7 @@ class UserRedirectView(LoginUserCompleteSignupRequiredMixin, RedirectView):
 
 class UserUpdateView(LoginUserCompleteSignupRequiredMixin, UpdateView):
 
-    fields = ['name', 'payment_type', 'phone', 'address']
+    fields = ['first_name', 'last_name', 'payment_type', 'phone', 'address']
 
     # we already imported User in the view code above, remember?
     model = User

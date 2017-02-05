@@ -74,7 +74,7 @@ gulp.task('imgCompression', function(){
 
 // Run django server
 gulp.task('runServer', function() {
-  exec('python manage.py runserver', function (err, stdout, stderr) {
+  exec('docker-compose -f dev.yml run django python manage.py runserver', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
   });
@@ -99,8 +99,7 @@ gulp.task('default', function() {
 
 // Watch
 gulp.task('watch', ['default'], function() {
-
-  //gulp.watch(paths.sass + '/*.scss', ['styles']);
+  gulp.watch(paths.sass + '/*.scss', ['styles']);
   gulp.watch(paths.js + '/*.js', ['scripts']).on("change", reload);
   gulp.watch(paths.images + '/*', ['imgCompression']);
   gulp.watch(paths.templates + '/**/*.html').on("change", reload);

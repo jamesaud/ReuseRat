@@ -16,7 +16,6 @@
 {{ block.super }}
 <!--     Fonts and icons     -->
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
 
 {% compress css %}
 <!-- CSS Files -->
@@ -67,7 +66,9 @@
 		            <!--      Wizard container        -->
 		            <div class="wizard-container">
 		                <div class="card wizard-card" data-color="green" id="wizardProfile">
-		                    <form action="" method="">
+		                    <form action="{% url 'users:complete_signup' user.username %}" method="post">
+                                {% csrf_token %}
+
 		                <!--        You can switch " data-color="purple" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
 
 		                    	<div class="wizard-header">
@@ -90,7 +91,7 @@
 		                            <div class="tab-pane" id="about">
 		                              <div class="row">
                                       <h4 class="info-text"> Let's start with the basic information</h4>
-		                              
+
 		                                	<div class="col-sm-10 col-sm-offset-1">
 												<div class="input-group">
 													<span class="input-group-addon">
@@ -125,7 +126,7 @@
                                       </div>
 		                            	</div> <!-- /row -->
 		                            </div> <!-- /tab-pane -->
-                                
+
 		                            <div class="tab-pane" id="account">
 		                                <h4 class="info-text"> How would you like to be paid? </h4>
 
@@ -134,7 +135,7 @@
                                           {% for choice in form.payment_type %}
                                           {% if choice.choice_label == 'Check' %}
                                            <div class="col-sm-6">
-                                               <a href='#{{choice.choice_label}}' data-toggle="tab" aria-expanded="true"> 
+                                               <a href='#{{choice.choice_label}}' data-toggle="tab" aria-expanded="true">
                                                  <div class="choice" data-toggle="wizard-radio">
                                                     {{choice.tag}}
 		                                                <div class="icon">
@@ -144,10 +145,10 @@
 		                                            </div>
                                                </a>
 		                                        </div>
-                                            
+
                                             {% elif choice.choice_label == 'Paypal' %}
                                             <div class="col-sm-6">
-                                               <a href='#{{choice.choice_label}}' data-toggle="tab" aria-expanded="true"> 
+                                               <a href='#{{choice.choice_label}}' data-toggle="tab" aria-expanded="true">
                                                  <div class="choice active" data-toggle="wizard-radio">
                                                     {{choice.tag}}
 		                                                <div class="icon">
@@ -159,14 +160,14 @@
 		                                        </div>
                                             {% endif %}
                                           {% endfor %}
-                                          
+
 		                                        <div class="tab-content text-center">
                                             <div class="tab-pane" id="Check">
                                               <h5>Check payments can be made out to you and mailed to your address. You'll receive an envelope with a check made out to your name.</h5>
                                               <h5>You can cash out at any time from the dashboard (there is a $1 shipping charge on checks).</h5>
                                             </div>
                                             <div class="tab-pane active" id="Paypal">
-                                              <h5> 
+                                              <h5>
                                                 Paypal is the recommended way to receive funds.
                                                 When your items are sold, you'll receive an email requesting to transfer funds to your paypal account.
                                               </h5>
@@ -176,55 +177,32 @@
 		                                    </div>
 		                                </div>
 
-                                    
+
 		                            </div>
 		                            <div class="tab-pane" id="address">
 		                                <div class="row">
 		                                    <div class="col-sm-12">
-		                                        <h4 class="info-text"> Are you living in a nice area? </h4>
+		                                        <h4 class="info-text"> Let us know your location for printing shipping labels. </h4>
 		                                    </div>
-		                                    <div class="col-sm-7 col-sm-offset-1">
-	                                        	<div class="form-group label-floating">
-	                                        		<label class="control-label">Street Name</label>
-	                                    			<input type="text" class="form-control">
-	                                        	</div>
-		                                    </div>
-		                                    <div class="col-sm-3">
-		                                        <div class="form-group label-floating">
-		                                            <label class="control-label">Street Number</label>
-		                                            <input type="text" class="form-control">
-		                                        </div>
-		                                    </div>
-		                                    <div class="col-sm-5 col-sm-offset-1">
-		                                        <div class="form-group label-floating">
-		                                            <label class="control-label">City</label>
-		                                            <input type="text" class="form-control">
-		                                        </div>
-		                                    </div>
-		                                    <div class="col-sm-5">
-		                                        <div class="form-group label-floating">
-		                                            <label class="control-label">Country</label>
-	                                            	<select name="country" class="form-control">
-														<option disabled="" selected=""></option>
-	                                                	<option value="Afghanistan"> Afghanistan </option>
-	                                                	<option value="Albania"> Albania </option>
-	                                                	<option value="Algeria"> Algeria </option>
-	                                                	<option value="American Samoa"> American Samoa </option>
-	                                                	<option value="Andorra"> Andorra </option>
-	                                                	<option value="Angola"> Angola </option>
-	                                                	<option value="Anguilla"> Anguilla </option>
-	                                                	<option value="Antarctica"> Antarctica </option>
-	                                                	<option value="...">...</option>
-	                                            	</select>
-		                                        </div>
-		                                    </div>
+		                                    <div class="col-sm-10 col-sm-offset-1">
+												<div class="input-group">
+													<span class="input-group-addon">
+														<i class="material-icons">account_box</i>
+													</span>
+													<div class="form-group label-floating">
+			                                            {{form.address|as_crispy_field}}
+			                                        </div>
+												</div>
+                                            </div>
+
 		                                </div>
 		                            </div>
 		                        </div>
 		                        <div class="wizard-footer">
 		                            <div class="pull-right">
 		                                <input type='button' class='btn btn-next btn-fill btn-success btn-wd' name='next' value='Next' />
-		                                <input type='button' class='btn btn-finish btn-fill btn-success btn-wd' name='finish' value='Finish' />
+                                        <button type="submit" class="btn btn-finish btn-fill btn-success btn-wd">Finish</button>
+
 		                            </div>
 
 		                            <div class="pull-left">
@@ -254,7 +232,7 @@
 {% block javascript %}
     {{ block.super }}
 
-  {{ form.media }}  
+  {{ form.media }}
 
 
 	<script src="{% static 'standalone/material-bootstrap-wizard-v1.0.1/assets/js/bootstrap.min.js' %}" type="text/javascript"></script>

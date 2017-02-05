@@ -5,6 +5,7 @@
 
 
 {% block breadcrumb %}
+    {{ block.super }}
 / <a class="nav-link" href="{% url 'users:update' %}">My Info</a>
 {% endblock %}
 

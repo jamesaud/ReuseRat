@@ -1,5 +1,6 @@
 from django import forms
 from .models import User
+from django.utils.translation import ugettext_lazy as _
 
 
 class UserCompleteSignupForm(forms.ModelForm):
@@ -16,6 +17,10 @@ class UserCompleteSignupForm(forms.ModelForm):
         model = User
 
         fields = ['first_name', 'last_name', 'payment_type', 'phone', 'address',]
+
+        labels = {
+            "address": _("Shipping Address"),
+        }
 
         widgets = {
             'payment_type': forms.RadioSelect(),

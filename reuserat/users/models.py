@@ -24,12 +24,12 @@ class User(AbstractUser):
     # Refer to abstract user: https://docs.djangoproject.com/en/1.10/ref/contrib/auth/#django.contrib.auth.models.User
     # First Name and Last Name do not cover name patterns
     # around the globe.
-    first_name = models.CharField(_('First Name'), blank=True, max_length=255)
-    last_name = models.CharField(_('Last Name'), blank=True, max_length=255)
+    first_name = models.CharField(_('First Name'), blank=True, null=True, max_length=255)
+    last_name = models.CharField(_('Last Name'), blank=True, null=True, max_length=255)
 
-    payment_type = models.CharField(_('Payment Type'), choices=PAYMENT_CHOICES, max_length=255, blank=True)
-    phone = models.CharField(validators=[phone_validator], max_length=15, blank=True)
-    address = AddressField(related_name='+', blank=True, null=True)
+    payment_type = models.CharField(_('Payment Type'), choices=PAYMENT_CHOICES, max_length=255, blank=False, null=True)
+    phone = models.CharField(validators=[phone_validator], max_length=15, blank=False, null=True)
+    address = AddressField(related_name='+', blank=False, null=True)
 
     def __str__(self):
         return self.username
