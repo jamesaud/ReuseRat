@@ -1,0 +1,23 @@
+{% extends "base_profile.html" %}
+{% load static %}
+{% block breadcrumb %}
+/ <a class="nav-link" href="{% url 'shipments:shipmentOrder' %}">My New Shipment</a>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    <div class="col-sm-12">
+       <h2>Shipment Name</h2>  
+       <h3>{{ object.name }}</h3>
+      {% if object.name %}
+        <h2>Shipment Description</h2> 
+        <h3>{{ object.description }}</h3>
+      {% endif %}
+    </div>
+  </div>
+ <a class="btn btn-primary" href="{% url 'users:detail' request.user.username %}" role="button">Back to Dashboard</a>
+  </div>
+  
+{% endblock content %}

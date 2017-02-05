@@ -40,3 +40,5 @@ class MyUserAdmin(AuthUserAdmin):
     ) + AuthUserAdmin.fieldsets
     list_display = ('username', 'name', 'is_superuser')
     search_fields = ['name']
+
+

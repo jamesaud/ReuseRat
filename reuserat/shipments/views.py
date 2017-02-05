@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy,reverse
 from django.shortcuts import render,render_to_response,redirect
 from django.views.generic import DetailView, ListView, RedirectView, UpdateView
 
@@ -9,34 +9,55 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView,FormView
 
 
-from .models import Shipment,Item
+from .models import Shipment
 from django.views.generic.edit import CreateView
-from .forms import ShipmentForm,ItemForm
+from .forms import ShipmentForm
+from reuserat.users.models import User
 
-# def shipmentDetails(request):
-#     return render(request,'shipments/sampleShipments.html', {})
+# # def shipmentDetails(request):
+# #     return render(request,'shipments/sampleShipments.html', {})
 
-class ShipmentDetailView(LoginRequiredMixin, DetailView):
+class ShipmentDetailView(LoginRequiredMixin,DetailView):
     model = Shipment
     # These next two lines tell the view to index lookups by username
     # As the shipments are based on the user i.e the seller.
-    slug_field = 'id'
-    slug_url_kwarg = 'id'
+    slug_field = 'name'
+    slug_url_kwarg = 'name'
+    
+    def get_context_data(self, **kwargs):
+        context = super(ShipmentDetailView, self).get_context_data(**kwargs)
+        # context['price_list'] = ItemPrice.objects.filter(item=context['item'])
+        # context['price_update'] = ItemPriceFormset()
+        return context
+
+# class ShipmentRedirectView(LoginRequiredMixin, RedirectView):
+#     permanent = False
+#     def get_redirect_url(self):
+#         return reverse('shipments:shipmentDetail',
+#                        kwargs={'id': self.request.user.id})
 
 # Template View
-class ShipmentOrderView(CreateView):
+class ShipmentOrderView(LoginRequiredMixin,CreateView):
      model = Shipment
-     template_name = 'shipments/sampleShipments.html' 
+     template_name = 'shipments/sampleShipments.html'
      form_class = ShipmentForm
-     #fields  = ['name']
+     
      # Specify the template page where you want to got once it succeeds
-     success_url = reverse_lazy('shipments/sampleShipments') 
+     #success_url = reverse_lazy('shipments:shipmentDetail')#view name
+     def get_success_url(self):
+            return reverse('shipments:shipmentDetail',kwargs={'pk': self.object.id})
+     
      def get_context_data(self,**kwargs):
         context = super(ShipmentOrderView,self).get_context_data(**kwargs)
-        context['item_form'] = ItemForm()
-        return context 
-    #Check if the forms is valid,get the data from forms and add it to the DB
-
+        return context
      
+     def form_valid(self, form):
+        model = Shipment()
+        #Automatically saved so the responsiblity of adding user id 
+        form.instance.user_id=self.request.user.id
+        return super(ShipmentOrderView, self).form_valid(form)
+
+
 
     
+

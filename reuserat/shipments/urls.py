@@ -11,4 +11,10 @@ urlpatterns = [
         view=views.ShipmentOrderView.as_view(),
         name='shipmentOrder'
     ),
+    url(
+        regex=r'^(?P<pk>\d+)/$',
+        view=views.ShipmentDetailView.as_view(),
+        name='shipmentDetail'
+    ),
+    
 ]

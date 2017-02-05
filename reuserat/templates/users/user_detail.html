@@ -15,6 +15,23 @@
       {% endif %}
     </div>
   </div>
+  <div class="row">
+    <div class="col-sm-12">
+      {% if object.shipment_set.all %}
+        <h2>Shipments</h2>
+        {{object.shipments}}
+        <!---shipment_set is the name generated automatically for the FK in play here of the USER -->
+        {% for shipment in  object.shipment_set.all %}
+        <div class ="card">
+            <h3>Shipment Name:</h3><p>{{ shipment.name }}</p>
+
+            <h3> Shipment Description:</h3><p>{{ shipment.description }}</p>
+            <a class="btn btn-primary" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">Shipment Info</a>
+        </div>
+          {% endfor %}
+      {% endif %}
+    </div>
+  </div>
 
 {% if object == request.user %}
 <!-- Action buttons -->
@@ -23,7 +40,7 @@
   <div class="col-sm-12">
     <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
     <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
-    <a class="btn btn-primary" href="{% url 'shipments:shipmentOrder' %}" role="button">Shipment Order</a>
+    <a class="btn btn-primary" href="{% url 'shipments:shipmentOrder' %}" role="button">Create Shipment</a>
     <!-- Your Stuff: Custom user template urls -->
   </div>
 
