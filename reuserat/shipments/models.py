@@ -2,17 +2,20 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
-
-
+from reuserat.users.models import User
 
 class Shipment(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # Shipment ID number
-    # Shipment status
+    name =  models.CharField(max_length=200)
+    user =  models.ForeignKey(User)
+    description =  models.CharField(max_length=1000,blank=True)
+    created = models.DateTimeField(auto_now_add=True,)
+    modified = models.DateTimeField(auto_now=True,)
 
-"""
-A shipment can have multiple items in it.
-"""
-class Item(models.Model):
-    #name = models.Char
-    # 
-    pass
+
+# class Item(models.Model):
+#     shipment = models.ForeignKey(Shipment)
+#     name =  models.CharField(max_length=200)
+#     description =  models.CharField(max_length=1000,blank=True)
+#     created = models.DateTimeField(auto_now_add=True,)
+#     modified = models.DateTimeField(auto_now=True,)
+    

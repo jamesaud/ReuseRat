@@ -47,6 +47,7 @@ LOCAL_APPS = (
     # custom users app
     'reuserat.users.apps.UsersConfig',
     'reuserat.address.apps.AddressConfig',
+    'reuserat.shipments.apps.ShipmentsConfig',
     # Your stuff: custom apps go here
 )
 
