@@ -184,13 +184,21 @@
 		                                    <div class="col-sm-12">
 		                                        <h4 class="info-text"> Let us know your location for printing shipping labels. </h4>
 		                                    </div>
-		                                    <div class="col-sm-10 col-sm-offset-1">
-												<div class="input-group">
+		                                    <div>
+												<div class="input-group col-sm-8 col-sm-offset-2">
 													<span class="input-group-addon">
 														<i class="material-icons">account_box</i>
 													</span>
 													<div class="form-group label-floating">
 			                                            {{form.address|as_crispy_field}}
+			                                        </div>
+												</div>
+                                                <div class="input-group col-sm-4 col-sm-offset-2">
+													<span class="input-group-addon">
+														<i class="material-icons">account_box</i>
+													</span>
+													<div class="form-group label-floating">
+			                                            {{form.address_apartment|as_crispy_field}}
 			                                        </div>
 												</div>
                                             </div>

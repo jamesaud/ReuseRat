@@ -7,19 +7,18 @@ class UserCompleteSignupForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UserCompleteSignupForm, self).__init__(*args, **kwargs)
-        # Making all fields required
-        for field in self.fields:
-            self.fields[field].required = True
 
-        print(self.fields['payment_type'].__dict__)
+        # Make all fields required
+        #for field in self.fields:
+        #    self.fields[field].required = True
 
     class Meta:
         model = User
 
-        fields = ['first_name', 'last_name', 'payment_type', 'phone', 'address',]
+        fields = ['first_name', 'last_name', 'payment_type', 'phone', 'address', 'address_apartment']
 
         labels = {
-            "address": _("Shipping Address"),
+            "address": _("Your Address"),
         }
 
         widgets = {
