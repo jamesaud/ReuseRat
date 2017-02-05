@@ -11,11 +11,4 @@ class Shipment(models.Model):
     created = models.DateTimeField(auto_now_add=True,)
     modified = models.DateTimeField(auto_now=True,)
 
-
-# class Item(models.Model):
-#     shipment = models.ForeignKey(Shipment)
-#     name =  models.CharField(max_length=200)
-#     description =  models.CharField(max_length=1000,blank=True)
-#     created = models.DateTimeField(auto_now_add=True,)
-#     modified = models.DateTimeField(auto_now=True,)
     

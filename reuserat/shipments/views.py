@@ -14,8 +14,6 @@ from django.views.generic.edit import CreateView
 from .forms import ShipmentForm
 from reuserat.users.models import User
 
-# # def shipmentDetails(request):
-# #     return render(request,'shipments/sampleShipments.html', {})
 
 class ShipmentDetailView(LoginRequiredMixin,DetailView):
     model = Shipment
@@ -23,41 +21,32 @@ class ShipmentDetailView(LoginRequiredMixin,DetailView):
     # As the shipments are based on the user i.e the seller.
     slug_field = 'name'
     slug_url_kwarg = 'name'
-    
+
     def get_context_data(self, **kwargs):
         context = super(ShipmentDetailView, self).get_context_data(**kwargs)
-        # context['price_list'] = ItemPrice.objects.filter(item=context['item'])
-        # context['price_update'] = ItemPriceFormset()
         return context
 
-# class ShipmentRedirectView(LoginRequiredMixin, RedirectView):
-#     permanent = False
-#     def get_redirect_url(self):
-#         return reverse('shipments:shipmentDetail',
-#                        kwargs={'id': self.request.user.id})
 
 # Template View
 class ShipmentOrderView(LoginRequiredMixin,CreateView):
      model = Shipment
-     template_name = 'shipments/sampleShipments.html'
+     template_name = 'shipments/shipment_create.html'
      form_class = ShipmentForm
-     
+
      # Specify the template page where you want to got once it succeeds
-     #success_url = reverse_lazy('shipments:shipmentDetail')#view name
      def get_success_url(self):
             return reverse('shipments:shipmentDetail',kwargs={'pk': self.object.id})
-     
+
      def get_context_data(self,**kwargs):
         context = super(ShipmentOrderView,self).get_context_data(**kwargs)
         return context
-     
+
      def form_valid(self, form):
-        model = Shipment()
-        #Automatically saved so the responsiblity of adding user id 
+        #Automatically saved so the responsiblity of adding user id
         form.instance.user_id=self.request.user.id
         return super(ShipmentOrderView, self).form_valid(form)
 
 
 
-    
+
 
