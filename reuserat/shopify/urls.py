@@ -7,7 +7,7 @@ from .views import WebhookView
 
 urlpatterns = [
     url(
-        regex=r'^$',
+        regex=r'^webhook/$',
         view=WebhookView.as_view(),
         name='webhookView'
     ),
