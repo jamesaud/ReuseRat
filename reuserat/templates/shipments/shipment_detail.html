@@ -2,7 +2,7 @@
 {% load static %}
 {% block breadcrumb %}
     {{ block.super }}
-/ <a class="nav-link" href="{% url 'shipments:shipmentOrder' %}">My New Shipment</a>
+/ <a class="nav-link" href="{% url 'shipments:shipmentDetail' object.id %}">My Shipment</a>
 {% endblock %}
 
 {% block content %}

@@ -1,6 +1,6 @@
 @import '../standalone/x_material_kit_free_v1.1.1/assets/sass/material-kit.scss';
 
-.btn.btn-dark{
+.btn.btn-dark-blend{
         @include btn-styles(transparentize(black, .8)); 
     }
     
