@@ -1,37 +1,28 @@
 {% extends "base_profile.html" %}
 {% load static %}
+{% load staticfiles i18n compress%}
 
 {% block title %}User: {{ object.username }}{% endblock %}
 
+{% block css %}
+{{block.super}}
+{% compress css %}
+    <!-- SASS -->
+    <link type='text/scss' href="{% static 'sass/users/user_detail.scss' %}" rel="stylesheet">
+
+  {% endcompress %}
+{% endblock css %}
+
+{% block breadcrumb %}
+{{block.super}}
+<span class='pull-right'>
+  username: {{ object.username }}
+  </span>
+{% endblock %}
+
+
 {% block content %}
 <div class="container">
-
-  <div class="row">
-    <div class="col-sm-12">
-
-      <h2>{{ object.username }}</h2>
-      {% if object.name %}
-        <p>{{ object.name }}</p>
-      {% endif %}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      {% if object.shipment_set.all %}
-        <h2>Shipments</h2>
-        {{object.shipments}}
-        <!---shipment_set is the name generated automatically for the FK in play here of the USER -->
-        {% for shipment in  object.shipment_set.all %}
-        <div class ="card">
-            <h3>Shipment Name:</h3><p>{{ shipment.name }}</p>
-
-            <h3> Shipment Description:</h3><p>{{ shipment.description }}</p>
-            <a class="btn btn-primary" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">Shipment Info</a>
-        </div>
-          {% endfor %}
-      {% endif %}
-    </div>
-  </div>
 
 {% if object == request.user %}
 <!-- Action buttons -->
@@ -40,13 +31,50 @@
   <div class="col-sm-12">
     <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
     <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
-    <a class="btn btn-primary" href="{% url 'shipments:shipmentOrder' %}" role="button">Create Shipment</a>
+    <a class="btn btn-danger pull-right" href="{% url 'shipments:shipmentOrder' %}" role="button">Create New Shipment</a>
     <!-- Your Stuff: Custom user template urls -->
   </div>
 
 </div>
 <!-- End Action buttons -->
 {% endif %}
+
+<!--TEST -->
+
+<!-- END TEST -->
+
+  <div class="row">
+    <div class="col-sm-12">
+        {% if object.shipment_set.all %}
+          <!---shipment_set is the name generated automatically for the FK in play here of the USER -->
+          {% for shipment in  object.shipment_set.all %}
+            <div class="card card-nav-tabs">
+                <div class="header-info">
+                  <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                  <a class="btn btn-dark-blend" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">{{ shipment.name }} <i class="material-icons">arrow_forward</i><div class="ripple-container"></div></a>
+                </div>
+
+                <div class="content">
+                  <div class='col-sm-9'>
+                    <h5>Details:</h5>
+                    <p>
+                      {{ shipment.description }}
+                    </p>
+                  </div>
+                  <div class='col-sm-3'>
+                    <h5>Status:</h5>
+                    <p>
+                      <placeholder> Not Arrived
+                    </p>
+                  </div>
+                </div>
+            </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+
+
 
 
 </div>

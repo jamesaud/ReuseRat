@@ -26,4 +26,9 @@ urlpatterns = [
         view=views.UserUpdateView.as_view(),
         name='update'
     ),
+    url(
+        regex=r'^(?P<username>[\w.@+-]+)/complete_signup/$',
+        view=views.UserCompleteSignupView.as_view(),
+        name='complete_signup'
+    ),
 ]

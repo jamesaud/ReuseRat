@@ -3,15 +3,6 @@ from .models import Shipment
 from django.forms.models import inlineformset_factory
 from django.utils.translation import ugettext_lazy as _
 
-# class ItemForm(ModelForm):
-#      class Meta:
-#             model = Item
-#             fields = ['name','description']
-#             labels = {
-#             'name': _('Item Name'),
-#             'description': _('Item Description'),
-#             }
-
 
 class ShipmentForm(ModelForm):
     class Meta:
@@ -21,5 +12,3 @@ class ShipmentForm(ModelForm):
             'name': _('Shipment Name'),
         }
 
-
-#ItemFormSet = inlineformset_factory(Shipment, Item, form=ShipmentForm)

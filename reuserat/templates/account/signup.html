@@ -2,13 +2,23 @@
 
 {% load i18n %}
 {% load crispy_forms_tags %}
+{% load socialaccount %}
+
 
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block inner %}
+
+<div class='text-center'>
 <h1>{% trans "Sign Up" %}</h1>
 
 <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+
+
+{% include "socialaccount/snippets/provider_list.html" with btn_text="Sign up with" %}
+
+<h5 >{% trans "Or if you want to keep it old school" %}</h5>
+</div>
 
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}

@@ -1,23 +1,31 @@
 {% extends "base_profile.html" %}
 {% load static %}
 {% block breadcrumb %}
-/ <a class="nav-link" href="{% url 'shipments:shipmentOrder' %}">My New Shipment</a>
+    {{ block.super }}
+/ <a class="nav-link" href="{% url 'shipments:shipmentDetail' object.id %}">My Shipment</a>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-
+<div class="container top30">
   <div class="row">
-    <div class="col-sm-12">
-       <h2>Shipment Name</h2>  
+    <div class="col-sm-4 ">
+       <h3><strong>Shipment Name:</strong></h3>
+    </div>
+    <div class='col-sm-8'>
        <h3>{{ object.name }}</h3>
-      {% if object.name %}
-        <h2>Shipment Description</h2> 
-        <h3>{{ object.description }}</h3>
-      {% endif %}
     </div>
   </div>
+<hr>
+  <div class='row'>
+    <div class='col-sm-4'>
+      <h3><strong>Shipment Description:</strong></h3>
+    </div>
+    <div class='col-sm-8'>
+      <h3>{{ object.description }}</h3>
+    </div>
+  </div>
+<hr>
  <a class="btn btn-primary" href="{% url 'users:detail' request.user.username %}" role="button">Back to Dashboard</a>
   </div>
-  
+
 {% endblock content %}
