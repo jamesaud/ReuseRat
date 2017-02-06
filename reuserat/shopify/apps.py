@@ -1,9 +1,9 @@
 from django.apps import AppConfig
 
 
-class ShipmentsConfig(AppConfig):
-    name = 'reuserat.shipments'
-    verbose_name = "Shipments"
+class ShopifyConfig(AppConfig):
+    name = 'reuserat.shopify'
+    verbose_name = "Shopify"
 
     def ready(self):
         """Override this to put in:

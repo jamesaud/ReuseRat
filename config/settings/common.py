@@ -48,7 +48,7 @@ LOCAL_APPS = (
     'reuserat.users.apps.UsersConfig',
     'reuserat.address.apps.AddressConfig',
     'reuserat.shipments.apps.ShipmentsConfig',
-    # Your stuff: custom apps go here
+    'reuserat.shopify.apps.ShopifyConfig',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -309,6 +309,7 @@ SOCIALACCOUNT_PROVIDERS = \
         'VERIFIED_EMAIL': True,
         'VERSION': 'v2.4'}
         }
+
 
 
 # For the address form
