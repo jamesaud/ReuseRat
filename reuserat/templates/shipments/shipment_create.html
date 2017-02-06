@@ -7,16 +7,21 @@
 {% endblock %}
 
 {% block content %}
-
-<h1>Shipment Order Form</h1>
-<form class="shipment" id="shipment_form" method="post" action="{% url 'shipments:shipmentOrder' %}">
-  {% csrf_token %}
-  {{ form|crispy }}
-  <div class="control-group">
-      <div class="controls">
-        <button type="submit" class="btn">Create</button>
-      </div>
+<div class='container'>
+  <div class='row'>
+    <div class='col-sm-12'>
+      <h1>Shipment Order Form</h1>
+      <form class="shipment" id="shipment_form" method="post" action="{% url 'shipments:shipmentOrder' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="control-group">
+            <div class="controls">
+              <button type="submit" class="btn">Create</button>
+            </div>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
+</div>
 {% endblock content %}
 

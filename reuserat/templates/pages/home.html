@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 {% load static %}
-{% load staticfiles i18n compress%}
+{% load staticfiles i18n compress %}
     
 {% block css %}
     {{ block.super }}
    
     {% compress css %}
     <!-- SASS -->
-    <!-- This file stores project-specific CSS -->
     <link type='text/scss' href="{% static 'sass/home.scss' %}" rel="stylesheet">
     {% endcompress %}
 {% endblock %}
+
+{% block body-tag %}
+<body class='landing-page'>
+{% endblock body-tag %}
 
 {% block content-wrapper %}
 

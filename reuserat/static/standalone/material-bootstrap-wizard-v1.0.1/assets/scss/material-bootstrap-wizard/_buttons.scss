@@ -38,7 +38,6 @@
     &.btn-danger{
       @include btn-styles($brand-danger);
     }
-    
 
     &:focus,
     &:active,

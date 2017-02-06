@@ -1,14 +1,14 @@
 @import '../standalone/bourbon/bourbon';
-@import '../standalone/x_material_kit_free_v1.1.1/assets/sass/material-kit/_colors.scss';
+@import '_colors.scss';
 @import '_utility.scss';
-////////////////////////////////
+@import '_theme.scss';
+//////////////////////////////// 
 		//Django Toolbar//
 ////////////////////////////////
 
 // Display django-debug-toolbar.
 // See https://github.com/django-debug-toolbar/django-debug-toolbar/issues/742
 // and https://github.com/pydanny/cookiecutter-django/issues/317
-
 [hidden][style="display: block;"] {
   display: block !important;
 }
@@ -58,9 +58,17 @@
     }
 
 .form-group label{
-  color: $grey-700;
+  color: $grey-600;
 }
 
 li{
   list-style: none;
+}
+
+
+
+.navbar{
+  .nav-link.btn-white{
+      color: $grey-900 !important;
+  }
 }
