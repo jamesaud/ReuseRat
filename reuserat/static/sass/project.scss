@@ -1,6 +1,6 @@
 @import '../standalone/bourbon/bourbon';
 @import '../standalone/x_material_kit_free_v1.1.1/assets/sass/material-kit/_colors.scss';
-
+@import '_utility.scss';
 ////////////////////////////////
 		//Django Toolbar//
 ////////////////////////////////
@@ -13,7 +13,7 @@
   display: block !important;
 }
 
-
+ 
 .logo{
   max-width: 150px;
 }
