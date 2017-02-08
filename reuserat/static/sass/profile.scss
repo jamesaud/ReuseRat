@@ -4,6 +4,14 @@
   background-color: $first-color;
 }
 
+.wrapper > .header{
+  height: 200px;
+  min-height: 200px;
+  .btn-danger{
+    i{margin-right: 4px;}
+  }
+}
+
 .card-nav-tabs{
   .btn-simple{
     color: white; 
