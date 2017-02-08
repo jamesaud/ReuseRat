@@ -1,9 +1,9 @@
 from django.contrib.admin import AdminSite
 from django.contrib import admin
-from .models import Shipment
+from .models import Item
 
-class ShipmentAdmin(admin.ModelAdmin):
-    model = Shipment
-    
+class ItemAdmin(admin.ModelAdmin):
+    model = Item
 
-admin.site.register(Shipment, ShipmentAdmin)
+
+admin.site.register(Item, ItemAdmin)

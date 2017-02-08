@@ -317,3 +317,5 @@ GOOGLE_MAPS_API_KEY = 'AIzaSyDYzt_yeSCulp826Q09us5EL-F7tur7fIE'
 
 # For shopify webhooks
 SHOPIFY_APP_API_SECRET = '9302e732076fbae5d7c5ff0078693e38179ee32a9a42f847880abddd1dea3d01'
+
+SHOPIFY_DOMAIN_NAME = 'https://www.reuserat.com/'
