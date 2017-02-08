@@ -8,7 +8,7 @@ Sell your junk, get paid
      :alt: Built with Cookiecutter Django
 
 
-:License: Not Open Source Code.
+:License: None. Not Open Source Code.
 
 If you wish to use code in this project, simply shoot me an email at audretschjames@gmail.com and I'll likely give permission.
 
