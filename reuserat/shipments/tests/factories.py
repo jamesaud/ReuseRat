@@ -10,7 +10,7 @@ class ShipmentFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = 'shipments.Shipment'
-        django_get_or_create = ('name', )
+        django_get_or_create = ('name',)
 
 
 

@@ -96,8 +96,8 @@ class ProductReceivers:
         item = cls._create_item(shipment, shopify_json)
         item.save()
 
-        print(item)
-        print(item.id)
+        #print(item)
+        #print(item.id)
 
     """
     Helper Functions Below

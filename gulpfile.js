@@ -19,7 +19,8 @@ var gulp = require('gulp'),
       exec = require('child_process').exec,
       runSequence = require('run-sequence'),
       browserSync = require('browser-sync').create(),
-      reload = browserSync.reload;
+      reload = browserSync.reload,
+      sourcemaps = require('gulp-sourcemaps');
 
 
 // Relative paths function
@@ -45,16 +46,18 @@ var paths = pathsConfig();
 
 // Styles autoprefixing and minification
 gulp.task('styles', function() {
-  return gulp.src(paths.sass + '/project.scss')
+  return gulp.src(paths.sass + '/**/*.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(plumber()) // Checks for errors
     .pipe(autoprefixer({browsers: ['last 2 version']})) // Adds vendor prefixes
     .pipe(pixrem())  // add fallbacks for rem units
     .pipe(gulp.dest(paths.css))
-    .pipe(rename({ suffix: '.min' }))
+    .pipe(rename({ suffix: '.min' })) 
     .pipe(cssnano()) // Minifies the result
     .pipe(gulp.dest(paths.css));
 });
+
+
 
 // Javascript minification
 gulp.task('scripts', function() {
@@ -74,7 +77,7 @@ gulp.task('imgCompression', function(){
 
 // Run django server
 gulp.task('runServer', function() {
-  exec('docker-compose -f dev.yml run django python manage.py runserver', function (err, stdout, stderr) {
+  exec('run django python manage.py runserver', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
   });
@@ -99,7 +102,7 @@ gulp.task('default', function() {
 
 // Watch
 gulp.task('watch', ['default'], function() {
-  gulp.watch(paths.sass + '/*.scss', ['styles']);
+  gulp.watch(paths.sass + '/**/*.scss', ['styles']);
   gulp.watch(paths.js + '/*.js', ['scripts']).on("change", reload);
   gulp.watch(paths.images + '/*', ['imgCompression']);
   gulp.watch(paths.templates + '/**/*.html').on("change", reload);

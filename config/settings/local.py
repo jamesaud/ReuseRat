@@ -12,7 +12,9 @@ Local settings
 
 import socket
 import os
+import django
 from .common import *  # noqa
+
 
 # DEBUG
 # ------------------------------------------------------------------------------
@@ -74,3 +76,6 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Your local stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+COMPRESS_CACHEABLE_PRECOMPILERS = (
+    'text/scss',
+)

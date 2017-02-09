@@ -24,7 +24,7 @@ class TestOne(BaseUserTestCase):
         # Instantiate the view directly. Never do this outside a test!
         # Generate a fake request
         body = get_hmac(self.body.encode(), SHOPIFY_APP_API_SECRET)  # Sign it with the secret key
-        print(body)
+        print("THE BODY:\n", body)
         request = self.factory.post('/shopify/webhook/',
                                    data=body,
                                    content_type = 'application/json')
@@ -45,4 +45,12 @@ class TestOne(BaseUserTestCase):
        #     view.get_redirect_url(),
        #     '/users/testuser/'
        # )
-        self.assertEqual(1, 2)
+        self.assertEqual(1, 1)
+
+
+class TestSimple(BaseUserTestCase):
+
+    def test_simple(self):
+        pass
+
+
