@@ -49,7 +49,7 @@ LOCAL_APPS = (
     'reuserat.users.apps.UsersConfig',
     'reuserat.address.apps.AddressConfig',
     'reuserat.shipments.apps.ShipmentsConfig',
-    # Your stuff: custom apps go here
+    'reuserat.shopify.apps.ShopifyConfig',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -312,5 +312,13 @@ SOCIALACCOUNT_PROVIDERS = \
         }
 
 
+
 # For the address form
 GOOGLE_MAPS_API_KEY = 'AIzaSyDYzt_yeSCulp826Q09us5EL-F7tur7fIE'
+
+# For shopify webhooks
+SHOPIFY_APP_API_SECRET = '9302e732076fbae5d7c5ff0078693e38179ee32a9a42f847880abddd1dea3d01'
+
+
+# What comes between "www" and ".com" eg. for www.reuserat.com it would be 'reuserat'
+SHOPIFY_DOMAIN_NAME = 'reuserat'

@@ -17,11 +17,14 @@ urlpatterns = [
 
     # User management
     url(r'^users/', include('reuserat.users.urls', namespace='users')),
-    url(r'^shipments/', include('reuserat.shipments.urls', namespace='shipments')),
     url(r'^accounts/', include('allauth.urls')),
-    
 
-    # Your stuff: custom urls includes go here
+    # Shipments
+    url(r'^shipments/', include('reuserat.shipments.urls', namespace='shipments')),
+
+    #
+    url(r'^shopify/', include('reuserat.shopify.urls', namespace='shopify')),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

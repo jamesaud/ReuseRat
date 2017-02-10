@@ -32,7 +32,19 @@ services:
       - postgres
       - mailhog
 
-
+  gulp:
+    build:
+        context: .
+        dockerfile: ./compose/gulp/Dockerfile
+    depends_on:
+      - django
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    command: 
+      - gulp watch
 
   pycharm:
     build:

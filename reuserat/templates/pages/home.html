@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% load staticfiles i18n compress %}
-    
+
 {% block css %}
     {{ block.super }}
-   
+
     {% compress css %}
     <!-- SASS -->
     <link type='text/scss' href="{% static 'sass/home.scss' %}" rel="stylesheet">
@@ -17,7 +17,6 @@
 
 {% block content-wrapper %}
 
-   <div class=''>
 
     <div class="wrapper">
         <div class="header header-filter" style="background-image: url('https://images.unsplash.com/photo-1423655156442-ccc11daa4e99?crop=entropy&dpr=2&fit=crop&fm=jpg&h=750&ixjsv=2.1.0&ixlib=rb-0.3.5&q=50&w=1450');">
@@ -26,12 +25,12 @@
 					<div class="col-md-6">
 						<h1 class="title">Ship Your Junk, Get Paid. It's That Easy.</h1>
 	                    <h4>
-                            100% of people keep useless stuff they no longer need. Selling online can be time consuming and confusing - we make it simple. 
+                            100% of people keep useless stuff they no longer need. Selling online can be time consuming and confusing - we make it simple.
                         </h4>
-                  
+
 	                    <br />
-	                    <a href="#" class="btn btn-danger btn-raised btn-lg">
-							<i class="material-icons">launch</i>Let's Get Started
+	                    <a href="{% url 'account_signup' %}" class="btn btn-danger btn-raised btn-lg">
+							<i class="material-icons">launch</i>Get Started for Free
 						</a>
 					</div>
                     <div class='header-cards col-md-4 col-md-offset-1 text-center'>
@@ -89,7 +88,7 @@
 										<i class="material-icons">chat</i>
 									</div>
 									<h4 class="info-title">2. Pack Your Items</h4>
-									<p>Whether it's a new laptop or old toys, we believe that one man's trash is another man's treasure. 
+									<p>Whether it's a new laptop or old toys, we believe that one man's trash is another man's treasure.
                                         Pack as much as you want into as many boxes as you need - we'll even send you boxes if you need them. </p>
 								</div>
 		                    </div>
@@ -134,8 +133,8 @@
 									<p>Congratulations! You just made money by doing nothing. We sold your item and now it's time to get paid. We split it 50/50 and pay by Check or Paypal.</p>
 								</div>
 		                    </div>
-                            
-                            
+
+
                         </div>
 		                </div>
 
@@ -173,7 +172,7 @@
 			                        <h4 class="title">Kendall Jenner<br />
 										<small class="text-muted">Human Being</small>
 									</h4>
-                                    
+
                                     <p class='description'> When it rains, I have good energy; I'm in a good mood. My ideal prom date would have to be cute, funny, sweet, nice.</p>
 									<a href="#pablo" class="btn btn-simple btn-just-icon"><i class="fa fa-google-plus"></i></a>
 									<a href="#pablo" class="btn btn-simple btn-just-icon"><i class="fa fa-youtube-play"></i></a>
@@ -191,7 +190,7 @@
 	                    <div class="col-md-8 col-md-offset-2">
 	                        <h2 class="text-center title">Let's Get Started</h2>
 							<h4 class="text-center description">
-                                Are you ready to start freeing up storage space and begin making money? Start the process with the button below. 
+                                Are you ready to start freeing up storage space and begin making money? Start the process with the button below.
                                 One small click for you, a giant leap for your wallet.
                             </h4>
                              <button class="btn btn-primary btn-raised text-center">
@@ -203,10 +202,80 @@
 	            </div>
 	        </div>
 
-		</div>
 
-	    
 
 	</div>
    </div>
+
+   <div class='top60 main header-filter'
+   	style="
+	   background-image: url('http://powellong.com/data/wallpapers/207/WDF_2444078.jpg');
+	   background-position: center !important;
+	       background-attachment: fixed !important;
+
+	">
+
+	   <div class='container'>
+	   <div class='row'>
+		   <div class='col-sm-12 text-center'>
+			   <h2 class="title" style='color: white !important;'>Frequently Asked Questions</h2>
+		   </div>
+	   </div>
+
+	   <div class='col-sm-10 col-sm-offset-1'>
+
+		   <div class='col-md-4'>
+			   <div class='card card-nav-tabs text-center'>
+								   <div class="header-info content">Q. First Question?</div>
+				   <div class='content'>
+					   <p>A. Answer to the question. There are some possibilties, but this is just placeholder text to increase lenght.</p>
+				   </div>
+			   </div>
+		   </div>
+		   <div class='col-md-4'>
+			   <div class='card card-nav-tabs text-center'>
+								   <div class="header-info content">Q. First Question?</div>
+				   <div class='content'>
+					   <p>A. Answer to the question. There are some possibilties, but this is just placeholder text to increase lenght.</p>
+				   </div>
+			   </div>
+		   </div>
+		   <div class='col-md-4'>
+			   <div class='card card-nav-tabs text-center'>
+								   <div class="header-info content">Q. First Question?</div>
+				   <div class='content'>
+					   <p>A. Answer to the question. There are some possibilties, but this is just placeholder text to increase lenght.</p>
+				   </div>
+			   </div>
+		   </div>
+		    <div class='col-md-4'>
+			   <div class='card card-nav-tabs text-center'>
+								   <div class="header-info content">Q. First Question?</div>
+				   <div class='content'>
+					   <p>A. Answer to the question. There are some possibilties, but this is just placeholder text to increase lenght.</p>
+				   </div>
+			   </div>
+		   </div>
+		    <div class='col-md-4'>
+			   <div class='card card-nav-tabs text-center'>
+								   <div class="header-info content">Q. First Question?</div>
+				   <div class='content'>
+					   <p>A. Answer to the question. There are some possibilties, but this is just.</p>
+					   <a class='btn btn-danger'>Sign Up Now</a>
+				   </div>
+			   </div>
+		   </div>
+		    <div class='col-md-4'>
+			   <div class='card card-nav-tabs text-center'>
+								   <div class="header-info content">Q. First Question?</div>
+				   <div class='content'>
+					   <p>A. Answer to the question. There are some possibilties, but this is just placeholder text to increase lenght.</p>
+				   </div>
+			   </div>
+		   </div>
+	   </div>
+
+	   </div>
+   </div>
+</div> <!-- wrapper -->
 {% endblock content-wrapper %}

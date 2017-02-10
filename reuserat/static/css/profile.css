@@ -1,0 +1,19 @@
+.header-top {
+  background-color: #0288d1; }
+
+.wrapper > .header {
+  height: 200px;
+  min-height: 200px; }
+  .wrapper > .header .btn-danger i {
+    margin-right: 4px; }
+
+.card-nav-tabs .btn-simple {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.15);
+  transition: background-color .1s; }
+  .card-nav-tabs .btn-simple:hover {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5); }
+  .card-nav-tabs .btn-simple:active {
+    color: white;
+    background-color: initial; }
