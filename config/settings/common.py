@@ -37,6 +37,7 @@ DJANGO_APPS = (
 )
 THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
+    'django_pdfkit',
     'allauth',  # registration
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration

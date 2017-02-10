@@ -16,6 +16,10 @@ RUN chmod +x /start-dev.sh
 
 WORKDIR /app
 
+RUN wget http://download.gna.org/wkhtmltopdf/0.12/0.12.3/wkhtmltox-0.12.3_linux-generic-amd64.tar.xz \
+        && tar -xf wkhtmltox-0.12.3_linux-generic-amd64.tar.xz \
+        && cp -r wkhtmltox/* /usr/
+
 RUN apt-get update \
     && apt-get install -y nodejs \
     && apt-get install -y npm \

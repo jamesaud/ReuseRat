@@ -25,7 +25,16 @@
     </div>
   </div>
 <hr>
- <a class="btn btn-primary" href="{% url 'users:detail' request.user.username %}" role="button">Back to Dashboard</a>
+  <div class='row'>
+    <div class='col-sm-4'>
+      <h3><strong>Shipment Label:</strong></h3>
+    </div>
+    <div class='col-sm-8'>
+      <a class="nav-link" href="{% url 'shipments:shipmentLabel' object.id %}"><h3>Print the Label</h3></a>
+      <a class="nav-link" href="{% url 'shipments:shipmentPdf' object.id %}"><h3>Download the PDF</h3></a>
+    </div>
   </div>
-
+<hr>
+ <a class="btn btn-primary" href="{% url 'users:detail' request.user.username %}" role="button">Back to Dashboard</a>
+</div>
 {% endblock content %}
