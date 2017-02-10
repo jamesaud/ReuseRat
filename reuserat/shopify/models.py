@@ -10,16 +10,19 @@ from config.settings.common import SHOPIFY_DOMAIN_NAME
 
 
 class Item(models.Model):
+
+    id = models.CharField(max_length=100, primary_key=True, blank=False, null=False)  # Must Be Shopify product ID!!
+
+
     shipment = models.ForeignKey(Shipment,
                                   on_delete=models.CASCADE)
 
-    id = models.CharField(max_length=100, primary_key=True)  # Shopify product ID
     name =  models.CharField(max_length=200)  # Shopify Item Name
     handle = models.CharField(max_length=200)  # Shopify Handle
 
 
     def get_shopify_url(self):
-        return urljoin(SHOPIFY_DOMAIN_NAME, os.path.join('products', self.handle))
+        return urljoin("https://www.{}.com".format(SHOPIFY_DOMAIN_NAME), os.path.join('products', self.handle))
 
 
 

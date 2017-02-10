@@ -120,9 +120,9 @@ class ProductReceivers:
     def _get_shipment(cls, json_data):
         try:
             id = cls._get_shipment_id(json_data)
-            return Shipment.objects.get(pk=cls._get_shipment_id(json_data))
+            return Shipment.objects.get(pk=id)
         except Shipment.DoesNotExist:
-            print("Shipment with ID: " + str(id) + "  does not exist in database from json_data: {}".format(json_data))
+            print("Shipment with ID + does not exist in database from json_data: {}".format(json_data))
             raise
 
 
