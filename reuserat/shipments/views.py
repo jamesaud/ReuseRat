@@ -62,7 +62,7 @@ class ShipmentPdfView(LoginRequiredMixin,PDFView):
     template_name = 'shipments/shipment_label.html'
     
     def get_context_data(self, **kwargs):
-        context = super(ShipmentLabelView,self).get_context_data(**kwargs)
+        context = super(ShipmentPdfView, self).get_context_data(**kwargs)
         context['user'] = self.request.user #apps.get_model('User')
         context['shipment'] =get_object_or_404(Shipment,pk=self.kwargs.get('shipment_id'))
         return context
