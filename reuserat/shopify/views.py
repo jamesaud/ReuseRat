@@ -3,15 +3,11 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.conf import settings
-from django.shortcuts import get_object_or_404
 from django.core.exceptions import SuspiciousOperation
 
-import json
 
 from .decorators import webhook, app_proxy
 from .helpers import get_signal_name_for_topic
-from .models import Item
-from reuserat.shipments.models import Shipment
 
 from . import signals
 
@@ -45,6 +41,7 @@ class ShopifyWebhookBaseView(View):
 
         # Convert the topic to a signal name and trigger it.
         signal_name = get_signal_name_for_topic(request.webhook_topic)
+        print(request.webhook_topic)
         try:
             signals.webhook_received.send_robust(self, domain = request.webhook_domain, topic = request.webhook_topic, data = request.webhook_data)
             getattr(signals, signal_name).send_robust(self, domain = request.webhook_domain, topic = request.webhook_topic, data = request.webhook_data)
@@ -72,97 +69,4 @@ class LiquidTemplateView(TemplateView):
 
 
 
-
-'''
-RECEIVERS FOR WEBHOOK SIGNALS ARE DEFINED BELOW.
-ROUTING IS IN APPS.PY
-
-Improve:
- - create JSON validation templates which we can verify: http://python-jsonschema.readthedocs.io/en/latest/validate/
-'''
-
-class ProductReceivers:
-
-    """
-    Using Item instead of Product because that's what our Model is called. A Shipment can have many Items.
-
-    """
-
-    @classmethod
-    def item_create(cls, sender, **kwargs):
-        shopify_json = cls._get_shopify_json(kwargs)
-        shipment = cls._get_shipment(shopify_json)  # Get the related shipment, specified in 'SKU'
-
-        item = cls._create_item(shipment, shopify_json)
-        item.save()
-
-        #print(item)
-        #print(item.id)
-
-    """
-    Helper Functions Below
-    """
-    @classmethod
-    def _create_item(cls, shipment, json_data):
-        """
-
-        :param shipment: Shipment to add item to.
-        :param json_data: Json from shopify
-        :return: Item, the item that is created from the json_data (but not saved yet1)
-        """
-        id, name, handle = json_data.get('id'), json_data.get('title'), json_data.get('handle')
-        if name and handle and isinstance(shipment, Shipment):
-            return Item(id=id, shipment=shipment, name=name, handle=handle)
-
-        raise ValueError('{0}, are not valid args to be turned into Item from json: {1}'.format([id, name, handle, shipment], json_data))
-
-    @classmethod
-    def _get_shipment(cls, json_data):
-        try:
-            id = cls._get_shipment_id(json_data)
-            return Shipment.objects.get(pk=id)
-        except Shipment.DoesNotExist:
-            print("Shipment with ID + does not exist in database from json_data: {}".format(json_data))
-            raise
-
-
-    @staticmethod
-    def _get_shopify_json(json_sender_data):
-        return json_sender_data['data']  # parse out the sender signal and name
-
-
-    @staticmethod
-    def _valid_json(json_data):
-        """
-        Checks if the json is in a valid format.
-        Requires:
-            - sku number with a '-' in between the user_id and shipment_id, like 526635-34
-            - proper json formatting
-        :param json_data: json from shopify
-        :return: Bool, if json meets the valid criteria.
-        """
-        if len(json_data.get('variants')) >= 1: # Verify there is variants, which contains a list of variants.
-            if json_data.get('variants')[0].get('sku'): # Sku is contained in variants. Almost always will get 1 variant.
-                if len(json_data.get('variants')[0].get('sku').split('-')) == 2: # Sku should contain 1 dash.
-                    return True
-
-        return False
-
-    @classmethod
-    def _get_shipment_id(cls, json_data):
-        # The first variant's SKU, which is the same as all variants SKU.
-        # Split on dash because the SKU is entered in as:   "<userid> - <shipment_id>"
-        if cls._valid_json(json_data):
-            return json_data.get('variants')[0].get('sku').split('-')[1]
-
-        raise TypeError("Json not as expected. Missing 'variants' or 'sku' is missing a dash")
-
-    @classmethod
-    def _get_user_id(cls, json_data):
-        # The first variant's sku, which is the same as all variants sku
-        # Split on dash because the SKU is entered in as:   "<userid> - <shipment_id>"
-        if cls._valid_json(json_data):
-            return json_data.get('variants')[0].get('sku').split('-')[0]
-
-        raise TypeError("Json not as expected. Missing 'variants' or 'sku' is missing a dash")
 

@@ -322,3 +322,4 @@ SHOPIFY_APP_API_SECRET = '9302e732076fbae5d7c5ff0078693e38179ee32a9a42f847880abd
 
 # What comes between "www" and ".com" eg. for www.reuserat.com it would be 'reuserat'
 SHOPIFY_DOMAIN_NAME = 'reuserat'
+SHOPIFY_APP_NAME = 'sell-stuff-get-paid.myshopify.com'

@@ -21,7 +21,7 @@ def webhook(f):
         # Ensure the request is a POST request.
         if request.method != 'POST':
             return HttpResponseMethodNotAllowed()
-        
+
         # Try to get required headers and decode the body of the request.
         try:
             topic   = request.META['HTTP_X_SHOPIFY_TOPIC']

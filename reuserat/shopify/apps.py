@@ -13,7 +13,7 @@ class ShopifyConfig(AppConfig):
             Users system checks
             Users signal registration
         """
-        from . import signals, views
+        from . import signals, receivers, views
 
-        signals.products_create.connect(views.ProductReceivers.item_create)
+        signals.products_create.connect(receivers.ProductReceivers.item_create)
 

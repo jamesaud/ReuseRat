@@ -12,6 +12,7 @@ class Shipment(models.Model):
     created = models.DateTimeField(auto_now_add=True,)
     modified = models.DateTimeField(auto_now=True,)
 
-
     def get_shipment_sku(self):
-        return "{0}-{1}".format(self.user_id, self.id)
+        return "{0}-{1}".format(self.user_id, self.id)   # Set the sku to be <userid>-<shipmentid>
+
+
