@@ -17,7 +17,8 @@
   <h1>{{ user.username }}</h1>
   <form class="form-horizontal" method="post" action="{% url 'users:update' %}">
     {% csrf_token %}
-    {{ form|crispy }}
+    {{ user_form|crispy }}
+      {{ address_form|crispy }}
     <div class="control-group">
       <div class="controls">
         <button type="submit" class="btn">Update</button>

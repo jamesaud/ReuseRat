@@ -30,22 +30,7 @@
 {% block content-wrapper %}
 
 {% block content %}
-<!--<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-  <h1>{{ user.username }}</h1>
-  <form class="form-horizontal" method="post" action="{% url 'users:update' %}">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <div class="control-group">
-      <div class="controls">
-        <button type="submit" class="btn">Update</button>
-      </div>
-    </div>
-  </form>
-    </div>
-  </div>
-</div>-->
+
 
 
 
@@ -98,7 +83,7 @@
 														<i class="material-icons">face</i>
 													</span>
 													<div class="form-group label-floating">
-			                            {{form.first_name|as_crispy_field}}
+			                            {{user_form.first_name|as_crispy_field}}
 			                                        </div>
 												</div>
 
@@ -107,7 +92,7 @@
 														<i class="material-icons">record_voice_over</i>
 													</span>
 													<div class="form-group label-floating">
-			                            {{form.last_name|as_crispy_field}}
+			                            {{user_form.last_name|as_crispy_field}}
 													</div>
 												</div>
 		                                	</div>
@@ -117,7 +102,7 @@
 														<i class="material-icons">phone</i>
 													</span>
 													<div class="form-group label-floating">
-			                                        {{form.phone|as_crispy_field}}
+			                                        {{user_form.phone|as_crispy_field}}
 			                                        </div>
 												</div>
 		                                	</div>
@@ -132,7 +117,7 @@
 
 		                                <div class="row">
 		                                    <div class="col-sm-8 col-sm-offset-2" data-tabs='tabs'>
-                                          {% for choice in form.payment_type %}
+                                          {% for choice in user_form.payment_type %}
                                           {% if choice.choice_label == 'Check' %}
                                            <div class="col-sm-6">
                                                <a href='#{{choice.choice_label}}' data-toggle="tab" aria-expanded="true">
@@ -190,15 +175,7 @@
 														<i class="material-icons">account_box</i>
 													</span>
 													<div class="form-group label-floating">
-			                                            {{form.address|as_crispy_field}}
-			                                        </div>
-												</div>
-                                                <div class="input-group col-sm-4 col-sm-offset-2">
-													<span class="input-group-addon">
-														<i class="material-icons">account_box</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            {{form.address_apartment|as_crispy_field}}
+			                                            {{address_form|crispy}}
 			                                        </div>
 												</div>
                                             </div>
@@ -239,8 +216,6 @@
 
 {% block javascript %}
     {{ block.super }}
-
-  {{ form.media }}
 
 
 	<script src="{% static 'standalone/material-bootstrap-wizard-v1.0.1/assets/js/bootstrap.min.js' %}" type="text/javascript"></script>

@@ -23,6 +23,9 @@ services:
     environment:
       - POSTGRES_USER=reuserat
       - USE_DOCKER=yes
+      - SHOPIFY_DOMAIN_NAME=reuserat
+
+    env_file: .env
     volumes:
       - .:/app
     ports:
@@ -43,7 +46,7 @@ services:
     ports:
       - "3000:3000"
       - "3001:3001"
-    command: 
+    command:
       - gulp watch
 
   pycharm:
