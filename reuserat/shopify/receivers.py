@@ -1,5 +1,6 @@
 from .models import Item
 from reuserat.shipments.models import Shipment
+from reuserat.helpers.model_helpers import get_or_none
 import re
 
 '''
@@ -25,12 +26,21 @@ class ProductReceivers:
     @classmethod
     def item_create(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
-
         shipment = cls._get_shipment(shopify_json)  # Get the related shipment, specified in 'SKU'
+        cls._create_item(shipment, shopify_json)
 
-        item = cls._create_item(shipment, shopify_json)
-        item.save()
 
+    @classmethod
+    def item_update(cls, sender, **kwargs):
+        shopify_json = cls._get_shopify_json(kwargs)
+        cls._update_item(shopify_json)
+
+
+    @classmethod
+    def item_delete(cls, sender, **kwargs):
+        print("DELETEITIGN")
+        shopify_json = cls._get_shopify_json(kwargs)
+        cls._delete_item(shopify_json)
 
     """
     Helper Functions Below
@@ -45,9 +55,43 @@ class ProductReceivers:
         """
         id, name, handle = json_data.get('id'), json_data.get('title'), json_data.get('handle')
         if name and handle and isinstance(shipment, Shipment):
-            return Item(id=id, shipment=shipment, name=name, handle=handle)
-
+            item = Item(id=id, shipment=shipment, name=name, handle=handle)
+            item.save()
+            return item
         raise ValueError('{0}, are not valid args to be turned into Item from json: {1}'.format([id, name, handle, shipment], json_data))
+
+    @classmethod
+    def _get_item(self, json_data):
+        try:
+            item = Item.objects.get(pk=json_data['id'])
+        except Item.DoesNotExist:
+            print("Getting item using primary key found from 'id' in json does not exist: {}".format(json_data))
+            raise
+        return item
+
+    @classmethod
+    def _update_item(cls, json_data):
+        """
+
+        :param shipment: Shipment to add item to.
+        :param json_data: Json from shopify
+        :return: Item, the item that is created from the json_data (but not saved yet1)
+        """
+        id, name, handle = json_data.get('id'), json_data.get('title'), json_data.get('handle')
+        item = cls._get_item(json_data)
+
+        if name and handle:
+            item.handle = handle
+            item.name = name
+            item.save()
+            return item
+        raise ValueError("Json misisng name or handle: ".format(json_data))
+
+    @classmethod
+    def _delete_item(cls, json_data):
+        item = cls._get_item(json_data)
+        item.delete()
+        return True
 
     @classmethod
     def _get_shipment(cls, json_data):
@@ -61,38 +105,21 @@ class ProductReceivers:
 
     @classmethod
     def _get_shopify_json(cls, json_sender_data):
-        if cls._validate_json(json_sender_data['data']):
-            return json_sender_data['data']  # parse out the sender signal and name
+        return json_sender_data['data']  # parse out the sender signal and name
 
-
-    @staticmethod
-    def _validate_json(json_data):
-        """
-        Checks if the json is in a valid format.
-        Requires:
-            - sku number with a '-' in between the user_id and shipment_id, like 526635-34
-            - proper json formatting
-        :param json_data: json from shopify
-        :return: Bool, if json meets the valid criteria.
-        """
-        if len(json_data.get('variants')) >= 1: # Verify there is variants, which contains a list of variants.
-            if json_data.get('variants')[0].get('sku'): # Sku is contained in variants. Almost always will get 1 variant.
-                sku = json_data.get('variants')[0].get('sku')
-                if valid_sku(sku): # Sku should contain 1 dash.
-                    return True
-
-        raise ValueError("Json Incorrectly formatted, or 'sku' is incorrectly formattted: {}".format(sku))
 
     @classmethod
     def _get_shipment_id(cls, json_data):
         # The first variant's SKU, which is the same as all variants SKU.
         # Split on dash because the SKU is entered in as:   "<userid> - <shipment_id>"
-        return json_data.get('variants')[0].get('sku').split('-')[1]
-
+        if valid_sku(json_data.get('variants')[0].get('sku')):
+            return json_data.get('variants')[0].get('sku').split('-')[1]
+        raise ValueError("JSON sku is not formatted as expected: {}".format(json_data))
 
     @classmethod
     def _get_user_id(cls, json_data):
         # The first variant's sku, which is the same as all variants sku
         # Split on dash because the SKU is entered in as:   "<userid> - <shipment_id>"
-        return json_data.get('variants')[0].get('sku').split('-')[0]
-
+        if valid_sku(json_data.get('variants')[0].get('sku')):
+            return json_data.get('variants')[0].get('sku').split('-')[0]
+        raise ValueError("JSON sku is not formatted as expected: {}".format(json_data))

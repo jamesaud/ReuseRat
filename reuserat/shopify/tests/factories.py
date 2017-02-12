@@ -3,6 +3,7 @@ from reuserat.shipments.tests.factories import ShipmentFactory
 
 
 class ItemFactory(factory.django.DjangoModelFactory):
+    id = factory.Sequence(lambda n: int('{}'.format(n)))
     name = factory.Sequence(lambda n: 'shipment-{0}'.format(n))
     handle = factory.Sequence(lambda n: 'shipment-{0}-handle'.format(n))
 
@@ -10,7 +11,7 @@ class ItemFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = 'shopify.Item'
-        django_get_or_create = ('name', )
+        django_get_or_create = ('id', )
 
 
 

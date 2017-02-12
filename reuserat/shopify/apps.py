@@ -13,7 +13,8 @@ class ShopifyConfig(AppConfig):
             Users system checks
             Users signal registration
         """
-        from . import signals, receivers, views
+        from . import signals, receivers
 
         signals.products_create.connect(receivers.ProductReceivers.item_create)
-
+        signals.products_update.connect(receivers.ProductReceivers.item_update)
+        signals.products_delete.connect(receivers.ProductReceivers.item_delete)

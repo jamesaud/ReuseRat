@@ -11,7 +11,7 @@ from config.settings.common import SHOPIFY_DOMAIN_NAME
 
 class Item(models.Model):
 
-    id = models.CharField(max_length=100, primary_key=True, blank=False, null=False)  # Must Be Shopify product ID!!
+    id = models.CharField(max_length=100, primary_key=True)  # Must Be Shopify product ID!!
 
 
     shipment = models.ForeignKey(Shipment,

@@ -41,10 +41,10 @@ class ShopifyWebhookBaseView(View):
 
         # Convert the topic to a signal name and trigger it.
         signal_name = get_signal_name_for_topic(request.webhook_topic)
-        print(request.webhook_topic)
         try:
             signals.webhook_received.send_robust(self, domain = request.webhook_domain, topic = request.webhook_topic, data = request.webhook_data)
             getattr(signals, signal_name).send_robust(self, domain = request.webhook_domain, topic = request.webhook_topic, data = request.webhook_data)
+
         except AttributeError as e:
             logger.error("Encountered Shopify Webhook Signal Error: {0}".format(e))
             raise SuspiciousOperation

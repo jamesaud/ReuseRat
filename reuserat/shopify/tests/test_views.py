@@ -7,6 +7,7 @@ from reuserat.shipments.tests.factories import ShipmentFactory
 from ..helpers import get_hmac
 from ..views import *
 from .. import receivers as r
+from .factories import ItemFactory
 
 from ..models import Item
 import json
@@ -17,19 +18,10 @@ class BaseWebhookTestCase(TestCase):
 
     def setUp(self, body=None, topic=None):
         """
-        topic: checkout https://help.shopify.com/api/reference/webhook.
+        topic: String, the shopify topic. checkout https://help.shopify.com/api/reference/webhook.
+        body: Dict, the json body as a dictionary.
         """
         self.factory = RequestFactory()
-        self.shipment = ShipmentFactory()
-
-        # Simulate the json from shopify, copied from a shopify product_create request.
-        if not body:
-            body = {'updated_at': None, 'title': 'Example T-Shirt', 'published_at': '2017-02-07T18:37:51-05:00', 'id': 327475578523353102, 'handle': 'example-t-shirt', 'created_at': None, 'published_scope': 'global', 'images': [{'updated_at': None, 'product_id': 327475578523353102, 'created_at': None, 'id': 1234567, 'position': 0, 'src': '//cdn.shopify.com/s/assets/shopify_shirt-39bb555874ecaeed0a1170417d58bbcf792f7ceb56acfe758384f788710ba635.png', 'variant_ids': []}], 'body_html': None, 'vendor': 'Acme', 'variants': [{'updated_at': None, 'weight': 0.44, 'price': '19.99', 'created_at': None, 'grams': 200, 'option2': None, 'inventory_policy': 'deny', 'image_id': None, 'product_id': 327475578523353102, 'inventory_management': None, 'taxable': True, 'inventory_quantity': 75, 'compare_at_price': '24.99', 'title': '', 'id': 1234567, 'option1': 'Small', 'sku': 'example-shirt-s', 'option3': None, 'requires_shipping': True, 'position': 0, 'old_inventory_quantity': 75, 'fulfillment_service': 'manual', 'weight_unit': 'lb', 'barcode': None}, {'updated_at': None, 'weight': 0.44, 'price': '19.99', 'created_at': None, 'grams': 200, 'option2': None, 'inventory_policy': 'deny', 'image_id': None, 'product_id': 327475578523353102, 'inventory_management': 'shopify', 'taxable': True, 'inventory_quantity': 50, 'compare_at_price': '24.99', 'title': '', 'id': 1234568, 'option1': 'Medium', 'sku': 'example-shirt-m', 'option3': None, 'requires_shipping': True, 'position': 0, 'old_inventory_quantity': 50, 'fulfillment_service': 'manual', 'weight_unit': 'lb', 'barcode': None}], 'image': None, 'options': [{'name': 'Title', 'product_id': None, 'values': ['Small', 'Medium'], 'position': 1, 'id': 12345}], 'tags': 'mens t-shirt example', 'product_type': 'Shirts', 'template_suffix': None}
-        body['variants'][0]['sku'] = self.shipment.get_shipment_sku()  # set the sku to be associate with this test shipment
-
-        # Simulate Shopify Request
-        if not topic:
-            topic = "products/create"   # Set a valid signal name
 
         # Prefix with 'r', for 'request'
         self.r_body = body
@@ -61,6 +53,12 @@ class BaseWebhookTestCase(TestCase):
 
 class TestWebhook(BaseWebhookTestCase):
 
+    def setUp(self):
+        body = '{"id":327475578523353102,"title":"Example T-Shirt","body_html":null,"vendor":"Acme","product_type":"Shirts","created_at":null,"handle":"example-t-shirt","updated_at":null,"published_at":"2017-02-11T20:54:21-05:00","template_suffix":null,"published_scope":"global","tags":"mens t-shirt example","variants":[{"id":1234567,"product_id":327475578523353100,"title":"","price":"19.99","sku":"example-shirt-s","position":0,"grams":200,"inventory_policy":"deny","compare_at_price":"24.99","fulfillment_service":"manual","inventory_management":null,"option1":"Small","option2":null,"option3":null,"created_at":null,"updated_at":null,"taxable":true,"barcode":null,"image_id":null,"inventory_quantity":75,"weight":0.44,"weight_unit":"lb","old_inventory_quantity":75,"requires_shipping":true},{"id":1234568,"product_id":327475578523353100,"title":"","price":"19.99","sku":"example-shirt-m","position":0,"grams":200,"inventory_policy":"deny","compare_at_price":"24.99","fulfillment_service":"manual","inventory_management":"shopify","option1":"Medium","option2":null,"option3":null,"created_at":null,"updated_at":null,"taxable":true,"barcode":null,"image_id":null,"inventory_quantity":50,"weight":0.44,"weight_unit":"lb","old_inventory_quantity":50,"requires_shipping":true}],"options":[{"id":12345,"product_id":null,"name":"Title","position":1,"values":["Small","Medium"]}],"images":[{"id":1234567,"product_id":327475578523353100,"position":0,"created_at":null,"updated_at":null,"src":"//cdn.shopify.com/s/assets/shopify_shirt-39bb555874ecaeed0a1170417d58bbcf792f7ceb56acfe758384f788710ba635.png","variant_ids":[]}],"image":null}'
+        body = json.loads(body)
+        super(TestWebhook, self).setUp(body=body, topic="products/create")  # Set a valid topic name
+
+
     def test_webhook(self):
         """
         Verify that receiving shopify webook works. This test simulates the request that would come from shopify.
@@ -86,34 +84,80 @@ class TestReceiverGenericFunctions(TestCase):
 class TestProductCreate(BaseWebhookTestCase):
 
     def setUp(self):
-        self.product_id = '327475578523353102'
-        body = {'id': self.product_id, 'updated_at': None, 'title': 'Example T-Shirt', 'published_at': '2017-02-07T18:37:51-05:00', 'handle': 'example-t-shirt', 'created_at': None, 'published_scope': 'global', 'images': [{'updated_at': None, 'product_id': 327475578523353102, 'created_at': None, 'id': 1234567, 'position': 0, 'src': '//cdn.shopify.com/s/assets/shopify_shirt-39bb555874ecaeed0a1170417d58bbcf792f7ceb56acfe758384f788710ba635.png', 'variant_ids': []}], 'body_html': None, 'vendor': 'Acme', 'variants': [{'updated_at': None, 'weight': 0.44, 'price': '19.99', 'created_at': None, 'grams': 200, 'option2': None, 'inventory_policy': 'deny', 'image_id': None, 'product_id': 327475578523353102, 'inventory_management': None, 'taxable': True, 'inventory_quantity': 75, 'compare_at_price': '24.99', 'title': '', 'id': 1234567, 'option1': 'Small', 'sku': 'example-shirt-s', 'option3': None, 'requires_shipping': True, 'position': 0, 'old_inventory_quantity': 75, 'fulfillment_service': 'manual', 'weight_unit': 'lb', 'barcode': None}, {'updated_at': None, 'weight': 0.44, 'price': '19.99', 'created_at': None, 'grams': 200, 'option2': None, 'inventory_policy': 'deny', 'image_id': None, 'product_id': 327475578523353102, 'inventory_management': 'shopify', 'taxable': True, 'inventory_quantity': 50, 'compare_at_price': '24.99', 'title': '', 'id': 1234568, 'option1': 'Medium', 'sku': 'example-shirt-m', 'option3': None, 'requires_shipping': True, 'position': 0, 'old_inventory_quantity': 50, 'fulfillment_service': 'manual', 'weight_unit': 'lb', 'barcode': None}], 'image': None, 'options': [{'name': 'Title', 'product_id': None, 'values': ['Small', 'Medium'], 'position': 1, 'id': 12345}], 'tags': 'mens t-shirt example', 'product_type': 'Shirts', 'template_suffix': None}
-        super(TestProductCreate, self).setUp(body=body, topic='products/create')
+        body = '{"id":327475578523353102,"title":"Example T-Shirt","body_html":null,"vendor":"Acme","product_type":"Shirts","created_at":null,"handle":"example-t-shirt","updated_at":null,"published_at":"2017-02-11T20:54:21-05:00","template_suffix":null,"published_scope":"global","tags":"mens t-shirt example","variants":[{"id":1234567,"product_id":327475578523353100,"title":"","price":"19.99","sku":"example-shirt-s","position":0,"grams":200,"inventory_policy":"deny","compare_at_price":"24.99","fulfillment_service":"manual","inventory_management":null,"option1":"Small","option2":null,"option3":null,"created_at":null,"updated_at":null,"taxable":true,"barcode":null,"image_id":null,"inventory_quantity":75,"weight":0.44,"weight_unit":"lb","old_inventory_quantity":75,"requires_shipping":true},{"id":1234568,"product_id":327475578523353100,"title":"","price":"19.99","sku":"example-shirt-m","position":0,"grams":200,"inventory_policy":"deny","compare_at_price":"24.99","fulfillment_service":"manual","inventory_management":"shopify","option1":"Medium","option2":null,"option3":null,"created_at":null,"updated_at":null,"taxable":true,"barcode":null,"image_id":null,"inventory_quantity":50,"weight":0.44,"weight_unit":"lb","old_inventory_quantity":50,"requires_shipping":true}],"options":[{"id":12345,"product_id":null,"name":"Title","position":1,"values":["Small","Medium"]}],"images":[{"id":1234567,"product_id":327475578523353100,"position":0,"created_at":null,"updated_at":null,"src":"//cdn.shopify.com/s/assets/shopify_shirt-39bb555874ecaeed0a1170417d58bbcf792f7ceb56acfe758384f788710ba635.png","variant_ids":[]}],"image":null}'
+        self.body = json.loads(body)
+        self.product_id = str(self.body['id'])
+        self.shipment = ShipmentFactory()
+
+        super(TestProductCreate, self).setUp(body=self.body, topic='products/create')
+
+        self.set_sku(self.shipment.get_shipment_sku())
 
 
     def test_item_create(self):
         """
         When a webhook to product_create is sent, an item should be created.
         """
-        self.response = self.send_request()
+        response = self.send_request()
 
         item = Item.objects.get(pk=self.product_id)
 
-        self.assertEqual(self.response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(item.id, self.product_id)
+        self.assertEqual(item.handle, self.body['handle'])
+        self.assertEqual(item.name, self.body['title'])
         self.assertEqual(item.shipment.id, self.shipment.id)
 
 
     def test_invalid_sku(self):
+        """
+        When sku is invalid, an item should not be created.
+        """
         self.set_sku('notvalidsku')
-        self.response = self.send_request()
+        response = self.send_request()
+        self.assertFalse(Item.objects.filter(pk=self.product_id).exists())
 
-        try:
-            Item.objects.get(pk=self.product_id)
-        except Item.DoesNotExist:
-            self.assertTrue(True)       # Item should not be created when sku is invalid
-        else:
-            self.assertTrue(False)
 
+
+class TestProductUpdate(BaseWebhookTestCase):
+
+    def setUp(self):
+        # Simulate shopify product/update json request.
+        body = '{"id":327475578523353102,"title":"Example T-Shirt","body_html":null,"vendor":"Acme","product_type":"Shirts","created_at":null,"handle":"example-t-shirt","updated_at":null,"published_at":"2017-02-11T20:47:55-05:00","template_suffix":null,"published_scope":"global","tags":"mens t-shirt example","variants":[{"id":1234567,"product_id":327475578523353100,"title":"","price":"19.99","sku":"example-shirt-s","position":0,"grams":200,"inventory_policy":"deny","compare_at_price":"24.99","fulfillment_service":"manual","inventory_management":null,"option1":"Small","option2":null,"option3":null,"created_at":null,"updated_at":null,"taxable":true,"barcode":null,"image_id":null,"inventory_quantity":75,"weight":0.44,"weight_unit":"lb","old_inventory_quantity":75,"requires_shipping":true},{"id":1234568,"product_id":327475578523353100,"title":"","price":"19.99","sku":"example-shirt-m","position":0,"grams":200,"inventory_policy":"deny","compare_at_price":"24.99","fulfillment_service":"manual","inventory_management":"shopify","option1":"Medium","option2":null,"option3":null,"created_at":null,"updated_at":null,"taxable":true,"barcode":null,"image_id":null,"inventory_quantity":50,"weight":0.44,"weight_unit":"lb","old_inventory_quantity":50,"requires_shipping":true}],"options":[{"id":12345,"product_id":null,"name":"Title","position":1,"values":["Small","Medium"]}],"images":[{"id":1234567,"product_id":327475578523353100,"position":0,"created_at":null,"updated_at":null,"src":"//cdn.shopify.com/s/assets/shopify_shirt-39bb555874ecaeed0a1170417d58bbcf792f7ceb56acfe758384f788710ba635.png","variant_ids":[]}],"image":null}'
+        self.body = json.loads(body)
+        self.item = ItemFactory()                                                             # Create a shipment.
+        self.body['id'] = self.item.id
+        super(TestProductUpdate, self).setUp(body=self.body, topic='products/update')   # Set up the update request
+        self.set_sku(self.item.shipment.get_shipment_sku())   # Update the sku
+
+    def test_item_update(self):
+        response = self.send_request()
+        item = Item.objects.get(pk=self.item.id)
+
+        self.assertEqual(item.handle, self.body['handle'])
+        self.assertEqual(item.name, self.body['title'])
+
+    def test_item_failed_update(self):
+        self.body['id'] = 2345
+        response = self.send_request()
+        with self.assertRaises(Item.DoesNotExist):
+           Item.objects.get(pk=self.body['id'])
+
+
+
+class TestProductDelete(BaseWebhookTestCase):
+    def setUp(self):
+        # Simulate shopify product/update json request.
+        body = '{"id":327475578523353102,"title":"Example T-Shirt","body_html":null,"vendor":"Acme","product_type":"Shirts","created_at":null,"handle":"example-t-shirt","updated_at":null,"published_at":"2017-02-11T20:47:55-05:00","template_suffix":null,"published_scope":"global","tags":"mens t-shirt example","variants":[{"id":1234567,"product_id":327475578523353100,"title":"","price":"19.99","sku":"example-shirt-s","position":0,"grams":200,"inventory_policy":"deny","compare_at_price":"24.99","fulfillment_service":"manual","inventory_management":null,"option1":"Small","option2":null,"option3":null,"created_at":null,"updated_at":null,"taxable":true,"barcode":null,"image_id":null,"inventory_quantity":75,"weight":0.44,"weight_unit":"lb","old_inventory_quantity":75,"requires_shipping":true},{"id":1234568,"product_id":327475578523353100,"title":"","price":"19.99","sku":"example-shirt-m","position":0,"grams":200,"inventory_policy":"deny","compare_at_price":"24.99","fulfillment_service":"manual","inventory_management":"shopify","option1":"Medium","option2":null,"option3":null,"created_at":null,"updated_at":null,"taxable":true,"barcode":null,"image_id":null,"inventory_quantity":50,"weight":0.44,"weight_unit":"lb","old_inventory_quantity":50,"requires_shipping":true}],"options":[{"id":12345,"product_id":null,"name":"Title","position":1,"values":["Small","Medium"]}],"images":[{"id":1234567,"product_id":327475578523353100,"position":0,"created_at":null,"updated_at":null,"src":"//cdn.shopify.com/s/assets/shopify_shirt-39bb555874ecaeed0a1170417d58bbcf792f7ceb56acfe758384f788710ba635.png","variant_ids":[]}],"image":null}'
+        self.body = json.loads(body)
+        self.item = ItemFactory()  # Create a shipment.
+        self.body['id'] = self.item.id
+        super(TestProductDelete, self).setUp(body=self.body, topic='products/delete')  # Set up the update request
+        self.set_sku(self.item.shipment.get_shipment_sku())  # Update the sku
+
+    def test_item_delete(self):
+        self.assertTrue(Item.objects.filter(pk=self.item.id).exists())   # Item should exist
+        response = self.send_request()
+        self.assertFalse(Item.objects.filter(pk=self.item.id).exists())
 
 
