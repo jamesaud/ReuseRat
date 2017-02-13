@@ -1,7 +1,5 @@
 from django.apps import AppConfig
 
-from django.core.signals import request_finished
-from django.dispatch import receiver
 
 class ShopifyConfig(AppConfig):
     name = 'reuserat.shopify'
@@ -13,7 +11,8 @@ class ShopifyConfig(AppConfig):
             Users system checks
             Users signal registration
         """
-        from . import signals, receivers
+        from reuserat.shopify.webhook import signals
+        from reuserat.shopify.webhook import receivers
 
         signals.products_create.connect(receivers.ProductReceivers.item_create)
         signals.products_update.connect(receivers.ProductReceivers.item_update)

@@ -1,18 +1,16 @@
-from django.views.generic import View, TemplateView
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-from django.http.response import HttpResponse, HttpResponseBadRequest
+import logging
+
 from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
+from django.http.response import HttpResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import View, TemplateView
 
-
+from reuserat.shopify.webhook import signals
 from .decorators import webhook, app_proxy
 from .helpers import get_signal_name_for_topic
-from . import signals
 
-import shopify
-
-import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
@@ -63,39 +61,6 @@ class LiquidTemplateView(TemplateView):
     @method_decorator(app_proxy)
     def dispatch(self, request, *args, **kwargs):
         return super(LiquidTemplateView, self).dispatch(request, *args, **kwargs)
-
-
-
-
-
-API_KEY = '73955c3af881dbe798a018d6f59d5c1e'
-PASSWORD = '708074521e0e66953480f2e2645e6a81'
-from config.settings.common import SHOPIFY_APP_NAME
-
-def shopify_test(request):
-
-    shop_url = "https://{api_key}:{password}@{shop_name}/admin".format(api_key=API_KEY,
-                                                                       password=PASSWORD,
-                                                                       shop_name=SHOPIFY_APP_NAME)
-    shopify.ShopifyResource.set_site(shop_url)
-
-    shop = shopify.Shop.current()
-
-    text = ''
-
-    # Create new product
-    new_product = shopify.Product()
-    new_product.title = "Burton Custom Freestyle 151"
-    new_product.product_type = "Snowboard"
-    new_product.vendor = "Burton"
-    success = new_product.save()  # returns false if the record is invalid
-    if new_product.errors:
-        print(new_product.errors.full_messages())
-
-
-    new_product.attributes['variants'][0].attributes['sku'] = '123-456'
-    print(new_product.attributes['variants'][0].attributes['sku'])
-    return HttpResponse()
 
 
 

@@ -60,7 +60,6 @@ services:
       - postgres
 
 
-
   mailhog:
     image: mailhog/mailhog
     ports:

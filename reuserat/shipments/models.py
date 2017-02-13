@@ -16,3 +16,5 @@ class Shipment(models.Model):
         return "{0}-{1}".format(self.user_id, self.id)   # Set the sku to be <userid>-<shipmentid>
 
 
+    def __str__(self):
+        return "Shipment For: " + str(self.user)

@@ -8,7 +8,7 @@ from reuserat.shipments.tests.factories import ShipmentFactory
 from reuserat.shopify.webhook.helpers import get_hmac
 from .factories import ItemFactory
 from .. import receivers as r
-from ..models import Item
+from ...models import Item
 from ..views import *
 
 

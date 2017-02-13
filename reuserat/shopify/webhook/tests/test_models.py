@@ -1,5 +1,5 @@
 from test_plus.test import TestCase
-from ..models import Item
+from reuserat.shopify.models import Item
 from reuserat.shipments.models import Shipment
 from .factories import ItemFactory
 from config.settings.common import SHOPIFY_DOMAIN_NAME

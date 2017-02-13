@@ -1,7 +1,6 @@
-from .models import Item
+from reuserat.shopify.models import Item
 from reuserat.shipments.models import Shipment
-from reuserat.helpers.model_helpers import get_or_none
-import re
+from ..helpers import valid_sku
 
 '''
 RECEIVERS FOR WEBHOOK SIGNALS ARE DEFINED BELOW.
@@ -10,11 +9,6 @@ ROUTING IS IN APPS.PY
 Improve:
  - create JSON validation templates which we can verify: http://python-jsonschema.readthedocs.io/en/latest/validate/
 '''
-
-def valid_sku(sku):
-    if re.findall('[\d]+-[\d]+', sku):
-        return True
-    return False
 
 
 class ProductReceivers:
