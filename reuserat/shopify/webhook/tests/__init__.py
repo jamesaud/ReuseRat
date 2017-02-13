@@ -1,12 +1,13 @@
-import os, sys
 import json
+import os
+import sys
 
-from django.test import TestCase
 from django.core.urlresolvers import reverse
-from django.conf import settings
+from django.test import TestCase
 from django.utils import six
 
-from ..helpers import get_hmac
+from config.settings.common import SHOPIFY_WEBHOOK_API_KEY
+from reuserat.shopify.webhook.helpers import get_hmac
 
 
 class WebhookTestCase(TestCase):
@@ -42,7 +43,7 @@ class WebhookTestCase(TestCase):
         if topic:
             headers['HTTP_X_SHOPIFY_TOPIC'] = topic
         if send_hmac:
-            headers['HTTP_X_SHOPIFY_HMAC_SHA256'] = six.text_type(get_hmac(six.b(data), settings.SHOPIFY_APP_API_SECRET))
+            headers['HTTP_X_SHOPIFY_HMAC_SHA256'] = six.text_type(get_hmac(six.b(data), SHOPIFY_WEBHOOK_API_KEY))
 
         return self.client.post(self.webhook_url, data = data, content_type = 'application/json', **headers)
 

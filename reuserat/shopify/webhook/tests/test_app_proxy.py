@@ -1,10 +1,10 @@
+from django.http import HttpResponse, QueryDict
 from django.test import TestCase
 from django.test.client import RequestFactory
-from django.http import HttpResponse, QueryDict
 from django.utils.decorators import method_decorator
 
+from reuserat.shopify.webhook.helpers import get_proxy_signature
 from ..decorators import app_proxy
-from ..helpers import get_proxy_signature
 
 
 class AppProxyTestCase(TestCase):

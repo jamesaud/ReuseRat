@@ -1,6 +1,6 @@
 from django.dispatch import receiver
 
-from ..signals import webhook_received, orders_create
+from reuserat.shopify.webhook.signals import webhook_received, orders_create
 from . import WebhookTestCase
 
 

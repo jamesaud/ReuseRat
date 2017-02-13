@@ -5,7 +5,7 @@ from django.http import HttpResponseBadRequest, HttpResponseForbidden, HttpRespo
 from django.conf import settings
 
 from .helpers import domain_is_valid, hmac_is_valid, proxy_signature_is_valid
-
+from config.settings.common import SHOPIFY_WEBHOOK_API_KEY
 
 class HttpResponseMethodNotAllowed(HttpResponse):
     status_code = 405
@@ -36,7 +36,7 @@ def webhook(f):
             return HttpResponseBadRequest()
 
         # Verify the HMAC.
-        if not hmac_is_valid(request.body, settings.SHOPIFY_APP_API_SECRET, hmac):
+        if not hmac_is_valid(request.body, SHOPIFY_WEBHOOK_API_KEY, hmac):
             return HttpResponseForbidden()
 
         # Otherwise, set properties on the request object and return.
@@ -72,7 +72,7 @@ def carrier_request(f):
             return HttpResponseBadRequest()
 
         # Verify the HMAC.
-        if not hmac_is_valid(request.body, settings.SHOPIFY_APP_API_SECRET, hmac):
+        if not hmac_is_valid(request.body, SHOPIFY_WEBHOOK_API_KEY, hmac):
             return HttpResponseForbidden()
 
         # Otherwise, set properties on the request object and return.
@@ -92,7 +92,7 @@ def app_proxy(f):
     def wrapper(request, *args, **kwargs):
 
         # Verify the signature.
-        if not proxy_signature_is_valid(request, settings.SHOPIFY_APP_API_SECRET):
+        if not proxy_signature_is_valid(request, SHOPIFY_WEBHOOK_API_KEY):
             return HttpResponseBadRequest()
 
         return f(request, *args, **kwargs)
