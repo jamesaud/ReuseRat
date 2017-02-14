@@ -2,7 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from django.conf.urls import url
-from . import views
+
 from . import views
 
 urlpatterns = [
@@ -11,9 +11,9 @@ urlpatterns = [
         view=views.shopify_test,
         name='shopifytest'
         ),
-    url(regex=r'^shopify_create_item/$',
+    url(regex=r'^create_item/$',
         view=views.create_item,
-        name='shopify_create_item'
+        name='create_item'
         ),
 ]
 

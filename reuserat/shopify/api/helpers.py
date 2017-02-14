@@ -1,19 +1,14 @@
 
-API_KEY = '73955c3af881dbe798a018d6f59d5c1e'
-PASSWORD = '708074521e0e66953480f2e2645e6a81'
-from config.settings.common import SHOPIFY_APP_NAME
 from django.http.response import HttpResponse
 from ..helpers import valid_sku
 import shopify
-
-
-shop_url = "https://{api_key}:{password}@{shop_name}/admin".format(api_key=API_KEY,
-                                                                   password=PASSWORD,
-                                                                   shop_name=SHOPIFY_APP_NAME)
-shopify.ShopifyResource.set_site(shop_url)
-shop = shopify.Shop.current()
-
-
+from urllib.parse import urljoin
+from reuserat.shipments.models import Shipment
+import requests
+import os
+import json
+from .config import product_base_json, product_create_url, shop
+from django.conf import settings
 
 def create_product(sku, title):
 
@@ -23,22 +18,27 @@ def create_product(sku, title):
     if not valid_sku(sku):
         raise ValueError("SKU is invalid: {}".format(sku))
 
+    product_base_json['product']['title'] = title
+    product_base_json['product']['variants'][0]['sku'] = sku
+
+    response = requests.post(url=product_create_url,
+                  json=product_base_json
+                  )
+
+    if not (response.status_code == 201):
+        return response.raise_for_status()
+
+    id = response.json()['product']['id']
+
+    product = shopify.Product.find(id)
+
+    if product.errors:
+        raise Exception(product.errors.full_messages())
+
+    return product
 
 
-    # Create new product
-    new_product = shopify.Product()
-    new_product.title = title
-    new_product.published_at = None
-    new_product.save()
 
-    variant = new_product.attributes['variants'][0]
-    variant.attributes['sku'] = sku
-    variant.attributes["inventory_management"] = "shopify"
-    variant.attributes["inventory_quantity"] = 1
-    new_product.save()
-
-    if new_product.errors:
-        raise Exception(new_product.errors.full_messages())
-
-    return new_product
-
+def get_shopify_url(product_id):
+    base_url = os.path.join("https://www.{}.com".format(settings.SHOPIFY_DOMAIN_NAME))
+    return urljoin(base_url, os.path.join('admin', os.path.join('products', str(product_id))))

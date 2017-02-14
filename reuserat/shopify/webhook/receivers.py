@@ -21,7 +21,7 @@ class ProductReceivers:
     def item_create(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
         shipment = cls._get_shipment(shopify_json)  # Get the related shipment, specified in 'SKU'
-        cls._create_item(shipment, shopify_json)
+        cls._create_item(shopify_json, shipment)
 
 
     @classmethod
@@ -32,7 +32,6 @@ class ProductReceivers:
 
     @classmethod
     def item_delete(cls, sender, **kwargs):
-        print("DELETEITIGN")
         shopify_json = cls._get_shopify_json(kwargs)
         cls._delete_item(shopify_json)
 
@@ -40,12 +39,12 @@ class ProductReceivers:
     Helper Functions Below
     """
     @classmethod
-    def _create_item(cls, shipment, json_data):
+    def _create_item(cls, json_data, shipment=None):
         """
 
         :param shipment: Shipment to add item to.
         :param json_data: Json from shopify
-        :return: Item, the item that is created from the json_data (but not saved yet1)
+        :return: Item, the item that is created from the json_data
         """
         id, name, handle = json_data.get('id'), json_data.get('title'), json_data.get('handle')
         if name and handle and isinstance(shipment, Shipment):
@@ -72,6 +71,7 @@ class ProductReceivers:
         :return: Item, the item that is created from the json_data (but not saved yet1)
         """
         id, name, handle = json_data.get('id'), json_data.get('title'), json_data.get('handle')
+
         item = cls._get_item(json_data)
 
         if name and handle:

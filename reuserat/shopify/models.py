@@ -7,7 +7,7 @@ from urllib.parse import urljoin
 import os
 from reuserat.shipments.models import Shipment
 from config.settings.common import SHOPIFY_DOMAIN_NAME
-
+from .api.helpers import get_shopify_url as api_get_shopify_url
 
 class Item(models.Model):
 
@@ -22,7 +22,9 @@ class Item(models.Model):
 
 
     def get_shopify_url(self):
-        return urljoin("https://www.{}.com".format(SHOPIFY_DOMAIN_NAME), os.path.join('products', self.handle))
+        return api_get_shopify_url(self.id)
 
 
+    def __str__(self):
+        return self.name
 

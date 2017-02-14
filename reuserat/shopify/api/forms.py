@@ -8,7 +8,9 @@ class ShopifyItemRedirectForm(forms.Form):
                                 required=True,
                                 widget=forms.TextInput(attrs={'placeholder': 'Item Name'}))
 
-    shipment_id = forms.CharField(label="Shipment ID", widget=forms.HiddenInput(), required=True)
+    shipment_id = forms.CharField(label="Shipment ID",
+                                  widget=forms.HiddenInput(),
+                                  required=True)
 
 
 

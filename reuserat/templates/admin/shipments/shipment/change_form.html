@@ -1,0 +1,40 @@
+{% extends "admin/change_form.html" %}
+{% load crispy_forms_tags %}
+{% load i18n admin_urls %}
+{% load i18n %}
+
+
+{% block object-tools %}
+    <style>
+    .my-row button.new-item {
+        background-color: #ea454b;
+        color: white !important;
+        border-radius: 2px !important;
+        font-size: 16px !important;
+        padding: 8px 10px 8px 10px !important;
+
+    }
+
+    .my-row input{
+        height: 22px !important;
+    }
+
+
+    </style>
+
+    {{ block.super }}
+
+        <div class="my-row">
+            {{ object.name }}
+            <form method="post" action="{% url 'shopify:api:create_item' %}" target="_blank">
+                {% csrf_token %}
+                {{ shopify_form.item_name  }}
+                {{ shopify_form.shipment_id  }}
+                <button class="new-item deletelink" type="submit" >Create New Item</button>
+            </form>
+        </div>
+
+<br>
+
+{% endblock %}
+

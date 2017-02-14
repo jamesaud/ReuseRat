@@ -259,6 +259,7 @@ INSTALLED_APPS += (
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     )
+
 STATICFILES_FINDERS += ("compressor.finders.CompressorFinder", )
 
 COMPRESS_PRECOMPILERS = (
@@ -323,3 +324,7 @@ SHOPIFY_WEBHOOK_API_KEY = '9302e732076fbae5d7c5ff0078693e38179ee32a9a42f847880ab
 # What comes between "www" and ".com" eg. for www.reuserat.com it would be 'reuserat'
 SHOPIFY_DOMAIN_NAME = 'reuserat'
 SHOPIFY_APP_NAME = 'sell-stuff-get-paid.myshopify.com'
+
+SHOPIFY_API_KEY = '73955c3af881dbe798a018d6f59d5c1e'
+SHOPIFY_PASSWORD = '708074521e0e66953480f2e2645e6a81'
+
