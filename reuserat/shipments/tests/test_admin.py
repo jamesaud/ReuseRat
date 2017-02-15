@@ -32,7 +32,7 @@ class TestMyUserCreationForm(TestCase):
         self.assertEqual(tags['table'], 2) # <table> + </table> = 2
         self.assertEqual(tags['tr'], 2)
 
-        parser = AdminHTMLParser()
+        parser = AdminHTMLParser()  # Reset the tag counts
         # Add an item
         item = ItemFactory()
         item.shipment = self.shipment
@@ -41,7 +41,8 @@ class TestMyUserCreationForm(TestCase):
         html = self.shipment_admin.get_items(obj=self.shipment)
         parser.feed(html)
         tags = parser.tags
-        # Each shipment has 3 fields, so 6 td tags per shipment.
+
+        # Each shipment has 3 fields.
         self.assertEqual(tags['th'], 6)
         self.assertEqual(tags['td'], 6) # <table> + </table> = 2
         self.assertEqual(tags['table'], 2)

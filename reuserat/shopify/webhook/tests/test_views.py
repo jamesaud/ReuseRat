@@ -84,8 +84,10 @@ class TestProductCreate(BaseWebhookTestCase):
     def setUp(self):
         body = '{"id":327475578523353102,"title":"Example T-Shirt","body_html":null,"vendor":"Acme","product_type":"Shirts","created_at":null,"handle":"example-t-shirt","updated_at":null,"published_at":"2017-02-11T20:54:21-05:00","template_suffix":null,"published_scope":"global","tags":"mens t-shirt example","variants":[{"id":1234567,"product_id":327475578523353100,"title":"","price":"19.99","sku":"example-shirt-s","position":0,"grams":200,"inventory_policy":"deny","compare_at_price":"24.99","fulfillment_service":"manual","inventory_management":null,"option1":"Small","option2":null,"option3":null,"created_at":null,"updated_at":null,"taxable":true,"barcode":null,"image_id":null,"inventory_quantity":75,"weight":0.44,"weight_unit":"lb","old_inventory_quantity":75,"requires_shipping":true},{"id":1234568,"product_id":327475578523353100,"title":"","price":"19.99","sku":"example-shirt-m","position":0,"grams":200,"inventory_policy":"deny","compare_at_price":"24.99","fulfillment_service":"manual","inventory_management":"shopify","option1":"Medium","option2":null,"option3":null,"created_at":null,"updated_at":null,"taxable":true,"barcode":null,"image_id":null,"inventory_quantity":50,"weight":0.44,"weight_unit":"lb","old_inventory_quantity":50,"requires_shipping":true}],"options":[{"id":12345,"product_id":null,"name":"Title","position":1,"values":["Small","Medium"]}],"images":[{"id":1234567,"product_id":327475578523353100,"position":0,"created_at":null,"updated_at":null,"src":"//cdn.shopify.com/s/assets/shopify_shirt-39bb555874ecaeed0a1170417d58bbcf792f7ceb56acfe758384f788710ba635.png","variant_ids":[]}],"image":null}'
         self.body = json.loads(body)
+        self.body['published_at'] = False  # Make it unpublished
         self.product_id = str(self.body['id'])
         self.shipment = ShipmentFactory()
+
 
         super(TestProductCreate, self).setUp(body=self.body, topic='products/create')
 
@@ -93,11 +95,12 @@ class TestProductCreate(BaseWebhookTestCase):
 
 
     def test_item_create(self):
+        from django.db import transaction
+
         """
         When a webhook to product_create is sent, an item should be created.
         """
         response = self.send_request()
-
         item = Item.objects.get(pk=self.product_id)
 
         self.assertEqual(response.status_code, 200)
@@ -105,7 +108,7 @@ class TestProductCreate(BaseWebhookTestCase):
         self.assertEqual(item.handle, self.body['handle'])
         self.assertEqual(item.name, self.body['title'])
         self.assertEqual(item.shipment.id, self.shipment.id)
-
+        self.assertEqual(item.visibility, False)   # Should be unpublished.
 
     def test_invalid_sku(self):
         """
@@ -134,6 +137,8 @@ class TestProductUpdate(BaseWebhookTestCase):
 
         self.assertEqual(item.handle, self.body['handle'])
         self.assertEqual(item.name, self.body['title'])
+        self.assertEqual(item.visibility, True)
+
 
     def test_item_failed_update(self):
         self.body['id'] = 2345

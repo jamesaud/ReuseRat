@@ -1,3 +1,7 @@
+@import '_colors.scss';
+
+
+
 //HOMEPAGE
 .wrapper > .header{
   min-height: 740px !important;
@@ -6,4 +10,7 @@
   }
 }
 
- 
+h5.description, h4.description, p.description, .features{
+   color: $grey-600;
+}
+

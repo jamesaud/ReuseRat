@@ -2,3 +2,6 @@
   min-height: 740px !important; }
   .wrapper > .header .btn-danger i {
     margin-right: 4px; }
+
+h5.description, h4.description, p.description, .features {
+  color: #757575; }

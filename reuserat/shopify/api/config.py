@@ -19,11 +19,12 @@ product_create_url = os.path.join(SHOPIFY_SHOP_URL, 'products.json/')
 
 
 ### SHOPIFY JSON REQUEST TEMPLATES ###
-# Wrap templates in lambda to prevent referencing the same dictionary accidently.
-__pbj = lambda : {
+# Wrap json dictionaries in lambda to prevent referencing the same dictionary accidently.
+
+product_base_json = lambda: {
   "product": {
     "title": None,  # Replace this with the real product title, as it is required.
-    "published": None,
+    "published": False,
       "variants": [
       {
         "sku": None,    # Replace with the sku, as we are requiring it.
@@ -34,5 +35,4 @@ __pbj = lambda : {
   }
 }
 
-product_base_json = __pbj()
 

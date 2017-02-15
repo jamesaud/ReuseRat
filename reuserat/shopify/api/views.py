@@ -19,7 +19,7 @@ def create_item(request):
             shipment = get_object_or_404(Shipment, pk=form.cleaned_data.get('shipment_id'))
             sku = shipment.get_shipment_sku()
             try:
-                product = create_product(sku=sku, title=form.cleaned_data.get('item_name'))  # Shopify Product
+                product = create_product(sku=sku, title=form.cleaned_data.get('item_name'))  # Returns a Shopify Product
                 product_id = product.id
                 return redirect(get_shopify_admin_url(product_id))
             except Exception as e:

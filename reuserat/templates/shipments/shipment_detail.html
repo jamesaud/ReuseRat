@@ -35,6 +35,39 @@
     </div>
   </div>
 <hr>
+    <div class="row">
+        <div class="col-sm-4">
+            <h3><strong>Items For Sale:</strong></h3>
+        </div>
+        <div class="col-sm-8">
+            {% if object.item_set.all %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>URL</th>
+                            <th>Status</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in object.item_set.all %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td><a href="{{ item.get_shopify_url }}" target='_blank'>See On Store</a></td>
+                            <td>Not Sold (placeholder)</td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                   <h3> No items posted yet. </h3>
+                <p>If your shipment has arrived, it will be processed soon. Items will show up as they are added to the store.</p>
+            {% endif %}
+        </div>
+    </div>
+<hr>
  <a class="btn btn-primary" href="{% url 'users:detail' request.user.username %}" role="button">Back to Dashboard</a>
 </div>
 {% endblock content %}

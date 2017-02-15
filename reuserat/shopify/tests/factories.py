@@ -6,7 +6,7 @@ class ItemFactory(factory.django.DjangoModelFactory):
     id = factory.Sequence(lambda n: int('{}'.format(n)))
     name = factory.Sequence(lambda n: 'shipment-{0}'.format(n))
     handle = factory.Sequence(lambda n: 'shipment-{0}-handle'.format(n))
-
+    visibility = True
     shipment = factory.SubFactory(ShipmentFactory)  # Shipment is a foreign key, so we must use SubFactory
 
     class Meta:

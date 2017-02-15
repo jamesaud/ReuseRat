@@ -40,7 +40,7 @@
 {% endif %}
 
 <!--TEST -->
-
+<hr>
 <!-- END TEST -->
 
   <div class="row">
@@ -48,10 +48,16 @@
         {% if object.shipment_set.all %}
           <!---shipment_set is the name generated automatically for the FK in play here of the USER -->
           {% for shipment in  object.shipment_set.all %}
-            <div class="card card-nav-tabs">
+            <div class="card card-nav-tabs vertical-align">
                 <div class="header-info">
                   <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
-                  <a class="btn btn-dark-blend" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">{{ shipment.name }} <i class="material-icons">arrow_forward</i><div class="ripple-container"></div></a>
+                  <a class="btn btn-dark-blend" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">
+                      {{ shipment.name }}
+                      <i class="material-icons">arrow_forward</i>
+                      <div class="ripple-container"></div>
+                  </a>
+                    <span class="label label-warning pull-right" rel="tooltip" title="A ReuseRat agent picked up your items. Digital shipments are sent via USPS.">Physical</span>
+
                 </div>
 
                 <div class="content">

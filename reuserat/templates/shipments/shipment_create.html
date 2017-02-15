@@ -16,7 +16,8 @@
         {{ form|crispy }}
         <div class="control-group">
             <div class="controls">
-              <button type="submit" class="btn">Create</button>
+              <a class="btn btn-default" href="{% url 'users:detail' request.user.username %}" class="btn">Back</a>
+              <button type="submit " class="btn btn-primary">Create Shipment</button>
             </div>
         </div>
       </form>
