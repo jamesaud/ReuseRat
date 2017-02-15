@@ -23,18 +23,15 @@
     </style>
 
     {{ block.super }}
-
+    {% if shopify_form %}
         <div class="my-row">
-            {{ object.name }}
             <form method="post" action="{% url 'shopify:api:create_item' %}" target="_blank">
                 {% csrf_token %}
-                {{ shopify_form.item_name  }}
-                {{ shopify_form.shipment_id  }}
+                {{ shopify_form  }}
                 <button class="new-item deletelink" type="submit" >Create New Item</button>
             </form>
         </div>
-
-<br>
-
+        <br>
+    {% endif %}
 {% endblock %}
 

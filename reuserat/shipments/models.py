@@ -18,4 +18,4 @@ class Shipment(models.Model):
 
 
     def __str__(self):
-        return "Shipment '{0}' for user '{1}'".format(self.name, str(self.user))
+        return "Name '{0}' for user '{1}'".format(self.name, str(self.user))

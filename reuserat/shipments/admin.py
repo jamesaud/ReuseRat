@@ -11,26 +11,24 @@ class ShipmentAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'user', 'id')
     search_fields = ['name', 'description', 'id']
 
-    def get_readonly_fields(self, request, obj=None):
+    """def get_readonly_fields(self, request, obj=None):
         if obj and obj.is_physical:  # Test object exists
             readonly_fields = ('get_items',)
 
         else:
-            readonly_fields = ('user', 'name', 'description', 'get_items')
+            readonly_fields = ('user', 'name', 'description', 'get_items', 'is_physical')
 
         return readonly_fields
+    """
 
     # Override the changform_view and add custom context to be rendered.
     def changeform_view(self, request, object_id, form_url='', extra_context=None):
-        """
-        Pass the Shopify Item form, which requires an item name and shipment id, and creates an item on shopify.
-        """
-        extra_context = extra_context or {}
+        if object_id: # Ensures that this is the shipment detail request, not a create shipment request
+            extra_context = extra_context or {}
 
-        # Instantiate the form with the shipment_id set.
-        extra_context['shopify_form'] = ShopifyItemRedirectForm(initial={'shipment_id': object_id})
+            # Instantiate the form with the shipment_id set.
+            extra_context['shopify_form'] = ShopifyItemRedirectForm(initial={'shipment_id': object_id})
 
-        shipment = Shipment.objects.get(pk=object_id)
         return super(ShipmentAdmin, self).changeform_view(request, object_id, form_url='', extra_context=extra_context)
 
 
