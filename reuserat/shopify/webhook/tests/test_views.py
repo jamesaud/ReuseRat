@@ -5,11 +5,11 @@ from test_plus.test import TestCase
 
 from config.settings.common import SHOPIFY_WEBHOOK_API_KEY, SHOPIFY_APP_NAME
 from reuserat.shipments.tests.factories import ShipmentFactory
+from reuserat.shopify.tests.factories import ItemFactory
 from reuserat.shopify.webhook.helpers import get_hmac
-from .factories import ItemFactory
 from .. import receivers as r
-from ...models import Item
 from ..views import *
+from ...models import Item
 
 
 class BaseWebhookTestCase(TestCase):

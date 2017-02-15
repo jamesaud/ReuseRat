@@ -6,11 +6,6 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-
-    url(regex=r'^test/$',
-        view=views.shopify_test,
-        name='shopifytest'
-        ),
     url(regex=r'^create_item/$',
         view=views.create_item,
         name='create_item'

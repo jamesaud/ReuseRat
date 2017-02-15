@@ -7,7 +7,9 @@ from urllib.parse import urljoin
 import os
 from reuserat.shipments.models import Shipment
 from config.settings.common import SHOPIFY_DOMAIN_NAME
-from .api.helpers import get_shopify_url as api_get_shopify_url
+from django.conf import settings
+from .helpers import get_shopify_product_url, get_shopify_admin_url
+
 
 class Item(models.Model):
 
@@ -22,7 +24,10 @@ class Item(models.Model):
 
 
     def get_shopify_url(self):
-        return api_get_shopify_url(self.id)
+        return get_shopify_product_url(self.id)
+
+    def get_shopify_admin_url(self):
+        return get_shopify_admin_url(self.id)
 
 
     def __str__(self):

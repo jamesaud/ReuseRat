@@ -43,5 +43,13 @@ redis>=2.10.5
 rcssmin==1.0.6
 django-compressor==2.1
 
+# HTML conversion to PDF direct output support
 django_pdfkit==0.2.1
+
+# DJango admin themes
+django-flat-responsive==1.2.0
+
+# Shoipfy api wrapper
+ShopifyAPI==2.1.8
+
 # Your custom requirements go here

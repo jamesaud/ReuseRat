@@ -35,6 +35,7 @@ DJANGO_APPS = (
     # Admin
     'django.contrib.admin',
 )
+
 THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
     'django_pdfkit',
@@ -42,6 +43,9 @@ THIRD_PARTY_APPS = (
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
 )
+
+# Add Any Third Party apps that need to come before django built in apps.
+DJANGO_APPS = ('flat_responsive',) + DJANGO_APPS
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
