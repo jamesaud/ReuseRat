@@ -15,5 +15,5 @@ def get_shopify_admin_url(product_id):
     return urljoin(base_url, os.path.join('admin', os.path.join('products', str(product_id))))
 
 
-def get_shopify_product_url(product_id):
-    return urljoin("https://www.{}.com".format(settings.SHOPIFY_DOMAIN_NAME), os.path.join('products', str(product_id)))
+def get_shopify_product_url(product_handle):
+    return urljoin("https://www.{}.com".format(settings.SHOPIFY_DOMAIN_NAME), os.path.join('products', str(product_handle)))

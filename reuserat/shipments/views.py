@@ -14,12 +14,12 @@ from reuserat.users.models import User
 from .models import Shipment
 from django.apps import apps
 
-from django.template.loader import get_template 
+from django.template.loader import get_template
 from django.template import Context
 
 from django.contrib.auth.decorators import login_required # new import for function based view (FBV)
 
-from django.template.loader import get_template 
+from django.template.loader import get_template
 from django.template import Context
 import pdfkit
 from django_pdfkit import PDFView
@@ -33,6 +33,8 @@ class ShipmentDetailView(LoginRequiredMixin,DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ShipmentDetailView, self).get_context_data(**kwargs)
+        visible_items = [item for item in self.object.item_set.all() if item.is_visible]
+        context['visible_items'] = visible_items or None
         return context
 
 
@@ -41,7 +43,7 @@ class ShipmentOrderView(LoginRequiredMixin,CreateView):
      model = Shipment
      template_name = 'shipments/shipment_create.html'
      form_class = ShipmentForm
-     
+
      # Specify the template page where you want to go once it succeeds
      def get_success_url(self):
          return reverse('shipments:shipmentDetail',kwargs={'pk': self.object.id})
@@ -60,7 +62,7 @@ class ShipmentOrderView(LoginRequiredMixin,CreateView):
 
 class ShipmentPdfView(LoginRequiredMixin,PDFView):
     template_name = 'shipments/shipment_label.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super(ShipmentPdfView, self).get_context_data(**kwargs)
         context['user'] = self.request.user #apps.get_model('User')

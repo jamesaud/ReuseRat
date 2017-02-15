@@ -10,7 +10,8 @@ class Shipment(models.Model):
     name =  models.CharField(max_length=50)
     description =  models.CharField(max_length=1000, blank=False)
     created = models.DateTimeField(auto_now_add=True,)
-    modified = models.DateTimeField(auto_now=True,)
+    modified = models.DateTimeField(auto_now=True)
+    is_physical = models.BooleanField(default=False)
 
     def get_shipment_sku(self):
         return "{0}-{1}".format(self.user_id, self.id)   # Set the sku to be <userid>-<shipmentid>

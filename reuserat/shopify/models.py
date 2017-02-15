@@ -10,10 +10,6 @@ from config.settings.common import SHOPIFY_DOMAIN_NAME
 from django.conf import settings
 from .helpers import get_shopify_product_url, get_shopify_admin_url
 
-VISIBILITY_CHOICES = (
-    ('Visible', 'Visible'),
-    ('Invisible', 'Invisible'),
-)
 
 class Item(models.Model):
 
@@ -24,10 +20,10 @@ class Item(models.Model):
 
     name =  models.CharField(max_length=200)  # Shopify Item Name
     handle = models.CharField(max_length=200)  # Shopify Handle
-    visibility = models.BooleanField()
+    is_visible = models.BooleanField()
 
     def get_shopify_url(self):
-        return get_shopify_product_url(self.id)
+        return get_shopify_product_url(self.handle)
 
     def get_shopify_admin_url(self):
         return get_shopify_admin_url(self.id)

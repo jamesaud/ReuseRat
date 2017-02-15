@@ -28,7 +28,7 @@ class TestMyUserCreationForm(TestCase):
         tags = parser.tags
 
         # There should be only the header tags (counted by total open & close tags)
-        self.assertEqual(tags['th'], 6)
+        self.assertEqual(tags['th'], 8)
         self.assertEqual(tags['table'], 2) # <table> + </table> = 2
         self.assertEqual(tags['tr'], 2)
 
@@ -43,9 +43,9 @@ class TestMyUserCreationForm(TestCase):
         tags = parser.tags
 
         # Each shipment has 3 fields.
-        self.assertEqual(tags['th'], 6)
-        self.assertEqual(tags['td'], 6) # <table> + </table> = 2
-        self.assertEqual(tags['table'], 2)
+        self.assertEqual(tags['th'], 8)
+        self.assertEqual(tags['td'], 8)
+        self.assertEqual(tags['table'], 2)  #<table> + </table> = 2 total tags
         self.assertEqual(tags['a'], 2)
         self.assertEqual(tags['tr'], 4)
 

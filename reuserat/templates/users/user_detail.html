@@ -2,7 +2,7 @@
 {% load static %}
 {% load staticfiles i18n compress%}
 
-{% block title %}User: {{ object.username }}{% endblock %}
+{% block title %}Dashboard Home{% endblock %}
 
 {% block css %}
 {{block.super}}
@@ -56,8 +56,9 @@
                       <i class="material-icons">arrow_forward</i>
                       <div class="ripple-container"></div>
                   </a>
-                    <span class="label label-warning pull-right" rel="tooltip" title="A ReuseRat agent picked up your items. Digital shipments are sent via USPS.">Physical</span>
-
+                    {% if shipment.is_physical %}
+                        <span class="label label-warning pull-right" rel="tooltip" title="A ReuseRat agent picked up your items. Digital shipments are sent via USPS.">Physical</span>
+                    {% endif %}
                 </div>
 
                 <div class="content">

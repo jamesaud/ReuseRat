@@ -68,16 +68,6 @@ class TestWebhook(BaseWebhookTestCase):
         self.assertEqual(response.status_code, 200)
 
 
-class TestReceiverGenericFunctions(TestCase):
-    def test_valid_sku(self):
-        sku = '123-456'
-        self.assertTrue(r.valid_sku(sku))
-
-    def test_invalid_sku(self):
-        self.assertFalse(r.valid_sku('12345'))
-        self.assertFalse(r.valid_sku('12345-'))
-        self.assertFalse(r.valid_sku('abc-def'))
-
 
 class TestProductCreate(BaseWebhookTestCase):
 
@@ -108,7 +98,7 @@ class TestProductCreate(BaseWebhookTestCase):
         self.assertEqual(item.handle, self.body['handle'])
         self.assertEqual(item.name, self.body['title'])
         self.assertEqual(item.shipment.id, self.shipment.id)
-        self.assertEqual(item.visibility, False)   # Should be unpublished.
+        self.assertEqual(item.is_visible, False)   # Should be unpublished.
 
     def test_invalid_sku(self):
         """
@@ -137,7 +127,7 @@ class TestProductUpdate(BaseWebhookTestCase):
 
         self.assertEqual(item.handle, self.body['handle'])
         self.assertEqual(item.name, self.body['title'])
-        self.assertEqual(item.visibility, True)
+        self.assertEqual(item.is_visible, True)
 
 
     def test_item_failed_update(self):

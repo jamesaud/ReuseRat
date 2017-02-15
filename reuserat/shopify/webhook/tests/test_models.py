@@ -14,7 +14,7 @@ class BaseModelTestCase(TestCase):
 class TestItemModel(BaseModelTestCase):
 
     def test_shopify_url(self):
-        correct_url = 'https://www.{}.com/products/{}'.format(SHOPIFY_DOMAIN_NAME, self.item.id)
+        correct_url = 'https://www.{}.com/products/{}'.format(SHOPIFY_DOMAIN_NAME, self.item.handle)
         url = self.item.get_shopify_url()
 
         self.assertEqual(correct_url, url)

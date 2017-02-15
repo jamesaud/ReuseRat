@@ -14,12 +14,13 @@ class ShipmentAdmin(admin.ModelAdmin):
             <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>Visible</th>
                 <th></th>
             </tr>
             {}
         </table>"""
 
-        # 0: id, 1: name, 2:url
+        # 0: id, 1: name, 2:visibility, 3:url
         inner_template_html = """
         <tr>
             <td>
@@ -29,7 +30,10 @@ class ShipmentAdmin(admin.ModelAdmin):
                 {1}
             </td>
             <td>
-               <a href='{2}' target='_blank'>Edit On Shopify</a>
+                {2}
+            </td>
+            <td>
+               <a href='{3}' target='_blank'>Edit On Shopify</a>
             </td>
         </tr>"""
 
@@ -37,7 +41,7 @@ class ShipmentAdmin(admin.ModelAdmin):
         inner_html = format_html_join(
             sep='\n',
             format_string=inner_template_html,
-            args_generator=((item.id, item.name, item.get_shopify_admin_url()) for item in obj.item_set.all())
+            args_generator=((item.id, item.name, item.visible, item.get_shopify_admin_url()) for item in obj.item_set.all())
         )
 
         return format_html(wrapper_html, inner_html)  # Works the same as str.format() and also escapes html
@@ -45,7 +49,7 @@ class ShipmentAdmin(admin.ModelAdmin):
 
     get_items.short_description = 'Items'
 
-    readonly_fields = ('user', 'name', 'description', 'get_items')
+    #readonly_fields = ('user', 'name', 'description', 'get_items')
     list_display = ('name', 'description', 'user', 'id')
     search_fields = ['name', 'description', 'id']
 

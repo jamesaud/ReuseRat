@@ -47,12 +47,12 @@ class ProductReceivers:
         :param json_data: Json from shopify
         :return: Item, the item that is created from the json_data
         """
-        id, name, handle, visibility = json_data.get('id'), json_data.get('title'), json_data.get('handle'), \
+        id, name, handle, is_visible = json_data.get('id'), json_data.get('title'), json_data.get('handle'), \
                                         json_data.get('published_at', 'DNE')
 
-        # Visibility is None if not published, so we set up another variable to see if the call failed.
-        if name and handle and isinstance(shipment, Shipment) and (visibility != 'DNE'):
-            item = Item(id=id, shipment=shipment, name=name, handle=handle, visibility=True if visibility else False)
+        # visibility is None if not published, so we set up another variable to see if the call failed.
+        if name and handle and isinstance(shipment, Shipment) and (is_visible != 'DNE'):
+            item = Item(id=id, shipment=shipment, name=name, handle=handle, is_visible=True if is_visible else False)
             item.save()
             return item
         raise ValueError('{0}, are not valid args to be turned into Item from json: {1}'.format([id, name, handle, shipment], json_data))
@@ -74,14 +74,14 @@ class ProductReceivers:
         :param json_data: Json from shopify
         :return: Item, the item that is created from the json_data (but not saved yet1)
         """
-        id, name, handle, visibility = json_data.get('id'), json_data.get('title'), json_data.get('handle'), \
+        id, name, handle, is_visible = json_data.get('id'), json_data.get('title'), json_data.get('handle'), \
                                        json_data.get('published_at', 'DNE')
         item = cls._get_item(json_data)
 
-        if name and handle and (visibility != 'DNE'):
+        if name and handle and (is_visible != 'DNE'):
             item.handle = handle
             item.name = name
-            item.visibility = True if visibility else False   # False if visibility is None, else True
+            item.is_visible = True if is_visible else False   # False if is_is_visible is None, else True
             item.save()
             return item
         raise ValueError("Json misisng name or handle: ".format(json_data))

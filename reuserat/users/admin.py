@@ -8,6 +8,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from .models import User
 
 
+
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
@@ -36,7 +37,9 @@ class MyUserAdmin(AuthUserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
     fieldsets = (
-            ('User Profile', {'fields': ('first_name','last_name')}),
+            ('User Profile', {
+                 'fields': ('first_name','last_name', 'phone', 'address', 'payment_type')
+              }),
     ) + AuthUserAdmin.fieldsets
     list_display = ('username', 'first_name', 'last_name', 'is_superuser')
     search_fields = ['first_name', 'last_name']

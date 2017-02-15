@@ -54,7 +54,7 @@ class AddressWidget(forms.TextInput):
             ad = value.as_dict()
 
         # Generate the elements. We should create a suite of hidden fields
-        # For each individual component, and a visible field for the raw
+        # For each individual component, and a is_visible field for the raw
         # input. Begin by generating the raw input.
         elems = [super(AddressWidget, self).render(name, ad.get('formatted', None), attrs, **kwargs)]
 
