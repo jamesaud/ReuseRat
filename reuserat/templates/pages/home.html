@@ -195,9 +195,9 @@
                                 Are you ready to start freeing up storage space and begin making money? Start the process with the button below.
                                 One small click for you, a giant leap for your wallet.
                             </h4>
-                             <button class="btn btn-primary btn-raised text-center">
+                             <a href="{% url 'account_signup' %}" class="btn btn-primary btn-raised text-center">
 									Let's Go Make Some $$
-							</button>
+							</a>
 	                    </div>
 	                </div>
 
@@ -209,12 +209,12 @@
 	</div>
    </div>
 
-   <div class='top60 main header-filter'
-   	style='
-	   background-image: url("http://powellong.com/data/wallpapers/207/WDF_2444078.jpg") !important;
+   <div class='main header-filter section-faq'
+   	style="
+        background-image: url('{% static "images/blue-stones.jpg" %}') !important;
 	   background-position: center !important;
 	   background-attachment: fixed !important;
-   '>
+   ">
 
 	   <div class='container'>
 	   <div class='row'>
@@ -276,7 +276,8 @@
 		   </div>
 	   </div>
 
-	   </div>
-   </div>
+	   </div> <!-- /container -->
+
+   </div> <!-- /faq -->
 </div> <!-- wrapper -->
 {% endblock content-wrapper %}

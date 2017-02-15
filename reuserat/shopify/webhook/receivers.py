@@ -54,6 +54,7 @@ class ProductReceivers:
         if name and handle and isinstance(shipment, Shipment) and (is_visible != 'DNE'):
             item = Item(id=id, shipment=shipment, name=name, handle=handle, is_visible=True if is_visible else False)
             item.save()
+            print(item.shipment)
             return item
         raise ValueError('{0}, are not valid args to be turned into Item from json: {1}'.format([id, name, handle, shipment], json_data))
 

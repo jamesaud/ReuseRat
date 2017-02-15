@@ -5,3 +5,8 @@
 
 h5.description, h4.description, p.description, .features {
   color: #757575; }
+
+.section-faq {
+  background-position: center !important;
+  background-attachment: fixed !important;
+  margin-top: 60px; }
