@@ -1,4 +1,5 @@
 @import '../_colors.scss';
+@import '../_mixins.scss';
 .card{
     .btn{
         margin-left: 10px;
@@ -32,19 +33,33 @@
         margin-bottom: 0px;
     }
     a.btn{
-        text-decoration: none;
         padding: 7px 14px 7px 14px; 
         margin-top: 0px;
-        border: 1px $purple-400 solid;
-        font-weight: 400;
-
-        transition: all .2s;
-
     }
 }
+
+
+.top-buttons{
+    @include button_width_mobile(33%);
+}
+
+.shipment-button{
+    text-align: right;
+    @include button_width_mobile(60%);
+}
+
 
 @media screen and (min-width: 769px){
     .current-balance{
             bottom: 26px;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .top-row{
+        text-align: center;
+    }
+    .shipment-button{
+        text-align: center;
     }
 }

@@ -58,6 +58,11 @@ class UserDetailView(LoginUserCompleteSignupRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)
+  
+        # Put shipments with visible items on top.
+        context['user_shipments'] = sorted(self.object.shipment_set.all(),
+                                           key=lambda s: s.has_visible_items(),
+                                           reverse=True)
         return context
 
 

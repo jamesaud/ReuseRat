@@ -25,8 +25,8 @@
 <div class="container">
 
 <!-- Action buttons -->
-<div class="row">
-  <div class='col-sm-5'>
+<div class="row top-row">
+  <div class='col-sm-5 top-buttons'>
     <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
     <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
   </div>
@@ -34,11 +34,11 @@
   <div class='col-sm-2 current-balance'>
     <small>Current Balance</small>
     <h2>$24.66</h2>
-    <a class='btn btn-simple btn-primary' href='#'> Cash Out </a>
+    <a class='btn  btn-success btn-success' href='#'> Cash Out </a>
   </div>
   
-  <div class='col-sm-5'>
-    <a class="btn btn-danger pull-right" href="{% url 'shipments:shipmentOrder' %}" role="button">Create New Shipment</a>
+  <div class='col-sm-5 shipment-button'>
+    <a class="btn btn-danger " href="{% url 'shipments:shipmentOrder' %}" role="button">Create New Shipment</a>
   </div>
 
 </div>
@@ -51,9 +51,9 @@
   <div class="row">
     <div class="col-sm-12">
           <!---shipment_set is the name generated automatically for the FK in play here of the USER -->
-          {% for shipment in object.shipment_set.all %}
+          {% for shipment in user_shipments %}
                     <div class="card card-nav-tabs vertical-align">
-                        <div class="header-info">
+                        <div class="{% if shipment.item_set.exists %} header-info {% else %} header-grey {% endif %}">
                           <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
                           <a class="btn btn-dark-blend" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">
                               {{ shipment.name }}
