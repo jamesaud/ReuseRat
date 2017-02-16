@@ -1,0 +1,11 @@
+h4 {
+  color: #424242; }
+
+li {
+  list-style: initial;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 15px;
+  font-style: italic;
+  line-height: 22px;
+  color: #757575; }
