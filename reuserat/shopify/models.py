@@ -22,13 +22,16 @@ class Item(models.Model):
     handle = models.CharField(max_length=200)  # Shopify Handle
     is_visible = models.BooleanField()
 
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
     def get_shopify_url(self):
         return get_shopify_product_url(self.handle)
 
     def get_shopify_admin_url(self):
         return get_shopify_admin_url(self.id)
 
-
     def __str__(self):
         return self.name
+
 

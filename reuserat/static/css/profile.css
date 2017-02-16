@@ -17,3 +17,6 @@
   .card-nav-tabs .btn-simple:active {
     color: white;
     background-color: initial; }
+
+.card-nav-tabs li {
+  list-style: initial; }

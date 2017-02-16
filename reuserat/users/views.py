@@ -56,6 +56,10 @@ class UserDetailView(LoginUserCompleteSignupRequiredMixin, DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
+    def get_context_data(self, **kwargs):
+        context = super(UserDetailView, self).get_context_data(**kwargs)
+        return context
+
 
 class UserRedirectView(LoginUserCompleteSignupRequiredMixin, RedirectView):
     permanent = False

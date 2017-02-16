@@ -3279,6 +3279,9 @@ h2.title {
 h1, h2, h3, h4, h5, h6, p {
   font-weight: 300; }
 
+.textarea.form-control, input.form-control {
+  font-size: 15px; }
+
 [hidden][style="display: block;"] {
   display: block !important; }
 
@@ -3300,8 +3303,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .form-group .help-block {
   position: relative;
-  display: inline;
-  margin-bottom: 15px; }
+  display: inline; }
 
 .form-group label {
   color: #757575; }

@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 from .models import Shipment
 from django.forms.models import inlineformset_factory
 from django.utils.translation import ugettext_lazy as _
@@ -12,3 +12,6 @@ class ShipmentForm(ModelForm):
             'name': _('Shipment Name'),
         }
 
+        widgets = {
+            'description': Textarea(attrs={'cols': 0, 'rows': 0}),
+        }

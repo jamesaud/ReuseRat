@@ -11,15 +11,16 @@ class ShipmentAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'user', 'id')
     search_fields = ['name', 'description', 'id']
 
-    """def get_readonly_fields(self, request, obj=None):
+    def get_readonly_fields(self, request, obj=None):
         if obj and obj.is_physical:  # Test object exists
             readonly_fields = ('get_items',)
 
         else:
             readonly_fields = ('user', 'name', 'description', 'get_items', 'is_physical')
 
+
         return readonly_fields
-    """
+
 
     # Override the changform_view and add custom context to be rendered.
     def changeform_view(self, request, object_id, form_url='', extra_context=None):

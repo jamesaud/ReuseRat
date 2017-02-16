@@ -3,12 +3,22 @@
 h4{
     color: $grey-800;
 }
-li{
-    list-style: initial;
-    padding-top: 5px; 
-    padding-bottom: 5px;
-    font-size: 15px;
-    font-style: italic;
-    line-height: 22px;
-    color: $grey-600;
+.section-shipment-main{
+    li{
+        list-style: initial;
+        padding-top: 5px; 
+        padding-bottom: 5px;
+        font-size: 15px;
+        font-style: italic;
+        line-height: 22px;
+        color: $grey-600;
+    }
+}
+
+
+
+.input-description{
+    textarea{
+        height: 100px;
+    }
 }

@@ -1,4 +1,4 @@
-@import 'colors.scss';
+@import '_colors.scss';
 
 .header-top{
   background-color: $first-color;
@@ -28,7 +28,9 @@
       background-color: initial;
     }
   }
+  li{
+    list-style: initial;
+  }
 }
 
 
-    

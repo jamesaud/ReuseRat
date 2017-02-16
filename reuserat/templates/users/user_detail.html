@@ -24,20 +24,25 @@
 {% block content %}
 <div class="container">
 
-{% if object == request.user %}
 <!-- Action buttons -->
 <div class="row">
-
-  <div class="col-sm-12">
+  <div class='col-sm-5'>
     <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
     <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
+  </div>
+
+  <div class='col-sm-2 current-balance'>
+    <small>Current Balance</small>
+    <h2>$24.66</h2>
+    <a class='btn btn-simple btn-primary' href='#'> Cash Out </a>
+  </div>
+  
+  <div class='col-sm-5'>
     <a class="btn btn-danger pull-right" href="{% url 'shipments:shipmentOrder' %}" role="button">Create New Shipment</a>
-    <!-- Your Stuff: Custom user template urls -->
   </div>
 
 </div>
 <!-- End Action buttons -->
-{% endif %}
 
 <!--TEST -->
 <hr>
@@ -46,35 +51,45 @@
   <div class="row">
     <div class="col-sm-12">
           <!---shipment_set is the name generated automatically for the FK in play here of the USER -->
-          {% for shipment in  object.shipment_set.all %}
-            <div class="card card-nav-tabs vertical-align">
-                <div class="header-info">
-                  <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
-                  <a class="btn btn-dark-blend" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">
-                      {{ shipment.name }}
-                      <i class="material-icons">arrow_forward</i>
-                      <div class="ripple-container"></div>
-                  </a>
-                    {% if shipment.is_physical %}
-                        <span class="label label-warning pull-right" rel="tooltip" title="A ReuseRat agent picked up your items. Digital shipments are sent via USPS.">Physical</span>
-                    {% endif %}
-                </div>
+          {% for shipment in object.shipment_set.all %}
+                    <div class="card card-nav-tabs vertical-align">
+                        <div class="header-info">
+                          <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                          <a class="btn btn-dark-blend" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">
+                              {{ shipment.name }}
+                              <i class="material-icons">arrow_forward</i>
+                              <div class="ripple-container"></div>
+                          </a>
+                            {% if shipment.is_physical %}
+                                <span class="label label-warning pull-right" rel="tooltip" title="A ReuseRat agent picked up your items. Digital shipments are sent via USPS.">Physical</span>
+                            {% endif %}
+                        </div>
 
-                <div class="content">
-                  <div class='col-sm-9'>
-                    <h5>Details:</h5>
-                    <p>
-                      {{ shipment.description }}
-                    </p>
-                  </div>
-                  <div class='col-sm-3'>
-                    <h5>Status:</h5>
-                    <p>
-                      <placeholder> Not Arrived
-                    </p>
-                  </div>
-                </div>
-            </div>
+                        <div class="content">
+                          <div class='col-sm-7'>
+                            <h4>Description</h4>
+                            <p>
+                              {{ shipment.description }}
+                            </p>
+                          </div>
+                          <div class='col-sm-5'>
+                            <h4>Items For Sale</h4>
+                                <table class="table">
+                               {% for item in shipment.get_visible_items %}
+                                    <tr>
+                                        <td>{{item.name}}</td>
+                                        <td><a href="{{ item.get_shopify_url }}" target="_blank">See On Store</a></td>
+                                    </tr>
+                                    {% empty %}
+                                    <p>
+                                       No items selling yet. If your shipment has arrived, your items will be processed soon.
+                                    </p>
+                              {% endfor %}
+                                </table>
+
+                          </div>
+                        </div>
+                    </div>
           {% empty %}
               <h3>No shipments yet! Please <a class="text-danger" href="{% url 'shipments:shipmentOrder' %}">create a new shipment</a> to get selling.</h3>
 

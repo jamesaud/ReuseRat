@@ -9,3 +9,29 @@
   padding-bottom: 7px;
   font-size: 11px;
   font-weight: 400; }
+
+.card p {
+  font-size: 15px; }
+
+.card h4 {
+  font-weight: 400; }
+
+.current-balance {
+  text-align: center; }
+  .current-balance small {
+    margin: 0px;
+    color: #616161; }
+  .current-balance h2 {
+    margin-top: 0px;
+    margin-bottom: 0px; }
+  .current-balance a.btn {
+    text-decoration: none;
+    padding: 7px 14px 7px 14px;
+    margin-top: 0px;
+    border: 1px #ab47bc solid;
+    font-weight: 400;
+    transition: all .2s; }
+
+@media screen and (min-width: 769px) {
+  .current-balance {
+    bottom: 26px; } }

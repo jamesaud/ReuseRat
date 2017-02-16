@@ -9,13 +9,22 @@ class Shipment(models.Model):
                               on_delete=models.CASCADE)
     name =  models.CharField(max_length=50)
     description =  models.CharField(max_length=1000, blank=False)
-    created = models.DateTimeField(auto_now_add=True,)
-    modified = models.DateTimeField(auto_now=True)
     is_physical = models.BooleanField(default=False)
+
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     def get_shipment_sku(self):
         return "{0}-{1}".format(self.user_id, self.id)   # Set the sku to be <userid>-<shipmentid>
 
 
+    def get_visible_items(self):
+        return (item for item in self.item_set.all() if item.is_visible)
+
+
     def __str__(self):
         return "Name '{0}' for user '{1}'".format(self.name, str(self.user))
+
+
+    class Meta:
+        ordering = ['-modified']

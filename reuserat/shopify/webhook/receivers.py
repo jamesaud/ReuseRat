@@ -31,9 +31,17 @@ class ProductReceivers:
 
 
     @classmethod
+    def item_update_or_create(cls, sender, **kwargs):
+        try:
+            cls.item_update(sender ,**kwargs)
+        except Item.DoesNotExist:
+            cls.item_create(sender, **kwargs)
+
+    @classmethod
     def item_delete(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
         cls._delete_item(shopify_json)
+
 
     """
     Helper Functions Below
@@ -54,7 +62,6 @@ class ProductReceivers:
         if name and handle and isinstance(shipment, Shipment) and (is_visible != 'DNE'):
             item = Item(id=id, shipment=shipment, name=name, handle=handle, is_visible=True if is_visible else False)
             item.save()
-            print(item.shipment)
             return item
         raise ValueError('{0}, are not valid args to be turned into Item from json: {1}'.format([id, name, handle, shipment], json_data))
 
@@ -77,15 +84,20 @@ class ProductReceivers:
         """
         id, name, handle, is_visible = json_data.get('id'), json_data.get('title'), json_data.get('handle'), \
                                        json_data.get('published_at', 'DNE')
-        item = cls._get_item(json_data)
 
+        try:
+            item = cls._get_item(json_data)
+        except Item.DoesNotExist:
+            print("While updating item...")
+            raise
         if name and handle and (is_visible != 'DNE'):
             item.handle = handle
             item.name = name
             item.is_visible = True if is_visible else False   # False if is_is_visible is None, else True
             item.save()
             return item
-        raise ValueError("Json misisng name or handle: ".format(json_data))
+        raise ValueError("Json missing name or handle: ".format(json_data))
+
 
     @classmethod
     def _delete_item(cls, json_data):

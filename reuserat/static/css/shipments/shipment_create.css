@@ -1,7 +1,7 @@
 h4 {
   color: #424242; }
 
-li {
+.section-shipment-main li {
   list-style: initial;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -9,3 +9,6 @@ li {
   font-style: italic;
   line-height: 22px;
   color: #757575; }
+
+.input-description textarea {
+  height: 100px; }
