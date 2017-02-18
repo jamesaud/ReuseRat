@@ -1,0 +1,59 @@
+{% extends "base_profile.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load staticfiles i18n compress%}
+
+
+{% block css %}
+    {{block.super}}
+    {% compress css %}
+        <!-- SASS -->
+        <link type='text/scss' href="{% static 'sass/shipments/shipment_update.scss' %}" rel="stylesheet">
+     {% endcompress %}
+{% endblock css %}
+
+
+{% block breadcrumb %}
+    {{ block.super }}
+/ <a class="nav-link" href="{% url 'shipments:shipmentDetail' object.id %}">My Shipment</a>
+{% endblock %}
+
+{% block content %}
+<div class='container'>
+    <div class='row'>
+        <div class='col-md-12'>
+            <h1>Shipment Update Form</h1>
+        </div>
+    </div>
+        <form  class="shipment" id="shipment_form" method="post" action="{% url 'shipments:shipmentUpdate' object.id %}" >
+            {% csrf_token %}
+            <div class='row'>
+                <div class='col-md-6'>
+                    {{ form.name | as_crispy_field }}
+                </div>
+                <div class='col-md-6'>
+                    <h4>Change Your Shipment Name</h4>
+                    <p>This should be something to identify your shipment.</p>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-6 input-description'>
+                    {{ form.description | as_crispy_field }}
+                </div>
+                <div class='col-md-6'>
+                    <h4>Give Your Shipment a Description</h4>
+                    <p>
+                        This should be a detailed description of the items you are including in your shipment. 
+                        Please list each item separately, and note the condition that each item is in.
+                    </p>
+                </div>
+            </div>
+            <div class="control-group row">
+                <div class="controls col-md-12">
+                    <a class="btn btn-default" href="{% url 'users:detail' request.user.username %}" class="btn">Back</a>
+                <button type="submit " class="btn btn-primary">Update Shipment</button>
+                </div>
+            </div>
+        </form>
+</div>
+{% endblock content %}

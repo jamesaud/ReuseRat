@@ -12,6 +12,39 @@
 
 {% block content %}
 <div class="container">
+  <div class='row'>
+    <div class='col-md-12'>
+      <ul class="nav nav-pills" role="tablist">
+							<!--
+								color-classes: "nav-pills-primary", "nav-pills-info", "nav-pills-success", "nav-pills-warning","nav-pills-danger"
+	                        -->
+							<li>
+								<a href="#dashboard" role="tab" data-toggle="tab">
+									<i class="material-icons">dashboard</i>
+									Dashboard
+								</a>
+							</li>
+							<li class="active">
+	                            <a href="#schedule" role="tab" data-toggle="tab">
+									<i class="material-icons">schedule</i>
+									Schedule
+	                            </a>
+	                        </li>
+	                        <li>
+	                            <a href="#tasks" role="tab" data-toggle="tab">
+									<i class="material-icons">list</i>
+	                                Tasks
+	                            </a>
+	                        </li>
+							<li>
+	                            <a href="#payments" role="tab" data-toggle="tab">
+									<i class="material-icons">attach_money</i>
+	                                Payments
+	                            </a>
+	                        </li>
+	                    </ul>
+    </div>
+  </div>
   <div class="row">
     <div class="col-sm-12">
   <h1>{{ user.username }}</h1>

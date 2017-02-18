@@ -25,5 +25,14 @@ urlpatterns = [
         view=views.ShipmentPdfView.as_view(),
         name='shipmentPdf'
     ),
-
+    url(
+        regex=r'^update/(?P<pk>\d+)/$',
+        view=views.ShipmentUpdateView.as_view(),
+        name='shipmentUpdate'
+    ),
+    url(
+            regex=r'^delete/(?P<pk>\d+)/$',
+            view=views.ShipmentDeleteView.as_view(),
+            name='shipmentDelete'
+        )
 ]

@@ -38,6 +38,9 @@
 .top90 {
   margin-top: 90px; }
 
+.DEBUG-WHITESPACE div, .DEBUG-WHITESPACE span, .DEBUG-WHITESPACE p, .DEBUG-WHITESPACE h1, .DEBUG-WHITESPACE h2, .DEBUG-WHITESPACE h3, .DEBUG-WHITESPACE h4, .DEBUG-WHITESPACE h5 {
+  border: 1px solid black !important; }
+
 /*!
     
  =========================================================
@@ -3316,3 +3319,6 @@ li {
 
 .navbar .nav-link.btn-white {
   color: #424242 !important; }
+
+.close-alert {
+  font-size: 20px; }

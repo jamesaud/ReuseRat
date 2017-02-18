@@ -44,7 +44,18 @@
 {% endblock %}
       {% if messages %}
           {% for message in messages %}
-              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+              <div class="alert  {% if 'error' in message.tags %} alert-danger {% endif %}{% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
+                <div class='alert-icon'>
+                  <i class="material-icons">
+                    {% if 'error' in message.tags %} info_outline
+                    {% elif 'info' in message.tags %} info_outline
+                    {% elif 'success' in message.tags %} check
+                    {% elif 'warning' in message.tags %} warning
+                    {% endif %}
+                  </i></div>
+                {{ message }}
+                <a href="#" class="pull-right close-alert" data-dismiss="alert" aria-label="close"><i class="material-icons">clear</i></a>
+                </div>
           {% endfor %}
       {% endif %}
 

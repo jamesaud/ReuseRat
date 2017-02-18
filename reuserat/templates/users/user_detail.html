@@ -53,17 +53,36 @@
           <!---shipment_set is the name generated automatically for the FK in play here of the USER -->
           {% for shipment in user_shipments %}
                     <div class="card card-nav-tabs vertical-align">
-                        <div class="{% if shipment.item_set.exists %} header-info {% else %} header-grey {% endif %}">
+                        <div class="head {% if shipment.item_set.exists %} header-info {% else %} header-grey {% endif %}">
                           <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
                           <a class="btn btn-dark-blend" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">
                               {{ shipment.name }}
                               <i class="material-icons">arrow_forward</i>
                               <div class="ripple-container"></div>
                           </a>
-                            {% if shipment.is_physical %}
-                                <span class="label label-warning pull-right" rel="tooltip" title="A ReuseRat agent picked up your items. Digital shipments are sent via USPS.">Physical</span>
+
+                          <div class='pull-right button-group'>
+                            
+                             
+                                 <a href="{% url 'shipments:shipmentUpdate' shipment.id %}" type="button" rel="tooltip" title="" class="btn btn-simple btn-xs edit-btn" data-original-title="Edit Shipment">
+		                                <i class="fa fa-edit"></i>
+		                            <div class="ripple-container"></div>
+                                </a>
+                              </a>
+
+                            {% if not shipment.item_set.all %}
+                              <a data-toggle="modal" data-target="#shipment-delete-modal" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs delete-btn" data-original-title="Remove Shipment">
+		                                <i class="fa fa-times"></i>
+		                            <div class="ripple-container"></div>  
+                              </a>    
                             {% endif %}
-                        </div>
+                          </div> <!-- /pull-right -->
+
+                            {% if shipment.is_physical %}
+                                <span class="label pull-right" rel="tooltip" title="A ReuseRat agent picked up your items. Digital shipments are sent via USPS.">Physical</span>
+                            {% endif %}
+
+                        </div> <!-- /head -->
 
                         <div class="content">
                           <div class='col-sm-7'>
@@ -103,3 +122,6 @@
 </div>
 {% endblock content %}
 
+{% block modal %}
+{% include "shipments/snippets/delete_shipment_modal.html" with shipment_id='1' %}
+{% endblock modal %}

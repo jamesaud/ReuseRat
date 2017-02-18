@@ -18,7 +18,7 @@ class Shipment(models.Model):
         return "{0}-{1}".format(self.user_id, self.id)   # Set the sku to be <userid>-<shipmentid>
 
     def get_visible_items(self):
-        return (item for item in self.item_set.all() if item.is_visible)
+        return (item for item in self.item_set.filter(is_visible=True))
 
     def has_visible_items(self):
         return any(self.get_visible_items())
