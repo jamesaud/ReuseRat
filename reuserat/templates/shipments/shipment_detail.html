@@ -10,12 +10,29 @@
     {% endcompress %}
 {% endblock css %}
 
-{% block breadcrumb %}
-    {{ block.super }}
-/ <a class="nav-link" href="{% url 'shipments:shipmentDetail' object.id %}">My Shipment</a>
-{% endblock %}
+
+    {% block breadcrumb %}
+        {{ block.super }}
+        / <a class="nav-link" href="{% url 'shipments:shipmentDetail' object.id %}">My Shipment</a>
+
+        <!-- Edit and delete buttons -->
+        <span class="pull-right">
+                <a href="{% url 'shipments:shipmentUpdate' object.id %}" type="button" rel="tooltip" title="" class="btn btn-warning edit-btn" data-original-title="Edit Shipment">
+                    <i class="fa fa-edit"></i>
+
+                    <div class="ripple-container"></div>
+                </a>
+                <a data-toggle="modal" data-target="#shipment-delete-modal" rel="tooltip" title="" class="btn btn-danger" data-original-title="Delete Shipment">
+                    		                                <i class="fa fa-times"></i>
+
+                    <div class="ripple-container"></div>
+                </a>
+        </span>
+    {% endblock %}
+
 
 {% block content %}
+
 <div class="container top30">
   <div class="row">
     <div class="col-sm-4 ">
@@ -91,3 +108,8 @@
  <a class="btn btn-primary" href="{% url 'users:detail' request.user.username %}" role="button">Back to Dashboard</a>
 </div>
 {% endblock content %}
+
+
+{% block modal %}
+    {% include "shipments/snippets/delete_shipment_modal.html" with shipment_id=object.id %}
+{% endblock modal %}

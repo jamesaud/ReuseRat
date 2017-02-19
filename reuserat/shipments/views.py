@@ -79,7 +79,6 @@ class ShipmentDeleteView(LoginRequiredMixin, DeleteView):
         redirects to the success URL.
         """
         self.object = self.get_object()
-        return HttpResponse(self.object.item_set.exists())
         if not self.object.item_set.exists():
             self.object.delete()
             messages.success(request, "Successfully deleted shipment.")

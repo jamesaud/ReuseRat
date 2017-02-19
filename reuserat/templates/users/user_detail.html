@@ -36,7 +36,7 @@
     <h2>$24.66</h2>
     <a class='btn  btn-success btn-success' href='#'> Cash Out </a>
   </div>
-  
+
   <div class='col-sm-5 shipment-button'>
     <a class="btn btn-danger " href="{% url 'shipments:shipmentOrder' %}" role="button">Create New Shipment</a>
   </div>
@@ -62,8 +62,8 @@
                           </a>
 
                           <div class='pull-right button-group'>
-                            
-                             
+
+
                                  <a href="{% url 'shipments:shipmentUpdate' shipment.id %}" type="button" rel="tooltip" title="" class="btn btn-simple btn-xs edit-btn" data-original-title="Edit Shipment">
 		                                <i class="fa fa-edit"></i>
 		                            <div class="ripple-container"></div>
@@ -71,15 +71,15 @@
                               </a>
 
                             {% if not shipment.item_set.all %}
-                              <a data-toggle="modal" data-target="#shipment-delete-modal" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs delete-btn" data-original-title="Remove Shipment">
+                              <a data-toggle="modal" data-target="#shipment-delete-modal" rel="tooltip" title="" shipment-id='{{ shipment.id }}' class="btn btn-danger btn-simple btn-xs delete-btn" data-original-title="Delete Shipment">
 		                                <i class="fa fa-times"></i>
-		                            <div class="ripple-container"></div>  
-                              </a>    
+		                            <div class="ripple-container"></div>
+                              </a>
                             {% endif %}
                           </div> <!-- /pull-right -->
 
                             {% if shipment.is_physical %}
-                                <span class="label pull-right" rel="tooltip" title="A ReuseRat agent picked up your items. Digital shipments are sent via USPS.">Physical</span>
+                                <span class="label pull-right" rel="tooltip" title="A ReuseRat agent picked up your items in person.">Physical</span>
                             {% endif %}
 
                         </div> <!-- /head -->
@@ -123,5 +123,20 @@
 {% endblock content %}
 
 {% block modal %}
-{% include "shipments/snippets/delete_shipment_modal.html" with shipment_id='1' %}
+{% include "shipments/snippets/delete_shipment_modal.html" with shipment_id='000' %}
 {% endblock modal %}
+
+{% block javascript %}
+    {{ block.super }}
+
+    <!-- place project specific Javascript in this file -->
+      {% compress js %}
+          <script>
+            $('.delete-btn').on('click', function (e) {
+                // 000 is a placeholder to replace with the shipment id, so that we can use django url generation for the url.
+                $('#shipment-delete-form').attr("action", "{% url 'shipments:shipmentDelete' 000 %}".replace(000, $(this).attr('shipment-id')) );
+            });
+          </script>
+      {% endcompress %}
+
+{% endblock javascript %}
