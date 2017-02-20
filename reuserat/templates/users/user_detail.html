@@ -130,13 +130,11 @@
     {{ block.super }}
 
     <!-- place project specific Javascript in this file -->
-      {% compress js %}
           <script>
             $('.delete-btn').on('click', function (e) {
                 // 000 is a placeholder to replace with the shipment id, so that we can use django url generation for the url.
                 $('#shipment-delete-form').attr("action", "{% url 'shipments:shipmentDelete' 000 %}".replace(000, $(this).attr('shipment-id')) );
             });
           </script>
-      {% endcompress %}
 
 {% endblock javascript %}
