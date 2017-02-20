@@ -1,15 +1,13 @@
 {% extends "base_profile.html" %}
 {% load static %}
-{% load staticfiles i18n compress%}
+{% load i18n %}
 
 {% block css %}
     {{ block.super }}
    
-    {% compress css %}
     <!-- SASS -->
     <!-- This file stores project-specific CSS -->
-    <link type='text/scss' href="{% static 'sass/account.scss' %}" rel="stylesheet">
-    {% endcompress %}
+    <link type='text/css' href="{% static 'css/account.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block title %}{% block head_title %}{% endblock head_title %}{% endblock title %}

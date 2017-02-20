@@ -2,6 +2,8 @@
 {% load crispy_forms_tags %}
 
 {% load static %}
+{% load i18n staticfiles %}
+
 
 
 {% block title %}{{ user.username }}{% endblock %}
@@ -17,7 +19,7 @@
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
 
 <!-- CSS Files -->
-<link type='text/css' href="{% static 'standalone/material-bootstrap-wizard-v1.0.1/assets/scss/material-bootstrap-wizard.css' %}" rel="stylesheet" />
+<link type='text/css' href="{% static 'standalone/material-bootstrap-wizard-v1.0.1/assets/css/material-bootstrap-wizard.css' %}" rel="stylesheet" />
 {% endblock %}
 
 {% block body-tag %}
