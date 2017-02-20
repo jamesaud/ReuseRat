@@ -264,18 +264,12 @@ AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 # django-compressor
 # ------------------------------------------------------------------------------
 INSTALLED_APPS += (
-    'compressor',
     # Social auth providers
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     )
 
-STATICFILES_FINDERS += ("compressor.finders.CompressorFinder", )
 
-COMPRESS_PRECOMPILERS = (
-    ('text/sass', 'sass {infile} {outfile}'),
-    ('text/scss', 'sass --scss {infile} {outfile}'),
-)
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
 ADMIN_URL = r'^admin/'
