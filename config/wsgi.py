@@ -16,6 +16,9 @@ framework.
 import os
 
 from django.core.wsgi import get_wsgi_application
+
+from whitenoise.django import DjangoWhiteNoise
+
 if os.environ.get('DJANGO_SETTINGS_MODULE') == 'config.settings.production':
     from raven.contrib.django.raven_compat.middleware.wsgi import Sentry
 
@@ -33,4 +36,5 @@ if os.environ.get('DJANGO_SETTINGS_MODULE') == 'config.settings.production':
     application = Sentry(application)
 # Apply WSGI middleware here.
 # from helloworld.wsgi import HelloWorldApplication
-# application = HelloWorldApplication(application)
+application = DjangoWhiteNoise(get_wsgi_application())
+
