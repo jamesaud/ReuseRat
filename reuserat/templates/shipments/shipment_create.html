@@ -5,12 +5,10 @@
 
 {% block css %}
     {{ block.super }}
-    {% compress css %}
 
         <!-- SASS -->
-        <link type='text/scss' href="{% static 'sass/shipments/shipment_create.scss' %}" rel="stylesheet">
+        <link type='text/css' href="{% static 'css/shipments/shipment_create.css' %}" rel="stylesheet">
 
-    {% endcompress %}
 {% endblock css %}
 
 {% block breadcrumb %}

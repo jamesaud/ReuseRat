@@ -6,10 +6,8 @@
 
 {% block css %}
     {{block.super}}
-    {% compress css %}
         <!-- SASS -->
-        <link type='text/scss' href="{% static 'sass/shipments/shipment_update.scss' %}" rel="stylesheet">
-     {% endcompress %}
+        <link type='text/css' href="{% static 'css/shipments/shipment_update.css' %}" rel="stylesheet">
 {% endblock css %}
 
 

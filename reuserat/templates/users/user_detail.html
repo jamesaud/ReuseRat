@@ -6,11 +6,9 @@
 
 {% block css %}
 {{block.super}}
-{% compress css %}
     <!-- SASS -->
-    <link type='text/scss' href="{% static 'sass/users/user_detail.scss' %}" rel="stylesheet">
+    <link type='text/css' href="{% static 'css/users/user_detail.css' %}" rel="stylesheet">
 
-  {% endcompress %}
 {% endblock css %}
 
 {% block breadcrumb %}

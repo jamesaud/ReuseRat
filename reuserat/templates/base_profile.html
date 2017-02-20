@@ -8,11 +8,9 @@
 {% block css %}
   {{ block.super }}
 
-  {% compress css %}
   <!-- SASS -->
   <!-- This file stores project-specific CSS -->
-  <link type='text/scss' href="{% static 'sass/profile.scss' %}" rel="stylesheet">
-  {% endcompress %}
+  <link type='text/css' href="{% static 'css/profile.css' %}" rel="stylesheet">
 
 {% endblock %}
 

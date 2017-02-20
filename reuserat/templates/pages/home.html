@@ -5,10 +5,8 @@
 {% block css %}
     {{ block.super }}
 
-    {% compress css %}
     <!-- SASS -->
-    <link type='text/scss' href="{% static 'sass/home.scss' %}" rel="stylesheet">
-    {% endcompress %}
+    <link type='text/css' href="{% static 'css/home.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block body-tag %}
