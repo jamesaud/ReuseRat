@@ -122,7 +122,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # COMPRESSOR
 # ------------------------------------------------------------------------------
-COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+COMPRESS_STORAGE = STATICFILES_STORAGE
 COMPRESS_URL = STATIC_URL
 COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
 COMPRESS_OFFLINE = True # To enable with whitenoise
