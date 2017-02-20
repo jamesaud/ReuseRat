@@ -116,15 +116,14 @@ AWS_HEADERS = {
 MEDIA_URL = 'https://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
 
 
-# Static Assets
+
+
+
 # ------------------------
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# COMPRESSOR
-# ------------------------------------------------------------------------------
-COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-COMPRESS_URL = STATIC_URL
-COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
+
+
 # EMAIL
 # ------------------------------------------------------------------------------
 DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL',

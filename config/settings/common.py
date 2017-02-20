@@ -35,19 +35,25 @@ DJANGO_APPS = (
     # Admin
     'django.contrib.admin',
 )
+
 THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
+    'django_pdfkit',
     'allauth',  # registration
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
 )
 
+# Add Any Third Party apps that need to come before django built in apps.
+DJANGO_APPS = ('flat_responsive',) + DJANGO_APPS
+
 # Apps specific for this project go here.
 LOCAL_APPS = (
     # custom users app
     'reuserat.users.apps.UsersConfig',
+    'reuserat.address.apps.AddressConfig',
     'reuserat.shipments.apps.ShipmentsConfig',
-    # Your stuff: custom apps go here
+    'reuserat.shopify.apps.ShopifyConfig',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -232,9 +238,15 @@ AUTHENTICATION_BACKENDS = (
 
 
 # Some really nice defaults
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+
+ACCOUNT_USERNAME_REQUIRED = False
+
 
 ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', True)
 ACCOUNT_ADAPTER = 'reuserat.users.adapters.AccountAdapter'
@@ -248,15 +260,16 @@ LOGIN_URL = 'account_login'
 
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
+
 # django-compressor
 # ------------------------------------------------------------------------------
-INSTALLED_APPS += ("compressor", )
-STATICFILES_FINDERS += ("compressor.finders.CompressorFinder", )
+INSTALLED_APPS += (
+    # Social auth providers
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+    )
 
-COMPRESS_PRECOMPILERS = (
-    ('text/sass', 'sass {infile} {outfile}'),
-    ('text/scss', 'sass --scss {infile} {outfile}'),
-)
+
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
 ADMIN_URL = r'^admin/'
@@ -265,3 +278,56 @@ ADMIN_URL = r'^admin/'
 
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+
+SOCIALACCOUNT_PROVIDERS = \
+    {'facebook':
+       {'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile', 'user_friends'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time'],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC':  lambda request: 'en_US',
+        'VERIFIED_EMAIL': True,
+        'VERSION': 'v2.4'},
+    'google':
+       {'METHOD': 'oauth2',
+        'SCOPE': ['email'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC':  lambda request: 'en_US',
+        'VERIFIED_EMAIL': True,
+        'VERSION': 'v2.4'}
+        }
+
+
+
+# For the address form
+GOOGLE_MAPS_API_KEY = 'AIzaSyDYzt_yeSCulp826Q09us5EL-F7tur7fIE'
+
+# For shopify webhooks
+SHOPIFY_WEBHOOK_API_KEY = env('SHOPIFY_WEBHOOK_API_KEY')
+
+# What comes between "www" and ".com" eg. for www.reuserat.com it would be 'reuserat'
+SHOPIFY_DOMAIN_NAME = env('SHOPIFY_DOMAIN_NAME', default='reuserat')
+SHOPIFY_APP_NAME = env('SHOPIFY_APP_NAME', default='sell-stuff-get-paid.myshopify.com')
+
+SHOPIFY_API_KEY = env('SHOPIFY_API_KEY')
+SHOPIFY_PASSWORD = env('SHOPIFY_PASSWORD')
+

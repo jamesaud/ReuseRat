@@ -1,0 +1,36 @@
+@import '_colors.scss';
+
+.header-top{
+  background-color: $first-color;
+}
+
+.wrapper > .header{
+  height: 200px;
+  min-height: 200px;
+  .btn-danger{
+    i{margin-right: 4px;}
+  }
+}
+
+.card-nav-tabs{
+  .btn-simple{
+    color: white; 
+    background-color: transparentize(black, .85);
+    transition: background-color .1s;
+
+    &:hover{
+      color: white;
+      background-color: transparentize(black, .5);
+    }
+
+    &:active{
+      color: white;
+      background-color: initial;
+    }
+  }
+  li{
+    list-style: initial;
+  }
+}
+
+

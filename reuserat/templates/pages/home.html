@@ -1,19 +1,20 @@
 {% extends "base.html" %}
 {% load static %}
-{% load staticfiles i18n compress%}
-    
+{% load staticfiles i18n compress %}
+
 {% block css %}
     {{ block.super }}
-   
-    {% compress css %}
+
     <!-- SASS -->
-    <!-- This file stores project-specific CSS -->
-    <link type='text/scss' href="{% static 'sass/home.scss' %}" rel="stylesheet">
-    {% endcompress %}
+    <link type='text/css' href="{% static 'css/home.css' %}" rel="stylesheet">
 {% endblock %}
 
+{% block body-tag %}
+<body class='landing-page'>
+{% endblock body-tag %}
+
 {% block content-wrapper %}
-   <div class=''>
+
 
     <div class="wrapper">
         <div class="header header-filter" style="background-image: url('https://images.unsplash.com/photo-1423655156442-ccc11daa4e99?crop=entropy&dpr=2&fit=crop&fm=jpg&h=750&ixjsv=2.1.0&ixlib=rb-0.3.5&q=50&w=1450');">
@@ -22,12 +23,12 @@
 					<div class="col-md-6">
 						<h1 class="title">Ship Your Junk, Get Paid. It's That Easy.</h1>
 	                    <h4>
-                            100% of people keep useless stuff they no longer need. Selling online can be time consuming and confusing - we make it simple. 
+                            100% of people keep useless stuff they no longer need. Selling online can be time consuming and confusing - we make it simple.
                         </h4>
-                  
+
 	                    <br />
-	                    <a href="#" class="btn btn-danger btn-raised btn-lg">
-							<i class="material-icons">launch</i>Let's Get Started
+	                    <a href="{% url 'account_signup' %}" class="btn btn-danger btn-raised btn-lg">
+							<i class="material-icons">launch</i>Get Started for Free
 						</a>
 					</div>
                     <div class='header-cards col-md-4 col-md-offset-1 text-center'>
@@ -42,7 +43,7 @@
                                 <div class='content'>
                                     <i class="fa fa-send fa-2x text-warning"></i>
                                     <h4>Send With USPS</h4>
-                                    <p>We'll even pay for the shipping</p>
+                                    <p>We'll even reimburse your shipping costs</p>
                                 </div>
                             </div>
                             <div class='card'>
@@ -62,8 +63,8 @@
 		    	<div class="section text-center section-landing">
 	                <div class="row">
 	                    <div class="col-md-8 col-md-offset-2">
-	                        <h2 class="title">Selling Has Never Been So Easy</h2>
-	                        <h5 class="description">9/10 financial experts agree: making money is better than not. Instead of letting your unused items collect dust in storage, let us sell it for you. Managing an Ebay or Amazon account can take hours and takes unneeded responsibility to ship items on time. We manage everything from selling&nbsp;-> packaging -> delivery -> service and keep it simple with 6 easy steps.</h5>
+	                        <h2 class="title">Making Money Has Never Been So Easy</h2>
+	                        <h5 class="description">9/10 financial experts agree: making money is better than not. Instead of letting your unused items collect dust in storage, we can sell them for you. Managing an Ebay or Amazon account can take hours, and unneeded responsibility to ship items on time. We manage everything from selling&nbsp;-> packaging -> delivery -> service and keep it simple with 6 easy steps.</h5>
 	                    </div>
 	                </div>
 
@@ -75,7 +76,7 @@
 										<i class="material-icons">chat</i>
 									</div>
 									<h4 class="info-title">1. Register Your Information</h4>
-									<p>We just need a few details from you to make sure the process goes smoothly and that we have a channel to contact you with updates.</p>
+									<h5>We just need a few details from you to make sure the process goes smoothly and that we have a way to contact you with updates.</h5>
                                     <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">Register now</a>
 								</div>
 		                    </div>
@@ -84,18 +85,20 @@
 									<div class="icon icon-primary">
 										<i class="material-icons">chat</i>
 									</div>
-									<h4 class="info-title">2. Pack Your Items</h4>
-									<p>Whether it's a new laptop or old toys, we believe that one man's trash is another man's treasure. 
-                                        Pack as much as you want into as many boxes as you need - we'll even send you boxes if you need them. </p>
+									<h4 class="info-title">2. Package Your Items</h4>
+									<h5>Whether it's a new laptop or old clothes, we believe that one man's trash is another man's treasure.
+                                        Pack as much as you want - we'll even send you boxes if you need them. </h5>
 								</div>
 		                    </div>
 		                    <div class="col-md-4">
 								<div class="info">
-									<div class="icon icon-success">
+									<div class="icon icon-default">
 										<i class="material-icons">verified_user</i>
 									</div>
-									<h4 class="info-title">3. Print Your Free Shipping Label</h4>
-									<p>Simply print out the free shipping labels we provide you and stick them on your boxes. </p>
+									<h4 class="info-title">3. Print Your Shipping Label</h4>
+									<h5>Simply print out the shipping label we provide and stick it on your box. Include the receipt, and we'll reimburse you when the box arrives. </h5>
+                                    <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">Learn about shipping</a>
+
 								</div>
 		                    </div>
 						</div>
@@ -107,17 +110,17 @@
                                             <i class="material-icons">fingerprint</i>
                                         </div>
                                         <h4 class="info-title">4. Send It Off Via USPS</h4>
-                                        <p>Drop off the boxes at your mailbox, USPS drop box, or local post office. You won't have to pay a dime.</p>
+                                        <h5>Drop off the boxes at your mailbox, USPS drop box, or local post office.</h5>
                                     </div>
                             </div>
 
                             <div class="col-md-4">
 								<div class="info">
-									<div class="icon icon-primary">
+									<div class="icon icon-warning">
 										<i class="material-icons">chat</i>
 									</div>
 									<h4 class="info-title">5. ?????</h4>
-									<p>Time to sit back and relax. We'll do the work of handling the sales process. You can simply live your life, whether it's Binging Netflix or Extreme Snowboarding.</p>
+									<h5>Time to sit back and relax. We do the work of handling the sales process. You live your life, whether it's Binging Netflix or Extreme Snowboarding.</h5>
 								</div>
 		                    </div>
 
@@ -127,11 +130,11 @@
 										<i class="material-icons">verified_user</i>
 									</div>
 									<h4 class="info-title">6. Profit</h4>
-									<p>Congratulations! You just made money by doing nothing. We sold your item and now it's time to get paid. We split it 50/50 and pay by Check or Paypal.</p>
+									<h5>Congratulations! You just made money by doing nothing. We sold your item and now it's time to get paid. We split 50/50 and pay by Check, Paypal or Direct Deposit.</h5>
 								</div>
 		                    </div>
-                            
-                            
+
+
                         </div>
 		                </div>
 
@@ -169,7 +172,7 @@
 			                        <h4 class="title">Kendall Jenner<br />
 										<small class="text-muted">Human Being</small>
 									</h4>
-                                    
+
                                     <p class='description'> When it rains, I have good energy; I'm in a good mood. My ideal prom date would have to be cute, funny, sweet, nice.</p>
 									<a href="#pablo" class="btn btn-simple btn-just-icon"><i class="fa fa-google-plus"></i></a>
 									<a href="#pablo" class="btn btn-simple btn-just-icon"><i class="fa fa-youtube-play"></i></a>
@@ -187,22 +190,96 @@
 	                    <div class="col-md-8 col-md-offset-2">
 	                        <h2 class="text-center title">Let's Get Started</h2>
 							<h4 class="text-center description">
-                                Are you ready to start freeing up storage space and begin making money? Start the process with the button below. 
+                                Are you ready to start freeing up storage space and begin making money? Start the process with the button below.
                                 One small click for you, a giant leap for your wallet.
                             </h4>
-                             <button class="btn btn-primary btn-raised text-center">
+                             <a href="{% url 'account_signup' %}" class="btn btn-primary btn-raised text-center">
 									Let's Go Make Some $$
-							</button>
+							</a>
 	                    </div>
 	                </div>
 
 	            </div>
 	        </div>
 
-		</div>
 
-	    
 
 	</div>
    </div>
+
+   <div class='main header-filter section-faq'
+   	style="
+        background-image: url('{% static "images/blue-stones.jpg" %}') !important;
+	   background-position: center !important;
+	   background-attachment: fixed !important;
+   ">
+
+	   <div class='container'>
+	   <div class='row'>
+		   <div class='col-sm-12 text-center'>
+			   <h2 class="title" style='color: white !important;'>Frequently Asked Questions</h2>
+		   </div>
+	   </div>
+
+	   <div class='col-sm-10 col-sm-offset-1'>
+		   <div class='col-md-4'>
+			   <div class='card card-nav-tabs text-center'>
+								   <div class="header-info content">Q. First Question?</div>
+				   <div class='content'>
+					   <p>A. Answer to the question. There are some possibilties, but this is just placeholder text to increase lenght.</p>
+				   </div>
+			   </div>
+		   </div>
+               <div class='col-md-4'>
+                   <div class='card card-nav-tabs text-center'>
+                       <div class="header-info content">Q. How can I make money?</div>
+                       <div class='content'>
+                           <a class='btn btn-danger btn-simple'>Sign Up Now For Free!</a>
+                       </div>
+                   </div>
+               </div>
+		   <div class='col-md-4'>
+			   <div class='card card-nav-tabs text-center'>
+								   <div class="header-info content">Q. First Question?</div>
+				   <div class='content'>
+					   <p>A. Answer to the question. There are some possibilties, but this is just placeholder text to increase lenght.</p>
+				   </div>
+			   </div>
+		   </div>
+               <div class='col-md-4'>
+                   <div class='card card-nav-tabs text-center'>
+                       <div class="header-info content">Q. First Question?</div>
+                       <div class='content'>
+                           <p>A. Answer to the question. There are some possibilties, but this is just placeholder text to increase lenght.</p>
+                       </div>
+                   </div>
+               </div>
+                <div class='col-md-4'>
+                   <div class='card card-nav-tabs text-center'>
+                                       <div class="header-info content">Q. First Question?</div>
+                       <div class='content'>
+                           <p>A. Answer to the question. There are some possibilties, but this is just placeholder text to increase lenght.</p>
+                       </div>
+                   </div>
+               </div>
+
+                <div class='col-md-4'>
+                   <div class='card card-nav-tabs text-center'>
+                                       <div class="header-info content">Q. First Question?</div>
+                       <div class='content'>
+                           <p>A. Answer to the question. There are some possibilties, but this is just placeholder text to increase lenght.</p>
+                       </div>
+                   </div>
+               </div>
+               <div class="col-md-4 col-md-offset-4 text-center top40" >
+                   <a class="btn btn-lg btn-white">
+                       <span class="text-primary">More Answers</span>
+                   </a>
+               </div>
+	   </div>
+
+	   </div> <!-- /container -->
+
+   </div> <!-- /faq -->
+</div> <!-- wrapper -->
 {% endblock content-wrapper %}

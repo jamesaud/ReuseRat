@@ -102,10 +102,10 @@ See detailed `cookiecutter-django Docker documentation`_.
 Getting Set Up
 ^^^^^^
 
-> docker-compose -f dev.yml build // Run only Once
+$ docker-compose -f dev.yml build // Run only Once
 
-> docker-compose -f dev.yml up // site available at localhost:8000, localhost:8025 the test mail server
-
+$ docker-compose -f dev.yml up // site available at localhost:8000, localhost:8025 the test mail server
+ 
 > running django commands:
 
 $   docker-compose -f dev.yml run django python manage.py makemigrations
@@ -128,3 +128,7 @@ It's a bit different than normal django process.
 3. Add the app in "config/settings/common.py", under LOCAL_APPS
 4. Add the urls via "config/urls.py"
 5. Should be good to go and start writing views & templates.
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 6b0c7f4e2e52465e8c05699f067ae461464618a3

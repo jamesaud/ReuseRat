@@ -1,8 +1,21 @@
+@import '_colors.scss';
+
+
+
 //HOMEPAGE
 .wrapper > .header{
-  min-height: 720px !important;
+  min-height: 740px !important;
   .btn-danger{
     i{margin-right: 4px;}
   }
 }
 
+h5.description, h4.description, p.description, .features{
+   color: $grey-600;
+}
+
+.section-faq{
+	   background-position: center !important;
+	   background-attachment: fixed !important;
+     margin-top: 60px;
+}

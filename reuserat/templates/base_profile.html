@@ -1,26 +1,37 @@
 {% extends "base.html" %}
 {% load static %}
-{% load staticfiles i18n compress%}
+{% load staticfiles i18n compress %}
 
 
 {% block title %}{% block head_title %}{% endblock head_title %}{% endblock title %}
+
+{% block css %}
+  {{ block.super }}
+
+  <!-- SASS -->
+  <!-- This file stores project-specific CSS -->
+  <link type='text/css' href="{% static 'css/profile.css' %}" rel="stylesheet">
+
+{% endblock %}
 
 {% block pre-content %}
 {% if request.user.is_authenticated %}
       <div class="container">
         <div class="row">
+          <div class='col-md-12'>
           <h6>
-            <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
             {% block breadcrumb %}
+            <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "Dashboard" %}</a>
             {% endblock %}
           </h6>
          </div>
-      </div> 
+        </div>
+      </div>
 {% endif %}
-{% endblock %}
+{% endblock pre-content %}
 
 {% block content %}
 
 
-{% endblock content %}       
-        
+{% endblock content %}
+

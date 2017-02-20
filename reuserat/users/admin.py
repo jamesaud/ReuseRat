@@ -6,6 +6,14 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from .models import User
+from reuserat.shipments.models import Shipment
+
+
+
+class ShipmentInline(admin.TabularInline):
+    model = Shipment
+    show_change_link = True
+    extra = 0
 
 
 class MyUserChangeForm(UserChangeForm):
@@ -33,10 +41,14 @@ class MyUserCreationForm(UserCreationForm):
 
 @admin.register(User)
 class MyUserAdmin(AuthUserAdmin):
+    inlines = (ShipmentInline,)
+
     form = MyUserChangeForm
     add_form = MyUserCreationForm
     fieldsets = (
-            ('User Profile', {'fields': ('name',)}),
+            ('User Profile', {
+                 'fields': ('first_name','last_name', 'email', 'phone', 'address', 'payment_type')
+              }),
     ) + AuthUserAdmin.fieldsets
-    list_display = ('username', 'name', 'is_superuser')
-    search_fields = ['name']
+    list_display = ('email', 'first_name', 'last_name', 'is_superuser')
+    search_fields = ['first_name', 'last_name']

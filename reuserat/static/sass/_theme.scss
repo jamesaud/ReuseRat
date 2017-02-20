@@ -1,0 +1,23 @@
+@import '../standalone/x_material_kit_free_v1.1.1/assets/sass/material-kit.scss';
+
+.btn.btn-dark-blend{
+        @include btn-styles(transparentize(black, .8)); 
+    }
+    
+    
+h1, h2, h3, h4, h5, h6, p{
+  font-weight: 300;
+}
+
+.textarea, input{
+    &.form-control{
+        font-size: 15px;
+    }
+}
+
+
+
+
+.header-grey{
+    background-color: $grey-500;
+}

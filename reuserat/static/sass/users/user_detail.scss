@@ -1,0 +1,101 @@
+@import '../_colors.scss';
+@import '../_mixins.scss';
+.card{
+    
+
+    p{
+        font-size: 15px;
+    }
+    h4{
+        font-weight: 400;
+    }
+    .head{
+        & > .btn{ //The shipment name btn
+            margin-left: 10px;
+            margin-right: 10px;
+            white-space: normal;
+        } 
+
+        %button{
+            margin-top: 12px;
+            margin-right: 5px;
+            margin-left: 5px;
+            padding: 5px;
+           
+            i{
+                font-size: 28px !important;
+            }
+        }
+    
+        .edit-btn{
+           @extend %button;
+           color: $grey-100;
+           background: transparent;
+           &:hover{
+               color: white ;
+           }
+           
+        }
+
+        .delete-btn{ 
+            @extend %button;
+            color: $red-600;
+            text-shadow: 0px 0px 1px white;
+            bottom: 1px;
+        }
+
+        .button-group{
+            margin-right: 20px;
+            margin-left: 20px;
+        }
+      
+        .label{
+            font-size: 11px;
+            margin-top: 19px;
+            font-weight: 400;
+            background-color: $yellow-500;
+        }
+    }
+}
+
+.current-balance{
+    text-align: center;
+    small{
+        margin: 0px;
+        color: $grey-700;
+    }
+    h2{
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    a.btn{
+        padding: 8px 17px 8px 17px; 
+        margin-top: 0px;
+    }
+}
+
+
+.top-buttons{
+    @include button_width_mobile(33%);
+}
+
+.shipment-button{
+    text-align: right;
+    @include button_width_mobile(60%);
+}
+
+
+@media screen and (min-width: 769px){
+    .current-balance{
+            bottom: 26px;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .top-row{
+        text-align: center;
+    }
+    .shipment-button{
+        text-align: center;
+    }
+}
