@@ -86,7 +86,7 @@ gulp.task('runServer', function() {
 // Browser sync server for live reload
 gulp.task('browserSync', function() {
     browserSync.init(
-      [paths.css + "/*.css", paths.js + "*.js", paths.templates + '*.html'], {
+      [paths.css + "/*.css", paths.js + "*.js", paths.templates + '/**/*.html'], {
         proxy:  "django:8000"
     });
 });

@@ -25,19 +25,19 @@
         <form  class="shipment" id="shipment_form" method="post" action="{% url 'shipments:shipmentUpdate' object.id %}" >
             {% csrf_token %}
             <div class='row'>
-                <div class='col-md-6'>
+                <div class='col-sm-6'>
                     {{ form.name | as_crispy_field }}
                 </div>
-                <div class='col-md-6'>
+                <div class='col-sm-6'>
                     <h4>Change Your Shipment Name</h4>
                     <p>This should be something to identify your shipment.</p>
                 </div>
             </div>
             <div class='row'>
-                <div class='col-md-6 input-description'>
+                <div class='col-sm-6 input-description'>
                     {{ form.description | as_crispy_field }}
                 </div>
-                <div class='col-md-6'>
+                <div class='col-sm-6'>
                     <h4>Give Your Shipment a Description</h4>
                     <p>
                         This should be a detailed description of the items you are including in your shipment. 
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="control-group row">
-                <div class="controls col-md-12">
+                <div class="controls col-sm-12">
                     <a class="btn btn-default" href="{% url 'users:detail' request.user.username %}" class="btn">Back</a>
                 <button type="submit " class="btn btn-primary">Update Shipment</button>
                 </div>

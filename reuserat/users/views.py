@@ -80,6 +80,7 @@ class UserUpdateView(LoginUserCompleteSignupRequiredMixin, UpdateView):
 
     # we already imported User in the view code above, remember?
     model = User
+    template_name = 'account/profile/user_form.html'
 
     # send the user back to their own page after a successful update
     def get_success_url(self):

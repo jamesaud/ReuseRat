@@ -1,8 +1,6 @@
 @import '../_colors.scss';
 @import '../_mixins.scss';
 .card{
-    
-
     p{
         font-size: 15px;
     }
@@ -44,12 +42,18 @@
             bottom: 1px;
         }
 
+
+        /* 
+        The button group margin-left is 0px & the label margin-right is 20px in case the 
+        label drops to the line below on smaller screens
+        */
         .button-group{
             margin-right: 20px;
-            margin-left: 20px;
+            margin-left: 0px;
         }
       
         .label{
+            margin-right: 20px;
             font-size: 11px;
             margin-top: 19px;
             font-weight: 400;
@@ -76,7 +80,7 @@
 
 
 .top-buttons{
-    @include button_width_mobile(33%);
+    @include button_width_mobile(50%);
 }
 
 .shipment-button{
@@ -99,3 +103,22 @@
         text-align: center;
     }
 }
+
+
+#shipping-instructions.btn-primary.btn-simple{
+    margin-top: 6px;
+    margin-bottom: 0px;
+    padding-top: 7px;
+    padding-bottom: 6px;
+    border: 1px solid $purple-400;
+    position: absolute;
+
+} 
+
+// Ensure that the edit and delete buttons don't get pushed below the head
+@media screen and (max-width: 650px){
+    .card .head > .btn{
+                    max-width: 50%;
+                }
+}
+     
