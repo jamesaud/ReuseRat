@@ -34,7 +34,7 @@ services:
       - "0.0.0.0:80:80"
 
     environment:
-      - MY_DOMAIN_NAME=www.reuserat.com
+      - MY_DOMAIN_NAME=reuserat.com  # Or if let's letsencrypt doesnt like that, then make it www., and change back to pure domain after you get the secret key.
     ports:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
