@@ -261,7 +261,6 @@ LOGIN_URL = 'account_login'
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
-# django-compressor
 # ------------------------------------------------------------------------------
 INSTALLED_APPS += (
     # Social auth providers
