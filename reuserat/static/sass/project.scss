@@ -64,6 +64,12 @@ li{
    
 .close-alert{
   font-size: 20px;
+} 
+
+//Vertically center text in the top header  
+.header-top {
+  color: white;
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
 }
-      
-  

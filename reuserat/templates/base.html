@@ -65,7 +65,7 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="http://www.creative-tim.com">
+              <a class="navbar-brand" href="https://reuserat.com" target='_blank'>
                  <img class='logo' src="{% static 'images/logo.png' %}">
               </a>
             </div>
@@ -82,8 +82,8 @@
               </li>
 
               <li>
-                <a href="../components-documentation.html" target="_blank">
-                  Components
+                <a href="{% url 'shipping' %}">
+                  Knowledge Base
                 </a>
               </li>
 
@@ -130,7 +130,8 @@
 
       {% block content-wrapper %}
         <div class="wrapper">
-        <div class="header header-top">
+        <div class="header header-top" style="{% block header-top-style %} {% endblock %}">
+          {% block header-title %} {% endblock header-title %}
         </div>
         <div class="main main-raised">
           {% block pre-content %} {% endblock %}

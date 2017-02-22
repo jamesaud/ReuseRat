@@ -1,0 +1,22 @@
+{% extends "base_knowledge.html" %}
+{% load static %}
+
+{% block header-top-style %}
+background-image: url('{% static "images/gradient-wallpaper.jpg" %}') !important;
+{% endblock %}
+
+{% block header-title %}
+<h1>Shipping Guide</h1>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class='container'>
+    <div class='row'>
+        <div class='col-sm-12'>
+                <h2>Start Here</h2>
+                
+        </div>
+    </div>
+</div>
+{% endblock content %}
