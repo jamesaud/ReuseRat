@@ -13,6 +13,9 @@
 
 {% endblock %}
 
+{% block header-top-style %}
+background-image: url('{% static "images/gradient-wallpaper.jpg" %}') !important;
+{% endblock %}
 
 {% block content %}
 <nav class="navbar navbar-primary navbar-sub">
@@ -39,14 +42,14 @@
 	    </div>
 
       <ul class="nav navbar-nav navbar-left">
-        <li class="active">
-            <a href="#pablo">
+        <li class="{% block quickstart-active %} {% endblock %}">
+            <a href="{% url 'knowledge:quickstart' %}">
               <i class="material-icons">explore</i>
               Quickstart
             <div class="ripple-container"></div></a>
         </li>
-        <li class="">
-            <a href="#pablo">
+        <li class="{% block shipping-active %} {% endblock %}">
+            <a href="{% url 'knowledge:shipping' %}">
               <i class="material-icons">explore</i>
               Shipping Guide
             <div class="ripple-container"></div></a>
@@ -67,5 +70,19 @@
     </div>
   </div>
 </nav>
+
+<div class='container'>
+    <div class='row'>
+        <div class='col-sm-12 knowledge-body'>
+          {% block inner %}
+          {% endblock inner %}
+        </div>
+    </div>
+</div>
+
 {% endblock content %}
+
+{% load static %}
+
+
 

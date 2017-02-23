@@ -11,8 +11,6 @@ from django.views import defaults as default_views
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
-    url(r'^knowledge/shipping-guide/$', TemplateView.as_view(template_name='knowledge/home.html'), name='shipping'),
-
 
     # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, admin.site.urls),
@@ -24,8 +22,11 @@ urlpatterns = [
     # Shipments
     url(r'^shipments/', include('reuserat.shipments.urls', namespace='shipments')),
 
-    #
+    # Shopify
     url(r'^shopify/', include('reuserat.shopify.urls', namespace='shopify')),
+
+    # Knowledge Base
+     url(r'^knowledge/', include('reuserat.knowledge.urls', namespace='knowledge')),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

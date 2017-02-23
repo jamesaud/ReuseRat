@@ -1,0 +1,78 @@
+{% extends "knowledge/base_knowledge.html" %}
+
+{% block shipping-active %}active{% endblock %}
+
+
+{% block header-title %}
+    <h1>Shipping Guide</h1>
+{% endblock %}
+
+
+{% block inner %}
+
+    <h2>Learn How to Ship in 2 Minutes</h2>
+   
+   <h3>1. Choose Your Shipping Type - Pick the Option that Fits Best</h3>
+   <ol>
+       <li>
+            <strong>USPS Media Mail</strong> - Choose Media Mail if every item in your shipment is a Book, DVD, CD, or Magazine.   <a href='http://about.usps.com/notices/not121/not121.htm' target='_blank'>(learn more)</a> 
+       </li>
+       <li>
+           <strong>USPS Retail Ground </strong> - Choose Retail Ground if your items do not fit the media mail criteria. 
+           It typically takes 3-9 days for retail ground to arrive at our wearhouses.  <a href='http://about.usps.com/notices/not121/not121.htm' target='_blank'>(learn more)</a> 
+       </li>
+   </ol>
+
+   <h3>2. Print Your Shipping Label</h3>
+        <i><h5>
+           Note: This is an unpaid shipping label. 
+           You will have to pay for the label at your local USPS office or online. You'll be reimbursed for shipping costs when the box arrives at our warehouse.
+       </h5></i>
+   <ol>
+       <li> 
+           Click the title of your shipment to see its details. Find the <i>Shipping Label</i> section.
+       </li>
+       <li>
+           Print off the shipping label on standard 8 x 11 printer paper.
+       </li>
+   </ol>
+
+   <h3>3. Attach Your Shipping Label</h3>
+   <ol>
+       <li> 
+           Tape the shipping label to your package.
+           Make sure to tape all four sides so that the table won't fall off.
+       </li>
+  
+       <li>
+           If you don't have strong tape, your local USPS post office can attach the label when you drop the box off. 
+       </li>
+   </ol>
+
+   <h3>4. Pay for Shipping &amp; Send Your Shipment - Pick an Option</h3>
+       <i><h5> 
+          Now that you've printed off your shipping label, you'll have to pay for the shipping. Don't worry - you'll be reimbursed when the box arrives at our warehouse.  
+       </h5></i>
+        <ol>
+            <li>
+                <strong>Post Office</strong> (recommended) - Stop by your local post office, and pay for the option you chose in step 1. 
+                It is important that you <i>include the receipt in the box</i>, or upload a picture of the receipt to your shipment details page, so that we can reimburse you for shipping costs.
+                 <a href="http://postofficefinder.org/" target="_blank">(find post office)</a> 
+            </li>
+            <li>
+                <p><strong>Online</strong> (more flexible) - Use an online provider like <a>Stamps.com</a> (free trial) or <a>USPS.com</a> (always free) for buying shipping labels. 
+                You'll needed to include our address on the new label, which can be found on your original shipping label.
+                If you choose this option, <i>the shipping label we provided in step 3 should be placed INSIDE the box</i>.                 
+                Tape your <i>new shipping label</i> to the package as specified in step 3.
+</p>
+                <p>
+                This option is more flexible. You may now drop off your box at a local USPS drop box, schedule a pick up on <a>USPS.com</a>, or stop by your local post office. 
+                Be sure to upload a picture of the shipping label to your shipment details page so we can reimburse you.
+                </p>
+            </li>
+
+        </ol>
+
+   <a class='btn btn-default' href="{% url 'account_signup' %}">Create a Shipment Now <i class="material-icons">chevron_right</i></a>
+
+{% endblock inner %}

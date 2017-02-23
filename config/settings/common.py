@@ -54,6 +54,7 @@ LOCAL_APPS = (
     'reuserat.address.apps.AddressConfig',
     'reuserat.shipments.apps.ShipmentsConfig',
     'reuserat.shopify.apps.ShopifyConfig',
+    'reuserat.knowledge.apps.KnowledgeConfig',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
