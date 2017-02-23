@@ -1,0 +1,52 @@
+@import '_colors.scss';
+
+
+
+.btn-google{
+    background-color: $red-600;
+}
+
+  .btn-twitter{
+    background-color: $blue-300;
+  }
+  .btn-facebook{
+    background-color: $blue-600;
+  }
+  .btn-reddit{
+    background-color: $red-400;
+  }
+  .btn-medium{
+    background-color: $green-500;
+  }
+
+  .btn-linkedin{
+    background-color: $blue-800;
+  }
+
+
+.social-drop{
+    padding-top: 0px;
+    padding-bottom: 0px;
+    display: inline-block;
+
+    .dropdown-menu{
+      text-align: right;
+      background: transparentize(white, .6);
+      min-width: 0px;
+
+      a{
+        margin: 11px 2px;
+        color: $grey-100;
+        &:hover{
+            background-color: $grey-500 !important;
+        }
+      }
+
+      & li{
+        min-width: 0px;
+        z-index: 3;
+        display: block;
+      }
+    
+    }
+}
