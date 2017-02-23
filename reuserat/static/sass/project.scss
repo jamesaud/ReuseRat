@@ -18,7 +18,7 @@
   max-width: 150px;
 }
 
-.navbar {
+.navbar { 
   .navbar-brand{
     padding-top: 5px !important;
   }
@@ -64,6 +64,46 @@ li{
    
 .close-alert{
   font-size: 20px;
+} 
+
+//Vertically center text in the top header  
+.header-top {
+  color: white;
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
 }
-      
-  
+
+.social-share{
+  .btn-twitter{
+    background-color: $blue-300;
+  }
+  .btn-facebook{
+    background-color: $blue-700;
+  }
+  .btn-reddit{
+    background-color: $red-400;
+  }
+  .btn-medium{
+    background-color: $green-500;
+  }
+}
+
+footer{
+  margin-top: 30px;
+  background-color: $grey-900;
+  li{
+    color: $grey-100;
+  }
+  .copyright{
+    max-width: 300px;
+    color: $grey-100;
+    padding-bottom: 0px;
+    position: relative;
+  }
+}
+
+.blend-gradient {
+  background: -webkit-linear-gradient(90deg, rgb(22, 135, 237), rgb(107, 29, 13));
+  background: linear-gradient(90deg, rgb(22, 135, 237), rgb(107, 29, 13));
+}

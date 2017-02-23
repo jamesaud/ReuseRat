@@ -22,8 +22,11 @@ urlpatterns = [
     # Shipments
     url(r'^shipments/', include('reuserat.shipments.urls', namespace='shipments')),
 
-    #
+    # Shopify
     url(r'^shopify/', include('reuserat.shopify.urls', namespace='shopify')),
+
+    # Knowledge Base
+     url(r'^knowledge/', include('reuserat.knowledge.urls', namespace='knowledge')),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

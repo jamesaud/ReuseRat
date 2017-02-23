@@ -14,7 +14,7 @@
 {% block breadcrumb %}
 {{block.super}}
 <span class='pull-right'>
-  username: {{ object.username }}
+  Welcome back {{ object.first_name }}
   </span>
 {% endblock %}
 
@@ -25,8 +25,7 @@
 <!-- Action buttons -->
 <div class="row top-row">
   <div class='col-sm-5 top-buttons'>
-    <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
-    <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
+    <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Account</a>
   </div>
 
   <div class='col-sm-2 current-balance'>
@@ -49,8 +48,14 @@
   <div class="row">
     <div class="col-sm-12">
           <!---shipment_set is the name generated automatically for the FK in play here of the USER -->
+            <a href="{% url 'knowledge:shipping' %}" id='shipping-instructions' target="_blank" class='btn btn-primary btn-simple pull-left btn-sm'>
+ Shipping instructions <!--  <i class="material-icons">info_outline</i>  -->
+            </a>
+
+            <br>
+
           {% for shipment in user_shipments %}
-                    <div class="card card-nav-tabs vertical-align">
+                    <div class="card card-nav-tabs ">
                         <div class="head {% if shipment.item_set.exists %} header-info {% else %} header-grey {% endif %}">
                           <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
                           <a class="btn btn-dark-blend" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">

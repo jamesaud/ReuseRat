@@ -54,6 +54,7 @@ LOCAL_APPS = (
     'reuserat.address.apps.AddressConfig',
     'reuserat.shipments.apps.ShipmentsConfig',
     'reuserat.shopify.apps.ShopifyConfig',
+    'reuserat.knowledge.apps.KnowledgeConfig',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -261,7 +262,6 @@ LOGIN_URL = 'account_login'
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
-# django-compressor
 # ------------------------------------------------------------------------------
 INSTALLED_APPS += (
     # Social auth providers

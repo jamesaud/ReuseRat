@@ -4,39 +4,40 @@
 .card h4 {
   font-weight: 400; }
 
-.card .head > .btn {
-  margin-left: 10px;
-  margin-right: 10px;
-  white-space: normal; }
-
-.card .head .edit-btn, .card .head .delete-btn {
-  margin-top: 12px;
-  margin-right: 5px;
-  margin-left: 5px;
-  padding: 5px; }
-  .card .head .edit-btn i, .card .head .delete-btn i {
-    font-size: 28px !important; }
-
-.card .head .edit-btn {
-  color: #f5f5f5;
-  background: transparent; }
-  .card .head .edit-btn:hover {
-    color: white; }
-
-.card .head .delete-btn {
-  color: #e53935;
-  text-shadow: 0px 0px 1px white;
-  bottom: 1px; }
-
-.card .head .button-group {
-  margin-right: 20px;
-  margin-left: 20px; }
-
-.card .head .label {
-  font-size: 11px;
-  margin-top: 19px;
-  font-weight: 400;
-  background-color: #fec60a; }
+.card .head {
+  /* 
+        The button group margin-left is 0px & the label margin-right is 20px in case the 
+        label drops to the line below on smaller screens
+        */ }
+  .card .head > .btn {
+    margin-left: 10px;
+    margin-right: 10px;
+    white-space: normal; }
+  .card .head .edit-btn, .card .head .delete-btn {
+    margin-top: 12px;
+    margin-right: 5px;
+    margin-left: 5px;
+    padding: 5px; }
+    .card .head .edit-btn i, .card .head .delete-btn i {
+      font-size: 28px !important; }
+  .card .head .edit-btn {
+    color: #f5f5f5;
+    background: transparent; }
+    .card .head .edit-btn:hover {
+      color: white; }
+  .card .head .delete-btn {
+    color: #e53935;
+    text-shadow: 0px 0px 1px white;
+    bottom: 1px; }
+  .card .head .button-group {
+    margin-right: 20px;
+    margin-left: 0px; }
+  .card .head .label {
+    margin-right: 20px;
+    font-size: 11px;
+    margin-top: 19px;
+    font-weight: 400;
+    background-color: #fec60a; }
 
 .current-balance {
   text-align: center; }
@@ -52,7 +53,7 @@
 
 @media (max-width: 768px) {
   .top-buttons .btn, .top-buttons .btn-group {
-    width: 33%; } }
+    width: 50%; } }
 
 .shipment-button {
   text-align: right; }
@@ -69,3 +70,15 @@
     text-align: center; }
   .shipment-button {
     text-align: center; } }
+
+#shipping-instructions.btn-primary.btn-simple {
+  margin-top: 6px;
+  margin-bottom: 0px;
+  padding-top: 7px;
+  padding-bottom: 6px;
+  border: 1px solid #ab47bc;
+  position: absolute; }
+
+@media screen and (max-width: 650px) {
+  .card .head > .btn {
+    max-width: 50%; } }

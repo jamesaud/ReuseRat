@@ -1,5 +1,5 @@
 .wrapper > .header {
-  min-height: 740px !important; }
+  min-height: 760px !important; }
   .wrapper > .header .btn-danger i {
     margin-right: 4px; }
 
@@ -10,3 +10,6 @@ h5.description, h4.description, p.description, .features {
   background-position: center !important;
   background-attachment: fixed !important;
   margin-top: 60px; }
+
+footer {
+  margin-top: 0px; }
