@@ -20,28 +20,25 @@ background-image: url('{% static "images/gradient-wallpaper.jpg" %}') !important
 {% block content %}
 <nav class="navbar navbar-primary navbar-sub">
     <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-primary">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
 
-    <div class="collapse navbar-collapse">
+
       <div class="navbar-header">
-	                            	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#example-navbar" aria-expanded="false">
+	                            	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#knowledge-navbar" aria-expanded="false">
 	                            		<span class="sr-only">Toggle navigation</span>
 		                                <span class="icon-bar"></span>
 		                                <span class="icon-bar"></span>
 		                                <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+
 		                            </button>
               <a class="navbar-brand" href="#">Knowledge Base</a>
 
 	    </div>
 
-      <ul class="nav navbar-nav navbar-left">
+          <div id="knowledge-navbar" class="collapse navbar-collapse">
+
+
+      <ul  class="nav navbar-nav navbar-left">
         <li class="{% block quickstart-active %} {% endblock %}">
             <a href="{% url 'knowledge:quickstart' %}">
               <i class="material-icons">explore</i>
@@ -54,14 +51,14 @@ background-image: url('{% static "images/gradient-wallpaper.jpg" %}') !important
               Shipping Guide
             <div class="ripple-container"></div></a>
         </li>
-        <li>
-            <a href="#pablo">
+        <li class="{% block payment-active %} {% endblock %}">
+            <a href="{% url 'knowledge:payment' %}">
               <i class="material-icons">account_circle</i>
               Payment Information
             <div class="ripple-container"></div></a>
         </li>
-        <li>
-            <a href="#pablo">
+        <li class="{% block questions-active %} {% endblock %}">
+            <a href="{% url 'knowledge:questions' %}">
               <i class="material-icons">settings</i>
               Common Questions
             </a>

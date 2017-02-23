@@ -78,7 +78,13 @@
               </li>
 
               <li class="">
-                <a class="" href="{% url 'about' %}">About</a>
+                <a class="" href="{% url 'about' %}">Our Story</a>
+              </li>
+
+              <li>
+                  <a href="http://blog.creative-tim.com">
+                    Store
+                  </a>
               </li>
 
               <li>
@@ -113,11 +119,40 @@
                 <i class="fa fa-facebook-square"></i>
               </a>
                   </li>
-            <li>
-                      <a href="https://www.instagram.com/CreativeTimOfficial" target="_blank" class="btn btn-simple btn-white btn-just-icon">
-                <i class="fa fa-instagram"></i>
-              </a>
-                  </li>
+                <li>
+                  <a href="https://www.instagram.com/CreativeTimOfficial" target="_blank" class="btn btn-simple btn-white btn-just-icon">
+                    <i class="fa fa-medium"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.instagram.com/CreativeTimOfficial" target="_blank" class="btn btn-simple btn-white btn-just-icon">
+                    <i class="fa fa-reddit"></i>
+                  </a>
+                </li>
+                <li>
+                 
+                  <div class="dropdown">
+                     <a href="#" data-toggle="dropdown" class="btn btn-simple btn-white btn-just-icon  dropdown-toggle">
+                    <i class="fa fa-share-alt"></i>
+                                            <b class="caret"></b>
+                     </a>
+                            
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="#pablo" class="btn btn-just-icon btn-facebook btn-simple"> <i class="fa fa-facebook-square"></i><div class="ripple-container"></div></a>
+                        </li>
+                      <li><a href="#">Another action</a></li>
+                      <li><a href="#">Something else here</a></li>
+                      <li class="divider"></li>
+                      <li><a href="#">Separated link</a></li>
+                      <li class="divider"></li>
+                      <li><a href="#">One more separated link</a></li>
+                    </ul>
+                  </div>
+    			
+
+                </li>
+
               </ul>
             </div>
         </div>
@@ -147,9 +182,45 @@
 
     {% block modal %}{% endblock modal %}
 
+
+    
     {% block footer %}
+
       <footer class="footer">
+        
 	        <div class="container">
+
+              {% block social-share %}
+              <div class="row social-share text-center">
+	                    <button id="twitter" class="btn btn-raised btn-twitter sharrre">
+	                        <i class="fa fa-twitter"></i>
+	                        Twitter
+	                    <div class="ripple-container"></div></button>
+
+	                    <button id="facebook" class="btn btn-raised btn-facebook sharrre">
+                        <i class="fa fa-facebook-square"></i> 
+                        Facebook
+                      </button>
+						          
+                      <button id="medium" class="btn btn-raised btn-medium sharrre">
+	                        <i class="fa fa-medium"></i>
+	                        Medium
+	                    </button>
+
+						            <button id="reddit" href="https://github.com/timcreative/material-kit" target="_blank" class="btn btn-raised btn-reddit">
+	                        <i class="fa fa-reddit"></i>
+	                    	Reddit
+	                    </button>
+	            </div>
+              
+
+            {% endblock %}
+
+
+              <!-- tTEST -->
+                
+              <!-- -->
+
 	            <nav class="pull-left">
 	                <ul>
 	                    <li>
@@ -157,9 +228,9 @@
                                 <img class='logo' src="{% static 'images/logo.png' %}">
 	                        </a>
 	                    </li>
-						<li>
+						          <li>
 	                        <a href="http://presentation.creative-tim.com">
-	                           About Us
+	                           Our Story
 	                        </a>
 	                    </li>
 	                    <li>
@@ -172,10 +243,20 @@
 	                            Licenses
 	                        </a>
 	                    </li>
+                      <li>
+	                        <a href="http://www.creative-tim.com/license">
+	                            Knowledge Base
+	                        </a>
+	                    </li>
+                      {% if not request.user.is_authenticated %}
+                      <li class="nav-item">
+                        <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+                      </li>
+                      {% endif %}
 	                </ul>
 	            </nav>
-	            <div class="copyright pull-right">
-	                &copy; 2017, made with <i class="fa fa-heart heart text-info"></i> by ReuseRat
+	            <div class="copyright pull-right text-right">
+	               &copy; 2017, made with <i class="fa fa-heart heart text-info"></i> by ReuseRat
 	            </div>
 	        </div>
 	    </footer>

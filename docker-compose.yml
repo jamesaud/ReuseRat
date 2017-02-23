@@ -34,7 +34,7 @@ services:
       - "0.0.0.0:80:80"
 
     environment:
-      - MY_DOMAIN_NAME=reuserat.com  # Or if let's letsencrypt doesnt like that, then make it www., and change back to pure domain after you get the secret key.
+      - MY_DOMAIN_NAME=reuseratseller.com  # Or if let's letsencrypt doesnt like that, then make it www., and change back to pure domain after you get the secret key.
     ports:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
@@ -44,7 +44,7 @@ services:
 
   certbot:
     image: quay.io/letsencrypt/letsencrypt
-    command: bash -c "sleep 6 && certbot certonly -n --standalone -d www.reuserat.com --text --agree-tos --email trashandtreasure67@gmail.com --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --keep-until-expiring --standalone-supported-challenges http-01"
+    command: bash -c "sleep 6 && certbot certonly -n --standalone -d reuseratseller.com --text --agree-tos --email trashandtreasure67@gmail.com --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --keep-until-expiring --standalone-supported-challenges http-01"
     entrypoint: ""
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
