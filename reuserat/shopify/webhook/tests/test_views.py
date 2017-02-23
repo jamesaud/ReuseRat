@@ -130,12 +130,11 @@ class TestProductUpdate(BaseWebhookTestCase):
         self.assertEqual(item.is_visible, True)
 
 
-    def test_item_failed_update(self):
+    def test_item_update_or_create(self):
+        # Item should be created if it is not updated.
         self.body['id'] = 2345
         response = self.send_request()
-        with self.assertRaises(Item.DoesNotExist):
-           Item.objects.get(pk=self.body['id'])
-
+        self.assertTrue(Item.objects.filter(pk=self.body['id']).exists())
 
 
 class TestProductDelete(BaseWebhookTestCase):
