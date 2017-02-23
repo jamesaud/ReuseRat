@@ -41,7 +41,6 @@ THIRD_PARTY_APPS = (
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
     'localflavor', # Django LocalFlavor
-    'betterforms',#Django Forms for multiModel
 )
 
 # Apps specific for this project go here.

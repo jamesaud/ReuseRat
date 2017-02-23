@@ -1,7 +1,6 @@
 from django import forms
 from .models import User
 from django.utils.translation import ugettext_lazy as _
-from betterforms.multiform import MultiModelForm
 from django.contrib.auth import get_user_model
 from .models import Address
 
@@ -18,4 +17,4 @@ class UserForm(forms.ModelForm):
 class UserAddressForm(forms.ModelForm):
     class Meta:
         model = Address
-        fields = ('address_line','address_apartment','state','zipcode')
+        fields = ('address_line','address_apartment','city','state','zipcode')

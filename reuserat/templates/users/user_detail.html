@@ -17,6 +17,7 @@
 {{block.super}}
 <span class='pull-right'>
   username: {{ object.username }}
+  Balance: {{ object.get_current_balance }}
   </span>
 {% endblock %}
 
@@ -31,6 +32,7 @@
   <div class="col-sm-12">
     <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
     <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
+    <a class="btn btn-primary" href="{% url 'users:update_payment_information' %}" role="button">Update Payment</a>
     <a class="btn btn-danger pull-right" href="{% url 'shipments:shipmentOrder' %}" role="button">Create New Shipment</a>
     <!-- Your Stuff: Custom user template urls -->
   </div>
@@ -73,8 +75,6 @@
       {% endif %}
     </div>
   </div>
-
-
 
 
 </div>

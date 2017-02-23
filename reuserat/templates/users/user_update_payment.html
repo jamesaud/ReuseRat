@@ -1,0 +1,62 @@
+{% extends "base_profile.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+
+{% block breadcrumb %}
+    {{ block.super }}
+/ <a class="nav-link" href="{% url 'users:update_payment_information' %}">Payment Update</a>
+{% endblock %}
+
+{% block content %}
+<div class = "container">
+<form class="form-horizontal" method="post" action="{% url 'users:update_payment_information' %}"  id = "payment-form">
+
+    {% csrf_token %}
+    {{ update_payment_form|crispy }}
+    <div class="control-group">
+      <div class="controls">
+        <button type="submit" class="btn">Update</button>
+      </div>
+    </div>
+</form></div>
+{% endblock %}
+
+{% block javascript %}
+{{block.super}}
+ {{ update_payment_form.media.js }}
+     <script>
+        Stripe.setPublishableKey('{{ update_payment_form.PUBLISHABLE_KEY }}');
+        var stripeResponseHandler =function(status, response) {
+            // Grab the form:
+            var $form = $('#payment-form');
+
+            if (response.error) { // Problem!
+
+                $form.find('button').prop('disabled', false); // Re-enable submission
+
+            } else { // Token created!
+
+                // Get the token ID:
+                var token = response.id;
+                // Insert the token into the form so it gets submitted to the server:
+                $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+                // Submit the form:
+                $form.get(0).submit();
+            }
+        };
+        $('#payment-form').submit(function(event) {
+                event.preventDefault();
+                // Get the form object.
+              var $form = $(this);
+              // Disable the submit button to prevent repeated clicks
+              $form.find('button').prop('disabled', true);
+              // Create a token with Stripe
+              Stripe.bankAccount.createToken($form, stripeResponseHandler);
+              // Prevent the form from submitting with the default action
+              return false;
+            });
+      </script>
+{% endblock %}
+

@@ -35,8 +35,7 @@ RUN apt-get install rubygems -y
 
 RUN gem install bourbon
 
-RUN pip install django-betterforms
-
+RUN pip install stripe
 
 ENTRYPOINT ["/entrypoint.sh"]
 
