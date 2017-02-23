@@ -94,7 +94,7 @@ footer{
   > button{
     padding-left: 6px;
     padding-right: 6px;
-    background-color: transparentize(lighten($first-color, .3), .1);
+    background-color: transparentize($first-color, .1);
 
     &[aria-expanded="true"]{
       background-color: transparentize(black, .6);

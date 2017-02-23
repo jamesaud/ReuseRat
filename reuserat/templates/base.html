@@ -54,7 +54,6 @@
                 </div>
           {% endfor %}
       {% endif %}
-
       <nav class="navbar navbar-transparent navbar-absolute">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -138,7 +137,7 @@
                      </button>
                             
                     <ul class="dropdown-menu pull-right" aria-labelledby="social-dropup-footer">
-                          {% include "snippets/_social_drop_list.html" %}
+                          {% include "snippets/_social_drop_list.html" with destination_url=request.build_absolute_uri %}
                     </ul>
                   </div>
     			
@@ -212,7 +211,7 @@
                         </button>
                                 
                         <ul class="dropdown-menu pull-right" aria-labelledby="social-dropup-footer">
-                              {% include "snippets/_social_drop_list.html" %}
+                              {% include "snippets/_social_drop_list.html" with destination_url=request.build_absolute_uri %}
                         </ul>
                       </div>
 
