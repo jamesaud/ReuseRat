@@ -26,7 +26,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     last_name = "Doe"
     payment_type = "Check"
     phone = factory.Sequence(lambda n: '123-555-%04d' % n)
-    birth_date =  birthdate = factory.Sequence(lambda n: datetime.date(2000, 1, 1) + datetime.timedelta(days=n))
+    birth_date  = datetime.date(2001,5,5)
 
     class Meta:
         model = 'users.User' # Avoid the complications of a circular import

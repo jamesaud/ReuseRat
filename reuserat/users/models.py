@@ -8,7 +8,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from localflavor.us import models as usmodels
 from reuserat.stripe.models import StripeAccount
-from reuserat.stripe.helpers import retrieve_acct_details
+from reuserat.stripe.helpers import retrieve_balance
 import stripe
 PAYMENT_CHOICES = (
     ('Check', 'Check'),
@@ -46,7 +46,7 @@ class User(AbstractUser):
     def get_current_balance(self):
         # Call function here from helpers
         try:
-            balance = retrieve_acct_details(self.stripe_account.secret_key)
+            balance = retrieve_balance(self.stripe_account.secret_key)
         except stripe.error.AuthenticationError:
             balance = "Currently Unavailanble"
         return balance

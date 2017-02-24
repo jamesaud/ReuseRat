@@ -60,3 +60,10 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [
         'django.template.loaders.app_directories.Loader',
     ]),
 ]
+
+# Your Custom Settings Go Here
+
+TEST_CUSTOMER_STRIPE_ACCOUNT_ID = "acct_19oJRgAHIiRB9XY4"
+TEST_CUSTOMER_STRIPE_ACCOUNT_TOKEN = "btok_AA1L4bQAmffPrV"
+TEST_CUSTOMER_STRIPE_SECRET = "sk_test_QJxZpxsFGoh4XFixveB06czf"
+TEST_CUSTOMER_STRIPE_PUBLISHABLE = "pk_test_Pj7KY8Ywqyxja9dfjHHfeDoY"

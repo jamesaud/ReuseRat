@@ -17,6 +17,7 @@ from django.contrib import messages
 from django.conf import settings
 import datetime
 
+import stripe
 
 class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
     """
@@ -176,8 +177,9 @@ class UserCompleteSignupView(UserUpdateMixin):
     def get_success_url(self):
         # Pass the Ip address of the client.
         # Call to Stripe View to create a stripe account
-
+        print("LALALALALALA")
         account_instance = create_account(self.request.META['REMOTE_ADDR'])
+        print("deported")
         if account_instance :
             self.request.user.stripe_account = account_instance
             self.request.user.save()
@@ -233,14 +235,15 @@ def update_payment_information(request):
 
     # Get the form data ,so the POST request
     if request.method == "POST":
+        print(request.POST,"REQUEST")
         form = UpdatePaymentForm(request.POST)
         request.user.birth_date = datetime.date(int(request.POST['birthdate_year']),
                                                 int(request.POST['birthdate_month']),
                                                 int(request.POST['birthdate_day']))
         request.user.save()
         if form.is_valid():
-            if update_payment_info(str(request.user.stripe_account.account_id), request.POST["stripeToken"],
-                                   request.user):
+            if update_payment_info(str(request.user.stripe_account.account_id), request.POST["stripeToken"],request.user):
+
                 messages.add_message(request, messages.SUCCESS, "Updated")
                 return redirect(reverse('users:detail', kwargs={'username': request.user.username}))
             else:
