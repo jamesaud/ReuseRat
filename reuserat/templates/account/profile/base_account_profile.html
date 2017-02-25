@@ -22,39 +22,39 @@
                                     <!--
                                         color-classes: "nav-pills-primary", "nav-pills-info", "nav-pills-success", "nav-pills-warning","nav-pills-danger"
                                     -->
-                                  
+
                                     <li class="{% block basic_info %}{% endblock %}">
                                         <a href="{% url 'users:update' %}" role="tab" >
                                             <i class="material-icons">account_circle</i>
                                             Basic Info
                                         </a>
                                     </li>
-                                    <li class="{% block email %}{% endblock %}">  
+                                    <li class="{% block email %}{% endblock %}">
                                         <a href="{% url 'account_email' %}" role="tab">
                                             <i class="material-icons">email</i>
                                             Email
                                         </a>
                                     </li>
                                      <li class="{% block test %}{% endblock %}">
-                                        <a href="#payments" role="tab" data-toggle="tab">
+                                        <a href="{% url 'users:update_payment_information' %}" role="tab">
                                             <i class="material-icons">attach_money</i>
                                             Payments
                                         </a>
                                     </li>
-                                    <li class="{% block payments %}{% endblock %}"> 
+                                    <li class="{% block payments %}{% endblock %}">
                                         <a  href="#tasks" role="tab" data-toggle="tab">
                                             <i class="material-icons">list</i>
                                             Transactions
                                         </a>
                                     </li>
-                                   
+
                                 </ul>
             </div>
             <div class='col-sm-8 col-sm-offset-2'>
         <hr>
         </div>
         </div> <!-- /row -->
-        
+
         {% block inner %}
         {% endblock %}
     </div> <!-- /container -->

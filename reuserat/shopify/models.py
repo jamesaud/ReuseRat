@@ -18,7 +18,7 @@ class Item(models.Model):
 
     shipment = models.ForeignKey(Shipment, on_delete=models.CASCADE)
 
-    name =  models.CharField(max_length=200)  # Shopify Item Name
+    name =  models.CharField(max_length=200)  # Shopify  Name
     handle = models.CharField(max_length=200)  # Shopify Handle
     is_visible = models.BooleanField()
 

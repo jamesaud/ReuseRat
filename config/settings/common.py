@@ -28,7 +28,6 @@ DJANGO_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # Useful template tags:
     # 'django.contrib.humanize',
 
@@ -42,6 +41,7 @@ THIRD_PARTY_APPS = (
     'allauth',  # registration
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
+    'localflavor', # Django LocalFlavor
 )
 
 # Add Any Third Party apps that need to come before django built in apps.
@@ -51,10 +51,10 @@ DJANGO_APPS = ('flat_responsive',) + DJANGO_APPS
 LOCAL_APPS = (
     # custom users app
     'reuserat.users.apps.UsersConfig',
-    'reuserat.address.apps.AddressConfig',
     'reuserat.shipments.apps.ShipmentsConfig',
     'reuserat.shopify.apps.ShopifyConfig',
     'reuserat.knowledge.apps.KnowledgeConfig',
+    'reuserat.stripe.apps.StripeConfig',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -93,6 +93,7 @@ FIXTURE_DIRS = (
 # EMAIL CONFIGURATION
 # ------------------------------------------------------------------------------
 EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+
 
 # MANAGER CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -318,8 +319,6 @@ SOCIALACCOUNT_PROVIDERS = \
 
 
 
-# For the address form
-GOOGLE_MAPS_API_KEY = 'AIzaSyDYzt_yeSCulp826Q09us5EL-F7tur7fIE'
 
 # For shopify webhooks
 SHOPIFY_WEBHOOK_API_KEY = env('SHOPIFY_WEBHOOK_API_KEY')
@@ -331,3 +330,13 @@ SHOPIFY_APP_NAME = env('SHOPIFY_APP_NAME', default='sell-stuff-get-paid.myshopif
 SHOPIFY_API_KEY = env('SHOPIFY_API_KEY')
 SHOPIFY_PASSWORD = env('SHOPIFY_PASSWORD')
 
+SHOPIFY_APP_API_SECRET = env('SHOPIFY_APP_API_SECRET', None)
+
+
+# What comes between "www" and ".com" eg. for www.reuserat.com it would be 'reuserat'
+SHOPIFY_DOMAIN_NAME = env('SHOPIFY_DOMAIN_NAME', default='reuserat')
+
+# Stripe Company Account API Keys.
+# See your keys here: https://dashboard.stripe.com/account/apikeys
+STRIPE_TEST_SECRET_KEY  = env('STRIPE_TEST_SECRET_KEY', default=None)
+STRIPE_TEST_PUBLISHABLE_KEY  = env('STRIPE_TEST_PUBLISHABLE_KEY', default=None)

@@ -1,27 +1,20 @@
 from django import forms
 from .models import User
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth import get_user_model
+from .models import Address
 
+user = get_user_model()
 
-class UserCompleteSignupForm(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-        super(UserCompleteSignupForm, self).__init__(*args, **kwargs)
-
-        # Make all fields required
-        #for field in self.fields:
-        #    self.fields[field].required = True
-
+class UserForm(forms.ModelForm):
     class Meta:
         model = User
-
-        fields = ['first_name', 'last_name', 'payment_type', 'phone', 'address', 'address_apartment']
-
-        labels = {
-            "address": _("Your Address"),
-        }
-
+        fields = ('first_name', 'last_name', 'payment_type', 'phone',)
         widgets = {
             'payment_type': forms.RadioSelect(),
         }
 
+class UserAddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ('address_line','address_apartment','city','state','zipcode')

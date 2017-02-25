@@ -28,6 +28,9 @@ urlpatterns = [
     # Knowledge Base
      url(r'^knowledge/', include('reuserat.knowledge.urls', namespace='knowledge')),
 
+    # stripe Payments
+    url(r'^stripe/', include('reuserat.stripe.urls', namespace='stripe')),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

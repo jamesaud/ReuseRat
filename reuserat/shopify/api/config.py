@@ -10,8 +10,9 @@ SHOPIFY_SHOP_URL = "https://{api_key}:{password}@{shop_name}/admin/".format(api_
                                                                    password=settings.SHOPIFY_PASSWORD,
                                                                    shop_name=settings.SHOPIFY_APP_NAME)
 
-shopify.ShopifyResource.set_site(SHOPIFY_SHOP_URL)
-shop = shopify.Shop.current()
+def shopify_intialize():
+    shopify.ShopifyResource.set_site(SHOPIFY_SHOP_URL)
+    shop = shopify.Shop.current()
 
 
 ### SHOPIFY URL ENDPOINTS ###

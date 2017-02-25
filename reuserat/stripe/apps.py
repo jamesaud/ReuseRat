@@ -1,9 +1,9 @@
 from django.apps import AppConfig
 
 
-class AddressConfig(AppConfig):
-    name = 'reuserat.address'
-    verbose_name = "Addresses"
+class StripeConfig(AppConfig):
+    name = 'reuserat.stripe'
+    verbose_name = "stripe"
 
     def ready(self):
         """Override this to put in:

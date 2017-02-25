@@ -4,11 +4,12 @@ from ..helpers import valid_sku
 import shopify
 import requests
 
-from .config import product_base_json, product_create_url
+from .config import product_base_json, product_create_url, shopify_intialize
 from django.conf import settings
 
 
 def create_product(sku, title):
+    shopify_intialize()
     base_json = product_base_json()
 
     if not (title and sku):

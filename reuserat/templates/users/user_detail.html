@@ -30,7 +30,7 @@
 
   <div class='col-sm-2 current-balance'>
     <small>Current Balance</small>
-    <h2>$24.66</h2>
+    <h2>${{ object.get_current_balance }}</h2>
     <a class='btn  btn-success btn-success' href='#'> Cash Out </a>
   </div>
 
@@ -48,6 +48,7 @@
   <div class="row">
     <div class="col-sm-12">
           <!---shipment_set is the name generated automatically for the FK in play here of the USER -->
+
             <a href="{% url 'knowledge:shipping' %}" id='shipping-instructions' target="_blank" class='btn btn-primary btn-simple pull-left btn-sm'>
  Shipping instructions <!--  <i class="material-icons">info_outline</i>  -->
             </a>
@@ -113,13 +114,12 @@
                         </div>
                     </div>
           {% empty %}
-              <h3>No shipments yet! Please <a class="text-danger" href="{% url 'shipments:shipmentOrder' %}">create a new shipment</a> to get selling.</h3>
+              <br>
+              <h3>No shipments yet! Please <a class="text-danger" href="{% url 'shipments:shipmentOrder' %}">create a new shipment</a> to start selling.</h3>
 
         {% endfor %}
     </div>
   </div>
-
-
 
 
 </div>
