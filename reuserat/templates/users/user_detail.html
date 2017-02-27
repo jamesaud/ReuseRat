@@ -55,7 +55,7 @@
 
             <br>
 
-          {% for shipment in user_shipments %}
+          {% for shipment in user.shipment_set.all %}
                     <div class="card card-nav-tabs ">
                         <div class="head {% if shipment.item_set.exists %} header-info {% else %} header-grey {% endif %}">
                           <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->

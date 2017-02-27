@@ -92,6 +92,8 @@ class TestProductCreate(BaseWebhookTestCase):
         """
         response = self.send_request()
         item = Item.objects.get(pk=self.product_id)
+        print("@@@@@@\n\n\n\n")
+        print(item)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(item.id, self.product_id)
@@ -118,6 +120,8 @@ class TestProductUpdate(BaseWebhookTestCase):
         self.body = json.loads(body)
         self.item = ItemFactory()                                                             # Create a shipment.
         self.body['id'] = self.item.id
+        self.item.data = json.loads(body)
+        self.item.save()
         super(TestProductUpdate, self).setUp(body=self.body, topic='products/update')   # Set up the update request
         self.set_sku(self.item.shipment.get_shipment_sku())   # Update the sku
 
