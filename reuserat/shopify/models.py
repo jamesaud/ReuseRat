@@ -1,14 +1,9 @@
-from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext_lazy as _
 
-from urllib.parse import urljoin
-import os
 from reuserat.shipments.models import Shipment
-from config.settings.common import SHOPIFY_DOMAIN_NAME
-from django.conf import settings
+
 from .helpers import get_shopify_product_url, get_shopify_admin_url
+from django.contrib.postgres.fields import JSONField
 
 
 class Item(models.Model):
@@ -21,6 +16,8 @@ class Item(models.Model):
     name =  models.CharField(max_length=200)  # Shopify  Name
     handle = models.CharField(max_length=200)  # Shopify Handle
     is_visible = models.BooleanField()
+
+    data = JSONField() # Shopify Json Data
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

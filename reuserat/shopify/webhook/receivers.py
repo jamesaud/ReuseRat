@@ -20,6 +20,7 @@ class ProductReceivers:
     @classmethod
     def item_create(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
+        item = Item(data=shopify_json, id = shopify_json.get('id'))
         shipment = cls._get_shipment(shopify_json)  # Get the related shipment, specified in 'SKU'
         cls._create_item(shopify_json, shipment)
 
@@ -27,6 +28,10 @@ class ProductReceivers:
     @classmethod
     def item_update(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
+        item = Item.objects.get(pk=shopify_json.get('id'))
+        item.data = shopify_json
+        item.save()
+
         cls._update_item(shopify_json)
 
 
