@@ -53,13 +53,13 @@
   color: $grey-600;
 } 
 
-.navbar{
+.navbar{  
   .nav-link.btn-white{
       color: $grey-800 !important;
   }            
 }
    
-.close-alert{
+.close-alert{  
   font-size: 20px;
 } 
 
@@ -81,6 +81,7 @@ footer{
   .copyright{
     max-width: 300px;
     color: $grey-100;
+    padding-top: 22px;
     padding-bottom: 0px;
     position: relative;
   }

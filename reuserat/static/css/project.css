@@ -3230,6 +3230,136 @@ h2.title {
       background-color: transparent;
       color: rgba(0, 0, 0, 0.2); }
 
+.btn.btn-light-blend {
+  box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.14), 0 3px 1px -2px rgba(255, 255, 255, 0.2), 0 1px 5px 0 rgba(255, 255, 255, 0.12); }
+  .btn.btn-light-blend, .btn.btn-light-blend:hover, .btn.btn-light-blend:focus, .btn.btn-light-blend:active, .btn.btn-light-blend.active, .btn.btn-light-blend:active:focus, .btn.btn-light-blend:active:hover, .btn.btn-light-blend.active:focus, .btn.btn-light-blend.active:hover,
+  .open > .btn.btn-light-blend.dropdown-toggle,
+  .open > .btn.btn-light-blend.dropdown-toggle:focus,
+  .open > .btn.btn-light-blend.dropdown-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #FFFFFF; }
+  .btn.btn-light-blend:focus, .btn.btn-light-blend:active, .btn.btn-light-blend:hover {
+    box-shadow: 0 14px 26px -12px rgba(255, 255, 255, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(255, 255, 255, 0.2); }
+  .btn.btn-light-blend.disabled, .btn.btn-light-blend.disabled:hover, .btn.btn-light-blend.disabled:focus, .btn.btn-light-blend.disabled.focus, .btn.btn-light-blend.disabled:active, .btn.btn-light-blend.disabled.active, .btn.btn-light-blend:disabled, .btn.btn-light-blend:disabled:hover, .btn.btn-light-blend:disabled:focus, .btn.btn-light-blend:disabled.focus, .btn.btn-light-blend:disabled:active, .btn.btn-light-blend:disabled.active, .btn.btn-light-blend[disabled], .btn.btn-light-blend[disabled]:hover, .btn.btn-light-blend[disabled]:focus, .btn.btn-light-blend[disabled].focus, .btn.btn-light-blend[disabled]:active, .btn.btn-light-blend[disabled].active,
+  fieldset[disabled] .btn.btn-light-blend,
+  fieldset[disabled] .btn.btn-light-blend:hover,
+  fieldset[disabled] .btn.btn-light-blend:focus,
+  fieldset[disabled] .btn.btn-light-blend.focus,
+  fieldset[disabled] .btn.btn-light-blend:active,
+  fieldset[disabled] .btn.btn-light-blend.active {
+    box-shadow: none; }
+  .btn.btn-light-blend.btn-simple {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.2);
+    box-shadow: none; }
+    .btn.btn-light-blend.btn-simple:hover, .btn.btn-light-blend.btn-simple:focus, .btn.btn-light-blend.btn-simple:active {
+      background-color: transparent;
+      color: rgba(255, 255, 255, 0.2); }
+
+.btn.btn-light-blend1 {
+  box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.14), 0 3px 1px -2px rgba(255, 255, 255, 0.2), 0 1px 5px 0 rgba(255, 255, 255, 0.12); }
+  .btn.btn-light-blend1, .btn.btn-light-blend1:hover, .btn.btn-light-blend1:focus, .btn.btn-light-blend1:active, .btn.btn-light-blend1.active, .btn.btn-light-blend1:active:focus, .btn.btn-light-blend1:active:hover, .btn.btn-light-blend1.active:focus, .btn.btn-light-blend1.active:hover,
+  .open > .btn.btn-light-blend1.dropdown-toggle,
+  .open > .btn.btn-light-blend1.dropdown-toggle:focus,
+  .open > .btn.btn-light-blend1.dropdown-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #FFFFFF; }
+  .btn.btn-light-blend1:focus, .btn.btn-light-blend1:active, .btn.btn-light-blend1:hover {
+    box-shadow: 0 14px 26px -12px rgba(255, 255, 255, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(255, 255, 255, 0.2); }
+  .btn.btn-light-blend1.disabled, .btn.btn-light-blend1.disabled:hover, .btn.btn-light-blend1.disabled:focus, .btn.btn-light-blend1.disabled.focus, .btn.btn-light-blend1.disabled:active, .btn.btn-light-blend1.disabled.active, .btn.btn-light-blend1:disabled, .btn.btn-light-blend1:disabled:hover, .btn.btn-light-blend1:disabled:focus, .btn.btn-light-blend1:disabled.focus, .btn.btn-light-blend1:disabled:active, .btn.btn-light-blend1:disabled.active, .btn.btn-light-blend1[disabled], .btn.btn-light-blend1[disabled]:hover, .btn.btn-light-blend1[disabled]:focus, .btn.btn-light-blend1[disabled].focus, .btn.btn-light-blend1[disabled]:active, .btn.btn-light-blend1[disabled].active,
+  fieldset[disabled] .btn.btn-light-blend1,
+  fieldset[disabled] .btn.btn-light-blend1:hover,
+  fieldset[disabled] .btn.btn-light-blend1:focus,
+  fieldset[disabled] .btn.btn-light-blend1.focus,
+  fieldset[disabled] .btn.btn-light-blend1:active,
+  fieldset[disabled] .btn.btn-light-blend1.active {
+    box-shadow: none; }
+  .btn.btn-light-blend1.btn-simple {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.3);
+    box-shadow: none; }
+    .btn.btn-light-blend1.btn-simple:hover, .btn.btn-light-blend1.btn-simple:focus, .btn.btn-light-blend1.btn-simple:active {
+      background-color: transparent;
+      color: rgba(255, 255, 255, 0.3); }
+
+.btn.btn-light-blend2 {
+  box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.14), 0 3px 1px -2px rgba(255, 255, 255, 0.2), 0 1px 5px 0 rgba(255, 255, 255, 0.12); }
+  .btn.btn-light-blend2, .btn.btn-light-blend2:hover, .btn.btn-light-blend2:focus, .btn.btn-light-blend2:active, .btn.btn-light-blend2.active, .btn.btn-light-blend2:active:focus, .btn.btn-light-blend2:active:hover, .btn.btn-light-blend2.active:focus, .btn.btn-light-blend2.active:hover,
+  .open > .btn.btn-light-blend2.dropdown-toggle,
+  .open > .btn.btn-light-blend2.dropdown-toggle:focus,
+  .open > .btn.btn-light-blend2.dropdown-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    color: #FFFFFF; }
+  .btn.btn-light-blend2:focus, .btn.btn-light-blend2:active, .btn.btn-light-blend2:hover {
+    box-shadow: 0 14px 26px -12px rgba(255, 255, 255, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(255, 255, 255, 0.2); }
+  .btn.btn-light-blend2.disabled, .btn.btn-light-blend2.disabled:hover, .btn.btn-light-blend2.disabled:focus, .btn.btn-light-blend2.disabled.focus, .btn.btn-light-blend2.disabled:active, .btn.btn-light-blend2.disabled.active, .btn.btn-light-blend2:disabled, .btn.btn-light-blend2:disabled:hover, .btn.btn-light-blend2:disabled:focus, .btn.btn-light-blend2:disabled.focus, .btn.btn-light-blend2:disabled:active, .btn.btn-light-blend2:disabled.active, .btn.btn-light-blend2[disabled], .btn.btn-light-blend2[disabled]:hover, .btn.btn-light-blend2[disabled]:focus, .btn.btn-light-blend2[disabled].focus, .btn.btn-light-blend2[disabled]:active, .btn.btn-light-blend2[disabled].active,
+  fieldset[disabled] .btn.btn-light-blend2,
+  fieldset[disabled] .btn.btn-light-blend2:hover,
+  fieldset[disabled] .btn.btn-light-blend2:focus,
+  fieldset[disabled] .btn.btn-light-blend2.focus,
+  fieldset[disabled] .btn.btn-light-blend2:active,
+  fieldset[disabled] .btn.btn-light-blend2.active {
+    box-shadow: none; }
+  .btn.btn-light-blend2.btn-simple {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.4);
+    box-shadow: none; }
+    .btn.btn-light-blend2.btn-simple:hover, .btn.btn-light-blend2.btn-simple:focus, .btn.btn-light-blend2.btn-simple:active {
+      background-color: transparent;
+      color: rgba(255, 255, 255, 0.4); }
+
+.btn.btn-light-blend3 {
+  box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.14), 0 3px 1px -2px rgba(255, 255, 255, 0.2), 0 1px 5px 0 rgba(255, 255, 255, 0.12); }
+  .btn.btn-light-blend3, .btn.btn-light-blend3:hover, .btn.btn-light-blend3:focus, .btn.btn-light-blend3:active, .btn.btn-light-blend3.active, .btn.btn-light-blend3:active:focus, .btn.btn-light-blend3:active:hover, .btn.btn-light-blend3.active:focus, .btn.btn-light-blend3.active:hover,
+  .open > .btn.btn-light-blend3.dropdown-toggle,
+  .open > .btn.btn-light-blend3.dropdown-toggle:focus,
+  .open > .btn.btn-light-blend3.dropdown-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: #FFFFFF; }
+  .btn.btn-light-blend3:focus, .btn.btn-light-blend3:active, .btn.btn-light-blend3:hover {
+    box-shadow: 0 14px 26px -12px rgba(255, 255, 255, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(255, 255, 255, 0.2); }
+  .btn.btn-light-blend3.disabled, .btn.btn-light-blend3.disabled:hover, .btn.btn-light-blend3.disabled:focus, .btn.btn-light-blend3.disabled.focus, .btn.btn-light-blend3.disabled:active, .btn.btn-light-blend3.disabled.active, .btn.btn-light-blend3:disabled, .btn.btn-light-blend3:disabled:hover, .btn.btn-light-blend3:disabled:focus, .btn.btn-light-blend3:disabled.focus, .btn.btn-light-blend3:disabled:active, .btn.btn-light-blend3:disabled.active, .btn.btn-light-blend3[disabled], .btn.btn-light-blend3[disabled]:hover, .btn.btn-light-blend3[disabled]:focus, .btn.btn-light-blend3[disabled].focus, .btn.btn-light-blend3[disabled]:active, .btn.btn-light-blend3[disabled].active,
+  fieldset[disabled] .btn.btn-light-blend3,
+  fieldset[disabled] .btn.btn-light-blend3:hover,
+  fieldset[disabled] .btn.btn-light-blend3:focus,
+  fieldset[disabled] .btn.btn-light-blend3.focus,
+  fieldset[disabled] .btn.btn-light-blend3:active,
+  fieldset[disabled] .btn.btn-light-blend3.active {
+    box-shadow: none; }
+  .btn.btn-light-blend3.btn-simple {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    box-shadow: none; }
+    .btn.btn-light-blend3.btn-simple:hover, .btn.btn-light-blend3.btn-simple:focus, .btn.btn-light-blend3.btn-simple:active {
+      background-color: transparent;
+      color: rgba(255, 255, 255, 0.5); }
+
+.btn.btn-light-blend4 {
+  box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.14), 0 3px 1px -2px rgba(255, 255, 255, 0.2), 0 1px 5px 0 rgba(255, 255, 255, 0.12); }
+  .btn.btn-light-blend4, .btn.btn-light-blend4:hover, .btn.btn-light-blend4:focus, .btn.btn-light-blend4:active, .btn.btn-light-blend4.active, .btn.btn-light-blend4:active:focus, .btn.btn-light-blend4:active:hover, .btn.btn-light-blend4.active:focus, .btn.btn-light-blend4.active:hover,
+  .open > .btn.btn-light-blend4.dropdown-toggle,
+  .open > .btn.btn-light-blend4.dropdown-toggle:focus,
+  .open > .btn.btn-light-blend4.dropdown-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #FFFFFF; }
+  .btn.btn-light-blend4:focus, .btn.btn-light-blend4:active, .btn.btn-light-blend4:hover {
+    box-shadow: 0 14px 26px -12px rgba(255, 255, 255, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(255, 255, 255, 0.2); }
+  .btn.btn-light-blend4.disabled, .btn.btn-light-blend4.disabled:hover, .btn.btn-light-blend4.disabled:focus, .btn.btn-light-blend4.disabled.focus, .btn.btn-light-blend4.disabled:active, .btn.btn-light-blend4.disabled.active, .btn.btn-light-blend4:disabled, .btn.btn-light-blend4:disabled:hover, .btn.btn-light-blend4:disabled:focus, .btn.btn-light-blend4:disabled.focus, .btn.btn-light-blend4:disabled:active, .btn.btn-light-blend4:disabled.active, .btn.btn-light-blend4[disabled], .btn.btn-light-blend4[disabled]:hover, .btn.btn-light-blend4[disabled]:focus, .btn.btn-light-blend4[disabled].focus, .btn.btn-light-blend4[disabled]:active, .btn.btn-light-blend4[disabled].active,
+  fieldset[disabled] .btn.btn-light-blend4,
+  fieldset[disabled] .btn.btn-light-blend4:hover,
+  fieldset[disabled] .btn.btn-light-blend4:focus,
+  fieldset[disabled] .btn.btn-light-blend4.focus,
+  fieldset[disabled] .btn.btn-light-blend4:active,
+  fieldset[disabled] .btn.btn-light-blend4.active {
+    box-shadow: none; }
+  .btn.btn-light-blend4.btn-simple {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    box-shadow: none; }
+    .btn.btn-light-blend4.btn-simple:hover, .btn.btn-light-blend4.btn-simple:focus, .btn.btn-light-blend4.btn-simple:active {
+      background-color: transparent;
+      color: rgba(255, 255, 255, 0.6); }
+
 h1, h2, h3, h4, h5, h6, p {
   font-weight: 300; }
 
@@ -3372,6 +3502,7 @@ footer {
   footer .copyright {
     max-width: 300px;
     color: #f5f5f5;
+    padding-top: 22px;
     padding-bottom: 0px;
     position: relative; }
 

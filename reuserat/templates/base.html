@@ -76,10 +76,6 @@
                 <a class="" href="{% url 'home' %}">Home</a>
               </li>
 
-              <li class="">
-                <a class="" href="{% url 'about' %}"> Story</a>
-              </li>
-
               <li>
                   <a href="http://blog.creative-tim.com">
                     Store
@@ -137,7 +133,9 @@
                      </button>
                             
                     <ul class="dropdown-menu pull-right" aria-labelledby="social-dropup-footer">
-                          {% include "snippets/_social_drop_list.html" with destination_url=request.build_absolute_uri %}
+                      {% block share-header %}
+                        {% include "snippets/_social_drop_list.html" with destination_url=request.build_absolute_uri %}
+                      {% endblock %}
                     </ul>
                   </div>
     			
@@ -211,7 +209,9 @@
                         </button>
                                 
                         <ul class="dropdown-menu pull-right" aria-labelledby="social-dropup-footer">
+                          {% block share-footer %}
                               {% include "snippets/_social_drop_list.html" with destination_url=request.build_absolute_uri %}
+                          {% endblock %}
                         </ul>
                       </div>
 
@@ -233,11 +233,6 @@
 	                    <li>
 	                        <a href="http://www.creative-tim.com">
                                 <img class='logo' src="{% static 'images/logo.png' %}">
-	                        </a>
-	                    </li>
-						          <li>
-	                        <a href="http://presentation.creative-tim.com">
-	                           Our Story
 	                        </a>
 	                    </li>
 	                    <li>
