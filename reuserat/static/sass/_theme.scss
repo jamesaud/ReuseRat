@@ -1,9 +1,20 @@
 @import '../standalone/x_material_kit_free_v1.1.1/assets/sass/material-kit.scss';
 
-.btn.btn-dark-blend{
-        @include btn-styles(transparentize(black, .8)); 
-    }
+.btn.btn-dark-blend{@include btn-styles(transparentize(black, .8)); }
+
+.btn.btn-light-blend{ @include btn-styles(transparentize(white, .8));}
     
+.btn.btn-light-blend1{@include btn-styles(transparentize(white, .7)); }
+
+.btn.btn-light-blend2{@include btn-styles(transparentize(white, .6)); }
+
+.btn.btn-light-blend3{@include btn-styles(transparentize(white, .5));}
+    
+.btn.btn-light-blend4{@include btn-styles(transparentize(white, .4));}
+
+    
+    
+
     
 h1, h2, h3, h4, h5, h6, p{
   font-weight: 300;

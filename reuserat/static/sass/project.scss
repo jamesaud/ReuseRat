@@ -53,13 +53,13 @@
   color: $grey-600;
 } 
 
-.navbar{
+.navbar{  
   .nav-link.btn-white{
       color: $grey-800 !important;
   }            
 }
    
-.close-alert{
+.close-alert{  
   font-size: 20px;
 } 
 
@@ -81,6 +81,7 @@ footer{
   .copyright{
     max-width: 300px;
     color: $grey-100;
+    padding-top: 22px;
     padding-bottom: 0px;
     position: relative;
   }
@@ -94,7 +95,7 @@ footer{
   > button{
     padding-left: 6px;
     padding-right: 6px;
-    background-color: transparentize(lighten($first-color, .3), .1);
+    background-color: transparentize($first-color, .1);
 
     &[aria-expanded="true"]{
       background-color: transparentize(black, .6);
