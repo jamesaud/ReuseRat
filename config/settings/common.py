@@ -328,9 +328,10 @@ SHOPIFY_DOMAIN_NAME = env('SHOPIFY_DOMAIN_NAME', default='reuserat')
 SHOPIFY_APP_NAME = env('SHOPIFY_APP_NAME', default='sell-stuff-get-paid.myshopify.com')
 
 SHOPIFY_API_KEY = env('SHOPIFY_API_KEY')
+SHOPIFY_APP_API_SECRET = SHOPIFY_API_KEY
+
 SHOPIFY_PASSWORD = env('SHOPIFY_PASSWORD')
 
-SHOPIFY_APP_API_SECRET = env('SHOPIFY_APP_API_SECRET', None)
 
 
 # What comes between "www" and ".com" eg. for www.reuserat.com it would be 'reuserat'
