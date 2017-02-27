@@ -55,7 +55,7 @@ class ProductReceivers:
         :param json_data: Json from shopify
         :return: Item, the item that is created from the json_data
         """
-        id, name, handle, is_visible = json_data.get('id'), json_data.get('title'), json_data.get('handle'), \
+        id, name, handle, is_visible,  = json_data.get('id'), json_data.get('title'), json_data.get('handle'), \
                                         json_data.get('published_at', 'DNE')
 
         # visibility is None if not published, so we set up another variable to see if the call failed.

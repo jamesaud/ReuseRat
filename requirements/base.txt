@@ -54,4 +54,7 @@ ShopifyAPI==2.1.8
 
 django-localflavor==1.4
 
+stripe==1.48.1
+
+
 # Your custom requirements go here
