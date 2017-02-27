@@ -75,9 +75,7 @@ class UserCompleteSignupView(UserUpdateMixin):
     def get_success_url(self):
         acct_instance = create_account()  # Call to Stripe View to create a stripe account
         self.request.user.stripe_account = acct_instance
-        print("AACCCC IN USEERS", acct_instance.account_id)
         self.request.user.save()
-        print("AACCCC IN after USEERS", self.request.user.stripe_account.account_id)
         return reverse('users:detail',
                        kwargs={'username': self.request.user.username})
 
@@ -166,6 +164,7 @@ class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
         user_form = self.user_form(request.POST)
         address_form = self.address_form(request.POST)
 
+
         if address_form.is_valid() and user_form.is_valid():
             new_address = Address(**address_form.cleaned_data)
             new_address.save()  # Save Address first as there is an FK dependency between User & Address
@@ -179,6 +178,13 @@ class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
 
             return redirect(self.get_success_url())
 
+        else:
+
+            context = self.get_context_data(**kwargs)
+            context['address_form'] = address_form
+            context['user_form'] = user_form
+            return render(request, self.template_name, context)
+
 
 class UserCompleteSignupView(UserUpdateMixin):
     template_name = 'users/user_complete_signup_form.html'
@@ -186,10 +192,8 @@ class UserCompleteSignupView(UserUpdateMixin):
     def get_success_url(self):
         # Pass the Ip address of the client.
         # Call to Stripe View to create a stripe account
-        print("LALALALALALA")
         account_instance = create_account(self.request.META['REMOTE_ADDR'])
-        print("deported")
-        if account_instance :
+        if account_instance:
             self.request.user.stripe_account = account_instance
             self.request.user.save()
 

@@ -13,6 +13,9 @@ class UserForm(forms.ModelForm):
         widgets = {
             'payment_type': forms.RadioSelect(),
         }
+        labels = {
+            'phone': 'Phone xxx-xxx-xxxx',
+        }
 
 class UserAddressForm(forms.ModelForm):
     class Meta:
