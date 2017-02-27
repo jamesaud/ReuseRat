@@ -2,6 +2,8 @@
 @import '_theme.scss';
 @import '_colors.scss';
 @import '_utility.scss';
+@import '_social_buttons.scss';
+
 //////////////////////////////// 
 		//Django Toolbar//
 ////////////////////////////////
@@ -15,7 +17,7 @@
 
   
 .logo{
-  max-width: 150px;
+  max-width: 150px; 
 }
 
 .navbar { 
@@ -49,20 +51,15 @@
 
 .form-group label{
   color: $grey-600;
-}
+} 
 
-li{
-  list-style: none;
-}
-
-
-.navbar{
+.navbar{  
   .nav-link.btn-white{
       color: $grey-800 !important;
   }            
 }
    
-.close-alert{
+.close-alert{  
   font-size: 20px;
 } 
 
@@ -74,20 +71,6 @@ li{
   align-items: center; /* align vertical */
 }
 
-.social-share{
-  .btn-twitter{
-    background-color: $blue-300;
-  }
-  .btn-facebook{
-    background-color: $blue-700;
-  }
-  .btn-reddit{
-    background-color: $red-400;
-  }
-  .btn-medium{
-    background-color: $green-500;
-  }
-}
 
 footer{
   margin-top: 30px;
@@ -98,12 +81,32 @@ footer{
   .copyright{
     max-width: 300px;
     color: $grey-100;
+    padding-top: 22px;
     padding-bottom: 0px;
     position: relative;
   }
+
 }
 
-.blend-gradient {
-  background: -webkit-linear-gradient(90deg, rgb(22, 135, 237), rgb(107, 29, 13));
-  background: linear-gradient(90deg, rgb(22, 135, 237), rgb(107, 29, 13));
+   
+#fixed-social-drop{         
+  position: fixed;
+  margin-top: 3px;
+  > button{
+    padding-left: 6px;
+    padding-right: 6px;
+    background-color: transparentize($first-color, .1);
+
+    &[aria-expanded="true"]{
+      background-color: transparentize(black, .6);
+      }
+    }
 }
+
+
+.main-raised{
+  //Change margin from 30px so that social share fits perfectly inside
+  margin-left: 25px;
+  margin-right: 25px;
+}
+   

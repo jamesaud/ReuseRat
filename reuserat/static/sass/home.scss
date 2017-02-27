@@ -1,4 +1,5 @@
 @import '_colors.scss';
+@import '_mixins.scss';
 
 
 
@@ -10,9 +11,61 @@
   }
 }
 
-h5.description, h4.description, p.description, .features{
+h5.description, h4.description, p.description{
    color: $grey-600;
 }
+
+ 
+ .features{
+   padding-top: 60px;
+   padding-bottom: 60px;
+   h5{
+     color: $grey-600;
+   }
+ }
+
+.highlight{
+  padding-bottom: 100px;
+}
+
+ .steps{
+   padding-top: 60px;
+   padding-bottom: 60px;
+   color: grey-100;
+
+
+    /*background: #e53935;
+    background: -webkit-linear-gradient(to left, #e53935 , #e35d5b); 
+    background: linear-gradient(to left, #e53935 , #e35d5b);  */         
+    background-image: url('http://7-themes.com/data_images/out/33/6882876-beach-sunset.jpg') !important;
+	   background-position: center !important;
+	   background-attachment: fixed !important;
+
+    span.prior{
+      font-weight: 400;
+      color: $grey-100;
+      margin-right: 4px;
+    }
+    span.step{
+      color: $grey-100;
+    }
+    span.we{
+     // font-size: 30px;
+      font-weight: 400;
+      color: $grey-200;
+      margin-right: 6px;
+    }
+
+    span.arrow{
+      color: $grey-400;
+    }
+    span.and{
+      color: $grey-400;
+      font-weight: 400;
+      }
+ }
+
+
 
 .section-faq{
 	   background-position: center !important;
@@ -20,6 +73,48 @@ h5.description, h4.description, p.description, .features{
      margin-top: 60px;
 }
 
+
+// Move to theme
+.section-dark{
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+    h3{color: $grey-100;}
+    h6{color: $grey-100;}
+    h5, p{color: $grey-200;}
+    }
+
+.section-blue{
+    @extend .section-dark;
+    background: #000428; /* fallback for old browsers */
+    background: -webkit-linear-gradient(right, #000428, #004e92);
+    background: -o-linear-gradient(right, #000428, #004e92);
+    background: linear-gradient(to left, #000428, #004e92); /* Chrome 10-25, Safari 5.1-6 */ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.section-orange{
+    @extend .section-dark;
+
+
+background: #ff4b1f; /* fallback for old browsers */
+background: -webkit-linear-gradient(left, #ff4b1f, #ff9068);
+background: -o-linear-gradient(left, #ff4b1f, #ff9068);
+background: linear-gradient(to right, #ff4b1f, #ff9068); /* Chrome 10-25, Safari 5.1-6 */ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                
+}
+
+
+
+// move to utility
+.image-container{
+  img{
+    width: auto;
+    height: auto;
+    max-height: 250px;
+    }
+}
+
 footer{
     margin-top: 0px; 
 }
+

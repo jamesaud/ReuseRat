@@ -14,6 +14,10 @@
 
 {% endblock %}
 
+{% block share-header %}
+  {% include "snippets/_social_drop_list.html" with destination_url='https://www.reuserat.com' %}
+{% endblock %}
+
 {% block pre-content %}
 {% if request.user.is_authenticated %}
       <div class="container">
@@ -31,7 +35,9 @@
 {% endblock pre-content %}
 
 {% block content %}
-
-
 {% endblock content %}
 
+
+{% block share-footer %}
+  {% include "snippets/_social_drop_list.html" with destination_url='https://www.reuserat.com' %}
+{% endblock %}

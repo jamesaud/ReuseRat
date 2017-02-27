@@ -1,4 +1,4 @@
-{% extends "base_profile.html" %}
+{% extends "account/profile/base_account_profile.html" %}
 {% load crispy_forms_tags %}
 
 {% block title %}{{ user.username }}{% endblock %}
@@ -6,62 +6,32 @@
 
 {% block breadcrumb %}
     {{ block.super }}
-/ <a class="nav-link" href="{% url 'users:update' %}">My Info</a>
+/ <a class="nav-link" href="{% url 'users:update' %}">Basic Info</a>
 {% endblock %}
 
+{% block basic_info %}
+active
+{% endblock %}
 
-{% block content %}
-<div class="container">
-  <div class='row'>
-    <div class='col-md-12'>
-      <ul class="nav nav-pills" role="tablist">
-							<!--
-								color-classes: "nav-pills-primary", "nav-pills-info", "nav-pills-success", "nav-pills-warning","nav-pills-danger"
-	                        -->
-							<li>
-								<a href="#dashboard" role="tab" data-toggle="tab">
-									<i class="material-icons">dashboard</i>
-									Dashboard
-								</a>
-							</li>
-							<li class="active">
-									<a href="#schedule" role="tab" data-toggle="tab">
-									<i class="material-icons">schedule</i>
-									Schedule
-									</a>
-							</li>
-							<li>
-									<a href="#tasks" role="tab" data-toggle="tab">
-										<i class="material-icons">list</i>
-										Tasks
-									</a>
-							</li>
-							<li>
-							<a href="#payments" role="tab" data-toggle="tab">
-									<i class="material-icons">attach_money</i>
-									Payments
-							</a>
-					</li>
-			</ul>
-    </div>
-  </div>
+{% block inner %}
   <div class="row">
-    <div class="col-sm-12">
-  <h1>{{ user.username }}</h1>
+    <div class="col-sm-8 col-sm-offset-2">
+  <h1 class='text-center'>Update Basic Information</h1>
   <form class="form-horizontal" method="post" action="{% url 'users:update' %}">
     {% csrf_token %}
-    {{ form|crispy }}
-    <div class="control-group">
+        {{ user_form|crispy }}
+      {{ address_form|crispy }}
+
+      <div class="control-group">
       <div class="controls">
-          <a href="{% url 'users:detail' request.user.username %}" type="submit" class="btn">Back</a>
+          <a href="{% url 'users:detail' request.user.username %}" type="submit" class="btn">Back to Dashboard</a>
         <button type="submit" class="btn btn-primary">Update Info</button>
       </div>
     </div>
   </form>
     </div>
   </div>
-</div>
-{% endblock content %}
+{% endblock inner %}
 
 
 {% block javascript %}

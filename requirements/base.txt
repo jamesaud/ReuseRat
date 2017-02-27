@@ -52,4 +52,6 @@ django-flat-responsive==1.2.0
 # Shoipfy api wrapper
 ShopifyAPI==2.1.8
 
+django-localflavor==1.4
+
 # Your custom requirements go here

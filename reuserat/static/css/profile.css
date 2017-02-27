@@ -20,3 +20,6 @@
 
 .card-nav-tabs li {
   list-style: initial; }
+
+#fixed-social-drop {
+  position: relative; }

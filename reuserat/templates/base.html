@@ -54,7 +54,6 @@
                 </div>
           {% endfor %}
       {% endif %}
-
       <nav class="navbar navbar-transparent navbar-absolute">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -75,10 +74,6 @@
 
               <li class="">
                 <a class="" href="{% url 'home' %}">Home</a>
-              </li>
-
-              <li class="">
-                <a class="" href="{% url 'about' %}">Our Story</a>
               </li>
 
               <li>
@@ -131,22 +126,16 @@
                 </li>
                 <li>
                  
-                  <div class="dropdown">
-                     <a href="#" data-toggle="dropdown" class="btn btn-simple btn-white btn-just-icon  dropdown-toggle">
-                    <i class="fa fa-share-alt"></i>
-                                            <b class="caret"></b>
-                     </a>
+                  <div id='fixed-social-drop' class="dropdown social-drop">
+                     <button href="#" data-toggle="dropdown" class="btn  btn-just-icon dropdown-toggle">
+                        <i class="fa fa-share-alt"></i>
+                        <b class="caret"></b>
+                     </button>
                             
-                    <ul class="dropdown-menu">
-                      <li>
-                        <a href="#pablo" class="btn btn-just-icon btn-facebook btn-simple"> <i class="fa fa-facebook-square"></i><div class="ripple-container"></div></a>
-                        </li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Something else here</a></li>
-                      <li class="divider"></li>
-                      <li><a href="#">Separated link</a></li>
-                      <li class="divider"></li>
-                      <li><a href="#">One more separated link</a></li>
+                    <ul class="dropdown-menu pull-right" aria-labelledby="social-dropup-footer">
+                      {% block share-header %}
+                        {% include "snippets/_social_drop_list.html" with destination_url=request.build_absolute_uri %}
+                      {% endblock %}
                     </ul>
                   </div>
     			
@@ -190,7 +179,6 @@
         
 	        <div class="container">
 
-              {% block social-share %}
               <div class="row social-share text-center">
 	                    <button id="twitter" class="btn btn-raised btn-twitter sharrre">
 	                        <i class="fa fa-twitter"></i>
@@ -207,14 +195,33 @@
 	                        Medium
 	                    </button>
 
-						            <button id="reddit" href="https://github.com/timcreative/material-kit" target="_blank" class="btn btn-raised btn-reddit">
+						          <button id="reddit" href="https://github.com/timcreative/material-kit" target="_blank" class="btn btn-raised btn-reddit">
 	                        <i class="fa fa-reddit"></i>
 	                    	Reddit
 	                    </button>
-	            </div>
+
+                      <div class="dropup social-drop">
+                        <button class='btn btn-raised btn-default' type="button" id="social-dropup-footer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-share-alt"></i>
+                                                Share
+                                                <b class="caret"></b>
+
+                        </button>
+                                
+                        <ul class="dropdown-menu pull-right" aria-labelledby="social-dropup-footer">
+                          {% block share-footer %}
+                              {% include "snippets/_social_drop_list.html" with destination_url=request.build_absolute_uri %}
+                          {% endblock %}
+                        </ul>
+                      </div>
+
+                      <!--<button id="share-button" href="https://github.com/timcreative/material-kit" target="_blank" class="btn btn-raised btn-default">
+	                        <i class="fa fa-share-alt"></i>
+	                    	Share
+	                    </button>-->
+	            </div> <!-- /social-share -->
               
 
-            {% endblock %}
 
 
               <!-- tTEST -->
@@ -226,11 +233,6 @@
 	                    <li>
 	                        <a href="http://www.creative-tim.com">
                                 <img class='logo' src="{% static 'images/logo.png' %}">
-	                        </a>
-	                    </li>
-						          <li>
-	                        <a href="http://presentation.creative-tim.com">
-	                           Our Story
 	                        </a>
 	                    </li>
 	                    <li>
