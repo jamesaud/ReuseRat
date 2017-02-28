@@ -1,4 +1,4 @@
-{% extends "base_profile.html" %}
+{% extends "base.html" %}
 {% load crispy_forms_tags %}
 
 {% load static %}
@@ -9,8 +9,7 @@
 {% block title %}{{ user.username }}{% endblock %}
 
 
-{% block breadcrumb %}
-{% endblock %}
+
 
 
 {% block css %}
@@ -26,11 +25,15 @@
 <body class=' image-container set-full-height' style="background-image: url('{% static 'standalone/material-bootstrap-wizard-v1.0.1/assets/img/wizard-profile.jpg' %}')">
 {% endblock %}
 
+
+{% block messages %}
+{%  endblock %}
+
+
+
 {% block content-wrapper %}
 
 {% block content %}
-
-
 
 
 
@@ -115,10 +118,24 @@
 		                                <h4 class="info-text"> How would you like to be paid? </h4>
 
 		                                <div class="row">
-		                                    <div class="col-sm-8 col-sm-offset-2" data-tabs='tabs'>
+		                                    <div class="col-sm-10 col-sm-offset-1" data-tabs='tabs'>
                                           {% for choice in user_form.payment_type %}
-                                          {% if choice.choice_label == 'Check' %}
-                                           <div class="col-sm-6">
+                                          {% if choice.choice_label == 'Paypal' %}
+										  <div class="col-sm-4">
+                                               <a href='#{{choice.choice_label}}' data-toggle="tab" aria-expanded="true">
+                                                 <div class="choice active" data-toggle="wizard-radio">
+                                                    {{choice.tag}}
+		                                                <div class="icon">
+		                                                    <i class="fa fa-paypal"></i>
+		                                                </div>
+                                                    <h6>{{choice.choice_label}} (recommended)</h6>
+		                                            </div>
+                                               </a>
+		                                    </div>
+                                           
+
+                                            {% elif choice.choice_label == 'Check' %}
+                                            <div class="col-sm-4">
                                                <a href='#{{choice.choice_label}}' data-toggle="tab" aria-expanded="true">
                                                  <div class="choice" data-toggle="wizard-radio">
                                                     {{choice.tag}}
@@ -130,26 +147,30 @@
                                                </a>
 		                                        </div>
 
-                                            {% elif choice.choice_label == 'Paypal' %}
-                                            <div class="col-sm-6">
-                                               <a href='#{{choice.choice_label}}' data-toggle="tab" aria-expanded="true">
-                                                 <div class="choice active" data-toggle="wizard-radio">
+										{% elif choice.choice_label == 'Direct Deposit' %}
+                                            <div class="col-sm-4">
+                                               <a href='#Direct_Deposit' data-toggle="tab" aria-expanded="true">
+                                                 <div class="choice" data-toggle="wizard-radio">
                                                     {{choice.tag}}
 		                                                <div class="icon">
-		                                                    <i class="fa fa-paypal"></i>
+		                                                    <i class="fa fa-bank"></i>
 		                                                </div>
-                                                    <h6>{{choice.choice_label}} (recommended)</h6>
+                                                    <h6>{{choice.choice_label}}</h6>
 		                                            </div>
                                                </a>
-		                                        </div>
+		                                    </div>
+
                                             {% endif %}
                                           {% endfor %}
+										
 
-		                                        <div class="tab-content text-center">
+		                                <div class="tab-content text-center">
+											<br><br>
                                             <div class="tab-pane" id="Check">
                                               <h5>Check payments can be made out to you and mailed to your address. You'll receive an envelope with a check made out to your name.</h5>
                                               <h5>You can cash out at any time from the dashboard (there is a $1 shipping charge on checks).</h5>
                                             </div>
+
                                             <div class="tab-pane active" id="Paypal">
                                               <h5>
                                                 Paypal is the recommended way to receive funds.
@@ -157,12 +178,22 @@
                                               </h5>
                                               <h5>From the dashboard you can see your available funds and cash out at any time.</h5>
                                             </div>
-		                                         </div>
-		                                    </div>
+
+											<div class="tab-pane" id="Direct_Deposit">
+                                              <h5>
+                                                Direct Deposit is the most straightforward way to get paid. 
+                                                Transfers usually take 3 business days.
+                                              </h5>
+                                              <h5>From the dashboard you can add a bank account, see your available funds and cash out at any time.</h5>
+                                            </div>
 		                                </div>
 
+									  </div><!-- /col-md -->
+							 	     </div> <!-- /row -->
 
-		                            </div>
+
+		                       		</div> <!-- /tab-pane -->
+
 		                            <div class="tab-pane" id="address">
 		                                <div class="row">
 		                                    <div class="col-sm-12">
@@ -170,12 +201,9 @@
 		                                    </div>
 		                                    <div>
 												<div class="input-group col-sm-8 col-sm-offset-2">
-													<span class="input-group-addon">
-														<i class="material-icons">account_box</i>
-													</span>
+													
 													<div class="form-group label-floating">
 			                                            {{address_form|crispy}}
-
 			                                        </div>
 												</div>
                                                 <div class="col-sm-8 col-sm-offset-2 text-center">
@@ -192,7 +220,8 @@
 		                        </div>
 		                        <div class="wizard-footer">
 		                            <div class="pull-right">
-		                                <input type='button' class='btn btn-next btn-fill btn-success btn-wd' name='next' value='Next' />
+										<!-- Make onClick return false button, and type=submit so that 'enter' goes to the next page -->
+		                                <input type='submit' onclick="return false;" class='btn btn-next btn-fill btn-success btn-wd' name='next' value='Next'  />
 
                                         <button type="submit" class="btn btn-finish btn-fill btn-success btn-wd">Finish</button>
 

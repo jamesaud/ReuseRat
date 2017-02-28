@@ -38,6 +38,8 @@
 {% block body-tag %}
 <body>
 {% endblock %}
+
+{% block messages %}
       {% if messages %}
           {% for message in messages %}
               <div class="alert  {% if 'error' in message.tags %} alert-danger {% endif %}{% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
@@ -54,6 +56,8 @@
                 </div>
           {% endfor %}
       {% endif %}
+{% endblock messages %}
+
       <nav class="navbar navbar-transparent navbar-absolute">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
