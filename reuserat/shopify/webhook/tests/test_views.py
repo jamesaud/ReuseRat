@@ -77,8 +77,6 @@ class TestProductCreate(BaseWebhookTestCase):
         self.body['published_at'] = False  # Make it unpublished
         self.product_id = str(self.body['variants'][0]['product_id'])
         self.shipment = ShipmentFactory()
-
-
         super(TestProductCreate, self).setUp(body=self.body, topic='products/create')
 
         self.set_sku(self.shipment.get_shipment_sku())

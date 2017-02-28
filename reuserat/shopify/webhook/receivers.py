@@ -19,17 +19,13 @@ class AbstractShopifyReceiver:
 
 
 class ProductReceivers(AbstractShopifyReceiver):
-
     """
     Using Item instead of Product because that's what our Model is called.
     """
-
     @classmethod
     def item_create(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
-
         shipment = cls._get_shipment(shopify_json)  # Get the related shipment, specified in 'SKU'
-
         item = Item(data=shopify_json,
                     id=shopify_json['variants'][0]['product_id'],
                     shipment=shipment,
@@ -38,7 +34,6 @@ class ProductReceivers(AbstractShopifyReceiver):
                     is_visible=True if shopify_json['published_at'] else False,
                     )
         item.save()
-
 
     @classmethod
     def item_update(cls, sender, **kwargs):
@@ -63,7 +58,6 @@ class ProductReceivers(AbstractShopifyReceiver):
         item = cls._get_item(shopify_json)
         item.delete()
 
-
     """
     Helper Functions Below
     """
@@ -76,7 +70,6 @@ class ProductReceivers(AbstractShopifyReceiver):
             print("Getting item using primary key found from 'id' in json does not exist: {}".format(json_data))
             raise
         return item
-
 
     @classmethod
     def _get_shipment(cls, json_data):
@@ -97,8 +90,6 @@ class ProductReceivers(AbstractShopifyReceiver):
 
     @classmethod
     def _get_user_id(cls, json_data):
-        # The first variant's sku, which is the same as all variants sku
-        # Split on dash because the SKU is entered in as:   "<userid> - <shipment_id>"
         if valid_sku(json_data.get('variants')[0].get('sku')):
             return json_data.get('variants')[0].get('sku').split('-')[0]
         raise ValueError("JSON sku is not formatted as expected: {}".format(json_data))
