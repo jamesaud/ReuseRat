@@ -18,12 +18,12 @@ PAYMENT_CHOICES = (
 )
 
 class Address(models.Model):
-    address_line = models.CharField(_('Address Line #'), max_length=30, blank=False, null=False)
-    address_apartment = models.CharField(_('Apartment #'), max_length=30, blank=False, null=False)
+    address_line = models.CharField(_('Address Line'), max_length=30, blank=False, null=False)
+    address_apartment = models.CharField(_('Apartment #'), max_length=30, blank=True, null=True)
     city =models.CharField(_('City'),max_length=50, blank=False, null=False)
     state = usmodels.USStateField(blank=False, null=False)
-    zipcode = usmodels.USZipCodeField(max_length=5)
-    country = models.CharField(_('Country'), max_length=30, blank=True, null=True,default ="US") #Stripe only accepts US accounts
+    zipcode = usmodels.USZipCodeField(max_length=20, blank=False, null=False)
+    country = models.CharField(_('Country'), max_length=30, blank=True, null=False, default ="US") #Stripe only accepts US accounts
 
 @python_2_unicode_compatible
 class User(AbstractUser):
@@ -52,3 +52,6 @@ class User(AbstractUser):
         except stripe.error.AuthenticationError:
             balance = "Temporarily Unavailable"
         return float("{:.2f}".format(balance))
+
+    def completed_signup(self):
+        return True if self.address and self.payment_type else False

@@ -40,10 +40,12 @@ class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
 class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
     user_form = UserForm
     address_form = UserAddressForm
+    message_error = None
 
     def get_context_data(self, **kwargs):
         context = super(UserUpdateMixin, self).get_context_data(**kwargs)
         context['user_form'] = self.user_form(instance=self.request.user)
+
         if self.request.user.address:
             context['address_form'] = self.address_form(instance=self.request.user.address)
         else:
@@ -67,6 +69,7 @@ class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
             self.request.user.save()
 
             return redirect(self.get_success_url())
+
 
 
 class UserCompleteSignupView(UserUpdateMixin):
@@ -137,9 +140,8 @@ class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
         """
         Override the dispatch function, and required that a user have filled in payment type and address.
         """
-        print(self.request.user.payment_type)
 
-        if not (self.request.user.payment_type and self.request.user.address):
+        if not request.user.completed_signup():
             return redirect('users:complete_signup', username=self.request.user.username)
 
         return super(LoginUserCompleteSignupRequiredMixin, self).dispatch(request, *args, **kwargs)

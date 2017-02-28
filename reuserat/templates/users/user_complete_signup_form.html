@@ -19,7 +19,7 @@
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
 
 <!-- CSS Files -->
-<link type='text/css' href="{% static 'standalone/material-bootstrap-wizard-v1.0.1/assets/css/material-bootstrap-wizard.css' %}" rel="stylesheet" />
+<link type='text/css' href="{% static 'standalone/material-bootstrap-wizard-v1.0.1/assets/css/material-bootstrap-wizard-only.css' %}" rel="stylesheet" />
 {% endblock %}
 
 {% block body-tag %}
@@ -106,7 +106,7 @@
 												</div>
 		                                	</div>
                                       <div class='col-sm-10 col-sm-offset-1 text-center'>
-                                        <small><span class='asterisk'>*</span>You can change your email from dashboard</small>
+                                        <p><span class='asterisk'>*</span>You can change your email from dashboard</p>
                                       </div>
 		                            	</div> <!-- /row -->
 		                            </div> <!-- /tab-pane -->
@@ -178,8 +178,15 @@
 
 			                                        </div>
 												</div>
+                                                <div class="col-sm-8 col-sm-offset-2 text-center">
+                                                    <p>
+                                                        By registering your account, you agree to our
+                                                        <a href=""> Services Agreement </a>
+                                                        and the
+                                                        <a href="https://stripe.com/us/connect-account/legal">Stripe Connected Account Agreement.</a>
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <p>By registering your account, you agree to our <a href=""> Services Agreement </a> and the <a href="https://stripe.com/us/connect-account/legal">Stripe Connected Account Agreement.</a>
 		                                </div>
 		                            </div>
 		                        </div>

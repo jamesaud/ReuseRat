@@ -34,7 +34,7 @@ var pathsConfig = function (appName) {
     sass: this.app + '/static/sass',
     fonts: this.app + '/static/fonts',
     images: this.app + '/static/images',
-    js: this.app + '/static/js',
+    js: this.app + '/static/js'
   }
 };
 
@@ -52,7 +52,7 @@ gulp.task('styles', function() {
     .pipe(autoprefixer({browsers: ['last 2 version']})) // Adds vendor prefixes
     .pipe(pixrem())  // add fallbacks for rem units
     .pipe(gulp.dest(paths.css))
-    .pipe(rename({ suffix: '.min' })) 
+    .pipe(rename({ suffix: '.min' }))
     .pipe(cssnano()) // Minifies the result
     .pipe(gulp.dest(paths.css));
 });
