@@ -33,20 +33,6 @@ class Item(models.Model):
         return get_shopify_admin_url(self.id)
 
 
-    def save(self, override=False, *args, **kwargs):
-        """
-        :param override: Boolean, allows the user to set their own fields instead of using the JsonData to auto-set.
-        """
-
-        if not override:
-            self.name = self.data.get('title')
-            self.handle = self.data.get('handle')
-            self.is_visible = True if self.data.get('published_at') else False
-
-        super(Item, self).save(*args, **kwargs)
-
-
-
     def __str__(self):
         return self.name
 

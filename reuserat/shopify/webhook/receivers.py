@@ -27,18 +27,28 @@ class ProductReceivers(AbstractShopifyReceiver):
     @classmethod
     def item_create(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
+
         shipment = cls._get_shipment(shopify_json)  # Get the related shipment, specified in 'SKU'
-        item = Item(data=shopify_json, id=shopify_json.get('id'), shipment=shipment)
+
+        item = Item(data=shopify_json,
+                    id=shopify_json['variants'][0]['product_id'],
+                    shipment=shipment,
+                    handle=shopify_json['handle'],
+                    name=shopify_json['title'],
+                    is_visible=True if shopify_json['published_at'] else False,
+                    )
         item.save()
-        print("\n\nSAVED THAT ITEM @@@@\n\n\n")
+
 
     @classmethod
     def item_update(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
         item = cls._get_item(shopify_json)
         item.data = shopify_json
+        item.handle = shopify_json['handle']
+        item.name = shopify_json['title']
+        item.is_visible= True if shopify_json['published_at'] else False
         item.save()
-
 
     @classmethod
     def item_update_or_create(cls, sender, **kwargs):
@@ -58,11 +68,10 @@ class ProductReceivers(AbstractShopifyReceiver):
     Helper Functions Below
     """
 
-
     @classmethod
     def _get_item(self, json_data):
         try:
-            item = Item.objects.get(pk=json_data['id'])
+            item = Item.objects.get(pk=json_data['variants'][0]['product_id'])
         except Item.DoesNotExist:
             print("Getting item using primary key found from 'id' in json does not exist: {}".format(json_data))
             raise
