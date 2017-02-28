@@ -1,6 +1,9 @@
 from reuserat.shopify.models import Item
 from reuserat.shipments.models import Shipment
+from reuserat.users.models import User
+from reuserat.stripe.helpers import create_charge
 from ..helpers import valid_sku
+
 
 '''
 RECEIVERS FOR WEBHOOK SIGNALS ARE DEFINED BELOW.
@@ -10,8 +13,15 @@ Improve:
  - create JSON validation templates which we can verify: http://python-jsonschema.readthedocs.io/en/latest/validate/
 '''
 
+class AbstractShopifyReceiver:
 
-class ProductReceivers:
+    @classmethod
+    def _get_shopify_json(cls, json_sender_data):
+        return json_sender_data['data']  # parse out the sender signal and name
+
+
+
+class ProductReceivers(AbstractShopifyReceiver):
 
     """
     Using Item instead of Product because that's what our Model is called.
@@ -114,12 +124,6 @@ class ProductReceivers:
             print("Shipment with ID + does not exist in database from json_data: {}".format(json_data))
             raise
 
-
-    @classmethod
-    def _get_shopify_json(cls, json_sender_data):
-        return json_sender_data['data']  # parse out the sender signal and name
-
-
     @classmethod
     def _get_shipment_id(cls, json_data):
         # The first variant's SKU, which is the same as all variants SKU.
@@ -135,3 +139,31 @@ class ProductReceivers:
         if valid_sku(json_data.get('variants')[0].get('sku')):
             return json_data.get('variants')[0].get('sku').split('-')[0]
         raise ValueError("JSON sku is not formatted as expected: {}".format(json_data))
+
+
+
+class OrderReceivers(AbstractShopifyReceiver):
+
+    """
+    This class is responsible for handling order related webhooks from Shopify
+    """
+    @classmethod
+    def order_payment(cls, sender, **kwargs):
+        shopify_json  = cls._get_shopify_json(kwargs)
+        item_list = shopify_json['line_items']
+        print("ITEM LIST",item_list)
+        for item in item_list:
+            # Update the shipment model, decrease the numebr of items for that shipment,if its 0 delete the shipment
+            try:
+                Item.objects.filter(pk=item['product_id']).update(status = "Sold")
+                item_object = Item.objects.get(pk=item['product_id'])
+                create_charge(item_object.shipment.user)
+
+            except Item.DoesNotExist:
+                print("Shipment with ID + does not exist in database from json_data: {}".format(shopify_json))
+                raise
+
+
+
+
+

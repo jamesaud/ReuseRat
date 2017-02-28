@@ -21,7 +21,7 @@ class Item(models.Model):
     name =  models.CharField(max_length=200)  # Shopify  Name
     handle = models.CharField(max_length=200)  # Shopify Handle
     is_visible = models.BooleanField()
-
+    status = models.CharField(max_length=100,default="Not Sold")
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 

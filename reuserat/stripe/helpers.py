@@ -1,4 +1,5 @@
 from reuserat.stripe.models import StripeAccount
+
 import stripe
 from django.conf import settings
 import time
@@ -76,11 +77,17 @@ def update_payment_info(account_id, account_token, user_object):
     account.save()
     account.external_accounts.create(external_account=account_token, default_for_currency="true")
 
+    # Create a Customer:
+    customer = stripe.Customer.create(
+        email=user_object.email,
+        source="sa",
+    )
+
     return account
 
 
 # Making Payment...
-def create_charge(user_obj, acc_token):
+def create_charge(user_obj, acc_token=None,):
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Secret Key.
 
     charge = stripe.Charge.create(
