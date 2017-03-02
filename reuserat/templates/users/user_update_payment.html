@@ -1,31 +1,152 @@
 {% extends "account/profile/base_account_profile.html" %}
-{% load crispy_forms_tags %}
 
-{% block title %}{{ user.username }}{% endblock %}
+{% load crispy_forms_tags %}
+{% load static %}
+
 
 
 {% block breadcrumb %}
     {{ block.super }}
-/ <a class="nav-link" href="{% url 'users:update_payment_information' %}">Payment Update</a>
+/ <a class="nav-link" href="{% url 'users:update' %}">Basic Info</a>
 {% endblock %}
 
-{% block content %}
-<div class = "container">
-<form class="form-horizontal" method="post" action="{% url 'users:update_payment_information' %}"  id = "payment-form">
+{% block payments %}
+active
+{% endblock %}
 
+
+{% block inner %}
+<div class = "col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 wizard-card section-payments">
+    <h3 class='text-center'>Your current payment choice is <span class='text-info'>{{request.user.payment_type}}</span></h3>
+
+    <form method="post" action="{% url 'users:update_payment_information' %}"  id = "payment-form">
     {% csrf_token %}
-    {{ update_payment_form|crispy }}
-    <div class="control-group">
-      <div class="controls">
-        <button type="submit" class="btn">Update</button>
-      </div>
-    </div>
-</form></div>
-{% endblock %}
+    <div class="row">
+            <div data-tabs='tabs'>
+                {% for choice in update_payment_form.payment_type %}
+                    {% if choice.choice_label == 'Paypal' %}
+                    <div class="col-sm-4">
+                        <a href='#Paypal' data-toggle="tab" aria-expanded="true">
+                            <div class="wizard-choice active" data-toggle="wizard-radio">
+                            {{choice.tag}}
+                                <div class="icon">
+                                    <i class="fa fa-paypal"></i>
+                                </div>
+                            <h6>{{choice.choice_label}} (recommended)</h6>
+                            </div>
+                        </a>
+                    </div>
+
+
+                    {% elif choice.choice_label == 'Check' %}
+                    <div class="col-sm-4">
+                        <a href='#Check' data-toggle="tab" aria-expanded="true">
+                            <div class="wizard-choice" data-toggle="wizard-radio">
+                            {{choice.tag}}
+                                <div class="icon">
+                                    <i class="fa fa-pencil"></i>
+                                </div>
+                                <h6>{{choice.choice_label}}</h6>
+                            </div>
+                        </a>
+                    </div>
+
+                {% elif choice.choice_label == 'Direct Deposit' %}
+                    <div class="col-sm-4">
+                        <a href='#Direct_Deposit' data-toggle="tab" aria-expanded="true">
+                            <div class="wizard-choice" data-toggle="wizard-radio">
+                            {{choice.tag}}
+                                <div class="icon">
+                                    <i class="fa fa-bank"></i>
+                                </div>
+                            <h6>{{choice.choice_label}}</h6>
+                            </div>
+                        </a>
+                    </div>
+
+                {% endif %}
+                {% endfor %}
+
+
+            <div class="tab-content">
+                <div class="tab-pane" id="Check">
+                    <h5 class="col-sm-12">Check payments can be made out to you and mailed to your address.
+                        You'll receive an envelope with a check made out to your name.
+                        Your current address on file is:
+                    </h5>
+
+                    <div  class="col-sm-8 col-sm-offset-4">
+                        <h6>
+                            <ol>
+                                {{ request.user.address.to_html | safe }}
+                            </ol>
+                        </h6>
+                    </div>
+                    <h5 class="col-sm-12">Note, there is a $1 shipping charge on checks.</h5>
+                </div>
+
+                <div class="tab-pane active" id="Paypal">
+                    <div class="col-sm-12">
+                        <h5>
+                        Paypal is the recommended way to receive funds.
+                        When your cash out, you'll receive an email requesting to transfer funds to your paypal account.
+                            If you'd like to use a different email, please add an email <a href="{% url 'account_email' %}">here</a>.</h5>
+                        <h5>Please choose from the following verified emails to use with Paypal: </h5>
+                         {% for email in user.emailaddress_set.all %}
+                             {% if email.verified %}
+                                <div class="radio">
+                                  <label for="email_radio_{{forloop.counter}}">
+                                    <input id="email_radio_{{forloop.counter}}" type="radio" name="email" value="{{emailaddress.email}}"/>
+                                    {{ email.email }}
+                                  </label>
+                                </div>
+                            {% endif %}
+                         {% endfor %}
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="Direct_Deposit">
+                    <div class="col-sm-12">
+                        <h5>
+                        Direct Deposit requires the following information.
+                        When you cash out from the dashboard, money will be deposited into this bank account.
+                        Transfers usually take 3 business days.
+                        </h5>
+
+                        <div class="row">
+                            {% crispy update_payment_form %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+
+                                <div class="controls">
+                                    <button type="submit" class="btn">Back to Dashboard</button>
+
+                                    <button type="submit" class="btn btn-primary">Update Payment</button>
+                                </div>
+                            </div>
+
+        </div><!-- /col-md -->
+	</div> <!-- /row -->
+
+    </form>
+</div> <!-- /section-payments -->
+
+
+
+{% endblock inner %}
+
+
 
 {% block javascript %}
-{{block.super}}
- {{ update_payment_form.media.js }}
+    {{ block.super }}
+
+    {{ update_payment_form.media.js }}
+
      <script>
         Stripe.setPublishableKey('{{ update_payment_form.PUBLISHABLE_KEY }}');
         var stripeResponseHandler =function(status, response) {

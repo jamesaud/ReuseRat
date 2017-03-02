@@ -1,17 +1,21 @@
 from django import forms
 from crispy_forms.helper import FormHelper
-from django.conf import settings
+from crispy_forms.layout import Layout, Div, HTML, Field, MultiWidgetField
 from django.forms import extras
+from django.conf import settings
+from reuserat.users.models import PAYMENT_CHOICES
 
 # https://stripe.com/docs/ach#manually-collecting-and-verifying-bank-accounts
 # We are not using the Plaid integration because :
 # If your customer’s bank is not supported or you do not wish to integrate with Plaid,
 # collect and verify the customer’s bank using Stripe alone.
 class UpdatePaymentForm(forms.Form):
-    PUBLISHABLE_KEY= settings.STRIPE_TEST_PUBLISHABLE_KEY
     """
     Form for updating payment information like account number and routing number for making transaction .
     """
+
+    PUBLISHABLE_KEY= settings.STRIPE_TEST_PUBLISHABLE_KEY  # Required by the stripe javascript call.
+
     account_number = forms.IntegerField(required=True,label='Account Number',
                                         widget=forms.TextInput(attrs={'data-stripe' : 'account_number'}))
 
@@ -21,7 +25,9 @@ class UpdatePaymentForm(forms.Form):
     routing_number = forms.IntegerField(required=True,label='Routing Number',
                                         widget=forms.TextInput(attrs={'data-stripe' : 'routing_number'}))
 
-    birthdate = forms.DateField(required=True,widget=extras.SelectDateWidget(years=[y for y in range(1930,2017)]))
+    birth_date = forms.DateField(required=True,
+                                label='Birth Date (for verifying account)',
+                                widget=extras.SelectDateWidget(years=[y for y in range(1930,2017)]))
 
 
     # Hidden Fields,supplied by default
@@ -32,10 +38,33 @@ class UpdatePaymentForm(forms.Form):
     account_holder_type = forms.CharField(initial="individual",required=True,label='Account Holder Type',
                                           widget=forms.HiddenInput(attrs={'data-stripe' : 'account_holder_type'}))
 
+
+    payment_type = forms.ChoiceField(widget=forms.RadioSelect, choices=PAYMENT_CHOICES)
+
+
     def __init__(self, *args, **kwargs):
         super(UpdatePaymentForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Div('account_holder_name', css_class="col-md-6"),
+            Div(MultiWidgetField('birth_date',
+                                 attrs=({'style': 'width: 32%; display: inline-block;'})),
+                                 css_class="col-md-6"),
+            Div('account_number', css_class="col-md-6"),
+            Div('routing_number', css_class="col-md-6"),
+        )
+
+        self.helper.form_tag = False
+        self.helper.include_media = False
 
     class Media:
-        js = ('https://js.stripe.com/v2/',)
+        # Extra js classes are needed to make the circle radio buttons work.
+        js = ('https://js.stripe.com/v2/',
+              'standalone/material-bootstrap-wizard-v1.0.1/assets/js/jquery.bootstrap.js',
+              'standalone/material-bootstrap-wizard-v1.0.1/assets/js/bootstrap.min.js',
+              'standalone/material-bootstrap-wizard-v1.0.1/assets/js/jquery.validate.min.js',
+              'standalone/material-bootstrap-wizard-v1.0.1/assets/js/material-bootstrap-wizard.js',
+
+              )
+
 

@@ -9,7 +9,7 @@ from django.views.generic.edit import FormMixin, ProcessFormView
 from django.contrib.auth import get_user_model
 from .models import User, Address
 from reuserat.stripe.models import StripeAccount
-from .forms import UserAddressForm, UserForm
+from .forms import UserAddressForm, UserForm, UserCompleteSignupForm
 from reuserat.stripe.forms import UpdatePaymentForm
 from reuserat.stripe.helpers import create_account, update_payment_info, create_charge
 from django.contrib.auth.decorators import login_required  # new#  import for function based view (FBV)
@@ -28,24 +28,21 @@ class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
         """
         Override the dispatch function, and required that a user have filled in payment type and address.
         """
-        print(self.request.user.payment_type)
 
-        if not (self.request.user.payment_type and self.request.user.address):
+        if not (self.request.user.completed_signup()):
             return redirect('users:complete_signup', username=self.request.user.username)
 
         return super(LoginUserCompleteSignupRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
 # Mixin for updating 2 models
-class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
+class UserUpdateMixin(LoginRequiredMixin):
     user_form = UserForm
     address_form = UserAddressForm
-    message_error = None
 
     def get_context_data(self, **kwargs):
         context = super(UserUpdateMixin, self).get_context_data(**kwargs)
         context['user_form'] = self.user_form(instance=self.request.user)
-
         if self.request.user.address:
             context['address_form'] = self.address_form(instance=self.request.user.address)
         else:
@@ -53,8 +50,7 @@ class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
         return context
 
     def post(self, request, *args, **kwargs):
-
-        user_form = self.user_form(request.POST)
+        user_form = self.ussr_form(request.POST)
         address_form = self.address_form(request.POST)
 
         if address_form.is_valid() and user_form.is_valid():
@@ -70,23 +66,6 @@ class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
 
             return redirect(self.get_success_url())
 
-
-
-class UserCompleteSignupView(UserUpdateMixin):
-    template_name = 'users/user_complete_signup_form.html'
-
-    def get_success_url(self):
-        acct_instance = create_account()  # Call to Stripe View to create a stripe account
-        self.request.user.stripe_account = acct_instance
-        self.request.user.save()
-        return reverse('users:detail',
-                       kwargs={'username': self.request.user.username})
-
-    def get_context_data(self, **kwargs):
-        context = super(UserCompleteSignupView, self).get_context_data(**kwargs)
-        context['user_form'] = self.user_form(instance=self.request.user,
-                                              initial={'payment_type': 'Paypal'})
-        return context
 
 
 class UserUpdateView(UserUpdateMixin):
@@ -181,7 +160,6 @@ class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
             return redirect(self.get_success_url())
 
         else:
-
             context = self.get_context_data(**kwargs)
             context['address_form'] = address_form
             context['user_form'] = user_form
@@ -190,6 +168,7 @@ class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
 
 class UserCompleteSignupView(UserUpdateMixin):
     template_name = 'users/user_complete_signup_form.html'
+    user_form = UserCompleteSignupForm
 
     def get_success_url(self):
         # Pass the Ip address of the client.
@@ -246,32 +225,23 @@ class UserListView(LoginUserCompleteSignupRequiredMixin, ListView):
 
 @login_required
 def update_payment_information(request):
-    if request.method == "GET":
-        country = request.user.address.country
-        form = UpdatePaymentForm()  # Create an object for form
-        return render(request, "users/user_update_payment.html", {"update_payment_form": form})  # Display Form
+    form = UpdatePaymentForm(request.POST or None, initial={"birth_date": request.user.birth_date,
+                                                            "account_holder_name": request.user.get_full_name(),
+                                                            })
 
     # Get the form data ,so the POST request
-    if request.method == "POST":
-        print(request.POST,"REQUEST")
-        form = UpdatePaymentForm(request.POST)
+    if request.method == "POST" and form.is_valid():
         request.user.birth_date = datetime.date(int(request.POST['birthdate_year']),
                                                 int(request.POST['birthdate_month']),
                                                 int(request.POST['birthdate_day']))
         request.user.save()
-        if form.is_valid():
-            if update_payment_info(str(request.user.stripe_account.account_id), request.POST["stripeToken"],request.user):
 
-                messages.add_message(request, messages.SUCCESS, "Updated")
-                return redirect(reverse('users:detail', kwargs={'username': request.user.username}))
-            else:
-                messages.add_message(request, messages.ERROR, "Server Error!Please try again")
+        if update_payment_info(str(request.user.stripe_account.account_id), request.POST["stripeToken"], request.user):
+            messages.add_message(request, messages.SUCCESS, "Updated Successfully")
+            return redirect(reverse('users:detail', kwargs={'username': request.user.username}))
 
-        form = UpdatePaymentForm()
-
-        return render(request, "users/user_update_payment.html", {"update_payment_form": form})
+        else:
+            messages.add_message(request, messages.ERROR, "Server Error! Please try again later.")
 
 
-def testCharge(request):
-    print("I AM HERE")
-    create_charge(request.user)
+    return render(request, "users/user_update_payment.html", {"update_payment_form": form})
