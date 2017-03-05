@@ -14,7 +14,6 @@ class Item(models.Model):
     """
     data = JSONField() # Shopify Json Data
 
-
     id = models.CharField(max_length=100, primary_key=True)  # Must Be Shopify product ID!
     shipment = models.ForeignKey(Shipment, on_delete=models.CASCADE)
     name =  models.CharField(max_length=200)  # Shopify  Name

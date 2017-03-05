@@ -3,7 +3,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, HTML, Field, MultiWidgetField
 from django.forms import extras
 from django.conf import settings
-from reuserat.users.models import PAYMENT_CHOICES
+from reuserat.users.models import PaymentChoices
+from .models import PaypalAccount
 
 # https://stripe.com/docs/ach#manually-collecting-and-verifying-bank-accounts
 # We are not using the Plaid integration because :
@@ -14,7 +15,7 @@ class UpdatePaymentForm(forms.Form):
     Form for updating payment information like account number and routing number for making transaction .
     """
 
-    PUBLISHABLE_KEY= settings.STRIPE_TEST_PUBLISHABLE_KEY  # Required by the stripe javascript call.
+    PUBLISHABLE_KEY = settings.STRIPE_TEST_PUBLISHABLE_KEY  # Required by the stripe javascript call.
 
     account_number = forms.IntegerField(required=True,label='Account Number',
                                         widget=forms.TextInput(attrs={'data-stripe' : 'account_number'}))
@@ -38,10 +39,6 @@ class UpdatePaymentForm(forms.Form):
     account_holder_type = forms.CharField(initial="individual",required=True,label='Account Holder Type',
                                           widget=forms.HiddenInput(attrs={'data-stripe' : 'account_holder_type'}))
 
-
-    payment_type = forms.ChoiceField(widget=forms.RadioSelect, choices=PAYMENT_CHOICES)
-
-
     def __init__(self, *args, **kwargs):
         super(UpdatePaymentForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -52,6 +49,9 @@ class UpdatePaymentForm(forms.Form):
                                  css_class="col-md-6"),
             Div('account_number', css_class="col-md-6"),
             Div('routing_number', css_class="col-md-6"),
+            'country',
+            'currency',
+            'account_holder_type'
         )
 
         self.helper.form_tag = False
@@ -67,4 +67,21 @@ class UpdatePaymentForm(forms.Form):
 
               )
 
+
+
+class PaypalUpdateForm(forms.Form):
+    email = forms.ChoiceField(widget=forms.RadioSelect,
+                              label='Choose an email to use with Paypal',
+                              choices=(['email', 'www.email@example.com'],))
+
+    def __init__(self, choices, *args, **kwargs):
+        """
+        :param choices: A list of valid emails for the paypal update form, found from the user's verified emails.
+        """
+        super().__init__(*args, **kwargs)
+        self.fields['email'].choices = choices
+
+
+class UserPaymentForm(forms.Form):
+    payment_type = forms.ChoiceField(widget=forms.RadioSelect, choices=PaymentChoices.CHOICES)
 

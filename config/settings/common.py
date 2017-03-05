@@ -55,6 +55,7 @@ LOCAL_APPS = (
     'reuserat.shopify.apps.ShopifyConfig',
     'reuserat.knowledge.apps.KnowledgeConfig',
     'reuserat.stripe.apps.StripeConfig',
+
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

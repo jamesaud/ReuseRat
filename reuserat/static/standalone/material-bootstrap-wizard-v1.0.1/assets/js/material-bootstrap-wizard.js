@@ -161,7 +161,7 @@ $(document).ready(function(){
         wizard = $(this).closest('.wizard-card');
         wizard.find('[data-toggle="wizard-radio"]').removeClass('active');
         $(this).addClass('active');
-        $(wizard).find('[type="radio"]').removeAttr('checked');
+        $(wizard).find('[data-toggle="wizard-radio"]').find('[type="radio"]').removeAttr('checked');
         $(this).find('[type="radio"]').attr('checked','true');
     });
 
@@ -224,7 +224,7 @@ function refreshAnimation($wizard, index){
     $('.moving-tab').css({
         'transform':'translate3d(' + move_distance + 'px, 0, 0)',
         'transition': 'all 0.5s cubic-bezier(0.29, 1.42, 0.79, 1)'
-    
+
     });
 }
 
