@@ -65,10 +65,12 @@ class User(AbstractUser):
 
     def get_current_balance(self):
         # Call function here from helpers
+        # External API Call
         try:
             balance = retrieve_balance(self.stripe_account.secret_key)
         except stripe.error.AuthenticationError:
             balance = "Temporarily Unavailable"
+
         return float("{:.2f}".format(balance))
 
     def get_primary_email(self):

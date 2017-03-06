@@ -5,11 +5,15 @@ from unittest.mock import patch
 import stripe
 from django.conf import settings
 from config.settings import test
+from ..models import PaymentChoices
+from django.conf import settings
+from .factories import EmailAddressFactory
+
 
 from ..views import (
     UserRedirectView,
     UserUpdateView,
-    update_payment_information,
+    UpdatePaymentInformation,
 )
 
 class BaseUserTestCase(TestCase):
@@ -79,44 +83,115 @@ class TestUpdatePaymentInformation(TestCase):
         request.user = self.user
 
         # Check if the form was rendered
-        response = update_payment_information(request)
+        response = UpdatePaymentInformation.as_view()(request)
 
         self.assertEqual(response.status_code, 200)
 
-    def test_post(self):
+    def test_stripe_updated(self):
+        account_number = settings.STRIPE_TEST_ACCOUNT_NUMBER
+        routing_number = settings.STRIPE_TEST_ROUTING_NUMBER
+        account_name = 'Jane Does'
 
-        form_data = {'account_holder_name': 'Jane Doe',
+        form_data = {
+                     'payment_type': PaymentChoices.DIRECT_DEPOSIT,
+                     'account_holder_name': account_name,
                      'currency': 'USD',
-                     'birthdate_month': '5',
-                     'birthdate_year': '2001',
-                     'routing_number': '111000025',
-                     'account_number': '000123456789',
+                     'birth_date_month': '5',
+                     'birth_date_day': '5',
+                     'birth_date_year': '2001',
+                     'routing_number': routing_number,
+                     'account_number': account_number,
                      'account_holder_type': 'individual',
                      'country': 'US',
                      'birthdate_day': '5',
-                     'stripeToken':stripe.Token.create(bank_account={"country": 'US',
+                     'stripeToken': stripe.Token.create(bank_account={"country": 'US',
                                                                 "currency": 'USD',
-                                                                "account_holder_name": 'Jane Doe',
+                                                                "account_holder_name": account_name,
                                                                 "account_holder_type": 'individual',
-                                                                "routing_number": '111000025',
-                                                                "account_number": '000123456789'
+                                                                "routing_number": routing_number,
+                                                                "account_number": account_number
                                                                 }, )['id']
                      }
-        #requests.post(settings.BASE_URL + '/api/project', params=data)
+
+
         mock_messages = patch('reuserat.users.views.messages').start()
         mock_messages.SUCCESS = success = 'success'
-        request = self.factory.post('/~updatepayment/',data = form_data)
-        request.user = self.user
-        response = update_payment_information(request)
-        msg = u'Updated'
-        mock_messages.add_message.assert_called_with(request, success, msg)
 
-        #request.user= self.user
-        # Check if the form was rendered
+        request = self.factory.post('/~updatepayment/', data=form_data)
+        request.user = self.user
+        response = UpdatePaymentInformation.as_view()(request)
+
+        msg = u'Updated Bank Successfully'
+        mock_messages.add_message.assert_called_with(request, success, msg)
 
         self.assertEqual(response.status_code, 302)
 
+        self.assertEqual(account_number[-4:], self.user.stripe_account.account_number_last_four)
+        self.assertEqual(routing_number[-4:], self.user.stripe_account.routing_number_last_four)
+        self.assertEqual(len(account_number), self.user.stripe_account.account_number_length)
+        self.assertEqual(account_name, self.user.stripe_account.account_holder_name)
+        self.assertTrue(self.user.stripe_account.has_bank())
 
+        self.assertTrue(self.user.payment_type, PaymentChoices.DIRECT_DEPOSIT)
+
+
+    def test_paypal_account(self):
+        """
+        Test that the email submitted becomes the user's paypal account's new email.
+        """
+        new_email = EmailAddressFactory(user=self.user)
+
+        form_data = {
+            'payment_type': PaymentChoices.PAYPAL,
+            'email': new_email.email,
+        }
+
+
+        mock_messages = patch('reuserat.users.views.messages').start()
+        mock_messages.SUCCESS = success = 'success'
+
+        request = self.factory.post('/~updatepayment/', data=form_data)
+        request.user = self.user
+        response = UpdatePaymentInformation.as_view()(request)
+
+        msg = u'Updated Paypal Successfully'
+        mock_messages.add_message.assert_called_with(request, success, msg)
+
+        self.assertEqual(self.user.paypal_account.email, new_email)
+        self.assertEqual(self.user.payment_type, PaymentChoices.PAYPAL)
+        self.assertEqual(302, response.status_code)
+
+        # This test should fail, because the email is not one of the user's verified emails.
+        fail_email = 'fail@test.com'
+        form_data_fail = {
+            'payment_type': PaymentChoices.PAYPAL,
+            'email': fail_email,
+        }
+
+        request = self.factory.post('/~updatepayment/', data=form_data_fail)
+        request.user = self.user
+        response = UpdatePaymentInformation.as_view()(request)
+
+        self.assertNotEqual(fail_email, request.user.paypal_account.email)
+
+
+    def test_check_updated(self):
+        form_data = {
+            'payment_type': PaymentChoices.CHECK,
+        }
+
+        mock_messages = patch('reuserat.users.views.messages').start()
+        mock_messages.SUCCESS = success = 'success'
+
+        request = self.factory.post('/~updatepayment/', data=form_data)
+        request.user = self.user
+        response = UpdatePaymentInformation.as_view()(request)
+
+        msg = u'Updated Check Successfully'
+        mock_messages.add_message.assert_called_with(request, success, msg)
+
+
+        self.assertEqual(self.user.payment_type, PaymentChoices.CHECK)
 
 
 

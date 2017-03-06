@@ -342,3 +342,5 @@ SHOPIFY_DOMAIN_NAME = env('SHOPIFY_DOMAIN_NAME', default='reuserat')
 # See your keys here: https://dashboard.stripe.com/account/apikeys
 STRIPE_TEST_SECRET_KEY  = env('STRIPE_TEST_SECRET_KEY', default=None)
 STRIPE_TEST_PUBLISHABLE_KEY  = env('STRIPE_TEST_PUBLISHABLE_KEY', default=None)
+STRIPE_TEST_ACCOUNT_NUMBER = '000123456789'
+STRIPE_TEST_ROUTING_NUMBER = '111000025'

@@ -34,7 +34,7 @@ urlpatterns = [
     ),
     url(
         regex=r'^~updatepayment/$',
-        view=views.update_payment_information,
+        view=views.UpdatePaymentInformation.as_view(),
         name='update_payment_information'
     ),
 ]

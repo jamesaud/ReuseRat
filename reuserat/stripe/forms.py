@@ -17,13 +17,13 @@ class UpdatePaymentForm(forms.Form):
 
     PUBLISHABLE_KEY = settings.STRIPE_TEST_PUBLISHABLE_KEY  # Required by the stripe javascript call.
 
-    account_number = forms.IntegerField(required=True,label='Account Number',
+    account_number = forms.CharField(required=True,label='Account Number',
                                         widget=forms.TextInput(attrs={'data-stripe' : 'account_number'}))
 
     account_holder_name = forms.CharField(required=True, label='Account Holder Name',
                                           widget=forms.TextInput(attrs={'data-stripe': 'account_holder_name'}))
 
-    routing_number = forms.IntegerField(required=True,label='Routing Number',
+    routing_number = forms.CharField(required=True,label='Routing Number',
                                         widget=forms.TextInput(attrs={'data-stripe' : 'routing_number'}))
 
     birth_date = forms.DateField(required=True,

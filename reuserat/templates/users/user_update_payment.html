@@ -15,7 +15,9 @@ active
 {% endblock %}
 
 
+
 {% block inner %}
+
 <div class = "col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 wizard-card section-payments">
     <h3 class='text-center'>Your current payment choice is <span class='text-info'>{{request.user.payment_type}}</span></h3>
 
@@ -78,6 +80,7 @@ active
                     <div  class="col-sm-8 col-sm-offset-4">
                         <h6>
                             <ol>
+                                <li>{{ request.user.get_full_name }} </li>
                                 {{ request.user.address.to_html | safe }}
                             </ol>
                         </h6>

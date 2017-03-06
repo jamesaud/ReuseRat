@@ -1,1 +1,3 @@
-{}
+{
+  "reuserat/users/tests/test_views.py::TestUpdatePaymentInformation::test_stripe_updated": true
+}
