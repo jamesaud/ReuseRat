@@ -119,13 +119,11 @@ active
             </div>
 
             <div class="control-group">
-
-                                <div class="controls">
-                                    <button class="btn">Back to Dashboard</button>
-
-                                    <button type="submit" class="btn btn-primary">Update Payment</button>
-                                </div>
-                            </div>
+                <div class="controls">
+                    <a class="btn" href="{% url 'users:detail' request.user.username %}">Back to Dashboard</a>
+                    <button type="submit" class="btn btn-primary">Update Payment</button>
+                </div>
+            </div>
 
         </div><!-- /col-md -->
 	</div> <!-- /row -->

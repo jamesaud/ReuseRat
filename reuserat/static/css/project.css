@@ -3438,6 +3438,10 @@ li {
 .top90 {
   margin-top: 90px; }
 
+img.fit-width {
+  width: 100%;
+  height: auto; }
+
 .DEBUG div, .DEBUG span, .DEBUG p, .DEBUG h1, .DEBUG h2, .DEBUG h3, .DEBUG h4, .DEBUG h5 {
   border: 1px solid black !important; }
 
@@ -3545,3 +3549,8 @@ footer {
 .main-raised {
   margin-left: 25px;
   margin-right: 25px; }
+
+@media screen and (max-width: 768px) {
+  .main-raised {
+    margin-left: 0px;
+    margin-right: 0px; } }

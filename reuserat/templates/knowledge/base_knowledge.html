@@ -47,20 +47,26 @@ background-image: url('{% static "images/gradient-wallpaper.jpg" %}') !important
         </li>
         <li class="{% block shipping-active %} {% endblock %}">
             <a href="{% url 'knowledge:shipping' %}">
-              <i class="material-icons">explore</i>
+              <i class="material-icons">local_shipping</i>
               Shipping Guide
             <div class="ripple-container"></div></a>
         </li>
+        <li class="{% block shipping-calculator-active %} {% endblock %}">
+            <a href="{% url 'knowledge:shipping_calculator' %}">
+              <i class="fa fa-calculator" aria-hidden="true" style='font-size: 15px; display: relative ; top : -0px;'></i>
+              Shipping Calculator
+            </a>
+        </li>
         <li class="{% block payment-active %} {% endblock %}">
             <a href="{% url 'knowledge:payment' %}">
-              <i class="material-icons">account_circle</i>
+              <i class="material-icons">attach_money</i>
               Payment Information
             <div class="ripple-container"></div></a>
         </li>
         <li class="{% block questions-active %} {% endblock %}">
             <a href="{% url 'knowledge:questions' %}">
-              <i class="material-icons">settings</i>
-              Common Questions
+                <i class="material-icons">question_answer</i>              
+                Common Questions
             </a>
         </li>
       </ul>

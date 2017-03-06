@@ -1,33 +1,21 @@
-{% extends "knowledge/base_knowledge.html" %}
-{% load static %}
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
 
-{% block css %}
-    {{ block.super }}
-	<!-- Use customized css versions of the blueprint given by Codyhouse.io -->
-    <link rel="stylesheet" href="{% static 'standalone/faq-template/css/myreset.css' %}">
-	<link rel="stylesheet" href="{% static 'standalone/faq-template/scss/mystyle.css' %}">
-
-	<script src="{% static 'standalone/faq-template/js/modernizr.js' %}"></script> <!-- Modernizr -->
-{% endblock css %}
-
-
-{% block questions-active %}active{% endblock %}
-
-
-{% block header-title %}
-<h1>Frequently Asked Questions</h1>
-{% endblock %}
-
-
-{% block inner %}
-
-
-
+	<link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+	<script src="js/modernizr.js"></script> <!-- Modernizr -->
+	<title>FAQ Template | CodyHouse</title>
+</head>
+<body>
+<header>
+	<h1>FAQ Template</h1>
+</header>
 <section class="cd-faq">
-    {% for category in faq_categories %}
-		{{ category.faq_set.all }}
-	{% endfor %}
 	<ul class="cd-faq-categories">
 		<li><a class="selected" href="#basics">Basics</a></li>
 		<li><a href="#mobile">Mobile</a></li>
@@ -247,12 +235,8 @@
 	</div> <!-- cd-faq-items -->
 	<a href="#0" class="cd-close-panel">Close</a>
 </section> <!-- cd-faq -->
-
-{% endblock inner %}
-
-
-{% block javascript %}
-    {{block.super}}
-    <script src="{% static 'standalone/faq-template/js/jquery.mobile.custom.min.js' %}"></script>
-    <script src="{% static 'standalone/faq-template/js/main.js' %}"></script> <!-- Resource jQuery -->
-{% endblock %}
+<script src="js/jquery-2.1.1.js"></script>
+<script src="js/jquery.mobile.custom.min.js"></script>
+<script src="js/main.js"></script> <!-- Resource jQuery -->
+</body>
+</html>

@@ -1,30 +1,27 @@
-from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext_lazy as _
 from reuserat.users.models import User
 
-class Shipment(models.Model):
-    user =  models.ForeignKey(User,
-                              on_delete=models.CASCADE)
-    name =  models.CharField(max_length=50)
-    description =  models.CharField(max_length=1000, blank=False)
-    is_physical = models.BooleanField(default=False)
+
+
+
+class FAQCategory(models.Model):
+    name = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.name
+
+
+class FAQ(models.Model):
+    category = models.ForeignKey(FAQCategory, on_delete=models.CASCADE)
+    question =  models.CharField(max_length=250)
+    answer = models.CharField(max_length=1000)
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
-    def get_shipment_sku(self):
-        return "{0}-{1}".format(self.user_id, self.id)   # Set the sku to be <userid>-<shipmentid>
+    # Increase the text box size for answer field
 
-    def get_visible_items(self):
-        return (item for item in self.item_set.filter(is_visible=True))
-
-    def has_visible_items(self):
-        return any(self.get_visible_items())
 
     def __str__(self):
-        return "Name '{0}' for user '{1}'".format(self.name, str(self.user))
+        return self.question
 
-    class Meta:
-        ordering = ('modified',)

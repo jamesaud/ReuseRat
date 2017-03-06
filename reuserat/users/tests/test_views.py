@@ -14,6 +14,7 @@ from ..views import (
     UserRedirectView,
     UserUpdateView,
     UpdatePaymentInformation,
+    UserCompleteSignupView
 )
 
 class BaseUserTestCase(TestCase):
@@ -64,6 +65,12 @@ class TestUserUpdateView(BaseUserTestCase):
             '/users/testuser/'
         )
 
+
+class TestUserCompleteSignup(TestCase):
+    # Need to write test cases.
+    # Test that other views redirect to this one if the user hasn't compelted signup.
+    # Test the form submission on user complete signup.
+    pass
 
 class TestUpdatePaymentInformation(TestCase):
 

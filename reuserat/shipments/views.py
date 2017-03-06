@@ -2,7 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy,reverse
-from django.shortcuts import render,render_to_response,redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView, ListView, RedirectView, UpdateView, TemplateView, FormView
 from django.views.generic.edit import CreateView, DeleteView
 
@@ -12,14 +12,9 @@ from reuserat.users.models import User
 from .models import Shipment
 from django.apps import apps
 
-from django.template.loader import get_template
-from django.template import Context
 
 from django.contrib.auth.decorators import login_required # new import for function based view (FBV)
 
-from django.template.loader import get_template
-from django.template import Context
-import pdfkit
 from django_pdfkit import PDFView
 
 from django.contrib import messages

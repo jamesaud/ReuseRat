@@ -13,9 +13,45 @@
 {% block inner %}
 <h2>Control How You Get Paid</h2>
 
-<h3>1. Go to Payment Settings<h3>
+<h3>1. Open Payment Settings<h3>
     <ol>
         <li>From the dashboard, go to <i>My Account</i>.</li>
         <li>Click on the <i>Payments</i> tab.</li>
     </ol>
+
+<h3>2. Choose Your Payment Method</h3>
+<ol>
+    <li>
+        <strong>Paypal (recommended)</strong> - Select the 'Paypal'' option and choose the email associated with your Paypal account.
+        When you cash out an email will be sent requesting to transfer funds to your Paypal account.
+        Don't see your email or want to use a different one? Go to the <i>email</i> tab to verify your email or add a new one.
+    </li>
+    <li>
+        <strong>Direct Deposit</strong> - Choose the 'Direct Deposit' option and fill out your banking info.
+        Make sure you have your checking number and account number handy.
+        When you cash out money will be transfered to this bank account, usually within 3-5 business days.
+    </li>
+    <li>
+        <strong>Check</strong> - Choose the 'Check' option. When you cash out, we'll send a check in the mail to your address on file.
+        Remember, there is a $1 mailing charge on checks!
+    </li>
+</ol>
+
+<h3>3. Cash Out</h3>
+    <ol>
+        <li>
+            When you have a balance greater than $5 you are able to cash out.
+        </li>
+        <li>
+            From the dashboard, click the green button that says "Cash Out" next to your current balance.
+        </li>
+        <li>
+            Confirm the amount and your payment method, and that's it! You should receive an email if your using Paypal,
+            a check in the mail if using check, or a deposit in your bank account in 3-5 days in you are set up for direct deposit.
+        </li>
+    </ol>
+
+   <a class='btn btn-success' href="{% url 'account_signup' %}">Get Paid Now <i class="material-icons">launch</i></a>
+
+
 {% endblock inner %}
