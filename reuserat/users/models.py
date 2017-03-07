@@ -10,6 +10,7 @@ from localflavor.us import models as usmodels
 from reuserat.stripe.models import StripeAccount
 from reuserat.stripe.helpers import retrieve_balance
 import stripe
+from django.conf import settings
 
 PAYMENT_CHOICES = (
     ('Check', 'Check'),
@@ -49,6 +50,7 @@ class User(AbstractUser):
         # Call function here from helpers
         try:
             balance = retrieve_balance(self.stripe_account.secret_key)
+            #print(balance-balance['pending'][0]['amount'])
         except stripe.error.AuthenticationError:
             balance = "Temporarily Unavailable"
         return float("{:.2f}".format(balance))

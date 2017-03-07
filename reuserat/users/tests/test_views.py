@@ -84,7 +84,6 @@ class TestUpdatePaymentInformation(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_post(self):
-
         form_data = {'account_holder_name': 'Jane Doe',
                      'currency': 'USD',
                      'birthdate_month': '5',
@@ -102,7 +101,7 @@ class TestUpdatePaymentInformation(TestCase):
                                                                 "account_number": '000123456789'
                                                                 }, )['id']
                      }
-        #requests.post(settings.BASE_URL + '/api/project', params=data)
+
         mock_messages = patch('reuserat.users.views.messages').start()
         mock_messages.SUCCESS = success = 'success'
         request = self.factory.post('/~updatepayment/',data = form_data)

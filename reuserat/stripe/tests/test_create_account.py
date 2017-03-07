@@ -4,7 +4,7 @@ import stripe
 from django.conf import settings
 from config.settings import test
 from reuserat.users.tests import factories
-from reuserat.stripe.helpers import create_account, retrieve_balance, update_payment_info
+from reuserat.stripe.helpers import create_account, retrieve_balance, update_payment_info,create_charge,dollar_to_cent
 
 
 class TestStripeApi(TestCase):
@@ -86,9 +86,7 @@ class TestStripeApi(TestCase):
         self.assertEqual(test_account.legal_entity.type,
                         sample_account.legal_entity.type)
         self.assertEqual(test_account.external_accounts['data'][0]['account_holder_name'],
-                        sample_account.external_accounts['data'][0]['account_holder_name'])
-        self.assertEqual(test_account.external_accounts['data'][0]['bank_name'],
-                         sample_account.external_accounts['data'][0]['bank_name'])
+                         sample_account.external_accounts['data'][0]['account_holder_name'])
         self.assertEqual(test_account.external_accounts['data'][0]['currency'],
                          sample_account.external_accounts['data'][0]['currency'])
         self.assertEqual(test_account.external_accounts['data'][0]['routing_number'],
@@ -101,3 +99,23 @@ class TestStripeApi(TestCase):
         with self.assertRaises(stripe.error.PermissionError):
             test_account = update_payment_info(account_id, account_token, user_object)
 
+    def test_success_create_charge(self):
+        # test_charge_id=create_charge(account_id,amount)
+        user_object = factories.UserFactory()
+        account_id =self.test_account_id
+        amount=1
+        test_amount = dollar_to_cent(amount)
+        test_charge_id=create_charge(account_id,amount)
+        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Secret Key.
+        sample_charge = stripe.Charge.retrieve(test_charge_id)
+        self.assertEqual(sample_charge['amount'],test_amount*0.50)
+        self.assertEqual(sample_charge['customer'], settings.STRIPE_TEST_PLATFORM_CUSTOMER_ID)
+        self.assertEqual(sample_charge['destination'], account_id)
+
+
+
+    def test_failure_create_charge(self):
+        user_object = factories.UserFactory()
+        account_id = "TEST_ACCOUNT_ID"
+        with self.assertRaises(stripe.error.PermissionError):
+            test_account = create_charge(account_id,  amount=1)

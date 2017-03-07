@@ -31,7 +31,7 @@
   <div class='col-sm-2 current-balance'>
     <small>Current Balance</small>
     <h2>${{ object.get_current_balance }}</h2>
-    <a class='btn  btn-success btn-success' href='#'> Cash Out </a>
+    <a class='btn  btn-success btn-success' href='{% url "users:transfer" %}'> Cash Out </a>
   </div>
 
   <div class='col-sm-5 shipment-button'>
@@ -55,7 +55,7 @@
 
             <br>
 
-          {% for shipment in user_shipments %}
+          {% for shipment in user.shipment_set.all %}
                     <div class="card card-nav-tabs ">
                         <div class="head {% if shipment.item_set.exists %} header-info {% else %} header-grey {% endif %}">
                           <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->

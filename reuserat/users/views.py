@@ -11,7 +11,7 @@ from .models import User, Address
 from reuserat.stripe.models import StripeAccount
 from .forms import UserAddressForm, UserForm
 from reuserat.stripe.forms import UpdatePaymentForm
-from reuserat.stripe.helpers import create_account, update_payment_info, create_charge
+from reuserat.stripe.helpers import create_account, update_payment_info, create_transfer
 from django.contrib.auth.decorators import login_required  # new#  import for function based view (FBV)
 from django.contrib import messages
 from django.conf import settings
@@ -258,6 +258,7 @@ def update_payment_information(request):
                                                 int(request.POST['birthdate_day']))
         request.user.save()
         if form.is_valid():
+            print("STRIPE TOKEN",request.POST["stripeToken"])
             if update_payment_info(str(request.user.stripe_account.account_id), request.POST["stripeToken"],request.user):
 
                 messages.add_message(request, messages.SUCCESS, "Updated")
@@ -269,7 +270,15 @@ def update_payment_information(request):
 
         return render(request, "users/user_update_payment.html", {"update_payment_form": form})
 
+@login_required
+def cash_out(request):
+    if request.method == 'GET':
+        # account_id = request.user.stripe_account.account_id
+        # balance  = request.user.get_current_balance()
+        # transfer_id = create_transfer(account_id,balance)
+        print("BALANCE",request.user.get_current_balance())
+        return redirect('users:detail', request.user.username)
 
-def testCharge(request):
-    print("I AM HERE")
-    create_charge(request.user)
+
+
+
