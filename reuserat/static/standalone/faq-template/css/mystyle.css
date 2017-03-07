@@ -3,6 +3,13 @@
 Primary style
 
 -------------------------------- */
+.cd-faq *, .cd-faq *::after, .cd-faq *::before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+.cd-faq *::after, .cd-faq *::before {
+  content: ''; }
+
 body {
   color: #4e5359; }
   body::after {
@@ -356,5 +363,7 @@ header {
       font-size: 16px; }
     .no-js .cd-faq-content {
       display: block; } }
+
+/*======*/
 
 /*# sourceMappingURL=mystyle.css.map */

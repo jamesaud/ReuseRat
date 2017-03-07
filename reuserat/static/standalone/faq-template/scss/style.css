@@ -1,453 +1,52 @@
-/* -------------------------------- 
+/*
+Error: File to import not found or unreadable: bourbon.
+       Load path: /Users/jamesaudretsch/DeveloperProjects/reuserat/reuserat/static/standalone/faq-template/scss
+        on line 1 of /Users/jamesaudretsch/DeveloperProjects/reuserat/reuserat/static/standalone/faq-template/scss/style.scss
 
-Primary style
+1: @import 'bourbon'; // http://bourbon.io/
+2: 
+3: @import '../partials/variables'; // colors, fonts etc...
+4: 
+5: @import '../partials/mixins'; // custom mixins
+6: 
 
--------------------------------- */
-*, *::after, *::before {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-*::after, *::before {
-  content: '';
-}
-
-body {
-  font-size: 100%;
-  font-family: "Open Sans", sans-serif;
-  color: #4e5359;
-  background-color: #f3f3f5;
-}
-body::after {
-  /* overlay layer visible on small devices when the right panel slides in */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(78, 83, 89, 0.8);
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: opacity .3s 0s, visibility 0s .3s;
-  -moz-transition: opacity .3s 0s, visibility 0s .3s;
-  transition: opacity .3s 0s, visibility 0s .3s;
-}
-body.cd-overlay::after {
-  visibility: visible;
-  opacity: 1;
-  -webkit-transition: opacity .3s 0s, visibility 0s 0s;
-  -moz-transition: opacity .3s 0s, visibility 0s 0s;
-  transition: opacity .3s 0s, visibility 0s 0s;
-}
-@media only screen and (min-width: 768px) {
-  body::after {
-    display: none;
-  }
-}
-
-a {
-  color: #a9c056;
-  text-decoration: none;
-}
-
-/* -------------------------------- 
-
-Main components 
-
--------------------------------- */
-header {
-  position: relative;
-  height: 180px;
-  line-height: 180px;
-  text-align: center;
-  background-color: #a9c056;
-}
-header h1 {
-  color: #ffffff;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 20px;
-  font-size: 1.25rem;
-}
-@media only screen and (min-width: 1024px) {
-  header {
-    height: 240px;
-    line-height: 240px;
-  }
-  header h1 {
-    font-size: 36px;
-    font-size: 2.25rem;
-    font-weight: 300;
-  }
-}
-
-.cd-faq {
-  width: 90%;
-  max-width: 1024px;
-  margin: 2em auto;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-}
-.cd-faq:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-@media only screen and (min-width: 768px) {
-  .cd-faq {
-    position: relative;
-    margin: 4em auto;
-    box-shadow: none;
-  }
-}
-
-.cd-faq-categories a {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  height: 50px;
-  line-height: 50px;
-  padding: 0 28px 0 16px;
-  background-color: #4e5359;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #ffffff;
-  white-space: nowrap;
-  border-bottom: 1px solid #555b61;
-  text-overflow: ellipsis;
-}
-.cd-faq-categories a::before, .cd-faq-categories a::after {
-  /* plus icon on the right */
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  display: inline-block;
-  height: 1px;
-  width: 10px;
-  background-color: #7f868e;
-}
-.cd-faq-categories a::after {
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  -o-transform: rotate(90deg);
-  transform: rotate(90deg);
-}
-.cd-faq-categories li:last-child a {
-  border-bottom: none;
-}
-@media only screen and (min-width: 768px) {
-  .cd-faq-categories {
-    width: 20%;
-    float: left;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-  }
-  .cd-faq-categories a {
-    font-size: 13px;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    padding-left: 24px;
-    padding: 0 24px;
-    -webkit-transition: background 0.2s, padding 0.2s;
-    -moz-transition: background 0.2s, padding 0.2s;
-    transition: background 0.2s, padding 0.2s;
-  }
-  .cd-faq-categories a::before, .cd-faq-categories a::after {
-    display: none;
-  }
-  .no-touch .cd-faq-categories a:hover {
-    background: #555b61;
-  }
-  .no-js .cd-faq-categories {
-    width: 100%;
-    margin-bottom: 2em;
-  }
-}
-@media only screen and (min-width: 1024px) {
-  .cd-faq-categories {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 200px;
-    z-index: 2;
-  }
-  .cd-faq-categories a::before {
-    /* decorative rectangle on the left visible for the selected item */
-    display: block;
-    top: 0;
-    right: auto;
-    left: 0;
-    height: 100%;
-    width: 3px;
-    background-color: #a9c056;
-    opacity: 0;
-    -webkit-transition: opacity 0.2s;
-    -moz-transition: opacity 0.2s;
-    transition: opacity 0.2s;
-  }
-  .cd-faq-categories .selected {
-    background: #42464b !important;
-  }
-  .cd-faq-categories .selected::before {
-    opacity: 1;
-  }
-  .cd-faq-categories.is-fixed {
-    /* top and left value assigned in jQuery */
-    position: fixed;
-  }
-  .no-js .cd-faq-categories {
-    position: relative;
-  }
-}
-
-.cd-faq-items {
-  position: fixed;
-  height: 100%;
-  width: 90%;
-  top: 0;
-  right: 0;
-  background: #ffffff;
-  padding: 0 5% 1em;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  z-index: 1;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-transform: translateZ(0) translateX(100%);
-  -moz-transform: translateZ(0) translateX(100%);
-  -ms-transform: translateZ(0) translateX(100%);
-  -o-transform: translateZ(0) translateX(100%);
-  transform: translateZ(0) translateX(100%);
-  -webkit-transition: -webkit-transform .3s;
-  -moz-transition: -moz-transform .3s;
-  transition: transform .3s;
-}
-.cd-faq-items.slide-in {
-  -webkit-transform: translateZ(0) translateX(0%);
-  -moz-transform: translateZ(0) translateX(0%);
-  -ms-transform: translateZ(0) translateX(0%);
-  -o-transform: translateZ(0) translateX(0%);
-  transform: translateZ(0) translateX(0%);
-}
-.no-js .cd-faq-items {
-  position: static;
-  height: auto;
-  width: 100%;
-  -webkit-transform: translateX(0);
-  -moz-transform: translateX(0);
-  -ms-transform: translateX(0);
-  -o-transform: translateX(0);
-  transform: translateX(0);
-}
-@media only screen and (min-width: 768px) {
-  .cd-faq-items {
-    position: static;
-    height: auto;
-    width: 78%;
-    float: right;
-    overflow: visible;
-    -webkit-transform: translateZ(0) translateX(0);
-    -moz-transform: translateZ(0) translateX(0);
-    -ms-transform: translateZ(0) translateX(0);
-    -o-transform: translateZ(0) translateX(0);
-    transform: translateZ(0) translateX(0);
-    padding: 0;
-    background: transparent;
-  }
-}
-@media only screen and (min-width: 1024px) {
-  .cd-faq-items {
-    float: none;
-    width: 100%;
-    padding-left: 220px;
-  }
-  .no-js .cd-faq-items {
-    padding-left: 0;
-  }
-}
-
-.cd-close-panel {
-  position: fixed;
-  top: 5px;
-  right: -100%;
-  display: block;
-  height: 40px;
-  width: 40px;
-  overflow: hidden;
-  text-indent: 100%;
-  white-space: nowrap;
-  z-index: 2;
-  /* Force Hardware Acceleration in WebKit */
-  -webkit-transform: translateZ(0);
-  -moz-transform: translateZ(0);
-  -ms-transform: translateZ(0);
-  -o-transform: translateZ(0);
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-transition: right 0.4s;
-  -moz-transition: right 0.4s;
-  transition: right 0.4s;
-}
-.cd-close-panel::before, .cd-close-panel::after {
-  /* close icon in CSS */
-  position: absolute;
-  top: 16px;
-  left: 12px;
-  display: inline-block;
-  height: 3px;
-  width: 18px;
-  background: #6c7d8e;
-}
-.cd-close-panel::before {
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-.cd-close-panel::after {
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
-.cd-close-panel.move-left {
-  right: 2%;
-}
-@media only screen and (min-width: 768px) {
-  .cd-close-panel {
-    display: none;
-  }
-}
-
-.cd-faq-group {
-  /* hide group not selected */
-  display: none;
-}
-.cd-faq-group.selected {
-  display: block;
-}
-.cd-faq-group .cd-faq-title {
-  background: transparent;
-  box-shadow: none;
-  margin: 1em 0;
-}
-.no-touch .cd-faq-group .cd-faq-title:hover {
-  box-shadow: none;
-}
-.cd-faq-group .cd-faq-title h2 {
-  text-transform: uppercase;
-  font-size: 12px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #bbbbc7;
-}
-.no-js .cd-faq-group {
-  display: block;
-}
-@media only screen and (min-width: 768px) {
-  .cd-faq-group {
-    /* all groups visible */
-    display: block;
-  }
-  .cd-faq-group > li {
-    background: #ffffff;
-    margin-bottom: 6px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-    -webkit-transition: box-shadow 0.2s;
-    -moz-transition: box-shadow 0.2s;
-    transition: box-shadow 0.2s;
-  }
-  .no-touch .cd-faq-group > li:hover {
-    box-shadow: 0 1px 10px rgba(108, 125, 142, 0.3);
-  }
-  .cd-faq-group .cd-faq-title {
-    margin: 2em 0 1em;
-  }
-  .cd-faq-group:first-child .cd-faq-title {
-    margin-top: 0;
-  }
-}
-
-.cd-faq-trigger {
-  position: relative;
-  display: block;
-  margin: 1.6em 0 .4em;
-  line-height: 1.2;
-}
-@media only screen and (min-width: 768px) {
-  .cd-faq-trigger {
-    font-size: 24px;
-    font-size: 1.5rem;
-    font-weight: 300;
-    margin: 0;
-    padding: 24px 72px 24px 24px;
-  }
-  .cd-faq-trigger::before, .cd-faq-trigger::after {
-    /* arrow icon on the right */
-    position: absolute;
-    right: 24px;
-    top: 50%;
-    height: 2px;
-    width: 13px;
-    background: #cfdca0;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-transition-property: -webkit-transform;
-    -moz-transition-property: -moz-transform;
-    transition-property: transform;
-    -webkit-transition-duration: 0.2s;
-    -moz-transition-duration: 0.2s;
-    transition-duration: 0.2s;
-  }
-  .cd-faq-trigger::before {
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    transform: rotate(45deg);
-    right: 32px;
-  }
-  .cd-faq-trigger::after {
-    -webkit-transform: rotate(-45deg);
-    -moz-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    -o-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-  }
-  .content-visible .cd-faq-trigger::before {
-    -webkit-transform: rotate(-45deg);
-    -moz-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    -o-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-  }
-  .content-visible .cd-faq-trigger::after {
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    transform: rotate(45deg);
-  }
-}
-
-.cd-faq-content p {
-  font-size: 14px;
-  font-size: 0.875rem;
-  line-height: 1.4;
-  color: #6c7d8e;
-}
-@media only screen and (min-width: 768px) {
-  .cd-faq-content {
-    display: none;
-    padding: 0 24px 30px;
-  }
-  .cd-faq-content p {
-    line-height: 1.6;
-  }
-  .no-js .cd-faq-content {
-    display: block;
-  }
-}
+Backtrace:
+/Users/jamesaudretsch/DeveloperProjects/reuserat/reuserat/static/standalone/faq-template/scss/style.scss:1
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/import_node.rb:66:in `rescue in import'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/import_node.rb:45:in `import'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/import_node.rb:28:in `imported_file'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/import_node.rb:37:in `css_import?'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:301:in `visit_import'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/base.rb:36:in `visit'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/stack.rb:79:in `block in with_base'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/stack.rb:115:in `with_frame'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/stack.rb:79:in `with_base'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:158:in `visit'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/base.rb:52:in `map'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/base.rb:52:in `visit_children'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:167:in `block in visit_children'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:179:in `with_environment'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:166:in `visit_children'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/base.rb:36:in `block in visit'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:186:in `visit_root'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/base.rb:36:in `visit'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:157:in `visit'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/visitors/perform.rb:8:in `visit'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/root_node.rb:36:in `css_tree'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/tree/root_node.rb:29:in `render_with_sourcemap'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/engine.rb:368:in `_render_with_sourcemap'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/engine.rb:285:in `render_with_sourcemap'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/exec/sass_scss.rb:396:in `run'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/exec/sass_scss.rb:62:in `process_result'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/exec/base.rb:52:in `parse'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/lib/sass/exec/base.rb:19:in `parse!'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.4.9/bin/sass:13:in `<top (required)>'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/bin/sass:18:in `load'
+/Users/jamesaudretsch/Downloads/Koala.app/Contents/Resources/app.nw/bin/sass:18:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: File to import not found or unreadable: bourbon.\A        Load path: /Users/jamesaudretsch/DeveloperProjects/reuserat/reuserat/static/standalone/faq-template/scss\A         on line 1 of /Users/jamesaudretsch/DeveloperProjects/reuserat/reuserat/static/standalone/faq-template/scss/style.scss\A \A 1: @import 'bourbon'; // http://bourbon.io/\A 2: \A 3: @import '../partials/variables'; // colors, fonts etc...\A 4: \A 5: @import '../partials/mixins'; // custom mixins\A 6: "; }
