@@ -1,9 +1,12 @@
 from django.conf.urls import url
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from . import views
+from django.shortcuts import reverse
 
 urlpatterns = [
-        url(r'^shipping-guide/$',
+    url(r'^$', RedirectView.as_view(pattern_name='knowledge:questions', permanent=True)),
+
+    url(r'^shipping-guide/$',
             TemplateView.as_view(template_name='knowledge/shipping.html'),
             name='shipping'),
 

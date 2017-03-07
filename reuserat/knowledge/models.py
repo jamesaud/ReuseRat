@@ -12,7 +12,7 @@ class FAQCategory(models.Model):
 
 
 class FAQ(models.Model):
-    category = models.ForeignKey(FAQCategory, on_delete=models.CASCADE)
+    category = models.ManyToManyField(FAQCategory)
     question =  models.CharField(max_length=250)
     answer = models.CharField(max_length=1000)
 
@@ -24,4 +24,3 @@ class FAQ(models.Model):
 
     def __str__(self):
         return self.question
-

@@ -17,14 +17,6 @@ Primary style
 //Set custom color variables to override the default ones.
 $color-2 : $first-color;
 
-*, *::after, *::before {
-	@include box-sizing(border-box);
-}
-
-*::after, *::before {
-	content: '';
-}
-
 body {
 
 	color: $color-1;
