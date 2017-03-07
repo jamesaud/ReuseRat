@@ -19,11 +19,13 @@
 
                     <div class="ripple-container"></div>
                 </a>
+                {% if not object.item_set.exists %}
                 <a data-toggle="modal" data-target="#shipment-delete-modal" rel="tooltip" title="" class="btn btn-danger" data-original-title="Delete Shipment">
                     		                                <i class="fa fa-times"></i>
 
                     <div class="ripple-container"></div>
                 </a>
+                {% endif %}
         </span>
     {% endblock %}
 
