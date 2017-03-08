@@ -9,7 +9,8 @@ from config.settings import test
 from ..views import (
     UserRedirectView,
     UserUpdateView,
-    update_payment_information,
+    update_payment_information, # function based views
+    cash_out, # function based views
 )
 
 class BaseUserTestCase(TestCase):
@@ -64,18 +65,18 @@ class TestUserUpdateView(BaseUserTestCase):
 class TestUpdatePaymentInformation(TestCase):
 
     def setUp(self):
-        self.user = factories.UserFactory()
+        self.factory = RequestFactory() # Generate a mock request
+        self.user = factories.UserFactory() # Generate a mock user
         account = self.user.stripe_account
-        account.account_id = test.TEST_CUSTOMER_STRIPE_ACCOUNT_ID
+        account.account_id = test.TEST_CUSTOMER_STRIPE_ACCOUNT_ID # Test Stripe account id
         account.save()
-        self.factory = RequestFactory()
-        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Secret Key.
+        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform test Secret Key.
 
     def test_get(self):
         # Create an instance of a GET request.
         request = self.factory.get('/~updatepayment/')
 
-        # Cause it doesnt support the middleware operations.
+        # Cause it doesn't support the middleware operations.
         request.user = self.user
 
         # Check if the form was rendered
@@ -110,10 +111,30 @@ class TestUpdatePaymentInformation(TestCase):
         msg = u'Updated'
         mock_messages.add_message.assert_called_with(request, success, msg)
 
-        #request.user= self.user
-        # Check if the form was rendered
+        self.assertEqual(response.status_code, 302) # Html Code for Redirection
 
-        self.assertEqual(response.status_code, 302)
+
+class TestCashOut(TestCase):
+
+    def setUp(self):
+        self.factory = RequestFactory() # Generate a mock request
+        self.user = factories.UserFactory() # Generate a mock user
+        account = self.user.stripe_account
+        account.account_id = test.TEST_CUSTOMER_STRIPE_ACCOUNT_ID # Test Stripe account id
+        account.save()
+        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform test Secret Key.
+
+    def test_get(self):
+        # Create an instance of a GET request.
+        request = self.factory.get('/~transfer/')
+        # Cause factory doesn't support the middleware operations.
+        request.user = self.user
+        request.user.stripe_account.secret_key=settings.STRIPE_TEST_SECRET_KEY
+        # Check if the form was rendered
+        response = cash_out(request)
+        self.assertEqual(response.status_code, 302) # Html Code for Successful response
+
+
 
 
 

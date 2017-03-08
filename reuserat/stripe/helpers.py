@@ -41,15 +41,16 @@ def retrieve_balance(secret_key):
     stripe.api_key = secret_key
     account_details = stripe.Balance.retrieve()
     print(account_details,"ACCOUNT DETAILS")
+    print(type(cents_to_dollars(account_details['available'][0]['amount'])))
     return cents_to_dollars(account_details['available'][0]['amount'])
 
 
 
 def update_payment_info(account_id, account_token, user_object):
 
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Secret Key.
+    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
     account = stripe.Account.retrieve(account_id)
-    # Update the display name for the account.
+    # Update the display name for the account
     account.business_name = user_object.first_name
 
     # # Update the address.
@@ -81,102 +82,33 @@ def update_payment_info(account_id, account_token, user_object):
     # Save the account details
     account.save()
     account.external_accounts.create(external_account=account_token, default_for_currency="true")
+    print("Update Payment Info",account)
     return account
 
-#Create a charge
-def create_charge(account_id,amount):
+# Create a charge for an item
+def create_charge(account_id,amount,user_name):
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY # REAL KEY HERE
 
     charge = stripe.Charge.create(
-        amount = int(dollar_to_cent(float(amount) * 0.50)),
+        amount = int(dollar_to_cent(amount * 0.50)),
         currency = "usd",
         customer = settings.STRIPE_TEST_PLATFORM_CUSTOMER_ID,
-        description = "Hey random customer ,I paid you",
-        #destination={"account": account_id},
+        description = "Hey "+user_name+ " you get $"+str(int(dollar_to_cent(amount * 0.50))),
+        destination=account_id,
     )
     print("Charge details",charge)
     return charge['id']
 
 # Making Transfer.Cash out the balance Stripe money for the customer
-def create_transfer(account_id,balance):
+def create_transfer(account_id,balance,user_name):
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
-    print("HULK,I AM HERE?",account_id)
     transfer = stripe.Transfer.create(
             currency="usd",
-            amount = int(balance*100),
+            amount = int(float(balance)*100),
+            stripe_account=account_id,
             destination=account_id,
-            description="the random customer got the Payment,Thank you",
+            description="Payment received,"+user_name,
         )
-    print(transfer['id'])
+    print(transfer,"Transfer")
+    return transfer['id']
 
-
-        # # Create the Token first
-    # token = stripe.Token.create(
-    #     bank_account={
-    #         "country": 'US',
-    #         "currency": 'usd',
-    #         "account_holder_name": "Jose Doe",
-    #         "account_holder_type": 'individual',
-    #         "routing_number": "110000000",
-    #         "account_number": "000123456789"
-    #     },
-    # )
-    # # Create the customer
-    # customer = stripe.Customer.create(
-    #     source=token,
-    #     description="test customer"
-    # )
-    #
-
-    # print(customer,"LISTEEENNNNNNNN",customer["sources"]["data"][0]["id"])
-    # customer = stripe.Customer.retrieve(customer["id"])
-    # bank_account = customer.sources.retrieve(customer["sources"]["data"][0]["id"])
-
-    # verify the account
-   # bank_account.verify(amounts=[32, 45])
-
-    # charge = stripe.Charge.create(
-    #     amount=100,
-    #     currency="usd",
-    #     customer=customer["id"],
-    #     description="Hey Maya Jenner ,I paid you"
-    # )
-    #print("CHARGE DETAILS",charge)
-    # transfer = stripe.Transfer.create(
-    #     amount=100, #in cents
-    #     currency="usd",
-    #     destination="default_for_currency",
-    #     stripe_account=account_id,
-    #     source_type = "bank_account",
-    # )
-    # print("TRANSFER DETAILS", charge)
-    # print("TEST, i AM HERE")
-# def create_charge(user_obj, acc_token=None,):
-#     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Secret Key.
-#
-#     charge = stripe.Charge.create(
-#         amount=500,
-#         currency="usd",
-#         source="tok_19lNzxIPg8ix8N5WIe1eVxkv",
-#     )
-#     print("CHARGE", charge)
-#     # Create Transfer
-#     transfer = stripe.Transfer.create(
-#         amount=70,
-#         currency="usd",
-#         destination=user_obj.stripe_account.account_id,  # Connected Stripe Account id
-#     )
-#
-
-# def update_acco# def update_account_details(account_id,fieldName)
-#     acct_details = stripe.Account.retrieve(account_id)
-#     acct_details.support_phone = "555-867-5309"
-#     acct_details.save()
-#     print(acct_details,"AAAAAAAAAAAAAAAAAAAAA")
-#     return HttpResponse(acct_details)unt_details(account_id,fieldName)
-#     acct_details = stripe.Account.retrieve(account_id)
-#     acct_details.support_phone = "555-867-5309"
-#     acct_details.save()
-#     print(acct_details,"AAAAAAAAAAAAAAAAAAAAA")
-#     return HttpResponse(acct_details)
-#

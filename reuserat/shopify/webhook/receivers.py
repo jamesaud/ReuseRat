@@ -115,8 +115,9 @@ class OrderReceivers(AbstractShopifyReceiver):
                 item_object.status=Status.SOLD
                 # Create an object for ItemOrderDetails
                 item_order_details = ItemOrderDetails(order_data=shopify_json, item=item_object)
+                user_name = item_object.shipment.user.get_full_name()
                 amount = item['price']
-                charge_id = create_charge(item_object.shipment.user.stripe_account.account_id,amount)
+                charge_id = create_charge(item_object.shipment.user.stripe_account.account_id,amount,user_name)
                 item_order_details.charge_id = charge_id
 
             except Exception as e:

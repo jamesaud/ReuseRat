@@ -50,7 +50,11 @@ class User(AbstractUser):
         # Call function here from helpers
         try:
             balance = retrieve_balance(self.stripe_account.secret_key)
-            #print(balance-balance['pending'][0]['amount'])
-        except stripe.error.AuthenticationError:
-            balance = "Temporarily Unavailable"
-        return float("{:.2f}".format(balance))
+            return u"{:.2f}".format(balance)
+
+        except stripe.error.AuthenticationError as e:
+            print(e)
+            return "Temporarily Unavailable"
+
+        print(balance)
+        print(type(balance))

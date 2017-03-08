@@ -219,7 +219,6 @@ class UserUpdateView(UserUpdateMixin):
                        kwargs={'username': self.request.user.username})
 
 
-
 class UserDetailView(LoginUserCompleteSignupRequiredMixin, DetailView):
     model = User
     # These next two lines tell the view to index lookups by username
@@ -258,26 +257,25 @@ def update_payment_information(request):
                                                 int(request.POST['birthdate_day']))
         request.user.save()
         if form.is_valid():
-            print("STRIPE TOKEN",request.POST["stripeToken"])
             if update_payment_info(str(request.user.stripe_account.account_id), request.POST["stripeToken"],request.user):
 
                 messages.add_message(request, messages.SUCCESS, "Updated")
-                return redirect(reverse('users:detail', kwargs={'username': request.user.username}))
+                return redirect(reverse('users:detail', kwargs={'username': request.user.username})) #reverse creates a URL & redirect takes us there
             else:
                 messages.add_message(request, messages.ERROR, "Server Error!Please try again")
 
-        form = UpdatePaymentForm()
+        form = UpdatePaymentForm() # if the form data was invalid ,render the form again
 
         return render(request, "users/user_update_payment.html", {"update_payment_form": form})
 
 @login_required
 def cash_out(request):
     if request.method == 'GET':
-        # account_id = request.user.stripe_account.account_id
-        # balance  = request.user.get_current_balance()
-        # transfer_id = create_transfer(account_id,balance)
-        print("BALANCE",request.user.get_current_balance())
-        return redirect('users:detail', request.user.username)
+        account_id = request.user.stripe_account.account_id # Get the Stripe account id of the User
+        balance  = request.user.get_current_balance() # Use the retrieve balance function in the User model
+        user_name = request.user.get_full_name()
+        transfer_id = create_transfer(account_id,balance,user_name)
+        return redirect(reverse('users:detail', kwargs={'username': request.user.username}))
 
 
 
