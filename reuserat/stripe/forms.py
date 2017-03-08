@@ -43,12 +43,13 @@ class UpdatePaymentForm(forms.Form):
         super(UpdatePaymentForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
+               Div('account_number', css_class="col-md-6"),
+            Div('routing_number', css_class="col-md-6"),
             Div('account_holder_name', css_class="col-md-6"),
             Div(MultiWidgetField('birth_date',
                                  attrs=({'style': 'width: 32%; display: inline-block;'})),
                                  css_class="col-md-6"),
-            Div('account_number', css_class="col-md-6"),
-            Div('routing_number', css_class="col-md-6"),
+         
             'country',
             'currency',
             'account_holder_type'
