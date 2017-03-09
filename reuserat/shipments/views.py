@@ -92,21 +92,12 @@ class ShipmentDeleteView(LoginRequiredMixin, DeleteView):
 
 class ShipmentPdfView(LoginRequiredMixin, PDFView):
     template_name = 'shipments/shipment_label.html'
-    html = True
 
     def get_context_data(self, **kwargs):
         context = super(ShipmentPdfView, self).get_context_data(**kwargs)
         context['user'] = self.request.user #apps.get_model('User')
-        context['shipment'] = get_object_or_404(Shipment,pk=self.kwargs.get('shipment_id'))
+        context['shipment'] = get_object_or_404(Shipment, pk=self.kwargs.get('shipment_id'))
         context['warehouse_html'] = warehouse_address_to_html()
         return context
 
-
-#Function Based Views
-@login_required
-def get_shipment_label(request, shipment_id):
-    context = {}
-    context['user'] = User.objects.get(pk=request.user.id) #apps.get_model('User')
-    context['shipment'] = Shipment.objects.get(pk=shipment_id) #apps.get_model('Shipment')
-    return render(request, 'shipments/shipment_label.html', context)
 

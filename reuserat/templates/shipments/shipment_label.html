@@ -14,16 +14,12 @@
             <div class="pdf-section--left">
                 <div class='from'>
                     <h5>From:</h5>
-                    <div style='list-style-type: none;'>
+                    <p style='list-style-type: none;'>
                         {{ user.get_full_name | upper }}
                         {{ user.address.to_html | upper | safe }}
-                    </div>
+                    </p>
                 </div>
-                <div class='ship-date'>
-                     <h5>Ship Date:</h5>
-                     <br>
-                     <div>___________</div>
-                </div>
+             
             </div>
             <div class="to-address">
                 <h2>To: </h2>
