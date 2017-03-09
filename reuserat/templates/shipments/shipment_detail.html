@@ -37,8 +37,11 @@
                 <div class="col-sm-4">
                 <h3><strong>Name:</strong></h3>
                 </div>
-                <div class='col-sm-8'>
+                <div class='col-sm-5'>
                 <h3>{{ object.name }}</h3>
+                </div>
+                <div class='col-sm-3 text-right'>
+                    <a href='#' class='btn btn-simple btn-primary btn-outline btn-sm' rel="tooltip" data-original-title="Add your USPS tracking number to see the live status of your shipment"><strong>Add Tracking Number</strong></a>
                 </div>
             </div>  
             <hr>
@@ -112,7 +115,10 @@
                     <h3><strong>Instructions:</strong></h3>
                 </div>
                 <div class='col-sm-8'>
-                    <div class='btn btn-primary'>I'm ready, show me how to ship! <i class="material-icons">open_in_new</i></div>
+                    <button class='btn btn-primary' data-toggle="modal" data-target="#shipment-instructions-modal" rel="tooltip" title="">
+                        I'm ready, show me how to ship! 
+                        <i class="material-icons">open_in_new</i>
+                    </button>
                 </div>
             </div>
 
@@ -125,4 +131,5 @@
 
 {% block modal %}
     {% include "shipments/snippets/delete_shipment_modal.html" with shipment_id=object.id %}
+    {% include "shipments/snippets/instructions_shipment_modal.html" %}
 {% endblock modal %}

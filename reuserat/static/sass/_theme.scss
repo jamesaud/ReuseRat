@@ -72,3 +72,8 @@ li{
             z-index: -1;
         }
     }
+
+// It would be nice to have btn-outline work for all btn types, not just btn-primary.btn-simple
+.btn-primary.btn-simple.btn-outline{
+    border: 1px solid $purple-400;
+} 

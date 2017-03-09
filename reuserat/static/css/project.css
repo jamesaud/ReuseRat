@@ -3398,6 +3398,9 @@ li {
     left: -10000px;
     z-index: -1; }
 
+.btn-primary.btn-simple.btn-outline {
+  border: 1px solid #ab47bc; }
+
 .no-gutter > [class*='col-'] {
   padding-right: 0;
   padding-left: 0; }
