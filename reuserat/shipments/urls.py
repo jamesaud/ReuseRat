@@ -17,13 +17,8 @@ urlpatterns = [
     ),
     url(
         regex=r'^~shipmentLabel/(?P<shipment_id>\d+)/$',
-        view=views.get_shipment_label,
-        name='shipmentLabel'
-    ),
-    url(
-        regex=r'^~shipmentLabelPdf/(?P<shipment_id>\d+)/$',
         view=views.ShipmentPdfView.as_view(),
-        name='shipmentPdf'
+        name='shipmentLabel'
     ),
     url(
         regex=r'^update/(?P<pk>\d+)/$',

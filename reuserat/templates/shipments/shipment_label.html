@@ -14,19 +14,22 @@
             <div class="pdf-section--left">
                 <div class='from'>
                     <h5>From:</h5>
-                    <p>{{ user.address }}</p>
+                    <div style='list-style-type: none;'>
+                        {{ user.get_full_name | upper }}
+                        {{ user.address.to_html | upper | safe }}
+                    </div>
                 </div>
                 <div class='ship-date'>
                      <h5>Ship Date:</h5>
+                     <br>
+                     <div>___________</div>
                 </div>
             </div>
             <div class="to-address">
                 <h2>To: </h2>
-                    <p>
-                    James Audretsch <br>
-                    504 E Cottage Grove<br>
-                    Bloomington, IN, 47408<br>
-                    </p>
+                <div>
+                    {{warehouse_html | safe}}
+                </div>
             </div>
             <div class="shipment-id">
                     <h5>Shipment ID:</h5>
