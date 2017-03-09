@@ -26,7 +26,6 @@ def create_account(ip_addr=None):
                                   secret_key=acct['keys']['secret'],
                                   publishable_key=acct['keys']['publishable'])
     acct_instance.save()
-
     return acct_instance
 
 
@@ -81,34 +80,40 @@ def update_payment_info(account_id, account_token, user_object):
 
     # Save the account details
     account.save()
+    # default_for_currency should be set as there can be multiple bank accounts and we set the newly created one as the default.
     account.external_accounts.create(external_account=account_token, default_for_currency="true")
-    print("Update Payment Info",account)
+    # Create Customer for each account
+    stripe.Customer.create(
+        description="Customer for "+user_object.get_full_name(),
+        source= account_token # obtained with Stripe.js
+    )
+
     return account
 
 # Create a charge for an item
-def create_charge(account_id,amount,user_name):
+def create_charge(account_id,amount_in_dollars,user_name):
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY # REAL KEY HERE
 
     charge = stripe.Charge.create(
-        amount = int(dollar_to_cent(amount * 0.50)),
+        amount = int(dollar_to_cent(amount_in_dollars * 0.50)),# 50% of the amount is for the platform
         currency = "usd",
         customer = settings.STRIPE_TEST_PLATFORM_CUSTOMER_ID,
-        description = "Hey "+user_name+ " you get $"+str(int(dollar_to_cent(amount * 0.50))),
+        description = "Hey "+user_name+ " ,you get $"+amount_in_dollars * 0.50,
         destination=account_id,
     )
-    print("Charge details",charge)
     return charge['id']
+
 
 # Making Transfer.Cash out the balance Stripe money for the customer
 def create_transfer(account_id,balance,user_name):
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
+
     transfer = stripe.Transfer.create(
             currency="usd",
             amount = int(float(balance)*100),
-            stripe_account=account_id,
             destination=account_id,
             description="Payment received,"+user_name,
         )
-    print(transfer,"Transfer")
+
     return transfer['id']
 

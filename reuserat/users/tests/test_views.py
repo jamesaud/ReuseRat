@@ -5,6 +5,7 @@ from unittest.mock import patch
 import stripe
 from django.conf import settings
 from config.settings import test
+from reuserat.stripe.helpers import create_charge
 
 from ..views import (
     UserRedirectView,
@@ -120,8 +121,8 @@ class TestCashOut(TestCase):
         self.factory = RequestFactory() # Generate a mock request
         self.user = factories.UserFactory() # Generate a mock user
         account = self.user.stripe_account
-        account.account_id = test.TEST_CUSTOMER_STRIPE_ACCOUNT_ID # Test Stripe account id
-        account.save()
+        # account.account_id ="acct_19t1iYBLJOL9t28B"# test.TEST_CUSTOMER_STRIPE_ACCOUNT_ID # Test Stripe account id
+        # account.save()
         stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform test Secret Key.
 
     def test_get(self):
@@ -129,7 +130,11 @@ class TestCashOut(TestCase):
         request = self.factory.get('/~transfer/')
         # Cause factory doesn't support the middleware operations.
         request.user = self.user
-        request.user.stripe_account.secret_key=settings.STRIPE_TEST_SECRET_KEY
+        request.user.stripe_account.account_id= "acct_19vWYHLw2AVVFzC1"
+        request.user.stripe_account.secret_key="sk_test_gP7OiwFNaetrkV1DhVM9sim2"
+        amount_in_dollars =1
+        user_name =  "Kat Valentine"
+        create_charge(request.user.stripe_account.account_id, amount_in_dollars, user_name)
         # Check if the form was rendered
         response = cash_out(request)
         self.assertEqual(response.status_code, 302) # Html Code for Successful response

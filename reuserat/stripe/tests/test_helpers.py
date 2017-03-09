@@ -13,14 +13,16 @@ class TestStripeApi(TestCase):
     def setUpClass(cls):
         super(TestStripeApi, cls).setUpClass()
         stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Test Secret Key.
-        cls.test_secret_key = test.TEST_CUSTOMER_STRIPE_SECRET
-        cls.test_account_token= stripe.Token.create(bank_account={"country": 'US',
-                                                    "currency": 'usd',
-                                                    "account_holder_name": 'Jane Doe',
-                                                    "account_holder_type": 'individual',
-                                                    "routing_number": '110000000',
-                                                    "account_number": '000123456789'
-                                                    },)
+        cls.test_secret_key = settings.STRIPE_TEST_SECRET_KEY#test.TEST_CUSTOMER_STRIPE_SECRET
+        cls.test_account_token= stripe.Token.create(
+            card={"number": '4242424242424242',"exp_month": 12,"exp_year": 2018,"cvc": '123', "currency": 'usd',},)
+            # #stripe.Token.create(bank_account={"country": 'US',
+            #                                         "currency": 'usd',
+            #                                         "account_holder_name": 'Jane Doe',
+            #                                         "account_holder_type": 'individual',
+            #                                         "routing_number": '110000000',
+            #                                         "account_number": '000123456789'
+            #                                         },)
         cls.test_account_id = test.TEST_CUSTOMER_STRIPE_ACCOUNT_ID
         cls.test_balance = 0.50 # in dollars
 
@@ -109,6 +111,7 @@ class TestStripeApi(TestCase):
         account_id =self.test_account_id
         amount=1 # in dollars
         test_amount = dollar_to_cent(amount)
+        account_id="acct_19t1iYBLJOL9t28B"
         test_charge_id=create_charge(account_id, amount, user_object.get_full_name())
         stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Secret Key.
         sample_charge = stripe.Charge.retrieve(test_charge_id)
@@ -130,7 +133,8 @@ class TestStripeApi(TestCase):
             user_object = factories.UserFactory()
             amount = 1  # in dollars
             test_amount = dollar_to_cent(amount)
-            test_charge_id = create_charge(self.test_account_id, amount, user_object.get_full_name())
+            account_id = "acct_19t1iYBLJOL9t28B"
+            # test_charge_id = create_charge(self.test_account_id, amount, user_object.get_full_name())
             test_transfer_id = create_transfer(self.test_account_id,self.test_balance,user_object.get_full_name())
             stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Secret Key.
             sample_transfer = stripe.Transfer.retrieve(test_transfer_id)

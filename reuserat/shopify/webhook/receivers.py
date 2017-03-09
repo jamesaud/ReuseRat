@@ -107,7 +107,6 @@ class OrderReceivers(AbstractShopifyReceiver):
     def order_payment(cls, sender, **kwargs):
         shopify_json  = cls._get_shopify_json(kwargs)
         item_list = shopify_json['line_items']
-        print(item_list)
         for item in item_list:
             # Update the shipment model, decrease the number of items for that shipment,if its 0 delete the shipment
             try:
@@ -116,8 +115,7 @@ class OrderReceivers(AbstractShopifyReceiver):
                 # Create an object for ItemOrderDetails
                 item_order_details = ItemOrderDetails(order_data=shopify_json, item=item_object)
                 user_name = item_object.shipment.user.get_full_name()
-                amount = item['price']
-                charge_id = create_charge(item_object.shipment.user.stripe_account.account_id,amount,user_name)
+                charge_id = create_charge(item_object.shipment.user.stripe_account.account_id,item['price'],user_name)
                 item_order_details.charge_id = charge_id
 
             except Exception as e:
