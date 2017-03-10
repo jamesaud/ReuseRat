@@ -2,14 +2,15 @@ import json
 
 from django.test import RequestFactory
 from test_plus.test import TestCase
-
+from reuserat.shopify.models import Status
 from config.settings.common import SHOPIFY_WEBHOOK_API_KEY, SHOPIFY_APP_NAME
 from reuserat.shipments.tests.factories import ShipmentFactory
-from reuserat.shopify.tests.factories import ItemFactory
+from reuserat.shopify.tests.factories import ItemFactory,ItemOrderDetailsFactory
 from reuserat.shopify.webhook.helpers import get_hmac
 from .. import receivers as r
 from ..views import *
 from ...models import Item
+from reuserat.stripe.helpers import create_charge
 
 
 class BaseWebhookTestCase(TestCase):
@@ -150,5 +151,26 @@ class TestProductDelete(BaseWebhookTestCase):
         self.assertTrue(Item.objects.filter(pk=self.item.id).exists())   # Item should exist
         response = self.send_request()
         self.assertFalse(Item.objects.filter(pk=self.item.id).exists())
+
+class TestOrderOrderReceiver(BaseWebhookTestCase):
+
+    def setUp(self):
+         # simulate shopify order received json request
+        body = '{"id":4869750532,"email":"jj@jj.com","closed_at":null,"created_at":"2017-03-04T16:50:26-05:00","updated_at":"2017-03-04T16:50:26-05:00","number":3,"note":"","token":"7b3edb00e35755881daae9701a0c7015","gateway":"manual","test":false,"total_price":"1.07","subtotal_price":"1.00","total_weight":454,"total_tax":"0.07","taxes_included":false,"currency":"USD","financial_status":"paid","confirmed":true,"total_discounts":"0.00","total_line_items_price":"1.00","cart_token":null,"buyer_accepts_marketing":false,"name":"#1003","referring_site":null,"landing_site":null,"cancelled_at":null,"cancel_reason":null,"total_price_usd":"1.07","checkout_token":null,"reference":null,"user_id":112270404,"location_id":21386820,"source_identifier":null,"source_url":null,"processed_at":"2017-03-04T16:50:26-05:00","device_id":null,"browser_ip":null,"landing_site_ref":null,"order_number":1003,"discount_codes":[],"note_attributes":[],"payment_gateway_names":["manual"],"processing_method":"manual","checkout_id":null,"source_name":"shopify_draft_order","fulfillment_status":null,"tax_lines":[{"title":"IN State Tax","price":"0.07","rate":0.07}],"tags":"","contact_email":null,"order_status_url":null,"line_items":[{"id":9473954756,"variant_id":36372184260,"title":"testest","quantity":1,"price":"1.00","grams":454,"sku":"9-4","variant_title":null,"vendor":"ReuseRat","fulfillment_service":"manual","product_id":10013286724,"requires_shipping":true,"taxable":true,"gift_card":false,"name":"testest","variant_inventory_management":"shopify","properties":[],"product_exists":true,"fulfillable_quantity":1,"total_discount":"0.00","fulfillment_status":null,"tax_lines":[{"title":"IN State Tax","price":"0.07","rate":0.07}]}],"shipping_lines":[],"fulfillments":[],"refunds":[]}'
+        self.body = json.loads(body)
+        item_list = self.body['line_items']
+        self.item=ItemFactory()
+        self.itemOrderDetails = ItemOrderDetailsFactory()
+        self.item.id = body['product_id']
+        super(TestOrderOrderReceiver, self).setUp(body=self.body, topic='orders/paid')  # Set up the update request
+
+        def test_order_payment(self):
+            response = self.send_request()
+            self.assertTrue(Item.objects.get(pk=self.item.id).exists())
+            item_object_created =Item.objects.get(pk=self.item.id)
+            self.assertEqual(item_object_created.status,Status.SOLD)
+            self.assertTrue(item_object_created.itemorderdetails.order_data)
+            self.assertTrue(item_object_created.itemorderdetails.order_data)
+            self.assertTrue(item_object_created.itemorderdetails.charge_id)
 
 

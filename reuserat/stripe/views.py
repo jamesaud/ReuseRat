@@ -16,7 +16,6 @@ from config.settings.common import STRIPE_TEST_SECRET_KEY
 
 def retrieve_acct_details(account_id,fieldName):
     acct_details = stripe.Account.retrieve(account_id)
-    print(acct_details,"AAAAAAAAAAAAAAAAAAAAA")
     return HttpResponse(acct_details)
 
 # Address, AccountID

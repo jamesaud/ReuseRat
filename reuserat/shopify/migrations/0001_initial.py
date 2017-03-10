@@ -23,7 +23,6 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=200)),
                 ('handle', models.CharField(max_length=200)),
                 ('is_visible', models.BooleanField()),
-                ('data', django.contrib.postgres.fields.jsonb.JSONField()),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('shipment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='shipments.Shipment')),

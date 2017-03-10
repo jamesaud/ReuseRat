@@ -1,4 +1,5 @@
 from reuserat.stripe.models import StripeAccount
+
 import stripe
 from django.conf import settings
 import time
@@ -6,8 +7,7 @@ import time
 
 # Creating Managed Account in Stripe
 def create_account(ip_addr=None):
-
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY # REAL KEY HERE
+    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
 
     acct = stripe.Account.create(
         managed=True,  # Managed Account
@@ -25,25 +25,21 @@ def create_account(ip_addr=None):
                                   secret_key=acct['keys']['secret'],
                                   publishable_key=acct['keys']['publishable'])
     acct_instance.save()
-
-
     return acct_instance
-
 
 
 def retrieve_balance(secret_key):
     stripe.api_key = secret_key
     account_details = stripe.Balance.retrieve()
-
-    return account_details['available'][0]['amount']
-
+    print(account_details, "ACCOUNT DETAILS")
+    print(type(cents_to_dollars(account_details['available'][0]['amount'])))
+    return cents_to_dollars(account_details['available'][0]['amount'])
 
 
 def update_payment_info(account_id, account_token, user_object):
-
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Secret Key.
+    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
     account = stripe.Account.retrieve(account_id)
-    # Update the display name for the account.
+    # Update the display name for the account
     account.business_name = user_object.first_name
 
     # # Update the address.
@@ -74,38 +70,52 @@ def update_payment_info(account_id, account_token, user_object):
 
     # Save the account details
     account.save()
+    # default_for_currency should be set as there can be multiple bank accounts
+    # We set the newly created one as the default.
     account.external_accounts.create(external_account=account_token, default_for_currency="true")
+    # Create Customer for each account
+    stripe.Customer.create(
+        description="Customer for " + user_object.get_full_name(),
+        source=account_token  # obtained with Stripe.js
+    )
 
     return account
 
 
-# Making Payment...
-def create_charge(user_obj, acc_token):
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Secret Key.
+def dollar_to_cent(dollar):
+    cents = dollar * 100
+    return cents
 
-    charge = stripe.Charge.create(
-        amount=500,
+
+def cents_to_dollars(cents):
+    return cents / 100
+
+
+# Create a charge for an item on the Platform Account
+def create_charge(account_id, amount_in_dollars, user_name):
+    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
+
+    # Stripe API call for Creating charge
+    charge_details = stripe.Charge.create(
+        amount=int(dollar_to_cent(amount_in_dollars * 0.50)),  # 50% of the amount is for the platform
         currency="usd",
-        source="tok_19lNzxIPg8ix8N5WIe1eVxkv",
+        customer=settings.STRIPE_TEST_PLATFORM_CUSTOMER_ID,
+        description="Hey " + user_name + " ,you get $" +str( amount_in_dollars * 0.50),
+        destination=account_id,
     )
-    print("CHARGE", charge)
-    # Create Transfer
+
+    return charge_details['id']
+
+
+# Making Transfer.Cash out the balance Stripe money for the customer
+def create_transfer(account_id, balance_in_cents, user_name):
+    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
+    print("AMOUNT TRANSFERRED ", balance_in_cents)
     transfer = stripe.Transfer.create(
-        amount=70,
         currency="usd",
-        destination=user_obj.stripe_account.account_id,  # Connected Stripe Account id
+        amount= balance_in_cents,
+        destination=account_id,
+        description="Money transfered " + user_name,
     )
 
-
-# def update_acco# def update_account_details(account_id,fieldName)
-#     acct_details = stripe.Account.retrieve(account_id)
-#     acct_details.support_phone = "555-867-5309"
-#     acct_details.save()
-#     print(acct_details,"AAAAAAAAAAAAAAAAAAAAA")
-#     return HttpResponse(acct_details)unt_details(account_id,fieldName)
-#     acct_details = stripe.Account.retrieve(account_id)
-#     acct_details.support_phone = "555-867-5309"
-#     acct_details.save()
-#     print(acct_details,"AAAAAAAAAAAAAAAAAAAAA")
-#     return HttpResponse(acct_details)
-#
+    return transfer['id']

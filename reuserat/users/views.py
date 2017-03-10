@@ -11,13 +11,14 @@ from .models import User, Address
 from reuserat.stripe.models import StripeAccount
 from .forms import UserAddressForm, UserForm
 from reuserat.stripe.forms import UpdatePaymentForm
-from reuserat.stripe.helpers import create_account, update_payment_info, create_charge
+from reuserat.stripe.helpers import create_account, update_payment_info, create_transfer
 from django.contrib.auth.decorators import login_required  # new#  import for function based view (FBV)
 from django.contrib import messages
 from django.conf import settings
 import datetime
 
 import stripe
+
 
 class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
     """
@@ -69,7 +70,6 @@ class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
             self.request.user.save()
 
             return redirect(self.get_success_url())
-
 
 
 class UserCompleteSignupView(UserUpdateMixin):
@@ -166,7 +166,6 @@ class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
         user_form = self.user_form(request.POST)
         address_form = self.address_form(request.POST)
 
-
         if address_form.is_valid() and user_form.is_valid():
             new_address = Address(**address_form.cleaned_data)
             new_address.save()  # Save Address first as there is an FK dependency between User & Address
@@ -221,7 +220,6 @@ class UserUpdateView(UserUpdateMixin):
                        kwargs={'username': self.request.user.username})
 
 
-
 class UserDetailView(LoginUserCompleteSignupRequiredMixin, DetailView):
     model = User
     # These next two lines tell the view to index lookups by username
@@ -253,25 +251,38 @@ def update_payment_information(request):
 
     # Get the form data ,so the POST request
     if request.method == "POST":
-        print(request.POST,"REQUEST")
         form = UpdatePaymentForm(request.POST)
         request.user.birth_date = datetime.date(int(request.POST['birthdate_year']),
                                                 int(request.POST['birthdate_month']),
                                                 int(request.POST['birthdate_day']))
         request.user.save()
         if form.is_valid():
-            if update_payment_info(str(request.user.stripe_account.account_id), request.POST["stripeToken"],request.user):
+            if update_payment_info(str(request.user.stripe_account.account_id), request.POST["stripeToken"],
+                                   request.user):
 
                 messages.add_message(request, messages.SUCCESS, "Updated")
+                # reverse creates a URL & redirect takes us there
                 return redirect(reverse('users:detail', kwargs={'username': request.user.username}))
             else:
                 messages.add_message(request, messages.ERROR, "Server Error!Please try again")
 
-        form = UpdatePaymentForm()
+        form = UpdatePaymentForm()  # if the form data was invalid ,render the form again
 
         return render(request, "users/user_update_payment.html", {"update_payment_form": form})
 
 
-def testCharge(request):
-    print("I AM HERE")
-    create_charge(request.user)
+@login_required
+def cash_out(request):
+    if request.method == 'GET':
+        # Get the Stripe account id of the User
+        account_id = request.user.stripe_account.account_id
+
+        # Amount to be transferred is the balance money in the stripe account
+        balance_in_cents = int(request.user.get_current_balance() *100)
+
+        # Get the user's full name for the description in the transfer
+        user_name = request.user.get_full_name()
+
+        transfer_id = create_transfer(account_id, balance_in_cents, user_name)
+
+        return redirect(reverse('users:detail', kwargs={'username': request.user.username}))
