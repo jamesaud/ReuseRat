@@ -33,13 +33,14 @@ urlpatterns = [
         name='transfer'
     ),
     url(
+
         regex=r'^(?P<username>[\w.@+-]+)/complete_signup/$',
         view=views.UserCompleteSignupView.as_view(),
         name='complete_signup'
     ),
     url(
         regex=r'^~updatepayment/$',
-        view=views.update_payment_information,
+        view=views.UpdatePaymentInformation.as_view(),
         name='update_payment_information'
     ),
 ]

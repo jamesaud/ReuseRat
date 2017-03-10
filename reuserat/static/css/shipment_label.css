@@ -9,9 +9,9 @@
     margin-bottom: 0;
     margin-top: 0;
 }
-.to-address p {
+.to-address div {
     margin-top: 0;
-    font-size: 25px;
+    font-size: 22px !important;
 }
 .from{
     width: 250px;
@@ -43,7 +43,7 @@
 }
 
 .pdf-section--left{
-        height:150px; 
+    height:150px; 
 }
 .shipment-id p{
     margin-top:0;
@@ -77,4 +77,8 @@ body {
     padding: 50px;
     border: 1px solid red;
     margin:0 auto;
+}
+
+li{
+    list-style-type: none;
 }

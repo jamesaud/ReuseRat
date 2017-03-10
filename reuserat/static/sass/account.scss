@@ -1,5 +1,16 @@
-.wrapper > .header{
-  .btn-danger{
-    i{margin-right: 4px;}
+
+
+.section-payments{
+  .tab-content{
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 }
+
+ul.nav-pills{
+  display:flex;
+  justify-content: center;
+  > li{
+    display: list-item;
+  }
+  }

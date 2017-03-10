@@ -1,31 +1,144 @@
 {% extends "account/profile/base_account_profile.html" %}
-{% load crispy_forms_tags %}
 
-{% block title %}{{ user.username }}{% endblock %}
+{% load crispy_forms_tags %}
+{% load static %}
+
 
 
 {% block breadcrumb %}
     {{ block.super }}
-/ <a class="nav-link" href="{% url 'users:update_payment_information' %}">Payment Update</a>
+/ <a class="nav-link" href="{% url 'users:update' %}">Basic Info</a>
 {% endblock %}
 
-{% block content %}
-<div class = "container">
-<form class="form-horizontal" method="post" action="{% url 'users:update_payment_information' %}"  id = "payment-form">
+{% block payments %}
+active
+{% endblock %}
 
+
+
+{% block inner %}
+
+<div class = "col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 wizard-card section-payments">
+    <h3 class='text-center'>Your current payment choice is <span class='text-info'>{{request.user.payment_type}}</span></h3>
+
+    <form method="post" action="{% url 'users:update_payment_information' %}"  id = "payment-form">
     {% csrf_token %}
-    {{ update_payment_form|crispy }}
-    <div class="control-group">
-      <div class="controls">
-        <button type="submit" class="btn">Update</button>
-      </div>
-    </div>
-</form></div>
-{% endblock %}
+    <div class="row">
+            <div data-tabs='tabs'>
+                {% for choice in user_payment_form.payment_type %}
+                    {% if choice.choice_label == payment_choices.PAYPAL %}
+                    <div class="col-sm-4">
+                        <a href='#Paypal' data-toggle="tab" aria-expanded="true">
+                            <div class="wizard-choice {% if request.user.payment_type == payment_choices.PAYPAL %}active{% endif %}" data-toggle="wizard-radio">
+                            {{choice.tag}}
+                                <div class="icon">
+                                    <i class="fa fa-paypal"></i>
+                                </div>
+                            <h6>{{choice.choice_label}} (recommended)</h6>
+                            </div>
+                        </a>
+                    </div>
+
+
+                    {% elif choice.choice_label == payment_choices.CHECK %}
+                    <div class="col-sm-4">
+                        <a href='#Check' data-toggle="tab" aria-expanded="true">
+                            <div class="wizard-choice {% if request.user.payment_type == payment_choices.CHECK %}active{% endif %}" data-toggle="wizard-radio">
+                            {{choice.tag}}
+                                <div class="icon">
+                                    <i class="fa fa-pencil"></i>
+                                </div>
+                                <h6>{{choice.choice_label}}</h6>
+                            </div>
+                        </a>
+                    </div>
+
+                {% elif choice.choice_label == payment_choices.DIRECT_DEPOSIT %}
+                    <div class="col-sm-4">
+                        <a href='#Direct_Deposit' data-toggle="tab" aria-expanded="true">
+                            <div class="wizard-choice {% if request.user.payment_type == payment_choices.DIRECT_DEPOSIT %}active{% endif %}" data-toggle="wizard-radio">
+                            {{choice.tag}}
+                                <div class="icon">
+                                    <i class="fa fa-bank"></i>
+                                </div>
+                            <h6>{{choice.choice_label}}</h6>
+                            </div>
+                        </a>
+                    </div>
+
+                {% endif %}
+                {% endfor %}
+
+
+            <div class="tab-content">
+                <div class="tab-pane {% if request.user.payment_type == payment_choices.CHECK %}active{% endif %}" id="Check">
+                    <h5 class="col-sm-12">Check payments can be made out to you and mailed to your address.
+                        You'll receive an envelope with a check made out to your name.
+                        Your current address on file is:
+                    </h5>
+
+                    <div  class="col-sm-8 col-sm-offset-4">
+                        <h6>
+                            <ol>
+                                <li>{{ request.user.get_full_name }} </li>
+                                {{ request.user.address.to_html | safe }}
+                            </ol>
+                        </h6>
+                    </div>
+                    <h5 class="col-sm-12">Note, there is a $1 shipping charge on checks.</h5>
+                </div>
+
+                <div class="tab-pane {% if request.user.payment_type == payment_choices.PAYPAL %}active{% endif %}" id="Paypal">
+                    <div class="col-sm-12">
+                        <h5>
+                        Paypal is the recommended way to receive funds.
+                        When your cash out, you'll receive an email requesting to transfer funds to your paypal account.
+                            If you'd like to use a different email, please add an email <a href="{% url 'account_email' %}">here</a>.</h5>
+                         {{ paypal_form | crispy }}
+                    </div>
+                </div>
+
+                <div class="tab-pane {% if request.user.payment_type == payment_choices.DIRECT_DEPOSIT %}active{% endif %}" id="Direct_Deposit">
+                    <div class="col-sm-12">
+                        <h5>
+                        Direct Deposit requires the following information.
+                        When you cash out from the dashboard, money will be deposited into this bank account.
+                        Transfers usually take 3 business days.
+                        </h5>
+
+                            {% crispy update_payment_form %}
+                            <div class="col-sm-12">
+                                <p id="payment_form_errors" class="text-danger help-block">
+                                    <span></span>
+                                </p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <a class="btn" href="{% url 'users:detail' request.user.username %}">Back to Dashboard</a>
+                    <button type="submit" class="btn btn-primary">Update Payment</button>
+                </div>
+            </div>
+
+        </div><!-- /col-md -->
+	</div> <!-- /row -->
+
+    </form>
+</div> <!-- /section-payments -->
+
+
+{% endblock inner %}
+
+
 
 {% block javascript %}
-{{block.super}}
- {{ update_payment_form.media.js }}
+    {{ block.super }}
+
+    {{ update_payment_form.media.js }}
+
      <script>
         Stripe.setPublishableKey('{{ update_payment_form.PUBLISHABLE_KEY }}');
         var stripeResponseHandler =function(status, response) {
@@ -33,7 +146,9 @@
             var $form = $('#payment-form');
 
             if (response.error) { // Problem!
-
+                console.log(response.error);
+                error_message = response.error['message'];
+                error_field = $('#payment_form_errors span').replaceWith("<span>" + error_message + "</span>");
                 $form.find('button').prop('disabled', false); // Re-enable submission
 
             } else { // Token created!
@@ -47,6 +162,10 @@
             }
         };
         $('#payment-form').submit(function(event) {
+            choice = $(this).find('input[name="{{ user_payment_form.payment_type.name }}"]:checked').val()
+
+            // Only trigger the stripe token creation if the user selects Direct Deposit.
+            if (choice == '{{ payment_choices.DIRECT_DEPOSIT }}'){
                 event.preventDefault();
                 // Get the form object.
               var $form = $(this);
@@ -56,7 +175,11 @@
               Stripe.bankAccount.createToken($form, stripeResponseHandler);
               // Prevent the form from submitting with the default action
               return false;
-            });
+            }
+            else{
+                  $(this).submit();
+            }
+        });
       </script>
 {% endblock %}
 

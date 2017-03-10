@@ -1,3 +1,4 @@
+
 from django.shortcuts import render,render_to_response,redirect
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
@@ -23,3 +24,4 @@ def update_payment_info(secret_key, account_number, account_id):
     stripe.api_key = secret_key  # This is the secret key of the user whose details that should be updated.
     account = stripe.Account.retrieve(account_id)
     print(account.external_accounts)
+

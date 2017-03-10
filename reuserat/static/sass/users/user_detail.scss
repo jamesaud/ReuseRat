@@ -88,6 +88,15 @@
     @include button_width_mobile(60%);
 }
 
+#shipping-instructions{
+    margin-top: 6px;
+    margin-bottom: 0px;
+    padding-top: 7px;
+    padding-bottom: 6px;
+    position: absolute;
+
+}
+
 
 @media screen and (min-width: 769px){
     .current-balance{
@@ -103,17 +112,6 @@
         text-align: center;
     }
 }
-
-
-#shipping-instructions.btn-primary.btn-simple{
-    margin-top: 6px;
-    margin-bottom: 0px;
-    padding-top: 7px;
-    padding-bottom: 6px;
-    border: 1px solid $purple-400;
-    position: absolute;
-
-} 
 
 // Ensure that the edit and delete buttons don't get pushed below the head
 @media screen and (max-width: 650px){

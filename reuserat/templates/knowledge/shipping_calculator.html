@@ -1,0 +1,60 @@
+{% extends "knowledge/base_knowledge.html" %}
+{% load static %}
+
+
+{% block shipping-calculator-active %}active{% endblock %}
+
+
+{% block header-title %}
+<h1>Shipping Cost Calculator</h1>
+{% endblock %}
+
+
+{% block inner %}
+
+<h2>Approximate Your Shipping Costs</h2>
+    <h4><i>All shipping costs are reimbursed upon package arrival.</i></h4>
+    <div class="row">
+        <div class="col-md-7">
+            <h3>1. Determine Your Zone</h3>
+            <h5>Currently, our only warehouse is in Indiana. Price increases with distance.</h5>
+            <div class="image-container">
+                <img class='fit-width' src="{% static 'images/knowledge/shipping/zones.png' %}">
+            </div>
+        </div>
+
+        <div class="col-md-5 ">
+            <h3>2. Choose Your Shipping Type</h3>
+            <h5>
+                <strong>USPS Media Mail</strong> - Choose Media Mail if every item in your shipment is a Book, DVD, CD, or Magazine.
+                <a href='http://about.usps.com/notices/not121/not121.htm' target='_blank'>(learn more)</a>
+            </h5>
+            <h5>
+                <strong>USPS Retail Ground</strong> - Choose Retail Ground if your items do not fit the media mail criteria.
+            </h5>
+            <h5>To determine prices, continue to step 3 if using Retail Ground or step 4 if using Media Mail.</h5>
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h3>3. Lookup Price for Retail Ground</h3>
+            <h5>We accept up to 25 lb's a package for Retail Ground. Shipping usually takes 3-9 days.</h5>
+            <br>
+            <div class="image-container">
+                <img class='fit-width' src="{% static 'images/knowledge/shipping/retailgroundprices.png' %}">
+            </div>
+        </div>
+        <div class="col-md-5 col-md-offset-1">
+            <h3>4. Lookup Price for Media Mail</h3>
+            <h5>Media mail does not charge extra based on your zone. We accept up to 25 lb's a package for Media Mail. Shipping usually takes 2-9 days.</h5>
+            <br>
+            <div class="image-container">
+                <img class='fit-width' src="{% static 'images/knowledge/shipping/mediamailprices.png' %}">
+            </div>
+        </div>
+    </div>
+
+{% endblock inner %}
