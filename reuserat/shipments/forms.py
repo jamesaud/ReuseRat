@@ -15,3 +15,10 @@ class ShipmentForm(ModelForm):
         widgets = {
             'description': Textarea(attrs={'cols': 0, 'rows': 0}),
         }
+
+
+class ShipmentDetailForm(ModelForm):
+    """Update Tracking and Receipt in Shipment Details Page"""
+    class Meta:
+        model = Shipment
+        fields = ['tracking_number', 'receipt']

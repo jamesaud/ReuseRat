@@ -1,1 +1,4 @@
-{}
+{
+  "reuserat/stripe/tests/test_create_account.py::TestStripeApi::test_success_update_payment_info": true,
+  "reuserat/users/tests/test_views.py::TestUpdatePaymentInformation::test_stripe_updated": true
+}

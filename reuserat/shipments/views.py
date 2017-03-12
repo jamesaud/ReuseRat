@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse_lazy,reverse
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import DetailView, ListView, RedirectView, UpdateView, TemplateView, FormView
+from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
+from django.views.generic import DetailView, UpdateView
 from django.views.generic.edit import CreateView, DeleteView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import ShipmentForm
-from reuserat.users.models import User
+from .forms import ShipmentForm, ShipmentDetailForm
 from .models import Shipment
 from django.apps import apps
 from reuserat.helpers.settings_helpers import warehouse_address_to_html
@@ -21,17 +20,15 @@ from django_pdfkit import PDFView
 from django.contrib import messages
 
 
-class ShipmentDetailView(LoginRequiredMixin,DetailView):
+class ShipmentDetailView(LoginRequiredMixin, DetailView):
     model = Shipment
-    # These next two lines tell the view to index lookups by username
-    # As the shipments are based on the user i.e the seller.
-    slug_field = 'name'
-    slug_url_kwarg = 'name'
+    form_class = ShipmentDetailForm
 
     def get_context_data(self, **kwargs):
         context = super(ShipmentDetailView, self).get_context_data(**kwargs)
-        visible_items = [item for item in self.object.item_set.all() if item.is_visible]
+        visible_items = self.object.get_visible_items()
         context['visible_items'] = visible_items or None
+        context['shipment_form'] = self.form_class()
         return context
 
 
