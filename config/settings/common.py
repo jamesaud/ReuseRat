@@ -38,10 +38,11 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
     'django_pdfkit',
-    'allauth',  # registration
-    'allauth.account',  # registration
-    'allauth.socialaccount',  # registration
+    'allauth',  # Registration
+    'allauth.account',  # Registration
+    'allauth.socialaccount',  # Registration
     'localflavor', # Django LocalFlavor
+    'paypalrestsdk' # Paypal Rest SDK for paypal transactions
 )
 
 # Add Any Third Party apps that need to come before django built in apps.
@@ -357,6 +358,8 @@ STRIPE_TEST_PLATFORM_BANK_ID=env('STRIPE_TEST_PLATFORM_BANK_ID',default=None)
 STRIPE_TEST_ACCOUNT_NUMBER = '000123456789'
 STRIPE_TEST_ROUTING_NUMBER = '111000025'
 
+PAYPAL_CLIENT_ID=env('PAYPAL_CLIENT_ID', default=None)
+PAYPAL_SECRET=env('PAYPAL_SECRET', default=None)
 
 
 WAREHOUSE_NAME = 'ReuseRat Inc.'
