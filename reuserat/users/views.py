@@ -3,16 +3,18 @@ from __future__ import absolute_import, unicode_literals
 from django.core.urlresolvers import reverse
 from django.views.generic import DetailView, ListView, RedirectView, TemplateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, render, HttpResponse, HttpResponseRedirect
-from django.views.generic.edit import ProcessFormView
+from django.contrib.auth.decorators import login_required  # new#  import for function based view (FBV)
+from django.contrib.auth import get_user_model
 from django.contrib import messages
+from django.shortcuts import redirect, render, HttpResponse, HttpResponseRedirect
+from django.views.generic.edit import FormMixin, ProcessFormView
 
 from .models import User, Address, PaymentChoices
 from .forms import UserAddressForm, UserForm, UserCompleteSignupForm
 
-from reuserat.stripe.models import PaypalAccount
+from reuserat.stripe.models import StripeAccount, PaypalAccount
 from reuserat.stripe.forms import UpdatePaymentForm, PaypalUpdateForm, UserPaymentForm
-from reuserat.stripe.helpers import create_account, update_payment_info
+from reuserat.stripe.helpers import create_account, update_payment_info, create_transfer
 
 
 class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
@@ -29,7 +31,6 @@ class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
             return redirect('users:complete_signup', username=self.request.user.username)
 
         return super(LoginUserCompleteSignupRequiredMixin, self).dispatch(request, *args, **kwargs)
-
 
 
 class UserDetailView(LoginUserCompleteSignupRequiredMixin, DetailView):
@@ -67,7 +68,6 @@ class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
         user_form = self.user_form(request.POST)
         address_form = self.address_form(request.POST)
 
-
         if address_form.is_valid() and user_form.is_valid():
             new_address = Address(**address_form.cleaned_data)
             new_address.save()  # Save Address first as there is an FK dependency between User & Address
@@ -100,7 +100,7 @@ class UserCompleteSignupView(UserUpdateMixin):
             self.request.user.stripe_account = account_instance
             self.request.user.save()
 
-        #Create default paypal account for the user.
+        # Create default paypal account for the user.
         paypal = PaypalAccount(email=self.request.user.get_primary_email())
         paypal.save()
         self.request.user.paypal_account = paypal
@@ -126,8 +126,6 @@ class UserUpdateView(LoginUserCompleteSignupRequiredMixin, UserUpdateMixin):
     def get_success_url(self):
         return reverse('users:detail',
                        kwargs={'username': self.request.user.username})
-
-
 
 
 class UserRedirectView(LoginUserCompleteSignupRequiredMixin, RedirectView):
@@ -167,10 +165,12 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
         self.PaypalFormChoices = ((email.email, email.email) for email in self.request.user.get_verified_emails())
         return super().dispatch(request, *args, **kwargs)
 
+        if address_form.is_valid() and user_form.is_valid():
+            new_address = Address(**address_form.cleaned_data)
+            new_address.save()  # Save Address first as there is an FK dependency between User & Address
 
     def get_success_url(self):
         return reverse('users:update_payment_information')
-
 
     def get_context_data(self, stripe_form=None, user_payment_form=None, paypal_form=None, **kwargs):
         """
@@ -196,7 +196,7 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
                      })
 
         # Set the Paypal Form defaults
-        paypal_form =  paypal_form or self.PaypalForm(
+        paypal_form = paypal_form or self.PaypalForm(
             choices=self.PaypalFormChoices,
             initial={'email': self.request.user.paypal_account.email.email})
 
@@ -209,7 +209,6 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
                         })
 
         return context
-
 
     def post(self, *args, **kwargs):
         """
@@ -233,6 +232,7 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
             if choice == PaymentChoices.DIRECT_DEPOSIT and stripe_form.is_valid():
                 success = self.process_stripe(stripe_form)
 
+
             elif choice == PaymentChoices.PAYPAL and paypal_form.is_valid():
                 success = self.process_paypal(paypal_form)
 
@@ -242,18 +242,16 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
             if success:
                 return HttpResponseRedirect(self.get_success_url())
 
-
         # If there is a failure, return the same page with form errors.
         return self.render_to_response(self.get_context_data(stripe_form=stripe_form,
                                                              paypal_form=paypal_form,
                                                              user_payment_form=user_payment_form,
-                                                             status_code=400)) # Error, so 400 status code.
+                                                             status_code=400))  # Error, so 400 status code.
 
     def process_check(self, form):
         """ Don't need to do anything to process Check. """
         messages.add_message(self.request, messages.SUCCESS, "Updated Check Successfully")
         return True
-
 
     def process_stripe(self, form):
 
@@ -265,7 +263,7 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
 
         # Update the user's bank Stripe Banking info.
         account = update_payment_info(str(user.stripe_account.account_id), request.POST["stripeToken"], user)
-        if account: # Update User's Stripe account in our database
+        if account:  # Update User's Stripe account in our database
 
             user.birth_date = form.cleaned_data['birth_date']  # datetime.date instance.
             user.stripe_account.account_holder_name = form.cleaned_data['account_holder_name']
@@ -280,7 +278,6 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
         else:
             messages.add_message(request, messages.ERROR, "Server Error! Please try again later.")
             return False
-
 
     def process_paypal(self, form):
         user, request = self.request.user, self.request
@@ -298,4 +295,18 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
         messages.add_message(self.request, messages.SUCCESS, "Updated Paypal Successfully")
         return form
 
+@login_required
+def cash_out(request):
+    if request.method == 'GET':
+        # Get the Stripe account id of the User
+        account_id = request.user.stripe_account.account_id
 
+        # Amount to be transferred is the balance money in the stripe account
+        balance_in_cents = int(request.user.get_current_balance() * 100)
+
+        # Get the user's full name for the description in the transfer
+        user_name = request.user.get_full_name()
+
+        transfer_id = create_transfer(account_id, balance_in_cents, user_name)
+
+        return redirect(reverse('users:detail', kwargs={'username': request.user.username}))

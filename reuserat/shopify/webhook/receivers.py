@@ -1,5 +1,7 @@
-from reuserat.shopify.models import Item
+from reuserat.shopify.models import Item, Status, ItemOrderDetails
 from reuserat.shipments.models import Shipment
+from reuserat.users.models import User
+from reuserat.stripe.helpers import create_charge
 from ..helpers import valid_sku
 
 '''
@@ -10,18 +12,18 @@ Improve:
  - create JSON validation templates which we can verify: http://python-jsonschema.readthedocs.io/en/latest/validate/
 '''
 
+
 class AbstractShopifyReceiver:
-
-    @staticmethod
-    def _get_shopify_json(json_sender_data):
+    @classmethod
+    def _get_shopify_json(cls, json_sender_data):
         return json_sender_data['data']  # parse out the sender signal and name
-
 
 
 class ProductReceivers(AbstractShopifyReceiver):
     """
     Using Item instead of Product because that's what our Model is called.
     """
+
     @classmethod
     def item_create(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
@@ -42,13 +44,13 @@ class ProductReceivers(AbstractShopifyReceiver):
         item.data = shopify_json
         item.handle = shopify_json['handle']
         item.name = shopify_json['title']
-        item.is_visible= True if shopify_json['published_at'] else False
+        item.is_visible = True if shopify_json['published_at'] else False
         item.save()
 
     @classmethod
     def item_update_or_create(cls, sender, **kwargs):
         try:
-            cls.item_update(sender ,**kwargs)
+            cls.item_update(sender, **kwargs)
         except Item.DoesNotExist:
             cls.item_create(sender, **kwargs)
 
@@ -93,3 +95,36 @@ class ProductReceivers(AbstractShopifyReceiver):
         if valid_sku(json_data.get('variants')[0].get('sku')):
             return json_data.get('variants')[0].get('sku').split('-')[0]
         raise ValueError("JSON sku is not formatted as expected: {}".format(json_data))
+
+
+class OrderReceivers(AbstractShopifyReceiver):
+    """
+    This class is responsible for handling order related webhooks from Shopify
+    """
+
+    @classmethod
+    def order_payment(cls, sender, **kwargs):
+        shopify_json = cls._get_shopify_json(kwargs)
+        item_list = shopify_json['line_items']
+        for item in item_list:
+            # Update the shipment model
+            try:
+                # Update the status of the item to Sold
+                item_object = Item.objects.get(pk=item['product_id'])
+                item_object.status = Status.SOLD
+
+                # Create an object for ItemOrderDetails
+                item_order_details = ItemOrderDetails(order_data=shopify_json, item=item_object)
+
+                # Create charge
+                seller_account_id = item_object.shipment.user.stripe_account.account_id
+                item_price = item['price']
+                user_name = item_object.shipment.user.get_full_name()
+                charge_id = create_charge(seller_account_id, item_price, user_name)
+
+                # Update the charge id of the item ,for future reference
+                item_order_details.charge_id = charge_id
+
+            except Exception as e:
+                print(e)
+                raise

@@ -10,6 +10,7 @@ from localflavor.us import models as usmodels
 from reuserat.stripe.models import StripeAccount, PaypalAccount
 from reuserat.stripe.helpers import retrieve_balance
 import stripe
+from django.conf import settings
 
 
 class PaymentChoices:
@@ -68,6 +69,7 @@ class User(AbstractUser):
         # External API Call
         try:
             balance = retrieve_balance(self.stripe_account.secret_key)
+
         except stripe.error.AuthenticationError:
             balance = "Temporarily Unavailable"
 
