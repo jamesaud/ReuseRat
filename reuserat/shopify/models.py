@@ -41,7 +41,6 @@ class Item(models.Model):
     def get_shopify_admin_url(self):
         return get_shopify_admin_url(self.id)
 
-
     def __str__(self):
         return self.name
 

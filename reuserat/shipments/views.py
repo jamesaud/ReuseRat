@@ -2,12 +2,12 @@
 from __future__ import absolute_import, unicode_literals
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView, UpdateView
-from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView, FormMixin, SingleObjectMixin
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import ShipmentForm, ShipmentDetailForm
+from .forms import ShipmentForm, ShipmentDetailReceiptForm, ShipmentDetailTrackingForm
 from .models import Shipment
 from django.apps import apps
 from reuserat.helpers.settings_helpers import warehouse_address_to_html
@@ -20,16 +20,69 @@ from django_pdfkit import PDFView
 from django.contrib import messages
 
 
-class ShipmentDetailView(LoginRequiredMixin, DetailView):
+
+@login_required
+def shipment_detail_view(request, pk):
+    object = Shipment.objects.get(pk=pk)
+    context = {}
+    template_name = 'shipments/shipment_detail.html'
+    form_track, form_rec = ShipmentDetailTrackingForm(request.POST or None, initial=object.__dict__),\
+                           ShipmentDetailReceiptForm(request.POST, request.FILES, initial=object.__dict__)
+
+    context['object'] = object
+    context['visible_items'] = object.get_visible_items() or None
+    context['form_tracking'] = form_track
+    context['form_receipt'] = form_rec
+
+    def get_success_url():
+        messages.add_message(request, messages.SUCCESS, 'Successfully Updated')
+        return reverse('shipments:shipmentDetail', kwargs={'pk': object.pk})
+
+    if request.method == 'POST':
+        if form_track.is_valid():
+            object.tracking_number = form_track.cleaned_data['tracking_number']
+            object.save()
+            return redirect(get_success_url())
+        if form_rec.is_valid():
+            object.receipt = form_rec.cleaned_data['receipt']
+            object.save()
+            return redirect(get_success_url())
+
+    return render(request, template_name, context=context)
+        
+
+class ShipmentDetailView(LoginRequiredMixin, DetailView, SingleObjectMixin):
     model = Shipment
-    form_class = ShipmentDetailForm
+    template_name = 'shipments/shipment_detail.html'
+    form_tracking = ShipmentDetailTrackingForm
+    form_receipt = ShipmentDetailReceiptForm
 
     def get_context_data(self, **kwargs):
-        context = super(ShipmentDetailView, self).get_context_data(**kwargs)
-        visible_items = self.object.get_visible_items()
-        context['visible_items'] = visible_items or None
-        context['shipment_form'] = self.form_class()
+        context = super().get_context_data(**kwargs)
+        context['visible_items'] = self.object.get_visible_items() or None
+        context['form_tracking'] = self.form_tracking(self.request.POST or None, initial=self.object.__dict__)
+        context['form_receipt'] = self.form_receipt(self.request.POST or None, initial=self.object.__dict__)
         return context
+
+    def post(self, *args, **kwargs):
+        
+        form_track, form_rec = self.form_tracking(self.request.POST), self.form_receipt(self.request.POST)
+        if form_track.is_valid():
+            self.object.tracking_number = form_track.cleaned_data['tracking_number']
+            return self.get_success_url()
+        elif form_rec.is_valid():
+            self.object.receipt = form_rec.cleaned_data['receipt']
+            return self.get_success_url()
+        else:
+            return render(self.request, self.template_name, context=super(self.get_context_data(**kwargs)))
+        
+
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, 'Successfully Updated')
+        return reverse('shipments:shipmentDetail', kwargs={'pk': self.object.id})
+
+
+
 
 
 # Create View
