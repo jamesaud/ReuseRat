@@ -33,6 +33,11 @@ urlpatterns = [
         name='transfer'
     ),
     url(
+        regex=r'^~test-cash-out/$',
+        view=views.CashOutView.as_view(),
+        name='cashout'
+    ),
+    url(
 
         regex=r'^(?P<username>[\w.@+-]+)/complete_signup/$',
         view=views.UserCompleteSignupView.as_view(),

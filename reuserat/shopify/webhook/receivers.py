@@ -12,6 +12,12 @@ Improve:
  - create JSON validation templates which we can verify: http://python-jsonschema.readthedocs.io/en/latest/validate/
 '''
 
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
+
 
 class AbstractShopifyReceiver:
     @classmethod
@@ -69,7 +75,7 @@ class ProductReceivers(AbstractShopifyReceiver):
         try:
             item = Item.objects.get(pk=json_data['variants'][0]['product_id'])
         except Item.DoesNotExist:
-            print("Getting item using primary key found from 'id' in json does not exist: {}".format(json_data))
+            logger.error("Getting item using primary key found from 'id' in json does not exist: {}".format(json_data))
             raise
         return item
 
@@ -79,7 +85,7 @@ class ProductReceivers(AbstractShopifyReceiver):
             id = cls._get_shipment_id(json_data)
             return Shipment.objects.get(pk=id)
         except Shipment.DoesNotExist:
-            print("Shipment with ID + does not exist in database from json_data: {}".format(json_data))
+            logger.error("Shipment with ID + does not exist in database from json_data: {}".format(json_data))
             raise
 
     @classmethod
@@ -104,27 +110,40 @@ class OrderReceivers(AbstractShopifyReceiver):
 
     @classmethod
     def order_payment(cls, sender, **kwargs):
+        print("ORDER PAYMENT")
         shopify_json = cls._get_shopify_json(kwargs)
         item_list = shopify_json['line_items']
         for item in item_list:
-            # Update the shipment model
             try:
+                # Update the shipment model
                 # Update the status of the item to Sold
                 item_object = Item.objects.get(pk=item['product_id'])
+            except Item.DoesNotExist as e:
+                # This could happen if we add items manually to shopify. In that case, it is okay skip over.
+                # However, we should log the occurences to make sure nothing is wrong.
+                print(e)
+                logger.error("FAILED TO GET ITEM FROM DATABASE: " + str(e) + " | WITH DATA: " + str(shopify_json))
+            else:
                 item_object.status = Status.SOLD
 
                 # Create an object for ItemOrderDetails
                 item_order_details = ItemOrderDetails(order_data=shopify_json, item=item_object)
 
+
                 # Create charge
                 seller_account_id = item_object.shipment.user.stripe_account.account_id
-                item_price = item['price']
-                user_name = item_object.shipment.user.get_full_name()
-                charge_id = create_charge(seller_account_id, item_price, user_name)
+                item_price = float(item['price'])
 
+                user_name = item_object.shipment.user.get_full_name()
+                try:
+                    charge_id = create_charge(seller_account_id, item_price, user_name)
+                except Exception as e:
+                    print(e)
+                    raise
                 # Update the charge id of the item ,for future reference
                 item_order_details.charge_id = charge_id
+                # Save updated objects
+                item_order_details.save()
+                item_object.save()
 
-            except Exception as e:
-                print(e)
-                raise
+

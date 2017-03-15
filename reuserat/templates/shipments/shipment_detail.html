@@ -74,43 +74,7 @@
                 </div>
             </div>
 
-            {% if not shipment.is_physical %}
-            <hr>
-            <div class='row'>
-                <div class='col-sm-4'>
-                <h3><strong>Shipping Label:</strong></h3>
-                </div>
-                <div class='col-sm-8'>
-                <a class="nav-link" href="{% url 'shipments:shipmentLabel' object.id %}?html" target="_blank"><h3>Print in Browser</h3></a>
-                <a class="nav-link" href="{% url 'shipments:shipmentLabel' object.id %}" target="_blank"><h3>Download PDF</h3></a>
-                </div>
-            </div>
-            {% endif %}
-
-            <hr>
-            <div class='row'>
-                <div class='col-sm-4'>
-                    <h3><strong>Shipping Receipt:</strong></h3>
-                </div>
-                <div class='col-sm-8'>
-                    {% if object.receipt %}
-                    <h3><a href="{{object.receipt.url}}" target="_blank">Your Shipping Receipt</a></h3>
-                    <form id="shipment-receipt-form" enctype="multipart/form-data" method="POST" action="{% url 'shipments:shipmentDetail' object.id %}">
-                        {% csrf_token %}                        
-                        Update: <input style='display: inline;' data-show-preview="false" id="{{form_receipt.receipt.auto_id}}" name="form_receipt.receipt.name" type="file">
-                    </form>
-
-                    {% else %}
-                    <form id="shipment-receipt-form" enctype="multipart/form-data" method="POST" action="{% url 'shipments:shipmentDetail' object.id %}">
-                        {% csrf_token %}                        
-                        {{  form_receipt.receipt | as_crispy_field }}
-                    </form>
-                    {% endif %}
-
-                </div>
-            </div>
-
-            <hr>
+                        <hr>
             <div class="row">
                 <div class="col-sm-4">
                     <h3><strong>Items For Sale:</strong></h3>
@@ -134,9 +98,9 @@
                                         <tr>
 
                                             <td>{{ item.name }}</td>
-                                            <td>Not Sold (placeholder)</td>
+                                            <td>{{item.status}}</td>
                                             <td><a href="{{ item.get_shopify_url }}" target='_blank'>See On Store</a></td>
-
+                                            <td>{{item.item_order_details.order_data}}1</td>
                                         </tr>
                                     {% endif %}
                                 {% endfor %}
@@ -147,6 +111,43 @@
                         <h3> No items posted yet. </h3>
                         <p>If your shipment has arrived, it will be processed soon. Items will show up as they are added to the store.</p>
 
+                    {% endif %}
+
+                </div>
+            </div>
+
+            {% if not shipment.is_physical %}
+            <hr>
+            <div class='row'>
+                <div class='col-sm-4'>
+                <h3><strong>Shipping Label:</strong></h3>
+                </div>
+                <div class='col-sm-8'>
+                <a class="nav-link" href="{% url 'shipments:shipmentLabel' object.id %}?html" target="_blank"><h3>Print in Browser</h3></a>
+                <a class="nav-link" href="{% url 'shipments:shipmentLabel' object.id %}" target="_blank"><h3>Download PDF</h3></a>
+                </div>
+            </div>
+            {% endif %}
+
+
+            <hr>
+            <div class='row'>
+                <div class='col-sm-4'>
+                    <h3><strong>Shipping Receipt:</strong></h3>
+                </div>
+                <div class='col-sm-8'>
+                    {% if object.receipt %}
+                    <h3><a href="{{object.receipt.url}}" target="_blank">Your Shipping Receipt</a></h3>
+                    <form id="shipment-receipt-form" enctype="multipart/form-data" method="POST" action="{% url 'shipments:shipmentDetail' object.id %}">
+                        {% csrf_token %}
+                        Update: <input style='display: inline;' data-show-preview="false" id="{{form_receipt.receipt.auto_id}}" name="form_receipt.receipt.name" type="file">
+                    </form>
+
+                    {% else %}
+                    <form id="shipment-receipt-form" enctype="multipart/form-data" method="POST" action="{% url 'shipments:shipmentDetail' object.id %}">
+                        {% csrf_token %}
+                        {{  form_receipt.receipt | as_crispy_field }}
+                    </form>
                     {% endif %}
 
                 </div>

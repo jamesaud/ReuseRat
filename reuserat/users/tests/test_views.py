@@ -152,8 +152,12 @@ class TestCashOut(TestCase):
         # Check if the form was rendered
         response = cash_out(request)
         self.assertEqual(response.status_code, 302)  # Html Code for Successful response
+        
+        mock_messages = patch('reuserat.users.views.messages').start()
+        mock_messages.SUCCESS = success = 'success'
 
         msg = u'Updated Bank Successfully'
+        mock_messages = patch('reuserat.users.views.messages').start()
         mock_messages.add_message.assert_called_with(request, success, msg)
 
         self.assertEqual(account_number[-4:], self.user.stripe_account.account_number_last_four)

@@ -27,7 +27,7 @@ def shipment_detail_view(request, pk):
     context = {}
     template_name = 'shipments/shipment_detail.html'
     form_track, form_rec = ShipmentDetailTrackingForm(request.POST or None, initial=object.__dict__),\
-                           ShipmentDetailReceiptForm(request.POST, request.FILES, initial=object.__dict__)
+                           ShipmentDetailReceiptForm(request.POST or None, request.FILES or None, initial=object.__dict__)
 
     context['object'] = object
     context['visible_items'] = object.get_visible_items() or None
@@ -51,41 +51,6 @@ def shipment_detail_view(request, pk):
     return render(request, template_name, context=context)
         
 
-class ShipmentDetailView(LoginRequiredMixin, DetailView, SingleObjectMixin):
-    model = Shipment
-    template_name = 'shipments/shipment_detail.html'
-    form_tracking = ShipmentDetailTrackingForm
-    form_receipt = ShipmentDetailReceiptForm
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['visible_items'] = self.object.get_visible_items() or None
-        context['form_tracking'] = self.form_tracking(self.request.POST or None, initial=self.object.__dict__)
-        context['form_receipt'] = self.form_receipt(self.request.POST or None, initial=self.object.__dict__)
-        return context
-
-    def post(self, *args, **kwargs):
-        
-        form_track, form_rec = self.form_tracking(self.request.POST), self.form_receipt(self.request.POST)
-        if form_track.is_valid():
-            self.object.tracking_number = form_track.cleaned_data['tracking_number']
-            return self.get_success_url()
-        elif form_rec.is_valid():
-            self.object.receipt = form_rec.cleaned_data['receipt']
-            return self.get_success_url()
-        else:
-            return render(self.request, self.template_name, context=super(self.get_context_data(**kwargs)))
-        
-
-    def get_success_url(self):
-        messages.add_message(self.request, messages.SUCCESS, 'Successfully Updated')
-        return reverse('shipments:shipmentDetail', kwargs={'pk': self.object.id})
-
-
-
-
-
-# Create View
 class ShipmentOrderView(LoginRequiredMixin, CreateView):
      model = Shipment
      template_name = 'shipments/shipment_create.html'
