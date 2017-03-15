@@ -31,10 +31,10 @@ class PaypalAccount(models.Model):
     email = models.OneToOneField(EmailAddress)
 
 
-
 class Transaction(models.Model):
-    user = models.ForeignKey('users:user', on_delete=models.CASCADE,)
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE)
     payment_type = models.CharField(_('Payment Type'), max_length=255)
     amount_paid = models.FloatField() # In dollars
     message = models.CharField(max_length=500, null=True, blank=True)
+
 
