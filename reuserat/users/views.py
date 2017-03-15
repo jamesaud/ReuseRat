@@ -1,21 +1,22 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from django.core.urlresolvers import reverse
-from django.views.generic import DetailView, ListView, RedirectView, TemplateView, UpdateView
+from django.views.generic import DetailView, ListView, RedirectView, TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required  # new#  import for function based view (FBV)
-from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.shortcuts import redirect, render, HttpResponse, HttpResponseRedirect
-from django.views.generic.edit import FormMixin, ProcessFormView
+from django.views.generic.edit import  ProcessFormView
 
 from .models import User, Address, PaymentChoices
 from .forms import UserAddressForm, UserForm, UserCompleteSignupForm
 
-from reuserat.stripe.models import StripeAccount, PaypalAccount
+from reuserat.stripe.models import PaypalAccount
 from reuserat.stripe.forms import UpdatePaymentForm, PaypalUpdateForm, UserPaymentForm
 from reuserat.stripe.helpers import create_account, update_payment_info, create_transfer
+from reuserat.stripe.paypal_helpers import make_payment_paypal
 
+import pprint
 
 class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
     """
@@ -178,7 +179,6 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
         Pass forms to optionally use, useful for setting forms on invalid POST submissions.
         """
         context = super().get_context_data(**kwargs) or {}
-
         account_number = routing_number = None
         stripe = self.request.user.stripe_account
 
@@ -207,7 +207,6 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
                         "user_payment_form": user_payment_form,
                         "payment_choices": PaymentChoices
                         })
-
         return context
 
     def post(self, *args, **kwargs):
@@ -232,7 +231,6 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
             if choice == PaymentChoices.DIRECT_DEPOSIT and stripe_form.is_valid():
                 success = self.process_stripe(stripe_form)
 
-
             elif choice == PaymentChoices.PAYPAL and paypal_form.is_valid():
                 success = self.process_paypal(paypal_form)
 
@@ -256,7 +254,7 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
     def process_stripe(self, form):
 
         """
-        Hit's the Stripe API to update the user's account.
+        Hits the Stripe API to update the user's account.
         Updates the User's StripeAccount with the new details.
         """
         user, request = self.request.user, self.request
@@ -264,7 +262,6 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
         # Update the user's bank Stripe Banking info.
         account = update_payment_info(str(user.stripe_account.account_id), request.POST["stripeToken"], user)
         if account:  # Update User's Stripe account in our database
-
             user.birth_date = form.cleaned_data['birth_date']  # datetime.date instance.
             user.stripe_account.account_holder_name = form.cleaned_data['account_holder_name']
             user.stripe_account.account_number_last_four = str(form.cleaned_data['account_number'])[-4:]
@@ -272,7 +269,6 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
             user.stripe_account.account_number_length = len(str(form.cleaned_data['account_number']))
             user.stripe_account.save()
             user.save()
-
             messages.add_message(request, messages.SUCCESS, "Updated Bank Successfully")
             return form
         else:
@@ -294,6 +290,37 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
 
         messages.add_message(self.request, messages.SUCCESS, "Updated Paypal Successfully")
         return form
+
+
+class CashOutView(LoginRequiredMixin, View):
+
+    def get(self, *args, **kwargs):
+        payment_type = self.request.user.payment_type
+
+        if payment_type == PaymentChoices.PAYPAL:
+            response = self.use_paypal()
+            return HttpResponse(response)
+
+
+        elif payment_type == PaymentChoices.DIRECT_DEPOSIT:
+            self.use_direct_deposit()
+
+        elif payment_type == PaymentChoices.CHECK:
+            self.use_check()
+
+    def use_paypal(self):
+        return str(make_payment_paypal(batch_id='batch_{}'.format(),
+                                       receiver_email="trashandtreasure67-buyer-1@gmail.com",
+                                       amount=1000,
+                                       note="Thanks for all the fish"))
+
+    def use_direct_deposit(self):
+        pass
+
+    def use_check(self):
+        pass
+
+
 
 @login_required
 def cash_out(request):

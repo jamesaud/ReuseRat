@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse_lazy,reverse
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import DetailView, ListView, RedirectView, UpdateView, TemplateView, FormView
-from django.views.generic.edit import CreateView, DeleteView
+from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.generic import DetailView, UpdateView
+from django.views.generic.edit import CreateView, DeleteView, FormMixin, SingleObjectMixin
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import ShipmentForm
-from reuserat.users.models import User
+from .forms import ShipmentForm, ShipmentDetailReceiptForm, ShipmentDetailTrackingForm
 from .models import Shipment
 from django.apps import apps
 from reuserat.helpers.settings_helpers import warehouse_address_to_html
@@ -21,21 +20,37 @@ from django_pdfkit import PDFView
 from django.contrib import messages
 
 
-class ShipmentDetailView(LoginRequiredMixin,DetailView):
-    model = Shipment
-    # These next two lines tell the view to index lookups by username
-    # As the shipments are based on the user i.e the seller.
-    slug_field = 'name'
-    slug_url_kwarg = 'name'
 
-    def get_context_data(self, **kwargs):
-        context = super(ShipmentDetailView, self).get_context_data(**kwargs)
-        visible_items = [item for item in self.object.item_set.all() if item.is_visible]
-        context['visible_items'] = visible_items or None
-        return context
+@login_required
+def shipment_detail_view(request, pk):
+    object = Shipment.objects.get(pk=pk)
+    context = {}
+    template_name = 'shipments/shipment_detail.html'
+    form_track, form_rec = ShipmentDetailTrackingForm(request.POST or None, initial=object.__dict__),\
+                           ShipmentDetailReceiptForm(request.POST or None, request.FILES or None, initial=object.__dict__)
 
+    context['object'] = object
+    context['visible_items'] = object.get_visible_items() or None
+    context['form_tracking'] = form_track
+    context['form_receipt'] = form_rec
 
-# Create View
+    def get_success_url():
+        messages.add_message(request, messages.SUCCESS, 'Successfully Updated')
+        return reverse('shipments:shipmentDetail', kwargs={'pk': object.pk})
+
+    if request.method == 'POST':
+        if form_track.is_valid():
+            object.tracking_number = form_track.cleaned_data['tracking_number']
+            object.save()
+            return redirect(get_success_url())
+        if form_rec.is_valid():
+            object.receipt = form_rec.cleaned_data['receipt']
+            object.save()
+            return redirect(get_success_url())
+
+    return render(request, template_name, context=context)
+        
+
 class ShipmentOrderView(LoginRequiredMixin, CreateView):
      model = Shipment
      template_name = 'shipments/shipment_create.html'

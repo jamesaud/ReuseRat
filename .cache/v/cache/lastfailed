@@ -1,1 +1,6 @@
-{}
+{
+  "reuserat/stripe/tests/test_helpers.py::TestStripeApi::test_success_create_charge": true,
+  "reuserat/stripe/tests/test_helpers.py::TestStripeApi::test_success_update_payment_info": true,
+  "reuserat/users/tests/test_views.py::TestCashOut::test_get": true,
+  "reuserat/users/tests/test_views.py::TestUpdatePaymentInformation::test_stripe_updated": true
+}

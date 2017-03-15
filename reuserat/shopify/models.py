@@ -26,21 +26,19 @@ class Item(models.Model):
 
     data = JSONField()  # Shopify Json Data
     shipment = models.ForeignKey(Shipment, on_delete=models.CASCADE)
-    name =  models.CharField(max_length=200)  # Shopify  Name
+    name = models.CharField(max_length=200)  # Shopify  Name
     handle = models.CharField(max_length=200)  # Shopify Handle
     is_visible = models.BooleanField()
     status = models.CharField(max_length=100, choices=Status.STATUS_CHOICES, default=Status.NOT_SOLD)
+
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-
 
     def get_shopify_url(self):
         return get_shopify_product_url(self.handle)
 
-
     def get_shopify_admin_url(self):
         return get_shopify_admin_url(self.id)
-
 
     def __str__(self):
         return self.name
@@ -52,12 +50,12 @@ class Item(models.Model):
 class ItemOrderDetails(models.Model):
     # Order ID
     item = models.OneToOneField(Item, primary_key=True)
-    charge_id =models.CharField(null=True,max_length=200)
-    transfer_id=models.IntegerField(null=True)
-    order_data = JSONField(null=True)
+    charge_id = models.CharField(max_length=200)
+    transfer_id = models.IntegerField()
+    order_data = JSONField() # Shopify order data
 
     def __str__(self):
-        return self.name
+        return "Order details for: " + str(self.item)
 
 
 

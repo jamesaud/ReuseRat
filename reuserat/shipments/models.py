@@ -11,6 +11,9 @@ class Shipment(models.Model):
     description =  models.CharField(max_length=1000, blank=False)
     is_physical = models.BooleanField(default=False)
 
+    tracking_number = models.CharField(max_length=25, null=True, blank=True)  # USPS tracking number
+    receipt = models.ImageField(null=True, blank=True)
+
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
