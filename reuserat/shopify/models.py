@@ -22,7 +22,7 @@ class Item(models.Model):
     Everything in Item is set through the save method through the json data that shopify provides. Only need to provide
     the 'id' and the 'data'.
     """
-    id = models.CharField(max_length=100, primary_key=True)  # Must Be Shopify product ID!
+    id = models.CharField(max_length=100, primary_key=True)  # Must Be Shopify product ID!!!
 
     data = JSONField()  # Shopify Json Data
     shipment = models.ForeignKey(Shipment, on_delete=models.CASCADE)
