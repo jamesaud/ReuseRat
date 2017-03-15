@@ -12,7 +12,7 @@ urlpatterns = [
     ),
     url(
         regex=r'^(?P<pk>\d+)/$',
-        view=views.ShipmentDetailView.as_view(),
+        view=views.shipment_detail_view,
         name='shipmentDetail'
     ),
     url(

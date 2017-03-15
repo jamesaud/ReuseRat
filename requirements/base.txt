@@ -56,5 +56,6 @@ django-localflavor==1.4
 
 stripe==1.48.1
 
+paypalrestsdk==1.12.0
 
 # Your custom requirements go here

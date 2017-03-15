@@ -1,9 +1,8 @@
+from django.conf import settings
 from reuserat.stripe.models import StripeAccount
 
 import stripe
-from django.conf import settings
 import time
-import paypalrestsdk
 
 # Creating Managed Account in Stripe
 def create_account(ip_addr=None):
@@ -94,15 +93,16 @@ def cents_to_dollars(cents):
 # Create a charge for an item on the Platform Account
 def create_charge(account_id, amount_in_dollars, user_name):
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
-
+    print(settings.STRIPE_TEST_PLATFORM_CUSTOMER_ID)
     # Stripe API call for Creating charge
     charge_details = stripe.Charge.create(
         amount=int(dollar_to_cent(amount_in_dollars * 0.50)),  # 50% of the amount is for the platform
         currency="usd",
         customer=settings.STRIPE_TEST_PLATFORM_CUSTOMER_ID,
-        description="Hey " + user_name + " ,you get $" +str( amount_in_dollars * 0.50),
+        description="Hey " + user_name + " ,you get $" + str( amount_in_dollars * 0.50),
         destination=account_id,
     )
+
     return charge_details['id']
 
 # Making Transfer.Cash out the balance Stripe money for the customer
@@ -118,11 +118,3 @@ def create_transfer(account_id, balance_in_cents, user_name):
         description="Money transfered " + user_name,
     )
     return transfer['id']
-
-
-# Paypal Transfer function if user chooses Paypal Option
-def make_payment_paypal():
-    paypalrestsdk.configure({
-        "mode": "sandbox",  # sandbox for testing or live
-        "client_id": settings.PAYPAL_CLIENT_ID,
-        "client_secret": settings.PAYPAL_SECRET })

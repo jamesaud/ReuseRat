@@ -1,3 +1,10 @@
 h3{
     white-space: normal; 
 }
+.fileinput-upload-button, .fileinput-remove-button{
+    display: none ;
+}
+
+.file-input{
+    max-width: 400px;
+}
