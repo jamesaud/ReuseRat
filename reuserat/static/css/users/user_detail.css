@@ -61,6 +61,12 @@
     .shipment-button .btn, .shipment-button .btn-group {
       width: 60%; } }
 
+#shipping-instructions {
+  margin-top: 6px;
+  margin-bottom: 0px;
+  padding-top: 7px;
+  padding-bottom: 6px; }
+
 @media screen and (min-width: 769px) {
   .current-balance {
     bottom: 26px; } }
@@ -70,14 +76,6 @@
     text-align: center; }
   .shipment-button {
     text-align: center; } }
-
-#shipping-instructions.btn-primary.btn-simple {
-  margin-top: 6px;
-  margin-bottom: 0px;
-  padding-top: 7px;
-  padding-bottom: 6px;
-  border: 1px solid #ab47bc;
-  position: absolute; }
 
 @media screen and (max-width: 650px) {
   .card .head > .btn {

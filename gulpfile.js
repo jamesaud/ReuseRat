@@ -34,7 +34,7 @@ var pathsConfig = function (appName) {
     sass: this.app + '/static/sass',
     fonts: this.app + '/static/fonts',
     images: this.app + '/static/images',
-    js: this.app + '/static/js',
+    js: this.app + '/static/js'
   }
 };
 
@@ -52,7 +52,7 @@ gulp.task('styles', function() {
     .pipe(autoprefixer({browsers: ['last 2 version']})) // Adds vendor prefixes
     .pipe(pixrem())  // add fallbacks for rem units
     .pipe(gulp.dest(paths.css))
-    .pipe(rename({ suffix: '.min' })) 
+    .pipe(rename({ suffix: '.min' }))
     .pipe(cssnano()) // Minifies the result
     .pipe(gulp.dest(paths.css));
 });
@@ -103,7 +103,7 @@ gulp.task('default', function() {
 // Watch
 gulp.task('watch', ['default'], function() {
   gulp.watch(paths.sass + '/**/*.scss', ['styles']);
-  gulp.watch(paths.sass + '/**/*.scss').on("change", reload);
+  gulp.watch(paths.css + '/**/*.css').on("change", reload);
   gulp.watch(paths.js + '/*.js', ['scripts']).on("change", reload);
   gulp.watch(paths.images + '/*', ['imgCompression']);
   gulp.watch(paths.templates + '/**/*.html').on("change", reload);

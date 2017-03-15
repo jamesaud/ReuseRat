@@ -17,8 +17,8 @@ h5.description, h4.description, p.description{
 
  
  .features{
-   padding-top: 60px;
-   padding-bottom: 60px;
+   padding-top: 90px;
+   padding-bottom: 90px; 
    h5{
      color: $grey-600;
    }
@@ -104,8 +104,6 @@ background: linear-gradient(to right, #ff4b1f, #ff9068); /* Chrome 10-25, Safari
 }
 
 
-
-// move to utility
 .image-container{
   img{
     width: auto;

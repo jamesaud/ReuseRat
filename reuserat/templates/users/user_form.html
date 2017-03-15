@@ -16,11 +16,20 @@ active
 {% block inner %}
   <div class="row">
     <div class="col-sm-8 col-sm-offset-2">
-  <h1 class='text-center'>Update Basic Information</h1>
-  <form class="form-horizontal" method="post" action="{% url 'users:update' %}">
+  <form method="post" action="{% url 'users:update' %}">
     {% csrf_token %}
-        {{ user_form|crispy }}
-      {{ address_form|crispy }}
+      <div class='row'>
+        <div class='col-md-12'>
+          <h3>Personal Information</h3>
+        </div>
+        {% crispy user_form %}
+      </div>
+      <div class='row'>
+        <div class='col-md-12'>
+          <h3>Address</h3>
+        </div>
+        {% crispy address_form %}
+      </div>
 
       <div class="control-group">
       <div class="controls">
@@ -34,7 +43,4 @@ active
 {% endblock inner %}
 
 
-{% block javascript %}
-{{block.super}}
- {{ form.media }}
-{% endblock %}
+

@@ -38,10 +38,11 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
     'django_pdfkit',
-    'allauth',  # registration
-    'allauth.account',  # registration
-    'allauth.socialaccount',  # registration
+    'allauth',  # Registration
+    'allauth.account',  # Registration
+    'allauth.socialaccount',  # Registration
     'localflavor', # Django LocalFlavor
+    'paypalrestsdk' # Paypal Rest SDK for paypal transactions
 )
 
 # Add Any Third Party apps that need to come before django built in apps.
@@ -55,6 +56,7 @@ LOCAL_APPS = (
     'reuserat.shopify.apps.ShopifyConfig',
     'reuserat.knowledge.apps.KnowledgeConfig',
     'reuserat.stripe.apps.StripeConfig',
+
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -341,3 +343,27 @@ SHOPIFY_DOMAIN_NAME = env('SHOPIFY_DOMAIN_NAME', default='reuserat')
 # See your keys here: https://dashboard.stripe.com/account/apikeys
 STRIPE_TEST_SECRET_KEY  = env('STRIPE_TEST_SECRET_KEY', default=None)
 STRIPE_TEST_PUBLISHABLE_KEY  = env('STRIPE_TEST_PUBLISHABLE_KEY', default=None)
+
+
+#To generate the token for the payment details
+COMPANY_ACCOUNT_NUMBER = env('COMPANY_ACCOUNT_NUMBER', default=None)
+COMPANY_ROUTING_NUMBER = env('COMPANY_ROUTING_NUMBER', default=None)
+COMPANY_ACCOUNT_HOLDER_NAME = env('COMPANY_ACCOUNT_HOLDER_NAME', default=None)
+
+STRIPE_TEST_CUSTOMER_ID=env('STRIPE_TEST_CUSTOMER_ID', default=None)
+STRIPE_TEST_CUSTOMER_BANK_ID=env('STRIPE_TEST_CUSTOMER_BANK_ID', default=None)
+STRIPE_TEST_PLATFORM_CUSTOMER_ID=env('STRIPE_TEST_PLATFORM_CUSTOMER_ID',default=None)
+STRIPE_TEST_PLATFORM_BANK_ID=env('STRIPE_TEST_PLATFORM_BANK_ID',default=None)
+
+STRIPE_TEST_ACCOUNT_NUMBER = '000123456789'
+STRIPE_TEST_ROUTING_NUMBER = '111000025'
+
+PAYPAL_CLIENT_ID=env('PAYPAL_CLIENT_ID', default=None)
+PAYPAL_SECRET=env('PAYPAL_SECRET', default=None)
+
+
+WAREHOUSE_NAME = 'ReuseRat Inc.'
+WAREHOUSE_ADDRESS_LINE = '504 E Cottage Grove'
+WAREHOUSE_ZIP = '47408'
+WAREHOUSE_CITY = 'Bloomington'
+WAREHOUSE_STATE = 'IN'

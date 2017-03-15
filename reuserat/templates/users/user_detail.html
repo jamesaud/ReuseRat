@@ -31,7 +31,7 @@
   <div class='col-sm-2 current-balance'>
     <small>Current Balance</small>
     <h2>${{ object.get_current_balance }}</h2>
-    <a class='btn  btn-success btn-success' href='#'> Cash Out </a>
+    <a class='btn  btn-success btn-success' href='{% url "users:transfer" %}'> Cash Out </a>
   </div>
 
   <div class='col-sm-5 shipment-button'>
@@ -49,7 +49,7 @@
     <div class="col-sm-12">
           <!---shipment_set is the name generated automatically for the FK in play here of the USER -->
 
-            <a href="{% url 'knowledge:shipping' %}" id='shipping-instructions' target="_blank" class='btn btn-primary btn-simple pull-left btn-sm'>
+            <a id='shipping-instructions' data-toggle="modal" data-target="#shipment-instructions-modal" rel="tooltip" title="" class='btn btn-primary btn-simple btn-outline pull-left btn-sm'>
  Shipping instructions <!--  <i class="material-icons">info_outline</i>  -->
             </a>
 
@@ -126,7 +126,8 @@
 {% endblock content %}
 
 {% block modal %}
-{% include "shipments/snippets/delete_shipment_modal.html" with shipment_id='000' %}
+  {% include "shipments/snippets/delete_shipment_modal.html" with shipment_id='000' %}
+  {% include "shipments/snippets/instructions_shipment_modal.html" %}
 {% endblock modal %}
 
 {% block javascript %}

@@ -14,11 +14,11 @@
 [hidden][style="display: block;"] {
   display: block !important;
 }
-
+ 
   
 .logo{
   max-width: 150px; 
-}
+} 
 
 .navbar { 
   .navbar-brand{
@@ -39,7 +39,7 @@
 
 
 .main{
-  padding-top: 40px;
+    padding-top: 40px;
     padding-bottom: 60px;
 }
 
@@ -109,4 +109,11 @@ footer{
   margin-left: 25px;
   margin-right: 25px;
 }
-   
+
+@media screen and (max-width: 768px){
+  .main-raised{
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
+    

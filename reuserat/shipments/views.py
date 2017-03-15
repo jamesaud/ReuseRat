@@ -2,7 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy,reverse
-from django.shortcuts import render,render_to_response,redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView, ListView, RedirectView, UpdateView, TemplateView, FormView
 from django.views.generic.edit import CreateView, DeleteView
 
@@ -11,15 +11,11 @@ from .forms import ShipmentForm
 from reuserat.users.models import User
 from .models import Shipment
 from django.apps import apps
+from reuserat.helpers.settings_helpers import warehouse_address_to_html
 
-from django.template.loader import get_template
-from django.template import Context
 
 from django.contrib.auth.decorators import login_required # new import for function based view (FBV)
 
-from django.template.loader import get_template
-from django.template import Context
-import pdfkit
 from django_pdfkit import PDFView
 
 from django.contrib import messages
@@ -94,21 +90,14 @@ class ShipmentDeleteView(LoginRequiredMixin, DeleteView):
 
 
 
-class ShipmentPdfView(LoginRequiredMixin,PDFView):
+class ShipmentPdfView(LoginRequiredMixin, PDFView):
     template_name = 'shipments/shipment_label.html'
 
     def get_context_data(self, **kwargs):
         context = super(ShipmentPdfView, self).get_context_data(**kwargs)
         context['user'] = self.request.user #apps.get_model('User')
-        context['shipment'] =get_object_or_404(Shipment,pk=self.kwargs.get('shipment_id'))
+        context['shipment'] = get_object_or_404(Shipment, pk=self.kwargs.get('shipment_id'))
+        context['warehouse_html'] = warehouse_address_to_html()
         return context
 
-
-#Function Based Views
-@login_required
-def get_shipment_label(request, shipment_id):
-    context = {}
-    context['user'] = User.objects.get(pk=request.user.id) #apps.get_model('User')
-    context['shipment'] = Shipment.objects.get(pk=shipment_id) #apps.get_model('Shipment')
-    return render(request, 'shipments/shipment_label.html', context)
 

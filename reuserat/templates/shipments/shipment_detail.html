@@ -19,11 +19,13 @@
 
                     <div class="ripple-container"></div>
                 </a>
+                {% if not object.item_set.exists %}
                 <a data-toggle="modal" data-target="#shipment-delete-modal" rel="tooltip" title="" class="btn btn-danger" data-original-title="Delete Shipment">
                     		                                <i class="fa fa-times"></i>
 
                     <div class="ripple-container"></div>
                 </a>
+                {% endif %}
         </span>
     {% endblock %}
 
@@ -31,82 +33,103 @@
 {% block content %}
 
 <div class="container top30">
-  <div class="row">
-    <div class="col-sm-4 ">
-       <h3><strong>Shipment Name:</strong></h3>
-    </div>
-    <div class='col-sm-8'>
-       <h3>{{ object.name }}</h3>
-    </div>
-  </div>
-<hr>
-  <div class='row'>
-    <div class='col-sm-4'>
-      <h3><strong>Shipment Description:</strong></h3>
-    </div>
-    <div class='col-sm-8'>
-      <h3>{{ object.description }}</h3>
-    </div>
-  </div>
-{% if not shipment.is_physical %}
-<hr>
-  <div class='row'>
-    <div class='col-sm-4'>
-      <h3><strong>Shipping Label:</strong></h3>
-    </div>
-    <div class='col-sm-8'>
-      <a class="nav-link" href="{% url 'shipments:shipmentLabel' object.id %}" target="_blank"><h3>Print in Browser</h3></a>
-      <a class="nav-link" href="{% url 'shipments:shipmentPdf' object.id %}" target="_blank"><h3>Download the PDF</h3></a>
-    </div>
-  </div>
-{% endif %}
-<hr>
-    <div class="row">
-        <div class="col-sm-4">
-            <h3><strong>Items For Sale:</strong></h3>
-        </div>
-        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-4">
+                <h3><strong>Name:</strong></h3>
+                </div>
+                <div class='col-sm-5'>
+                <h3>{{ object.name }}</h3>
+                </div>
+                <div class='col-sm-3 text-right'>
+                    <a href='#' class='btn btn-simple btn-primary btn-outline btn-sm' rel="tooltip" data-original-title="Add your USPS tracking number to see the live status of your shipment"><strong>Add Tracking Number</strong></a>
+                </div>
+            </div>  
+            <hr>
+            <div class='row'>
+                <div class='col-sm-4'>
+                <h3><strong>Description:</strong></h3>
+                </div>
+                <div class='col-sm-8'>
+                <h3>{{ object.description }}</h3>
+                </div>
+            </div>
 
-            {% if visible_items %}
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th></th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in visible_items %}
-                            {% if item.is_visible %}
-                                <tr>
-
-                                    <td>{{ item.name }}</td>
-                                    <td>Not Sold (placeholder)</td>
-                                    <td><a href="{{ item.get_shopify_url }}" target='_blank'>See On Store</a></td>
-
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-                {% else %}
-                   <h3> No items posted yet. </h3>
-                <p>If your shipment has arrived, it will be processed soon. Items will show up as they are added to the store.</p>
-
+            {% if not shipment.is_physical %}
+            <hr>
+            <div class='row'>
+                <div class='col-sm-4'>
+                <h3><strong>Shipping Label:</strong></h3>
+                </div>
+                <div class='col-sm-8'>
+                <a class="nav-link" href="{% url 'shipments:shipmentLabel' object.id %}?html" target="_blank"><h3>Print in Browser</h3></a>
+                <a class="nav-link" href="{% url 'shipments:shipmentLabel' object.id %}" target="_blank"><h3>Download the PDF</h3></a>
+                </div>
+            </div>
             {% endif %}
 
-        </div>
-    </div>
-<hr>
- <a class="btn btn-primary" href="{% url 'users:detail' request.user.username %}" role="button">Back to Dashboard</a>
-</div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h3><strong>Items For Sale:</strong></h3>
+                </div>
+                <div class="col-sm-8">
+
+                    {% if visible_items %}
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in visible_items %}
+                                    {% if item.is_visible %}
+                                        <tr>
+
+                                            <td>{{ item.name }}</td>
+                                            <td>Not Sold (placeholder)</td>
+                                            <td><a href="{{ item.get_shopify_url }}" target='_blank'>See On Store</a></td>
+
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% else %}
+                        <h3> No items posted yet. </h3>
+                        <p>If your shipment has arrived, it will be processed soon. Items will show up as they are added to the store.</p>
+
+                    {% endif %}
+
+                </div>
+            </div>
+            
+            <hr>
+            <div class='row'>
+                <div class='col-sm-4'>
+                    <h3><strong>Instructions:</strong></h3>
+                </div>
+                <div class='col-sm-8'>
+                    <button class='btn btn-primary' data-toggle="modal" data-target="#shipment-instructions-modal" rel="tooltip" title="">
+                        I'm ready, show me how to ship! 
+                        <i class="material-icons">open_in_new</i>
+                    </button>
+                </div>
+            </div>
+
+    <hr>
+    <a class="btn btn-default" href="{% url 'users:detail' request.user.username %}" role="button">Back to Dashboard</a>
+
+</div> <!-- /container -->
 {% endblock content %}
 
 
 {% block modal %}
     {% include "shipments/snippets/delete_shipment_modal.html" with shipment_id=object.id %}
+    {% include "shipments/snippets/instructions_shipment_modal.html" %}
 {% endblock modal %}

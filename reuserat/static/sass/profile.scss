@@ -10,13 +10,13 @@
   .btn-danger{
     i{margin-right: 4px;}
   }
-}
+} 
 
 .card-nav-tabs{
   .btn-simple{
     color: white; 
     background-color: transparentize(black, .85);
-    transition: background-color .1s;
+    transition: background-color .1s; 
 
     &:hover{
       color: white;

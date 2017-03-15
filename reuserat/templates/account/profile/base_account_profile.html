@@ -4,7 +4,9 @@
 
 {% block css %}
     {{ block.super }}
-    {% endblock %}
+        <link type='text/css' href="{% static 'css/account.css' %}" rel="stylesheet">
+
+{% endblock %}
 
 {% block title %}{% block head_title %}{% endblock head_title %}{% endblock title %}
 
@@ -17,7 +19,7 @@
 {% block content %}
     <div class="container">
           <div class='row'>
-            <div class='col-sm-6 col-sm-offset-3'>
+            <div class='col-sm-8 col-sm-offset-2'>
             <ul class="nav nav-pills" role="tablist">
                                     <!--
                                         color-classes: "nav-pills-primary", "nav-pills-info", "nav-pills-success", "nav-pills-warning","nav-pills-danger"
@@ -35,13 +37,13 @@
                                             Email
                                         </a>
                                     </li>
-                                     <li class="{% block test %}{% endblock %}">
+                                     <li class="{% block payments %}{% endblock %}">
                                         <a href="{% url 'users:update_payment_information' %}" role="tab">
                                             <i class="material-icons">attach_money</i>
                                             Payments
                                         </a>
                                     </li>
-                                    <li class="{% block payments %}{% endblock %}">
+                                    <li class="{% block transactions %}{% endblock %}">
                                         <a  href="#tasks" role="tab" data-toggle="tab">
                                             <i class="material-icons">list</i>
                                             Transactions
