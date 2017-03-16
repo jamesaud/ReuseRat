@@ -37,4 +37,6 @@ class Transaction(models.Model):
     amount_paid = models.FloatField() # In dollars
     message = models.CharField(max_length=500, null=True, blank=True)
 
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 

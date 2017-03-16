@@ -30,8 +30,6 @@ def create_account(ip_addr=None):
 def retrieve_balance(secret_key):
     stripe.api_key = secret_key
     account_details = stripe.Balance.retrieve()
-    print(account_details, "ACCOUNT DETAILS")
-    print(type(cents_to_dollars(account_details['available'][0]['amount'])))
     return cents_to_dollars(account_details['available'][0]['amount'])
 
 
@@ -93,13 +91,12 @@ def cents_to_dollars(cents):
 # Create a charge for an item on the Platform Account
 def create_charge(account_id, amount_in_dollars, user_name):
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
-    print(settings.STRIPE_TEST_PLATFORM_CUSTOMER_ID)
     # Stripe API call for Creating charge
     charge_details = stripe.Charge.create(
         amount=int(dollar_to_cent(amount_in_dollars * 0.50)),  # 50% of the amount is for the platform
         currency="usd",
         customer=settings.STRIPE_TEST_PLATFORM_CUSTOMER_ID,
-        description="Hey " + user_name + " ,you get $" + str( amount_in_dollars * 0.50),
+        description="Hey " + user_name + " , you get $" + str( amount_in_dollars * 0.50),
         destination=account_id,
     )
 
@@ -111,10 +108,13 @@ def create_transfer(account_id, balance_in_cents, user_name):
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
     # Create Transfer
 
+    if not isinstance(balance_in_cents, int):  # Don't want any rounding to happen if decimals come in
+        raise ValueError("Cents must be an int")
+
     transfer = stripe.Transfer.create(
         currency="usd",
-        amount= balance_in_cents,
+        amount = balance_in_cents,
         destination=account_id,
-        description="Money transfered " + user_name,
+        description="Money transferred " + user_name,
     )
     return transfer['id']

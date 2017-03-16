@@ -1,9 +1,29 @@
 import factory
 from django.conf import settings
 from reuserat.stripe.models import StripeAccount, PaypalAccount
+import stripe
+
+
+def _stripe_account_generator():
+    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+    return stripe.Account.create(
+        managed=True,
+        country='US',
+        external_account={
+            'object': 'bank_account',
+            'country': 'US',
+            'currency': 'usd',
+            'routing_number': '110000000',
+            'account_number': '000123456789',
+        },
+        tos_acceptance={
+            'date': 1489610134,
+            'ip': "64.134.34.193",
+        },
+    )
 
 class StripeAccountFactory(factory.django.DjangoModelFactory):
-    account_id = factory.Sequence(lambda n: 'acct_19pm6VHg9CVh6B0c{0}'.format(n))
+    account_id = _stripe_account_generator().id
     #account_number_token = "btok_A7xzZwdCO5Bw1J"
 
     secret_key = settings.STRIPE_TEST_SECRET_KEY
@@ -20,4 +40,6 @@ class PaypalAccountFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = PaypalAccount
         django_get_or_create = ('email', )
+
+
 

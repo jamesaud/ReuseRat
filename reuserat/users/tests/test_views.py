@@ -131,33 +131,9 @@ class TestUpdatePaymentInformation(TestCase):
 
         self.assertEqual(response.status_code, 302)  # Html Code for Redirection
 
-
-class TestCashOut(TestCase):
-    def setUp(self):
-        self.factory = RequestFactory()  # Generate a mock request
-        self.user = factories.UserFactory()  # Generate a mock user
-        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform test Secret Key.
-
-    def test_get(self):
-        # Create an instance of a GET request.
-        request = self.factory.get('/~transfer/')
-
-        # Cause factory doesn't support the middleware operations.
-        request.user = self.user
-
-        # Kat Valentine
-        request.user.stripe_account.account_id = "acct_19vWYHLw2AVVFzC1"
-        request.user.stripe_account.secret_key = "sk_test_gP7OiwFNaetrkV1DhVM9sim2"
-        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
-        # Check if the form was rendered
-        response = cash_out(request)
-        self.assertEqual(response.status_code, 302)  # Html Code for Successful response
-        
-        mock_messages = patch('reuserat.users.views.messages').start()
         mock_messages.SUCCESS = success = 'success'
 
         msg = u'Updated Bank Successfully'
-        mock_messages = patch('reuserat.users.views.messages').start()
         mock_messages.add_message.assert_called_with(request, success, msg)
 
         self.assertEqual(account_number[-4:], self.user.stripe_account.account_number_last_four)
@@ -166,6 +142,7 @@ class TestCashOut(TestCase):
         self.assertEqual(account_name, self.user.stripe_account.account_holder_name)
         self.assertTrue(self.user.stripe_account.has_bank())
         self.assertTrue(self.user.payment_type, PaymentChoices.DIRECT_DEPOSIT)
+
 
     def test_paypal_account(self):
         """
@@ -221,3 +198,60 @@ class TestCashOut(TestCase):
         mock_messages.add_message.assert_called_with(request, success, msg)
 
         self.assertEqual(self.user.payment_type, PaymentChoices.CHECK)
+
+
+class TestCashOut(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()  # Generate a mock request
+        self.user = factories.UserFactory()  # Generate a mock user
+        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform test Secret Key.
+        stripe.Charge.create(
+            amount=1000,
+            currency="usd",
+            source={
+                'object': 'card',
+                'number': '4000000000004210',
+                'exp_month': 2,
+                'exp_year': 2018
+            },
+            destination=self.user.stripe_account.account_id
+        )
+
+    def test_get(self):
+        # Create an instance of a GET request.
+        request = self.factory.get('/~transfer/')
+        print("BALANCEXD")
+        print('BALANCE XD 2', self.user.get_current_balance())
+
+        request.user = self.user
+
+        response = cash_out(request)
+        self.assertEqual(response.status_code, 302)  # Html Code for Successful response
+
+
+
+class TestMyCashOut(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()  # Generate a mock request
+        self.user = factories.UserFactory()  # Generate a mock user
+        self.request = self.factory.get('/~test-cash-out/')
+        self.request.user = self.user
+
+        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+        stripe.Charge.create(
+            amount=1000,
+            currency="usd",
+            source={
+                'object': 'card',
+                'number': '4000000000004210',
+                'exp_month': 2,
+                'exp_year': 2018
+            },
+            destination=self.user.stripe_account.account_id
+        )
+
+    def test_paypal(self):
+        self.request.user.payment_type = PaymentChoices.PAYPAL
+        self.request.user.save()
+
+

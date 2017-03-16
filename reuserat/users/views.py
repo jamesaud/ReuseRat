@@ -13,10 +13,18 @@ from .forms import UserAddressForm, UserForm, UserCompleteSignupForm
 
 from reuserat.stripe.models import PaypalAccount
 from reuserat.stripe.forms import UpdatePaymentForm, PaypalUpdateForm, UserPaymentForm
-from reuserat.stripe.helpers import create_account, update_payment_info, create_transfer
-from reuserat.stripe.paypal_helpers import make_payment_paypal
+from reuserat.stripe.helpers import create_account, update_payment_info, create_charge, dollar_to_cent
+from reuserat.stripe.paypal_helpers import make_payment_paypal, PaypalException
 
-import pprint
+from reuserat.stripe.models import Transaction
+
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
+
+
 
 class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
     """
@@ -294,13 +302,16 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
 
 class CashOutView(LoginRequiredMixin, View):
 
+
     def get(self, *args, **kwargs):
+        """
+        All the 'use' functions should return a Transaction object
+        """
         payment_type = self.request.user.payment_type
 
         if payment_type == PaymentChoices.PAYPAL:
-            response = self.use_paypal()
-            return HttpResponse(response)
-
+            transaction = self.use_paypal()
+            return HttpResponse(transaction)
 
         elif payment_type == PaymentChoices.DIRECT_DEPOSIT:
             self.use_direct_deposit()
@@ -309,13 +320,42 @@ class CashOutView(LoginRequiredMixin, View):
             self.use_check()
 
     def use_paypal(self):
-        return str(make_payment_paypal(batch_id='batch_{}'.format(),
+        balance_in_dollars = self.request.user.get_current_balance()
+
+        # Create the user transaction
+        transaction = Transaction(user=self.request.user,
+                                  payment_type=self.request.user.payment_type,
+                                  message="Cash Out with Paypal",
+                                  amount_paid = balance_in_dollars)  # Need to set the balance still
+
+        transaction.save() # Will delete if the paypal api call doesn't go through. Need the transaction ID to set as the paypal batch id.
+
+        try:
+            paypal_response = make_payment_paypal(batch_id='transaction_{}'.format(transaction.id), # Transaction ID is unique
                                        receiver_email="trashandtreasure67-buyer-1@gmail.com",
-                                       amount=1000,
-                                       note="Thanks for all the fish"))
+                                       amount= balance_in_dollars,
+                                       note="Thanks for all the fish!")
+        except PaypalException as e:
+            logger.error("Paypal Exception: " + str(e))
+            transaction.delete()
+            raise
+
+        else:
+            transaction.save()
+            return transaction
 
     def use_direct_deposit(self):
-        pass
+        # Get the Stripe account id of the User
+        account_id = self.request.user.stripe_account.account_id
+
+        # Amount to be transferred is the balance money in the stripe account
+        balance_in_cents = int(dollar_to_cent(self.request.user.get_current_balance()))
+
+
+        # Get the user's full name for the description in the transfer
+        user_name = self.request.user.get_full_name()
+
+        transfer_id = create_transfer(account_id, balance_in_cents, user_name)
 
     def use_check(self):
         pass
@@ -328,12 +368,14 @@ def cash_out(request):
         # Get the Stripe account id of the User
         account_id = request.user.stripe_account.account_id
 
+
         # Amount to be transferred is the balance money in the stripe account
-        balance_in_cents = int(request.user.get_current_balance() * 100)
+        balance_in_cents = int(dollar_to_cent(request.user.get_current_balance()))
+
 
         # Get the user's full name for the description in the transfer
         user_name = request.user.get_full_name()
 
-        transfer_id = create_transfer(account_id, balance_in_cents, user_name)
+        transfer_id = create_charge(account_id=account_id, amount_in_dollars=balance_in_cents, user_name=user_name)
 
         return redirect(reverse('users:detail', kwargs={'username': request.user.username}))
