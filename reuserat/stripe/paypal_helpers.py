@@ -48,14 +48,11 @@ def make_payment_paypal(batch_id, receiver_email, amount, note):
     })
 
     if payout.create(sync_mode=True):
-
         error = payout.items[0].errors
         if error:
             error_class = PaypalException.new(error.name)  # New error class based on the type of Paypal Error
             raise error_class(error.message)
-
         else:
             return payout
-
     else:
         raise PaypalException(payout.error)

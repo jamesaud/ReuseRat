@@ -19,7 +19,10 @@ def create_account(ip_addr=None):
     if ip_addr:
         account.tos_acceptance.date = int(time.time())
         account.tos_acceptance.ip = ip_addr  # Depends on what web framework you're using
+
+    account.transfer_schedule.interval = 'manual'
     account.save()
+
     acct_instance = StripeAccount(account_id=acct['id'],
                                   secret_key=acct['keys']['secret'],
                                   publishable_key=acct['keys']['publishable'])
@@ -36,6 +39,8 @@ def retrieve_balance(secret_key):
 def update_payment_info(account_id, account_token, user_object):
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
     account = stripe.Account.retrieve(account_id)
+
+
 
     # Update the display name for the account
     account.business_name = user_object.first_name
@@ -63,18 +68,21 @@ def update_payment_info(account_id, account_token, user_object):
 
     account.legal_entity.type = "individual"
 
+
+
     # Save the account details
     account.save()
 
     # default_for_currency should be set as there can be multiple bank accounts
     # We set the newly created one as the default.
-    account.external_accounts.create(external_account=account_token, default_for_currency="true")
+    account.external_accounts.create(external_account=account_token,
+                                     default_for_currency="true",)
 
     # Create Customer for each account
-    stripe.Customer.create(
-        description="Customer for " + user_object.get_full_name(),
-        source=account_token  # obtained with Stripe.js
-    )
+   # stripe.Customer.create(
+   #     description="Customer for " + user_object.get_full_name(),
+   #     source=account_token  # obtained with Stripe.js
+   # )
 
     return account
 

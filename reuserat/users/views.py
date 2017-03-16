@@ -13,7 +13,7 @@ from .forms import UserAddressForm, UserForm, UserCompleteSignupForm
 
 from reuserat.stripe.models import PaypalAccount
 from reuserat.stripe.forms import UpdatePaymentForm, PaypalUpdateForm, UserPaymentForm
-from reuserat.stripe.helpers import create_account, update_payment_info, create_charge, dollar_to_cent
+from reuserat.stripe.helpers import create_account, update_payment_info, create_transfer, dollar_to_cent
 from reuserat.stripe.paypal_helpers import make_payment_paypal, PaypalException
 
 from reuserat.stripe.models import Transaction
@@ -267,10 +267,12 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
         """
         user, request = self.request.user, self.request
 
+        user.birth_date = form.cleaned_data['birth_date']  # datetime.date instance.
+        user.save()  # So we can use the birthdate
+
         # Update the user's bank Stripe Banking info.
         account = update_payment_info(str(user.stripe_account.account_id), request.POST["stripeToken"], user)
         if account:  # Update User's Stripe account in our database
-            user.birth_date = form.cleaned_data['birth_date']  # datetime.date instance.
             user.stripe_account.account_holder_name = form.cleaned_data['account_holder_name']
             user.stripe_account.account_number_last_four = str(form.cleaned_data['account_number'])[-4:]
             user.stripe_account.routing_number_last_four = str(form.cleaned_data['routing_number'])[-4:]
@@ -339,7 +341,6 @@ class CashOutView(LoginRequiredMixin, View):
             logger.error("Paypal Exception: " + str(e))
             transaction.delete()
             raise
-
         else:
             transaction.save()
             return transaction
@@ -376,6 +377,6 @@ def cash_out(request):
         # Get the user's full name for the description in the transfer
         user_name = request.user.get_full_name()
 
-        transfer_id = create_charge(account_id=account_id, amount_in_dollars=balance_in_cents, user_name=user_name)
+        transfer_id = create_transfer(account_id, balance_in_cents, user_name)
 
         return redirect(reverse('users:detail', kwargs={'username': request.user.username}))
