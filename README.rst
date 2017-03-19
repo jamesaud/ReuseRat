@@ -12,6 +12,8 @@ Sell your junk, get paid
 
 If you wish to use code in this project, simply shoot me an email at audretschjames@gmail.com and I'll likely give permission.
 
+We are aware that this project being public is a security risk. As of April this project will cease to be updated publically.
+
 Settings
 --------
 
