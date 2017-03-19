@@ -16,6 +16,8 @@ We are aware that this project being public is a security risk. As of April this
 
 Please checkout 'development' branch for the latest good stuff.
 
+Please read the wiki to learn about the development process.
+
 Settings
 --------
 
