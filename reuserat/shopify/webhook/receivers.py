@@ -110,7 +110,6 @@ class OrderReceivers(AbstractShopifyReceiver):
 
     @classmethod
     def order_payment(cls, sender, **kwargs):
-        print("ORDER PAYMENT")
         shopify_json = cls._get_shopify_json(kwargs)
         item_list = shopify_json['line_items']
         for item in item_list:
@@ -121,7 +120,6 @@ class OrderReceivers(AbstractShopifyReceiver):
             except Item.DoesNotExist as e:
                 # This could happen if we add items manually to shopify. In that case, it is okay skip over.
                 # However, we should log the occurences to make sure nothing is wrong.
-                print(e)
                 logger.error("FAILED TO GET ITEM FROM DATABASE: " + str(e) + " | WITH DATA: " + str(shopify_json))
             else:
                 item_object.status = Status.SOLD
@@ -138,7 +136,7 @@ class OrderReceivers(AbstractShopifyReceiver):
                 try:
                     charge_id = create_charge(seller_account_id, item_price, user_name)
                 except Exception as e:
-                    print(e)
+                    logger.error("FAILED TO CREATE CHARGE: " + str(e))
                     raise
                 # Update the charge id of the item ,for future reference
                 item_order_details.charge_id = charge_id

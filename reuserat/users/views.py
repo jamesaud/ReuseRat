@@ -6,14 +6,22 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required  # new#  import for function based view (FBV)
 from django.contrib import messages
 from django.shortcuts import redirect, render, HttpResponse, HttpResponseRedirect
-from django.views.generic.edit import  ProcessFormView
+from django.views.generic.edit import ProcessFormView
+
+from stripe.error import StripeError
 
 from .models import User, Address, PaymentChoices
 from .forms import UserAddressForm, UserForm, UserCompleteSignupForm
 
 from reuserat.stripe.models import PaypalAccount
 from reuserat.stripe.forms import UpdatePaymentForm, PaypalUpdateForm, UserPaymentForm
-from reuserat.stripe.helpers import create_account, update_payment_info, create_transfer, dollar_to_cent
+from reuserat.stripe.helpers import (create_account,
+                                     create_charge,
+                                     retrieve_balance,
+                                     update_payment_info,
+                                     create_transfer_bank,
+                                     cents_to_dollars,
+                                     dollars_to_cents)
 from reuserat.stripe.paypal_helpers import make_payment_paypal, PaypalException
 
 from reuserat.stripe.models import Transaction
@@ -311,18 +319,29 @@ class CashOutView(LoginRequiredMixin, View):
         """
         payment_type = self.request.user.payment_type
 
-        if payment_type == PaymentChoices.PAYPAL:
-            transaction = self.use_paypal()
-            return HttpResponse(transaction)
+        try:
+            if payment_type == PaymentChoices.PAYPAL:
+                transaction = self.use_paypal()
 
-        elif payment_type == PaymentChoices.DIRECT_DEPOSIT:
-            self.use_direct_deposit()
+            elif payment_type == PaymentChoices.DIRECT_DEPOSIT:
+                transaction = self.use_stripe()
 
-        elif payment_type == PaymentChoices.CHECK:
-            self.use_check()
+            elif payment_type == PaymentChoices.CHECK:
+                transaction = self.use_check()
+
+        except (PaypalException, StripeError):
+            return redirect(self.get_success_url())
+
+        else:
+            return redirect(self.get_success_url())
+
+
+    def get_success_url(self):
+        return self.request.user.get_absolute_url()
+
 
     def use_paypal(self):
-        balance_in_dollars = self.request.user.get_current_balance()
+        balance_in_dollars = cents_to_dollars(self.request.user.stripe_account.retrieve_balance())
 
         # Create the user transaction
         transaction = Transaction(user=self.request.user,
@@ -335,48 +354,55 @@ class CashOutView(LoginRequiredMixin, View):
         try:
             paypal_response = make_payment_paypal(batch_id='transaction_{}'.format(transaction.id), # Transaction ID is unique
                                        receiver_email="trashandtreasure67-buyer-1@gmail.com",
-                                       amount= balance_in_dollars,
-                                       note="Thanks for all the fish!")
+                                       amount_in_dollars=balance_in_dollars,
+                                       note="Cashing out with Paypal")
         except PaypalException as e:
-            logger.error("Paypal Exception: " + str(e))
+            logger.error("Paypal Cash Out Exception: " + str(e))
             transaction.delete()
+            messages.add_message(self.request, messages.ERROR,
+                                 'Cashout with Paypal failed: ' + str(e))
             raise
         else:
             transaction.save()
+
+            messages.add_message(self.request, messages.SUCCESS,
+                                 'Cashed out using Paypal successfully. \
+                                 Please accept the emails sent to {}'.format(self.request.user.get_primary_email()))
             return transaction
 
-    def use_direct_deposit(self):
-        # Get the Stripe account id of the User
-        account_id = self.request.user.stripe_account.account_id
+    def use_stripe(self):
 
         # Amount to be transferred is the balance money in the stripe account
-        balance_in_cents = int(dollar_to_cent(self.request.user.get_current_balance()))
+        balance_in_cents = self.request.user.stripe_account.retrieve_balance()
 
+        """TESTING"""
+        balance_in_cents = 100  # DELETE JUST TESTING
+        balance_in_dollars = balance_in_cents
+        # Testing adding moneys
+        #create_charge(self.request.user.stripe_account.account_id, 10000, self.request.user.get_full_name())
+        """ENDTESTING"""
 
-        # Get the user's full name for the description in the transfer
-        user_name = self.request.user.get_full_name()
-
-        transfer_id = create_transfer(account_id, balance_in_cents, user_name)
+        try:
+            transfer_id = create_transfer_bank(account_id=self.request.user.stripe_account.account_id,  # User's Bank account,
+                                          balance_in_cents=balance_in_cents, # Amount to transfer
+                                          user_name=self.request.user.get_full_name() # Description of transfer
+                                        )
+        except StripeError as e:
+            logger.error("Stripe Cash Out Exception: " + str(e))
+            messages.add_message(self.request, messages.ERROR,
+                                 'Failed to cash out using Direct Deposit: ' + str(e))
+            raise
+        else:
+            transaction = Transaction(user=self.request.user,
+                                      payment_type=self.request.user.payment_type,
+                                      message="Cash Out with Direct Deposit",
+                                      amount_paid = cents_to_dollars(balance_in_cents)
+                                      )
+            transaction.save()
+            messages.add_message(self.request, messages.SUCCESS,
+                                 'Cashed out using Direct Deposit successfully. Check the status at My Account > Transactions')
+            return transaction
 
     def use_check(self):
         pass
 
-
-
-@login_required
-def cash_out(request):
-    if request.method == 'GET':
-        # Get the Stripe account id of the User
-        account_id = request.user.stripe_account.account_id
-
-
-        # Amount to be transferred is the balance money in the stripe account
-        balance_in_cents = int(dollar_to_cent(request.user.get_current_balance()))
-
-
-        # Get the user's full name for the description in the transfer
-        user_name = request.user.get_full_name()
-
-        transfer_id = create_transfer(account_id, balance_in_cents, user_name)
-
-        return redirect(reverse('users:detail', kwargs={'username': request.user.username}))

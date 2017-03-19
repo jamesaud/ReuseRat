@@ -22,7 +22,7 @@ class PaypalException(Exception):
 
 
 # Paypal Transfer function if user chooses Paypal Option
-def make_payment_paypal(batch_id, receiver_email, amount, note):
+def make_payment_paypal(batch_id, receiver_email, amount_in_dollars, note):
     paypalrestsdk.configure({
         "mode": "sandbox",  # sandbox for testing or live
         "client_id": settings.PAYPAL_CLIENT_ID,
@@ -37,7 +37,7 @@ def make_payment_paypal(batch_id, receiver_email, amount, note):
             {
                 "recipient_type": "EMAIL",
                 "amount": {
-                    "value": float(amount),
+                    "value": float(amount_in_dollars),
                     "currency": "USD"
                 },
                 "receiver": receiver_email,

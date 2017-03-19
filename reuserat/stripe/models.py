@@ -26,6 +26,11 @@ class StripeAccount(models.Model):
     def has_bank(self):
         return True if (self.routing_number_last_four and self.account_number_last_four) else False
 
+    def retrieve_balance(self):
+        """Returns the Stripe balance in cents"""
+        from .helpers import retrieve_balance # Avoid circular import collision.
+        return retrieve_balance(self.secret_key)
+
 
 class PaypalAccount(models.Model):
     email = models.OneToOneField(EmailAddress)

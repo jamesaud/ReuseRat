@@ -26,16 +26,10 @@ urlpatterns = [
         view=views.UserUpdateView.as_view(),
         name='update'
     ),
-
     url(
-        regex=r'^~transfer/$',
-        view=views.cash_out,
-        name='transfer'
-    ),
-    url(
-        regex=r'^~test-cash-out/$',
+        regex=r'^~cashout/$',
         view=views.CashOutView.as_view(),
-        name='cashout'
+        name='cash_out'
     ),
     url(
 

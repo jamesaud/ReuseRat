@@ -4,7 +4,7 @@ import stripe
 from django.conf import settings
 from config.settings import test
 from reuserat.users.tests import factories
-from reuserat.stripe.helpers import create_account, retrieve_balance, update_payment_info,create_charge,dollar_to_cent,create_transfer
+from reuserat.stripe.helpers import create_account, retrieve_balance, update_payment_info,create_charge,dollars_to_cents,create_transfer
 
 
 class TestStripeApi(TestCase):
@@ -109,7 +109,7 @@ class TestStripeApi(TestCase):
         user_object = factories.UserFactory()
         account_id =self.test_account_id
         amount=1 # in dollars
-        test_amount = dollar_to_cent(amount)
+        test_amount = dollars_to_cents(amount)
         account_id="acct_19t1iYBLJOL9t28B"
         test_charge_id=create_charge(account_id, amount, user_object.get_full_name())
         stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Secret Key.

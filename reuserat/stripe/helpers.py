@@ -33,7 +33,7 @@ def create_account(ip_addr=None):
 def retrieve_balance(secret_key):
     stripe.api_key = secret_key
     account_details = stripe.Balance.retrieve()
-    return cents_to_dollars(account_details['available'][0]['amount'])
+    return account_details['available'][0]['amount']
 
 
 def update_payment_info(account_id, account_token, user_object):
@@ -87,9 +87,8 @@ def update_payment_info(account_id, account_token, user_object):
     return account
 
 
-def dollar_to_cent(dollar):
-    cents = dollar * 100
-    return cents
+def dollars_to_cents(dollar):
+    return dollar * 100
 
 
 def cents_to_dollars(cents):
@@ -97,32 +96,61 @@ def cents_to_dollars(cents):
 
 
 # Create a charge for an item on the Platform Account
-def create_charge(account_id, amount_in_dollars, user_name):
+def create_charge(account_id, amount_in_cents, user_name):
+    """
+    Transfers money from OUR Stripe account to a customer's.
+    :param account_id: The user's Stripe account id
+    :param amount_in_dollars: The amount to charge
+    :param user_name: The user's username, as a description for the charge.
+    :return: String, the id of the charge.
+    """
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
     # Stripe API call for Creating charge
     charge_details = stripe.Charge.create(
-        amount=int(dollar_to_cent(amount_in_dollars * 0.50)),  # 50% of the amount is for the platform
+        amount=int(amount_in_cents),  # 50% of the amount is for the platform
         currency="usd",
-        customer=settings.STRIPE_TEST_PLATFORM_CUSTOMER_ID,
-        description="Hey " + user_name + " , you get $" + str( amount_in_dollars * 0.50),
+        customer=settings.STRIPE_TEST_PLATFORM_CUSTOMER_ID,  # Our Stripe Account Customer ID
+        description="Hey " + user_name + " , you get $" + str(amount_in_cents),
         destination=account_id,
     )
 
     return charge_details['id']
 
-# Making Transfer.Cash out the balance Stripe money for the customer
-def create_transfer(account_id, balance_in_cents, user_name):
 
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
-    # Create Transfer
+def create_transfer_bank(account_id, balance_in_cents, user_name):
+    """
+    # Cash out a user's Stripe balance to their bank account.
+    :param account_id:  User's bank account id.
+    :param account_secret_key: The user's stripe account secret key.
+    :param balance_in_cents: Amount to cash out
+    :param user_name: User's user name
+    :return: String, transfer id
+    """
 
-    if not isinstance(balance_in_cents, int):  # Don't want any rounding to happen if decimals come in
+    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Customer Secret Key
+
+    if not isinstance(balance_in_cents, int):  # Don't want any rounding to happen if it is a Float.
         raise ValueError("Cents must be an int")
 
     transfer = stripe.Transfer.create(
+        amount=balance_in_cents,
         currency="usd",
-        amount = balance_in_cents,
-        destination=account_id,
-        description="Money transferred " + user_name,
+        description="Money transferred to bank account for: " + user_name,
+        destination="default_for_currency",
+        stripe_account=account_id,
+        source_type="bank_account",
     )
+
     return transfer['id']
+
+
+def create_transfer_to_us(account_id, balance_in_cents, user_name):
+    """
+    Transfers money from one Stripe account to another Stripe account using Stripe secret keys.
+    :return:
+    """
+    pass
+
+
+def test_mode_add_funds():
+    pass
