@@ -14,6 +14,8 @@ If you wish to use code in this project, simply shoot me an email at audretschja
 
 We are aware that this project being public is a security risk. As of April this project will cease to be updated publically.
 
+Please checkout 'development' branch for the latest good stuff.
+
 Settings
 --------
 
