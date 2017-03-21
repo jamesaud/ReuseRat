@@ -168,7 +168,7 @@ class TestOrderOrderReceiver(BaseWebhookTestCase):
             response = self.send_request()
             self.assertTrue(Item.objects.get(pk=self.item.id).exists())
             item_object_created =Item.objects.get(pk=self.item.id)
-            self.assertEqual(item_object_created.status,Status.SOLD)
+            self.assertEqual(item_object_created.status, Status.SOLD)
             self.assertTrue(item_object_created.itemorderdetails.order_data)
             self.assertTrue(item_object_created.itemorderdetails.order_data)
             self.assertTrue(item_object_created.itemorderdetails.charge_id)

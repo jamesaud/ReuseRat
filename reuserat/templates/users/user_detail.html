@@ -31,7 +31,9 @@
   <div class='col-sm-2 current-balance'>
     <small>Current Balance</small>
     <h2>${{ object.get_current_balance }}</h2>
-    <a class='btn btn-success btn-success' href='{% url "users:cash_out" %}'> Cash Out </a>
+        <form method="post" action="{% url 'users:cash_out' %}">
+            <a class='btn btn-success' href='{% url "users:cash_out" %}'>Cash Out</a>
+        </form>
   </div>
 
   <div class='col-sm-5 shipment-button'>

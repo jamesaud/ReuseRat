@@ -120,26 +120,26 @@ class OrderReceivers(AbstractShopifyReceiver):
                 # Update the status of the item to Sold
                 item_object = Item.objects.get(pk=item['product_id'])
             except Item.DoesNotExist as e:
-                # This could happen if we add items manually to shopify. In that case, it is okay skip over.
+                # This could happen if we add items manually to Shopify that don't belong to users. In that case, it is okay skip over.
                 # However, we should log the occurences to make sure nothing is wrong.
-                logger.error("FAILED TO GET ITEM FROM DATABASE: " + str(e) + " | WITH DATA: " + str(shopify_json))
+                logger.error("FAILED TO GET ITEM {0} FROM DATABASE. | Shopify Json: {1} | Error {2} | User {3}".format(item, shopify_json, e, item_object.shipment.user.get_full_name()))
             else:
                 item_object.status = Status.SOLD
 
                 # Create an object for ItemOrderDetails
                 item_order_details = ItemOrderDetails(order_data=shopify_json, item=item_object)
 
-                # Create charge
-                seller_account_id = item_object.shipment.user.stripe_account.account_id
+                # Create transfer, give the user a their cut of the sale.
+                account_id = item_object.shipment.user.stripe_account.account_id
                 item_price = float(item['price'])
                 user_name = item_object.shipment.user.get_full_name()
 
                 try:
-                    transfer_id = create_transfer_to_customer(seller_account_id,
-                                                              item_price * settings.SPLIT_PERCENT_PER_SALE,
-                                                              user_name)
+                    transfer_id = create_transfer_to_customer(account_id=account_id,
+                                                              balance_in_cents=item_price * settings.SPLIT_PERCENT_PER_SALE,
+                                                              description=user_name)
                 except StripeError as e:
-                    logger.error("FAILED TO CREATE CHARGE: " + str(e))
+                    logger.error("FAILED TO CREATE CHARGE FOR ITEM: {0} | Shopify Json: {1} | Error: {2} | User: {3}".format(item, shopify_json, e, item_object.shipment.user.get_full_name()))
                     raise
 
                 # Update the charge id of the item ,for future reference

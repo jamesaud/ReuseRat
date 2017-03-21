@@ -321,11 +321,14 @@ class CashOutView(LoginRequiredMixin, View):
 
         except (PaypalException, StripeError):
             # Exception code goes here. Exception is being logged in the relevant function.
+            # Return the same page with error messages (created in the functions)
             return redirect(self.get_success_url())
 
         else:
             return redirect(self.get_success_url())
 
+    def post(self, request):
+        return HttpResponse('This is a post only view')
 
     def get_success_url(self):
         return self.request.user.get_absolute_url()
@@ -341,16 +344,16 @@ class CashOutView(LoginRequiredMixin, View):
         balance_in_cents = 1000
         """#######"""
 
-        # Create the user transaction
+        # Create the transaction
         transaction = Transaction(user=self.request.user,
                                   payment_type=self.request.user.payment_type,
                                   message="Cash Out with Paypal for user " + self.request.user.get_full_name(),
                                   amount_paid = balance_in_dollars)  # Need to set the balance still
 
-        transaction.save() # Will delete if the paypal api call doesn't go through. Need the transaction ID to set as the paypal batch id.
+        transaction.save() # Will delete if the api calls don't go through. Need the transaction ID to set as the paypal batch id.
 
-        # Try to transfer the user's current balance to OUR stripe account.
         try:
+            # Try to transfer the user's current balance to OUR stripe account.
             transfer_id = stripe_helpers.create_transfer_to_platform(account_id=self.request.user.stripe_account.account_id,
                                   balance_in_cents=balance_in_cents,
                                   description="Cashing out using Paypal for user " + self.request.user.get_full_name())
@@ -362,13 +365,14 @@ class CashOutView(LoginRequiredMixin, View):
                                  'Cashout with Paypal failed: ' + str(e))
             raise
 
-        # Try to send the user money via Paypal Mass Payments API
         try:
+            # Try to send the user money via Paypal Mass Payments API
             paypal_response = make_payment_paypal(batch_id='transaction_{}'.format(transaction.id), # Transaction ID is unique
                                        receiver_email="trashandtreasure67-buyer-1@gmail.com",
                                        amount_in_dollars=balance_in_dollars,
                                        note="Cashing out with Paypal")
         except PaypalException as e:
+            # Reverse the stripe transfer, because we are unable to pay the user.
             logger.error("Paypal Cash Out Exception: " + str(e))
             stripe_helpers.reverse_transfer(transfer_id, self.request.user.stripe_account.account_id)
             transaction.delete()
@@ -402,8 +406,7 @@ class CashOutView(LoginRequiredMixin, View):
                                       amount_paid = stripe_helpers.cents_to_dollars(balance_in_cents)
                                       )
             transaction.save()
-            messages.add_message(self.request, messages.SUCCESS,
-                                 'Cashed out using Direct Deposit successfully. Check the status at My Account > Transactions')
+            messages.add_message(self.request, messages.SUCCESS, 'Cashed out using Direct Deposit successfully. Check the status at My Account > Transactions')
             return transaction
 
     def use_check(self):

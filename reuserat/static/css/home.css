@@ -36,7 +36,9 @@ h5.description, h4.description, p.description {
     color: #eeeeee;
     margin-right: 6px; }
   .steps span.arrow {
-    color: #bdbdbd; }
+    color: #e0e0e0;
+    position: relative;
+    top: 3px; }
   .steps span.and {
     color: #bdbdbd;
     font-weight: 400; }
