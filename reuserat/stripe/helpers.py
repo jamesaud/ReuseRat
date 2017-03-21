@@ -41,7 +41,6 @@ def update_payment_info(account_id, account_token, user_object):
     account = stripe.Account.retrieve(account_id)
 
 
-
     # Update the display name for the account
     account.business_name = user_object.first_name
 
@@ -62,27 +61,18 @@ def update_payment_info(account_id, account_token, user_object):
     account.legal_entity.dob.month = '{:02d}'.format(user_object.birth_date.month)
     account.legal_entity.dob.year = user_object.birth_date.year
 
-    # Update First & Last names.
-    account.legal_entity.first_name = user_object.first_name
-    account.legal_entity.last_name = user_object.last_name
+    ### Commented out, as Stripe returns an error: "You cannot change `legal_entity[first_name]` via API if an account is verified."
+    #account.legal_entity.first_name = user_object.first_name
+    #account.legal_entity.last_name = user_object.last_name
 
     account.legal_entity.type = "individual"
-
-
 
     # Save the account details
     account.save()
 
-    # default_for_currency should be set as there can be multiple bank accounts
-    # We set the newly created one as the default.
     account.external_accounts.create(external_account=account_token,
-                                     default_for_currency="true",)
-
-    # Create Customer for each account
-   # stripe.Customer.create(
-   #     description="Customer for " + user_object.get_full_name(),
-   #     source=account_token  # obtained with Stripe.js
-   # )
+                                    default_for_currency=True,)
+    account.save()
 
     return account
 
@@ -104,10 +94,13 @@ def create_charge(account_id, amount_in_cents, user_name):
     :param user_name: The user's username, as a description for the charge.
     :return: String, the id of the charge.
     """
+    if not isinstance(amount_in_cents, int):  # Don't want any rounding to happen if it is a Float.
+        raise ValueError("Cents must be an int")
+
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
     # Stripe API call for Creating charge
     charge_details = stripe.Charge.create(
-        amount=int(amount_in_cents),  # 50% of the amount is for the platform
+        amount=amount_in_cents,
         currency="usd",
         customer=settings.STRIPE_TEST_PLATFORM_CUSTOMER_ID,  # Our Stripe Account Customer ID
         description="Hey " + user_name + " , you get $" + str(amount_in_cents),
@@ -144,13 +137,53 @@ def create_transfer_bank(account_id, balance_in_cents, user_name):
     return transfer['id']
 
 
-def create_transfer_to_us(account_id, balance_in_cents, user_name):
+def create_transfer_to_customer(account_id, balance_in_cents, description):
+    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+
+    if not isinstance(balance_in_cents, int):  # Don't want any rounding to happen if it is a Float.
+        raise ValueError("Cents must be an int")
+
+    transfer = stripe.Transfer.create(
+        amount=balance_in_cents,
+        currency="usd",
+        description=description,
+        destination=account_id,
+    )
+
+    return transfer['id']
+
+
+def create_transfer_to_platform(account_id, balance_in_cents, description):
     """
-    Transfers money from one Stripe account to another Stripe account using Stripe secret keys.
+    Transfers money from a connected Stripe account to our Platform Stripe account.
     :return:
     """
-    pass
+    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+    platform_account_id = stripe.Account.retrieve().id
+
+    if not isinstance(balance_in_cents, int):  # Don't want any rounding to happen if it is a Float.
+        raise ValueError("Cents must be an int")
+
+    transfer = stripe.Transfer.create(
+        amount=balance_in_cents,
+        currency="usd",
+        description=description,
+        destination = platform_account_id,
+        stripe_account=account_id,
+    )
+
+    return transfer['id']
 
 
-def test_mode_add_funds():
-    pass
+
+def reverse_transfer(transfer_id, api_key=None):
+    """
+    :param transfer_id: String, the id of the transfer
+    :param api_key: String, optionally the api key of the connected account. Will use the platform api key if not using account
+    :return:
+    """
+    stripe.api_key = api_key or settings.STRIPE_TEST_SECRET_KEY
+    transfer = stripe.Transfer.retrieve(transfer_id)
+    reversal = transfer.reversals.create()
+    return reversal['id']
+

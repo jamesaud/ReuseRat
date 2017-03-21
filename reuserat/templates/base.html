@@ -129,20 +129,20 @@
                   </a>
                 </li>
                 <li>
-                 
+
                   <div id='fixed-social-drop' class="dropdown social-drop">
                      <button href="#" data-toggle="dropdown" class="btn  btn-just-icon dropdown-toggle">
                         <i class="fa fa-share-alt"></i>
                         <b class="caret"></b>
                      </button>
-                            
+
                     <ul class="dropdown-menu pull-right" aria-labelledby="social-dropup-footer">
                       {% block share-header %}
                         {% include "snippets/_social_drop_list.html" with destination_url=request.build_absolute_uri %}
                       {% endblock %}
                     </ul>
                   </div>
-    			
+
 
                 </li>
 
@@ -176,11 +176,11 @@
     {% block modal %}{% endblock modal %}
 
 
-    
+
     {% block footer %}
 
       <footer class="footer">
-        
+
 	        <div class="container">
 
               <div class="row social-share text-center">
@@ -190,10 +190,10 @@
 	                    <div class="ripple-container"></div></button>
 
 	                    <button id="facebook" class="btn btn-raised btn-facebook sharrre">
-                        <i class="fa fa-facebook-square"></i> 
+                        <i class="fa fa-facebook-square"></i>
                         Facebook
                       </button>
-						          
+
                       <button id="medium" class="btn btn-raised btn-medium sharrre">
 	                        <i class="fa fa-medium"></i>
 	                        Medium
@@ -211,7 +211,7 @@
                                                 <b class="caret"></b>
 
                         </button>
-                                
+
                         <ul class="dropdown-menu pull-right" aria-labelledby="social-dropup-footer">
                           {% block share-footer %}
                               {% include "snippets/_social_drop_list.html" with destination_url=request.build_absolute_uri %}
@@ -224,12 +224,12 @@
 	                    	Share
 	                    </button>-->
 	            </div> <!-- /social-share -->
-              
+
 
 
 
               <!-- tTEST -->
-                
+
               <!-- -->
 
 	            <nav class="pull-left">

@@ -69,11 +69,9 @@ class User(AbstractUser):
         # External API Call
         try:
             balance = cents_to_dollars(retrieve_balance(self.stripe_account.secret_key))
-
-        except stripe.error.AuthenticationError:
-            balance = "Temporarily Unavailable"
-
-        return "{:.2f}".format(balance)
+            return "{:.2f}".format(balance)
+        except Exception as e:
+            return "Temporarily Unavailable"
 
     def get_primary_email(self):
         return self.emailaddress_set.filter(primary=True).first() or None

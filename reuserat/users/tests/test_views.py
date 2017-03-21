@@ -15,7 +15,7 @@ from .factories import EmailAddressFactory
 from ..views import (
     UserRedirectView,
     UserUpdateView,
-    cash_out,  # function based views
+    CashOutView,  # function based views
     UpdatePaymentInformation,
     UserCompleteSignupView
 
@@ -205,17 +205,7 @@ class TestCashOut(TestCase):
         self.factory = RequestFactory()  # Generate a mock request
         self.user = factories.UserFactory()  # Generate a mock user
         stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform test Secret Key.
-        stripe.Charge.create(
-            amount=1000,
-            currency="usd",
-            source={
-                'object': 'card',
-                'number': '4000000000004210',
-                'exp_month': 2,
-                'exp_year': 2018
-            },
-            destination=self.user.stripe_account.account_id
-        )
+
 
     def test_get(self):
         # Create an instance of a GET request.
@@ -225,7 +215,7 @@ class TestCashOut(TestCase):
 
         request.user = self.user
 
-        response = cash_out(request)
+        response = CashOutView.as_view()(request)
         self.assertEqual(response.status_code, 302)  # Html Code for Successful response
 
 
@@ -236,19 +226,8 @@ class TestMyCashOut(TestCase):
         self.user = factories.UserFactory()  # Generate a mock user
         self.request = self.factory.get('/~test-cash-out/')
         self.request.user = self.user
-
         stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
-        stripe.Charge.create(
-            amount=1000,
-            currency="usd",
-            source={
-                'object': 'card',
-                'number': '4000000000004210',
-                'exp_month': 2,
-                'exp_year': 2018
-            },
-            destination=self.user.stripe_account.account_id
-        )
+
 
     def test_paypal(self):
         self.request.user.payment_type = PaymentChoices.PAYPAL

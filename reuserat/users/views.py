@@ -3,7 +3,7 @@ from __future__ import absolute_import, unicode_literals
 from django.core.urlresolvers import reverse
 from django.views.generic import DetailView, ListView, RedirectView, TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required  # new#  import for function based view (FBV)
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import redirect, render, HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import ProcessFormView
@@ -15,23 +15,13 @@ from .forms import UserAddressForm, UserForm, UserCompleteSignupForm
 
 from reuserat.stripe.models import PaypalAccount
 from reuserat.stripe.forms import UpdatePaymentForm, PaypalUpdateForm, UserPaymentForm
-from reuserat.stripe.helpers import (create_account,
-                                     create_charge,
-                                     retrieve_balance,
-                                     update_payment_info,
-                                     create_transfer_bank,
-                                     cents_to_dollars,
-                                     dollars_to_cents)
+from reuserat.stripe import helpers as stripe_helpers
 from reuserat.stripe.paypal_helpers import make_payment_paypal, PaypalException
-
 from reuserat.stripe.models import Transaction
-
 import logging
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
-
-
 
 
 class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
@@ -112,7 +102,7 @@ class UserCompleteSignupView(UserUpdateMixin):
     def get_success_url(self):
         # Pass the Ip address of the client.
         # Call to Stripe View to create a stripe account
-        account_instance = create_account(self.request.META['REMOTE_ADDR'])
+        account_instance = stripe_helpers.create_account(self.request.META['REMOTE_ADDR'])
         if account_instance:
             self.request.user.stripe_account = account_instance
             self.request.user.save()
@@ -279,7 +269,7 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
         user.save()  # So we can use the birthdate
 
         # Update the user's bank Stripe Banking info.
-        account = update_payment_info(str(user.stripe_account.account_id), request.POST["stripeToken"], user)
+        account = stripe_helpers.update_payment_info(str(user.stripe_account.account_id), request.POST["stripeToken"], user)
         if account:  # Update User's Stripe account in our database
             user.stripe_account.account_holder_name = form.cleaned_data['account_holder_name']
             user.stripe_account.account_number_last_four = str(form.cleaned_data['account_number'])[-4:]
@@ -330,6 +320,7 @@ class CashOutView(LoginRequiredMixin, View):
                 transaction = self.use_check()
 
         except (PaypalException, StripeError):
+            # Exception code goes here. Exception is being logged in the relevant function.
             return redirect(self.get_success_url())
 
         else:
@@ -341,16 +332,37 @@ class CashOutView(LoginRequiredMixin, View):
 
 
     def use_paypal(self):
-        balance_in_dollars = cents_to_dollars(self.request.user.stripe_account.retrieve_balance())
+        balance_in_dollars = stripe_helpers.cents_to_dollars(self.request.user.stripe_account.retrieve_balance())
+        balance_in_cents = int(stripe_helpers.dollars_to_cents(balance_in_dollars))
+
+        """TESTING"""
+        #stripe_helpers.create_charge(self.request.user.stripe_account.account_id, 20000, 'jamesy') # add test money
+        balance_in_dollars = int(10.00)
+        balance_in_cents = 1000
+        """#######"""
 
         # Create the user transaction
         transaction = Transaction(user=self.request.user,
                                   payment_type=self.request.user.payment_type,
-                                  message="Cash Out with Paypal",
+                                  message="Cash Out with Paypal for user " + self.request.user.get_full_name(),
                                   amount_paid = balance_in_dollars)  # Need to set the balance still
 
         transaction.save() # Will delete if the paypal api call doesn't go through. Need the transaction ID to set as the paypal batch id.
 
+        # Try to transfer the user's current balance to OUR stripe account.
+        try:
+            transfer_id = stripe_helpers.create_transfer_to_platform(account_id=self.request.user.stripe_account.account_id,
+                                  balance_in_cents=balance_in_cents,
+                                  description="Cashing out using Paypal for user " + self.request.user.get_full_name())
+
+        except StripeError as e:
+            logger.error("Paypal Cash Out Exception (stripe error): " + str(e))
+            transaction.delete()
+            messages.add_message(self.request, messages.ERROR,
+                                 'Cashout with Paypal failed: ' + str(e))
+            raise
+
+        # Try to send the user money via Paypal Mass Payments API
         try:
             paypal_response = make_payment_paypal(batch_id='transaction_{}'.format(transaction.id), # Transaction ID is unique
                                        receiver_email="trashandtreasure67-buyer-1@gmail.com",
@@ -358,45 +370,36 @@ class CashOutView(LoginRequiredMixin, View):
                                        note="Cashing out with Paypal")
         except PaypalException as e:
             logger.error("Paypal Cash Out Exception: " + str(e))
+            stripe_helpers.reverse_transfer(transfer_id, self.request.user.stripe_account.account_id)
             transaction.delete()
             messages.add_message(self.request, messages.ERROR,
                                  'Cashout with Paypal failed: ' + str(e))
             raise
         else:
             transaction.save()
-
             messages.add_message(self.request, messages.SUCCESS,
-                                 'Cashed out using Paypal successfully. \
-                                 Please accept the emails sent to {}'.format(self.request.user.get_primary_email()))
+                                 'Cashed out using Paypal successfully. Please accept the email sent to {}. \
+                                  To resend the email, please go to My Account > Transactions'.format(self.request.user.get_primary_email().email))
             return transaction
 
     def use_stripe(self):
 
         # Amount to be transferred is the balance money in the stripe account
         balance_in_cents = self.request.user.stripe_account.retrieve_balance()
-
-        """TESTING"""
-        balance_in_cents = 100  # DELETE JUST TESTING
-        balance_in_dollars = balance_in_cents
-        # Testing adding moneys
-        #create_charge(self.request.user.stripe_account.account_id, 10000, self.request.user.get_full_name())
-        """ENDTESTING"""
-
         try:
-            transfer_id = create_transfer_bank(account_id=self.request.user.stripe_account.account_id,  # User's Bank account,
+            transfer_id = stripe_helpers.create_transfer_bank(account_id=self.request.user.stripe_account.account_id,  # User's Bank account,
                                           balance_in_cents=balance_in_cents, # Amount to transfer
                                           user_name=self.request.user.get_full_name() # Description of transfer
                                         )
         except StripeError as e:
             logger.error("Stripe Cash Out Exception: " + str(e))
-            messages.add_message(self.request, messages.ERROR,
-                                 'Failed to cash out using Direct Deposit: ' + str(e))
+            messages.add_message(self.request, messages.ERROR,'Failed to cash out using Direct Deposit: ' + str(e))
             raise
         else:
             transaction = Transaction(user=self.request.user,
                                       payment_type=self.request.user.payment_type,
                                       message="Cash Out with Direct Deposit",
-                                      amount_paid = cents_to_dollars(balance_in_cents)
+                                      amount_paid = stripe_helpers.cents_to_dollars(balance_in_cents)
                                       )
             transaction.save()
             messages.add_message(self.request, messages.SUCCESS,

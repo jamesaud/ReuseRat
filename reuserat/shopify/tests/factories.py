@@ -18,7 +18,7 @@ class ItemFactory(factory.django.DjangoModelFactory):
 
 
 class ItemOrderDetailsFactory(factory.django.DjangoModelFactory):
-    item=factory.RelatedFactory(ItemFactory)
+    item = factory.RelatedFactory(ItemFactory)
     charge_id ="py_19tlyKIPg8ix8N5WTMuRTMf1"
     transfer_id = factory.Sequence(lambda n: int('{}'.format(n)))
     order_data = {}

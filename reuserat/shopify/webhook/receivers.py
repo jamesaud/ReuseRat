@@ -1,7 +1,9 @@
 from reuserat.shopify.models import Item, Status, ItemOrderDetails
 from reuserat.shipments.models import Shipment
 from reuserat.users.models import User
-from reuserat.stripe.helpers import create_charge
+from reuserat.stripe.helpers import create_transfer_to_customer
+from django.conf import settings
+from stripe.error import StripeError
 from ..helpers import valid_sku
 
 '''
@@ -127,19 +129,22 @@ class OrderReceivers(AbstractShopifyReceiver):
                 # Create an object for ItemOrderDetails
                 item_order_details = ItemOrderDetails(order_data=shopify_json, item=item_object)
 
-
                 # Create charge
                 seller_account_id = item_object.shipment.user.stripe_account.account_id
                 item_price = float(item['price'])
-
                 user_name = item_object.shipment.user.get_full_name()
+
                 try:
-                    charge_id = create_charge(seller_account_id, item_price, user_name)
-                except Exception as e:
+                    transfer_id = create_transfer_to_customer(seller_account_id,
+                                                              item_price * settings.SPLIT_PERCENT_PER_SALE,
+                                                              user_name)
+                except StripeError as e:
                     logger.error("FAILED TO CREATE CHARGE: " + str(e))
                     raise
+
                 # Update the charge id of the item ,for future reference
-                item_order_details.charge_id = charge_id
+                item_order_details.transfer_id = transfer_id
+
                 # Save updated objects
                 item_order_details.save()
                 item_object.save()

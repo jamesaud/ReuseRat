@@ -1,4 +1,5 @@
 {
-  "reuserat/users/tests/test_views.py::TestCashOut::test_get": true,
+  "reuserat/shipments/tests/test_admin.py::TestMyAdminShopifyItemTable::test_generated_html": true,
+  "reuserat/stripe/tests/test_helpers.py::TestStripeApi::test_success_update_payment_info": true,
   "reuserat/users/tests/test_views.py::TestUpdatePaymentInformation::test_stripe_updated": true
 }

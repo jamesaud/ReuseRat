@@ -4,7 +4,8 @@ import stripe
 from django.conf import settings
 from config.settings import test
 from reuserat.users.tests import factories
-from reuserat.stripe.helpers import create_account, retrieve_balance, update_payment_info,create_charge,dollars_to_cents,create_transfer
+from reuserat.stripe.helpers import (create_account, retrieve_balance, update_payment_info,create_charge,
+                                     dollars_to_cents, create_transfer_to_customer)
 
 
 class TestStripeApi(TestCase):
@@ -13,7 +14,7 @@ class TestStripeApi(TestCase):
     def setUpClass(cls):
         super(TestStripeApi, cls).setUpClass()
         stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Test Secret Key.
-        cls.test_secret_key = settings.STRIPE_TEST_SECRET_KEY#test.TEST_CUSTOMER_STRIPE_SECRET
+        cls.test_secret_key = settings.STRIPE_TEST_SECRET_KEY # test.TEST_CUSTOMER_STRIPE_SECRET
         # card={"number": '4242424242424242',"exp_month": 12,"exp_year": 2018,"cvc": '123', "currency": 'usd',},)
         cls.test_account_token= stripe.Token.create(bank_account={"country": 'US',
                                                     "currency": 'usd',
@@ -23,7 +24,7 @@ class TestStripeApi(TestCase):
                                                     "account_number": '000123456789'
                                                     },)
         cls.test_account_id = test.TEST_CUSTOMER_STRIPE_ACCOUNT_ID
-        cls.test_balance = 0.50 # in dollars
+        cls.test_balance = 100 # in cents
 
     # Create Account : Success
     def test_success_create_account(self):
@@ -40,12 +41,12 @@ class TestStripeApi(TestCase):
     # Retrieve Balance : Success
     def test_success_retrieve_balance(self):
         test_balance = retrieve_balance(self.test_secret_key)
-        self.assertTrue(isinstance(test_balance,float))
+        self.assertTrue(isinstance(test_balance, int))
 
     # Retrieve Balance : Failure
     def test_failure_retrieve_balance(self):
         with self.assertRaises(stripe.error.AuthenticationError):
-            test_balance = retrieve_balance("TEST_SECRET_KEY")
+            test_balance = retrieve_balance("bad_key")
 
     # UpdatePaymentInfo : Success
     def test_success_update_payment_info(self):
@@ -54,8 +55,6 @@ class TestStripeApi(TestCase):
         account_id = self.test_account_id
 
         test_account = update_payment_info(account_id, account_token, user_object)
-
-        print(user_object.stripe_account.account_id,"ACCOUNT ID")
 
         stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Test Secret Key.
         sample_account = stripe.Account.retrieve(account_id) # Retrieve the saved account from Stripe using the account_id
@@ -72,8 +71,10 @@ class TestStripeApi(TestCase):
         self.assertEqual(test_account.legal_entity.dob.month, sample_account.legal_entity.dob.month)
         self.assertEqual(test_account.legal_entity.dob.year, sample_account.legal_entity.dob.year)
 
-        self.assertEqual(test_account.legal_entity.first_name, sample_account.legal_entity.first_name)
-        self.assertEqual(test_account.legal_entity.last_name, sample_account.legal_entity.last_name)
+        ### Removed the code in 'helpers.py' to update the legal_entity name.
+        #self.assertEqual(test_account.legal_entity.first_name, sample_account.legal_entity.first_name)
+        #self.assertEqual(test_account.legal_entity.last_name, sample_account.legal_entity.last_name)
+        ###
 
         self.assertEqual(test_account.legal_entity.personal_address.line1,
                         sample_account.legal_entity.personal_address.line1)
@@ -89,6 +90,7 @@ class TestStripeApi(TestCase):
                         sample_account.legal_entity.personal_address.postal_code)
         self.assertEqual(test_account.legal_entity.type,
                         sample_account.legal_entity.type)
+
         self.assertEqual(test_account.external_accounts['data'][0]['account_holder_name'],
                          sample_account.external_accounts['data'][0]['account_holder_name'])
         self.assertEqual(test_account.external_accounts['data'][0]['currency'],
@@ -107,14 +109,12 @@ class TestStripeApi(TestCase):
     # CreateCharge : Success
     def test_success_create_charge(self):
         user_object = factories.UserFactory()
-        account_id =self.test_account_id
-        amount=1 # in dollars
-        test_amount = dollars_to_cents(amount)
-        account_id="acct_19t1iYBLJOL9t28B"
-        test_charge_id=create_charge(account_id, amount, user_object.get_full_name())
+        account_id = self.test_account_id
+        amount = 100  # in cents
+        test_charge_id = create_charge(account_id, amount, user_object.get_full_name())
         stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Secret Key.
         sample_charge = stripe.Charge.retrieve(test_charge_id)
-        self.assertEqual(sample_charge['amount'],test_amount*0.50)
+        self.assertEqual(sample_charge['amount'], amount)
         self.assertEqual(sample_charge['customer'], settings.STRIPE_TEST_PLATFORM_CUSTOMER_ID)
         self.assertEqual(sample_charge['destination'], account_id)
 
@@ -124,19 +124,15 @@ class TestStripeApi(TestCase):
             user_object = factories.UserFactory()
             amount_in_dollars =1
             account_id = "TEST_ACCOUNT_ID"
-            test_account = create_charge(account_id, amount_in_dollars,user_object.get_full_name())
+            test_account = create_charge(account_id, amount_in_dollars, user_object.get_full_name())
 
 
     # CreateTransfer : Success
     def test_success_create_transfer(self):
-        with self.assertRaises(stripe.error.InvalidRequestError): # If tested too many times so it will raise this error
-            user_object = factories.UserFactory()
-
-            account_id = "acct_19t1iYBLJOL9t28B"
-
-            test_transfer_id = create_transfer(self.test_account_id,self.test_balance,user_object.get_full_name())
-            stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Secret Key.
-            sample_transfer = stripe.Transfer.retrieve(test_transfer_id)
-            self.assertEqual(test_transfer_id,"In")
-            self.assertEqual(self.test_balance*100 , sample_transfer['amount'])
+        user_object = factories.UserFactory()
+        transfer_id = create_transfer_to_customer(self.test_account_id, self.test_balance, user_object.get_full_name())
+        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Secret Key.
+        sample_transfer = stripe.Transfer.retrieve(transfer_id)
+        self.assertEqual(transfer_id, sample_transfer['id'])
+        self.assertEqual(self.test_balance , sample_transfer['amount'])
 

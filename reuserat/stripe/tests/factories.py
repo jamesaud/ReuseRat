@@ -1,7 +1,7 @@
 import factory
 from django.conf import settings
 from reuserat.stripe.models import StripeAccount, PaypalAccount
-import stripe
+import stripe, time
 
 
 def _stripe_account_generator():
@@ -17,7 +17,7 @@ def _stripe_account_generator():
             'account_number': '000123456789',
         },
         tos_acceptance={
-            'date': 1489610134,
+            'date': int(time.time()),
             'ip': "64.134.34.193",
         },
     )
