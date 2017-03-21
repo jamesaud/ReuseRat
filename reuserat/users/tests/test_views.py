@@ -6,8 +6,6 @@ import stripe
 from django.conf import settings
 from config.settings import test
 
-from reuserat.stripe.helpers import create_charge
-
 from ..models import PaymentChoices
 from django.conf import settings
 from .factories import EmailAddressFactory
@@ -204,29 +202,23 @@ class TestCashOut(TestCase):
     def setUp(self):
         self.factory = RequestFactory()  # Generate a mock request
         self.user = factories.UserFactory()  # Generate a mock user
-        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform test Secret Key.
 
 
     def test_get(self):
         # Create an instance of a GET request.
-        request = self.factory.get('/~transfer/')
-        print("BALANCEXD")
-        print('BALANCE XD 2', self.user.get_current_balance())
-
+        request = self.factory.post('/~cashout/')
         request.user = self.user
 
         response = CashOutView.as_view()(request)
         self.assertEqual(response.status_code, 302)  # Html Code for Successful response
 
 
-
 class TestMyCashOut(TestCase):
     def setUp(self):
         self.factory = RequestFactory()  # Generate a mock request
         self.user = factories.UserFactory()  # Generate a mock user
-        self.request = self.factory.get('/~test-cash-out/')
+        self.request = self.factory.post('/~test-cash-out/')
         self.request.user = self.user
-        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
 
     def test_paypal(self):

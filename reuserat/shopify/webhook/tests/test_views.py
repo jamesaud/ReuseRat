@@ -10,7 +10,6 @@ from reuserat.shopify.webhook.helpers import get_hmac
 from .. import receivers as r
 from ..views import *
 from ...models import Item
-from reuserat.stripe.helpers import create_charge
 
 
 class BaseWebhookTestCase(TestCase):

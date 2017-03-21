@@ -47,9 +47,6 @@
   .current-balance h2 {
     margin-top: 0px;
     margin-bottom: 0px; }
-  .current-balance a.btn {
-    padding: 8px 17px 8px 17px;
-    margin-top: 0px; }
 
 @media (max-width: 768px) {
   .top-buttons .btn, .top-buttons .btn-group {
@@ -81,3 +78,7 @@
 @media screen and (max-width: 650px) {
   .card .head > .btn {
     max-width: 50%; } }
+
+#cash-out-btn.btn {
+  padding: 8px 17px 8px 17px;
+  margin-top: 0px; }

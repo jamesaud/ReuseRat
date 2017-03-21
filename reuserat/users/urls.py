@@ -42,4 +42,9 @@ urlpatterns = [
         view=views.UpdatePaymentInformation.as_view(),
         name='update_payment_information'
     ),
+    url(
+        regex=r'^~transactions/$',
+        view=views.TransactionListView.as_view(),
+        name='transactions'
+    ),
 ]

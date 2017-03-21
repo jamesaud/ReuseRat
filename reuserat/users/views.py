@@ -150,6 +150,17 @@ class UserListView(LoginRequiredMixin, ListView):
     slug_url_kwarg = 'username'
 
 
+
+class TransactionListView(LoginRequiredMixin, ListView):
+    model = Transaction
+    context_object_name = 'transaction_set'  # Name to use in template
+    template_name = 'users/user_transactions.html'
+    slug_field = 'transactions'
+
+    def get_queryset(self):
+        return self.request.user.transaction_set.all()
+
+
 class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateView, ProcessFormView):
     """
     This view processes multiple payment forms.
@@ -269,8 +280,13 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
         user.save()  # So we can use the birthdate
 
         # Update the user's bank Stripe Banking info.
-        account = stripe_helpers.update_payment_info(str(user.stripe_account.account_id), request.POST["stripeToken"], user)
-        if account:  # Update User's Stripe account in our database
+        try:
+            account = stripe_helpers.update_payment_info(str(user.stripe_account.account_id), request.POST["stripeToken"], user)
+        except StripeError as e:
+            logger.error("Failed to update stripe account: " + str(e))
+            messages.add_message(request, messages.ERROR, "Server Error! That's on us. Please try again later.")
+            return False
+        else:
             user.stripe_account.account_holder_name = form.cleaned_data['account_holder_name']
             user.stripe_account.account_number_last_four = str(form.cleaned_data['account_number'])[-4:]
             user.stripe_account.routing_number_last_four = str(form.cleaned_data['routing_number'])[-4:]
@@ -279,9 +295,6 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
             user.save()
             messages.add_message(request, messages.SUCCESS, "Updated Bank Successfully")
             return form
-        else:
-            messages.add_message(request, messages.ERROR, "Server Error! Please try again later.")
-            return False
 
     def process_paypal(self, form):
         user, request = self.request.user, self.request
@@ -302,8 +315,9 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
 
 class CashOutView(LoginRequiredMixin, View):
 
+    http_method_names = ['post']
 
-    def get(self, *args, **kwargs):
+    def post(self, *args, **kwargs):
         """
         All the 'use' functions should return a Transaction object
         """
@@ -326,9 +340,6 @@ class CashOutView(LoginRequiredMixin, View):
 
         else:
             return redirect(self.get_success_url())
-
-    def post(self, request):
-        return HttpResponse('This is a post only view')
 
     def get_success_url(self):
         return self.request.user.get_absolute_url()
@@ -383,7 +394,7 @@ class CashOutView(LoginRequiredMixin, View):
             transaction.save()
             messages.add_message(self.request, messages.SUCCESS,
                                  'Cashed out using Paypal successfully. Please accept the email sent to {}. \
-                                  To resend the email, please go to My Account > Transactions'.format(self.request.user.get_primary_email().email))
+                                  To resend the email, please go to My Account > Transactions.'.format(self.request.user.get_primary_email().email))
             return transaction
 
     def use_stripe(self):
@@ -391,7 +402,7 @@ class CashOutView(LoginRequiredMixin, View):
         # Amount to be transferred is the balance money in the stripe account
         balance_in_cents = self.request.user.stripe_account.retrieve_balance()
         try:
-            transfer_id = stripe_helpers.create_transfer_bank(account_id=self.request.user.stripe_account.account_id,  # User's Bank account,
+            transfer_id = stripe_helpers.create_transfer_bank(secret_key=self.request.user.stripe_account.secret_key,  # User's Bank account,
                                           balance_in_cents=balance_in_cents, # Amount to transfer
                                           user_name=self.request.user.get_full_name() # Description of transfer
                                         )

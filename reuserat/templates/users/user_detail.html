@@ -32,7 +32,8 @@
     <small>Current Balance</small>
     <h2>${{ object.get_current_balance }}</h2>
         <form method="post" action="{% url 'users:cash_out' %}">
-            <a class='btn btn-success' href='{% url "users:cash_out" %}'>Cash Out</a>
+            {% csrf_token %}
+            <button id="cash-out-btn" type="submit" class='btn btn-success' href='{% url "users:cash_out" %}'>Cash Out</button>
         </form>
   </div>
 
@@ -58,7 +59,7 @@
             <br>
 
           {% for shipment in user.shipment_set.all %}
-                    <div class="card card-nav-tabs ">
+                    <div class="card card-nav-tabs">
                         <div class="head {% if shipment.item_set.exists %} header-info {% else %} header-grey {% endif %}">
                           <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
                           <a class="btn btn-dark-blend" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">

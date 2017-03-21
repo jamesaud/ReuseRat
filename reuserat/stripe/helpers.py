@@ -4,7 +4,7 @@ from reuserat.stripe.models import StripeAccount
 import stripe
 import time
 
-# Creating Managed Account in Stripe
+# Creating Managed Connected Account in Stripe
 def create_account(ip_addr=None):
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
 
@@ -62,19 +62,16 @@ def update_payment_info(account_id, account_token, user_object):
     account.legal_entity.dob.year = user_object.birth_date.year
 
     ### Commented out, as Stripe returns an error: "You cannot change `legal_entity[first_name]` via API if an account is verified."
-    #account.legal_entity.first_name = user_object.first_name
-    #account.legal_entity.last_name = user_object.last_name
+    account.legal_entity.first_name = account.legal_entity.first_name or user_object.first_name
+    account.legal_entity.last_name = account.legal_entity.last_name or user_object.last_name
 
     account.legal_entity.type = "individual"
 
-    # Save the account details
-    account.save()
-
     account.external_accounts.create(external_account=account_token,
                                     default_for_currency=True,)
-    account.save()
 
-    return account
+    account.save()
+    return account['id']
 
 
 def dollars_to_cents(dollar):
@@ -85,32 +82,7 @@ def cents_to_dollars(cents):
     return cents / 100
 
 
-# Create a charge for an item on the Platform Account
-def create_charge(account_id, amount_in_cents, user_name):
-    """
-    Transfers money from OUR Stripe account to a customer's.
-    :param account_id: The user's Stripe account id
-    :param amount_in_dollars: The amount to charge
-    :param user_name: The user's username, as a description for the charge.
-    :return: String, the id of the charge.
-    """
-    if not isinstance(amount_in_cents, int):  # Don't want any rounding to happen if it is a Float.
-        raise ValueError("Cents must be an int")
-
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
-    # Stripe API call for Creating charge
-    charge_details = stripe.Charge.create(
-        amount=amount_in_cents,
-        currency="usd",
-        customer=settings.STRIPE_TEST_PLATFORM_CUSTOMER_ID,  # Our Stripe Account Customer ID
-        description="Hey " + user_name + " , you get $" + str(amount_in_cents),
-        destination=account_id,
-    )
-
-    return charge_details['id']
-
-
-def create_transfer_bank(account_id, balance_in_cents, user_name):
+def create_transfer_bank(secret_key, balance_in_cents, user_name):
     """
     # Cash out a user's Stripe balance to their bank account.
     :param account_id:  User's bank account id.
@@ -120,7 +92,7 @@ def create_transfer_bank(account_id, balance_in_cents, user_name):
     :return: String, transfer id
     """
 
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Customer Secret Key
+    stripe.api_key = secret_key  # Customer Secret Key
 
     if not isinstance(balance_in_cents, int):  # Don't want any rounding to happen if it is a Float.
         raise ValueError("Cents must be an int")
@@ -130,7 +102,6 @@ def create_transfer_bank(account_id, balance_in_cents, user_name):
         currency="usd",
         description="Money transferred to bank account for: " + user_name,
         destination="default_for_currency",
-        stripe_account=account_id,
         source_type="bank_account",
     )
 
@@ -171,7 +142,6 @@ def create_transfer_to_platform(account_id, balance_in_cents, description):
         destination = platform_account_id,
         stripe_account=account_id,
     )
-
     return transfer['id']
 
 
