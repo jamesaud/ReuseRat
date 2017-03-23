@@ -23,14 +23,21 @@ def _stripe_account_generator():
     )
 
 class StripeAccountFactory(factory.django.DjangoModelFactory):
-    account_id = _stripe_account_generator().id
-
-    secret_key = settings.STRIPE_TEST_SECRET_KEY
-    publishable_key = settings.STRIPE_TEST_PUBLISHABLE_KEY
+    account_id = 'replaced'
+    user = None
+    secret_key = 'replaced'
+    publishable_key = 'replaced'
 
     class Meta:
         model = StripeAccount
         django_get_or_create = ('account_id', 'secret_key', 'publishable_key')
+
+    @factory.post_generation
+    def post(self, create, extracted, **kwargs):
+        account =  _stripe_account_generator()
+        self.account_id = account['id']
+        self.secret_key = account['keys']['secret']
+        self.publishable_key = account['keys']['publishable']
 
 
 class PaypalAccountFactory(factory.django.DjangoModelFactory):

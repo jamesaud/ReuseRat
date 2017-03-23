@@ -6,7 +6,7 @@ from config.settings import test
 from reuserat.users.tests import factories
 from reuserat.stripe.helpers import (create_account, retrieve_balance, update_payment_info, reverse_transfer,
                                       create_transfer_to_customer, create_transfer_to_platform, create_transfer_bank)
-from reuserat.stripe.tests.helpers import add_test_funds_to_account, create_test_bank_token
+from reuserat.stripe.tests.helpers import add_test_funds_to_account, create_test_bank_token, add_test_funds_to_platform
 
 
 class TestStripeApi(TestCase):
@@ -18,7 +18,10 @@ class TestStripeApi(TestCase):
         cls.test_secret_key = settings.STRIPE_TEST_SECRET_KEY # test.TEST_CUSTOMER_STRIPE_SECRET
         # Tokens are unique, so we lambda it to create a new token each time. Needs to take 1 argument because it's called with self
         cls.account = create_account('149.160.154.217') # Stripe Account model instance
+
+
         add_test_funds_to_account(cls.account.account_id, 1000, 'test_helpers.py in stripe app.') # Add enough money to handle all the tests
+        add_test_funds_to_platform(1000, 'test_helper.py in stripe app.') # Add money to our platform
 
     # Create Account : Success
     def test_success_create_account(self):
@@ -105,6 +108,8 @@ class TestStripeApi(TestCase):
         self.assertEqual(transfer['destination'], account_id)
         self.assertEqual(transfer['destination'], account_id)
 
+        print(stripe.Balance.retrieve())
+
         self.assertEqual(old_balance_platform - transfer_amount, new_balance_platform) # Our stripe account lost money
         self.assertEqual(old_balance_user + transfer_amount, new_balance_user) # User gained money
 
@@ -132,8 +137,7 @@ class TestStripeApi(TestCase):
         account_token = create_test_bank_token()
 
         update_payment_info(self.account.account_id, account_token, user_object)
-#        add_test_funds_to_account(self.account.account_id, transfer_amount, 'test_create_transfer_bank') # Add more, because of charge fee.
-
+        print(stripe.Balance.retrieve(api_key=self.account.secret_key))
         stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Test Secret Key.
         old_balance_user = retrieve_balance(self.account.secret_key)
         transfer_id = create_transfer_bank(self.account.secret_key, transfer_amount, "test_create_transfer_bank")
@@ -152,3 +156,10 @@ class TestStripeApi(TestCase):
         self.assertEqual(transfer['amount'], transfer['amount_reversed'])
         self.assertTrue(transfer['reversed'])
 
+    def test_add_test_funds_to_account(self):
+        stripe.api_key = self.account.secret_key
+        old_balance = retrieve_balance(self.account.secret_key)
+        add_test_funds_to_account(self.account.account_id, 100, 'test_add_test_funds_to_account')
+        new_balance = retrieve_balance(self.account.secret_key)
+
+        self.assertEqual(old_balance+100, new_balance)

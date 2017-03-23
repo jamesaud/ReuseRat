@@ -4,8 +4,14 @@ from reuserat.stripe.models import StripeAccount
 import stripe
 import time
 
+
 # Creating Managed Connected Account in Stripe
 def create_account(ip_addr=None):
+    """
+    Creates a Stripe Connected account for the user, and creates an instance of StripeAccount in our DB.
+    :param ip_addr: The ip_address of the user, used to sign the Connected Stripe Account agreement.
+    :return: StripeAccount, an object from the model StripeAccount
+    """
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
 
     acct = stripe.Account.create(
@@ -33,7 +39,7 @@ def create_account(ip_addr=None):
 def retrieve_balance(secret_key):
     stripe.api_key = secret_key
     account_details = stripe.Balance.retrieve()
-    return account_details['available'][0]['amount']
+    return account_details['available'][0]['source_types']['bank_account']
 
 
 def update_payment_info(account_id, account_token, user_object):
@@ -82,7 +88,7 @@ def cents_to_dollars(cents):
     return cents / 100
 
 
-def create_transfer_bank(secret_key, balance_in_cents, user_name):
+def create_transfer_bank(api_key, balance_in_cents, user_name):
     """
     # Cash out a user's Stripe balance to their bank account.
     :param account_id:  User's bank account id.
@@ -92,17 +98,18 @@ def create_transfer_bank(secret_key, balance_in_cents, user_name):
     :return: String, transfer id
     """
 
-    stripe.api_key = secret_key  # Customer Secret Key
+    stripe.api_key = api_key  # Customer Secret Key
 
     if not isinstance(balance_in_cents, int):  # Don't want any rounding to happen if it is a Float.
         raise ValueError("Cents must be an int")
+
 
     transfer = stripe.Transfer.create(
         amount=balance_in_cents,
         currency="usd",
         description="Money transferred to bank account for: " + user_name,
         destination="default_for_currency",
-        source_type="bank_account",
+        source_type='bank_account'
     )
 
     return transfer['id']
@@ -118,8 +125,8 @@ def create_transfer_to_customer(account_id, balance_in_cents, description):
         amount=balance_in_cents,
         currency="usd",
         description=description,
-        destination=account_id,
-    )
+        source_type='bank_account',
+        destination=account_id)
 
     return transfer['id']
 
@@ -140,7 +147,8 @@ def create_transfer_to_platform(account_id, balance_in_cents, description):
         currency="usd",
         description=description,
         destination = platform_account_id,
-        stripe_account=account_id,
+        stripe_account = account_id,
+        source_type = 'bank_account'
     )
     return transfer['id']
 
