@@ -10,6 +10,18 @@ from allauth.account.models import EmailAddress
 
 FOUR_DIGIT_VALIDATOR = RegexValidator(regex='^\d{4}$', message='Has to be 4 integers', code='nomatch')
 
+class TransactionTypeChoices:
+    IN = 'Funds Added'                                 # Color: Info
+    OUT = 'Cash Out'                                   # Color: Success 
+    CREDIT = 'Credit'  # Store Credit added to account # Color: Warning
+    FEE = 'Fee'                                        # Color: Danger
+    Choices = (
+        (CHECK, 'Funds Added'),
+        (DIRECT_DEPOSIT, 'Cash Out'),
+        (PAYPAL, 'Credit'),
+        (FEE, 'Fee')
+    )
+
 class StripeAccount(models.Model):
 
     account_id = models.CharField(_('stripe AccountId'), blank=False, max_length=255, primary_key=True) # Stripe account ID
@@ -40,7 +52,8 @@ class Transaction(models.Model):
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
     payment_type = models.CharField(_('Payment Type'), max_length=255)
     amount_paid = models.FloatField() # In dollars
-    message = models.CharField(max_length=500, null=True, blank=True)
+    type = models.CharField(_("Transaction Type"), choices=TransactionTypeChoices, max_length=255)
+    message = models.CharField(max_length=500)
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

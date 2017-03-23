@@ -64,7 +64,6 @@ def make_payment_paypal(batch_id, receiver_email, amount_in_dollars, note):
         error = payout.items[0].errors
         if error:
             # Lookup tohe error class, or create New error class based on the type of Paypal Error
-            print(error.name)
             error_class = __PaypalErrorLookup.get(error.name, None) or PaypalException.new(error.name)
             raise error_class(error.message)
         else:

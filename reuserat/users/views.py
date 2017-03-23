@@ -17,8 +17,10 @@ from reuserat.stripe.forms import UpdatePaymentForm, PaypalUpdateForm, UserPayme
 from reuserat.stripe import helpers as stripe_helpers
 from reuserat.stripe import paypal_helpers
 from reuserat.stripe.models import Transaction
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from reuserat.stripe.tests.helpers import add_test_funds_to_account
+
+from reuserat.stripe.tests.helpers import add_test_funds_to_account, add_test_funds_to_platform
 
 
 import time
@@ -156,14 +158,26 @@ class UserListView(LoginRequiredMixin, ListView):
 
 
 
-class TransactionListView(LoginRequiredMixin, ListView):
+class TransactionListView(LoginRequiredMixin, TemplateView):
     model = Transaction
-    context_object_name = 'transaction_set'  # Name to use in template
     template_name = 'users/user_transactions.html'
     slug_field = 'transactions'
+    paginate_by = 10
 
-    def get_queryset(self):
-        return self.request.user.transaction_set.all()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs) or {}
+        transaction_list = self.request.user.transaction_set.all()
+        paginator = Paginator(transaction_list, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            transactions = paginator.page(page)
+        except PageNotAnInteger:
+            transactions = paginator.page(1)
+        except EmptyPage:
+            transactions = paginator.page(paginator.num_pages)
+        context.update({'transaction_set': transactions})
+        return context
 
 
 class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateView, ProcessFormView):

@@ -34,9 +34,7 @@ class TestMyAdminShopifyItemTable(TestCase):
 
         parser = AdminHTMLParser()  # Reset the tag counts
         # Add an item
-        item = ItemFactory(user=self.shipment.user)
-        item.shipment = self.shipment
-        item.save()
+        item = ItemFactory(shipment=self.shipment)
 
         html = self.shipment_admin.get_items(obj=self.shipment)
         parser.feed(html)

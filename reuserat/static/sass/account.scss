@@ -7,6 +7,31 @@
   }
 }
 
+.section-transactions{
+
+  .card {
+      h3{
+        margin-top: 10px;
+        font-weight: 400;
+      }
+      .head{
+        height: 12px;
+      }
+      hr{
+        margin-top: 0px;
+        margin-bottom: 10px;
+      }
+      .card-data{
+        padding-left: 20px;
+        padding-right: 20px;
+        }
+      .label{ 
+        margin-top: 10px;
+        font-size: 12px;
+      }
+  }
+}
+
 ul.nav-pills{
   display:flex;
   justify-content: center;

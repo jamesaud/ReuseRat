@@ -39,7 +39,7 @@ def create_account(ip_addr=None):
 def retrieve_balance(secret_key):
     stripe.api_key = secret_key
     account_details = stripe.Balance.retrieve()
-    return account_details['available'][0]['source_types']['bank_account']
+    return account_details['available'][0]['amount']
 
 
 def update_payment_info(account_id, account_token, user_object):
@@ -100,9 +100,13 @@ def create_transfer_bank(api_key, balance_in_cents, user_name):
 
     stripe.api_key = api_key  # Customer Secret Key
 
+    print("BALANCE")
+    print(balance_in_cents)
+
     if not isinstance(balance_in_cents, int):  # Don't want any rounding to happen if it is a Float.
         raise ValueError("Cents must be an int")
 
+    print(stripe.Balance.retrieve())
 
     transfer = stripe.Transfer.create(
         amount=balance_in_cents,
