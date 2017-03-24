@@ -46,15 +46,16 @@ class Item(models.Model):
 class ItemOrderDetails(models.Model):
     """Contains the shopify details of an item"""
     item = models.OneToOneField(Item, primary_key=True)
-    charge_id = models.CharField(max_length=200)
-    transfer_id = models.IntegerField()
+    transfer_id = models.CharField(max_length=100)
     order_data = JSONField() # Shopify order data
 
     def __str__(self):
         return "Order details for: " + str(self.item)
 
 
-
+# Store webhook in DB to make sure we don't give the user for hte same webhook twice, if shopify accidentally sends the same webhook.
+#class Webhook(models.Model):
+    #webhook_id = models.CharField(max_length=50, primary_key=True)
 
 
 

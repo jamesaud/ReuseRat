@@ -63,7 +63,6 @@ class User(AbstractUser):
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'username': self.username})
 
-
     def get_current_balance(self):
         # Call function here from helpers
         # External API Call

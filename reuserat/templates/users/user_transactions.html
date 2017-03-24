@@ -1,5 +1,5 @@
 {% extends "account/profile/base_account_profile.html" %}
-{% load static %}
+{% load static get_item %}
 
 {% block breadcrumb %}
     {{ block.super }}
@@ -26,7 +26,7 @@ active
                       <h5>{{transaction.created}}</h5>
                   </div>
                   <div class="col-sm-3 ">
-                    <span class="label label-success pull-right">+ ${{ transaction.amount_paid }}</span></h5>
+                    <span class="label pull-right label-{{transaction_type_css_lookup | get_item:transaction.type}}">+ ${{ transaction.amount }}</span></h5>
                   </div>
               </div>
                                 <hr>

@@ -10,15 +10,26 @@ from allauth.account.models import EmailAddress
 
 FOUR_DIGIT_VALIDATOR = RegexValidator(regex='^\d{4}$', message='Has to be 4 integers', code='nomatch')
 
+
+class TransactionPaymentTypeChoices:
+    """
+    Used for the 'PaymentType' in Transaction. 
+    'Payment Type' shouldn't have the 'choices=CHOICES' because some of the choices come from the user model PaymentTypeChoices, which we cannot import due to 
+    circular dependencies. Data integrity is much more important in the user model, so the choices for Transaction 'Payment Type' are not enforced.
+    However, we still want the choices to be consistent so import these constants when creating a Transaction object.
+    """
+    ITEM_SOLD = 'Item Sold'  # Used for the 'payment_type' in the the transaction model.
+
+
 class TransactionTypeChoices:
-    IN = 'Funds Added'                                 # Color: Info
-    OUT = 'Cash Out'                                   # Color: Success 
-    CREDIT = 'Credit'  # Store Credit added to account # Color: Warning
-    FEE = 'Fee'                                        # Color: Danger
+    IN = 'Funds Added'        #  Money added to user's Stripe account                          
+    OUT = 'Cash Out'          #  Money being cashed out from a user's Stripe account                           
+    CREDIT = 'Credit'         # Store Credit added to account 
+    FEE = 'Fee'               # Charging the user's Stripe account for something                                 
     Choices = (
-        (CHECK, 'Funds Added'),
-        (DIRECT_DEPOSIT, 'Cash Out'),
-        (PAYPAL, 'Credit'),
+        (IN, 'Funds Added'),   
+        (OUT, 'Cash Out'),
+        (CREDIT, 'Credit'),
         (FEE, 'Fee')
     )
 
@@ -51,8 +62,8 @@ class PaypalAccount(models.Model):
 class Transaction(models.Model):
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
     payment_type = models.CharField(_('Payment Type'), max_length=255)
-    amount_paid = models.FloatField() # In dollars
-    type = models.CharField(_("Transaction Type"), choices=TransactionTypeChoices, max_length=255)
+    amount = models.FloatField() # In dollars
+    type = models.CharField(_("Transaction Type"), choices=TransactionTypeChoices.Choices, max_length=255)
     message = models.CharField(max_length=500)
 
     created = models.DateTimeField(auto_now_add=True)
@@ -61,4 +72,6 @@ class Transaction(models.Model):
     class Meta:
         ordering = ['-created']
 
-
+    def __str__(self):
+        return '{type} with {payment} for {user}'.format(user=self.user, payment=self.payment_type, type=self.type)
+    

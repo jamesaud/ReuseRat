@@ -1,23 +1,25 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+
+from collections import defaultdict
+
 from django.core.urlresolvers import reverse
 from django.views.generic import DetailView, ListView, RedirectView, TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.shortcuts import redirect, render, HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import ProcessFormView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from stripe.error import StripeError
 
 from .models import User, Address, PaymentChoices
 from .forms import UserAddressForm, UserForm, UserCompleteSignupForm
 
-from reuserat.stripe.models import PaypalAccount
+from reuserat.stripe.models import PaypalAccount, Transaction, TransactionTypeChoices
 from reuserat.stripe.forms import UpdatePaymentForm, PaypalUpdateForm, UserPaymentForm
 from reuserat.stripe import helpers as stripe_helpers
 from reuserat.stripe import paypal_helpers
-from reuserat.stripe.models import Transaction
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 from reuserat.stripe.tests.helpers import add_test_funds_to_account, add_test_funds_to_platform
@@ -44,22 +46,22 @@ class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
         if not (self.request.user.has_completed_signup()):
             return redirect('users:complete_signup', username=self.request.user.username)
 
-        return super(LoginUserCompleteSignupRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
-class UserDetailView(LoginUserCompleteSignupRequiredMixin, DetailView):
+class UserDetailView(LoginUserCompleteSignupRequiredMixin, TemplateView):
     model = User
+    template_name = 'users/user_detail.html'
     # These next two lines tell the view to index lookups by username
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
 
     def get_context_data(self, **kwargs):
-        context = super(UserDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         # Put shipments with visible items on top.
-        context['user_shipments'] = sorted(self.object.shipment_set.all(),
+        context['user_shipments'] = sorted(self.request.user.shipment_set.all(),
                                            key=lambda s: s.has_visible_items(),
                                            reverse=True)
+        context['object'] = self.request.user
         return context
 
 
@@ -176,7 +178,14 @@ class TransactionListView(LoginRequiredMixin, TemplateView):
             transactions = paginator.page(1)
         except EmptyPage:
             transactions = paginator.page(paginator.num_pages)
-        context.update({'transaction_set': transactions})
+
+        # Associate a color with Transaction type
+        css_lookup = defaultdict(lambda: 'default') # Set the color to grey if we didn't register it in the dictionary
+        css_lookup.update({TransactionTypeChoices.IN: 'success',
+                TransactionTypeChoices.OUT: 'danger',
+                TransactionTypeChoices.FEE: 'warning',
+                TransactionTypeChoices.CREDIT: 'info',})
+        context.update({'transaction_set': transactions, 'transaction_type_css_lookup': css_lookup})
         return context
 
 
@@ -393,7 +402,8 @@ class CashOutView(LoginRequiredMixin, View):
             transaction = Transaction(user=self.request.user,
                                       payment_type=self.request.user.payment_type,
                                       message="Cash Out with Paypal for user " + self.request.user.get_full_name(),
-                                      amount_paid=balance_in_dollars)  # Need to set the balance still
+                                      type=TransactionTypeChoices.OUT,
+                                      amount=balance_in_dollars)  # Need to set the balance still
 
             transaction.save()  # Will delete if the api calls don't go through. Need the transaction ID to set as the paypal batch id.
 
@@ -405,8 +415,6 @@ class CashOutView(LoginRequiredMixin, View):
         # Amount to be transferred is the balance money in the stripe account
         balance_in_cents = self.request.user.stripe_account.retrieve_balance()
         try:
-            import stripe
-            stripe.api_key = self.request.user.stripe_account.secret_key
             transfer_id = stripe_helpers.create_transfer_bank(api_key=self.request.user.stripe_account.secret_key,  # User's Bank account,
                                           balance_in_cents=balance_in_cents, # Amount to transfer
                                           user_name=self.request.user.get_full_name())
@@ -418,7 +426,8 @@ class CashOutView(LoginRequiredMixin, View):
             transaction = Transaction(user=self.request.user,
                                       payment_type=self.request.user.payment_type,
                                       message="Cash Out with Direct Deposit",
-                                      amount_paid = stripe_helpers.cents_to_dollars(balance_in_cents))
+                                      type = TransactionTypeChoices.OUT,
+                                      amount = stripe_helpers.cents_to_dollars(balance_in_cents))
             transaction.save()
             messages.add_message(self.request, messages.SUCCESS, 'Cashed out using Direct Deposit successfully. Check the status at My Account > Transactions')
             return transaction

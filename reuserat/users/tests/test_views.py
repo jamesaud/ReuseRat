@@ -6,6 +6,7 @@ from config.settings import test
 from django.conf import settings
 
 from reuserat.stripe import helpers as stripe_helpers
+from reuserat.stripe.models import Transaction, TransactionTypeChoices
 from reuserat.stripe.tests.helpers import add_test_funds_to_account
 
 from ..models import PaymentChoices
@@ -226,6 +227,15 @@ class TestMyCashOut(TestCase):
         self.request.user = self.user
         add_test_funds_to_account(self.user.stripe_account.account_id, 100, 'test_my_cash_out_setup') # Add a dollar before each cash out test.
 
+    def _assert_transaction_cash_out_test(self, old_balance):
+        """Run after each cash_out test to make sure that the correct Transaction object is created."""
+        transaction_object = Transaction.objects.get(user=self.request.user)
+        self.assertEqual(transaction_object.user, self.request.user)
+        self.assertEqual(transaction_object.payment_type, self.request.user.payment_type)
+        self.assertEqual(transaction_object.type, TransactionTypeChoices.OUT)
+        self.assertEqual(transaction_object.amount, stripe_helpers.cents_to_dollars(old_balance))
+
+        
 
     def test_cashout_direct_deposit(self):
         """Check that the correct stripe funds are transfered to a user's bank account."""
@@ -244,6 +254,8 @@ class TestMyCashOut(TestCase):
 
         self.assertGreater(old_balance, 0)
         self.assertEqual(0, new_balance)
+        self._assert_transaction_cash_out_test(old_balance)
+
 
 
     def test_cashout_paypal(self):
@@ -268,6 +280,7 @@ class TestMyCashOut(TestCase):
 
         self.assertGreater(old_balance, 0)
         self.assertEqual(new_balance, 0)
+        self._assert_transaction_cash_out_test(old_balance)
 
 
     def test_fail_cashout_paypal(self):
@@ -291,8 +304,8 @@ class TestMyCashOut(TestCase):
 
         self.assertGreater(old_balance, 0)
         self.assertEqual(new_balance, old_balance) # Balance should not change! Refund via Stripe should be called.
-
-
+        with self.assertRaises(Transaction.DoesNotExist): # If a cashout fails, transaction object should not exsist
+            Transaction.objects.get(user=self.request.user)
 
 
 

@@ -2,11 +2,14 @@ import json
 
 from django.test import RequestFactory
 from test_plus.test import TestCase
-from reuserat.shopify.models import Status
-from config.settings.common import SHOPIFY_WEBHOOK_API_KEY, SHOPIFY_APP_NAME
+from reuserat.users.tests.factories import UserFactory
 from reuserat.shipments.tests.factories import ShipmentFactory
-from reuserat.shopify.tests.factories import ItemFactory,ItemOrderDetailsFactory
+from reuserat.shopify.models import Status
+from reuserat.shopify.tests.factories import ItemFactory, ItemOrderDetailsFactory
 from reuserat.shopify.webhook.helpers import get_hmac
+from reuserat.stripe.helpers import cents_to_dollars, dollars_to_cents
+from reuserat.stripe.models import TransactionPaymentTypeChoices, TransactionTypeChoices
+from django.conf import settings
 from .. import receivers as r
 from ..views import *
 from ...models import Item
@@ -24,7 +27,7 @@ class BaseWebhookTestCase(TestCase):
         # Prefix with 'r', for 'request'
         self.r_body = body
         self.r_topic = topic
-        self.r_domain = SHOPIFY_APP_NAME
+        self.r_domain = settings.SHOPIFY_APP_NAME
 
 
     def set_request_topic(self, topic):
@@ -43,7 +46,7 @@ class BaseWebhookTestCase(TestCase):
                                     content_type='application/json')
 
         request.META['HTTP_X_SHOPIFY_TOPIC'] = self.r_topic
-        request.META['HTTP_X_SHOPIFY_HMAC_SHA256'] = get_hmac(body, SHOPIFY_WEBHOOK_API_KEY)
+        request.META['HTTP_X_SHOPIFY_HMAC_SHA256'] = get_hmac(body, settings.SHOPIFY_WEBHOOK_API_KEY)
         request.META['HTTP_X_SHOPIFY_SHOP_DOMAIN'] = self.r_domain
 
         return ShopifyWebhookBaseView.as_view()(request)
@@ -158,18 +161,34 @@ class TestOrderOrderReceiver(BaseWebhookTestCase):
         body = '{"id":4869750532,"email":"jj@jj.com","closed_at":null,"created_at":"2017-03-04T16:50:26-05:00","updated_at":"2017-03-04T16:50:26-05:00","number":3,"note":"","token":"7b3edb00e35755881daae9701a0c7015","gateway":"manual","test":false,"total_price":"1.07","subtotal_price":"1.00","total_weight":454,"total_tax":"0.07","taxes_included":false,"currency":"USD","financial_status":"paid","confirmed":true,"total_discounts":"0.00","total_line_items_price":"1.00","cart_token":null,"buyer_accepts_marketing":false,"name":"#1003","referring_site":null,"landing_site":null,"cancelled_at":null,"cancel_reason":null,"total_price_usd":"1.07","checkout_token":null,"reference":null,"user_id":112270404,"location_id":21386820,"source_identifier":null,"source_url":null,"processed_at":"2017-03-04T16:50:26-05:00","device_id":null,"browser_ip":null,"landing_site_ref":null,"order_number":1003,"discount_codes":[],"note_attributes":[],"payment_gateway_names":["manual"],"processing_method":"manual","checkout_id":null,"source_name":"shopify_draft_order","fulfillment_status":null,"tax_lines":[{"title":"IN State Tax","price":"0.07","rate":0.07}],"tags":"","contact_email":null,"order_status_url":null,"line_items":[{"id":9473954756,"variant_id":36372184260,"title":"testest","quantity":1,"price":"1.00","grams":454,"sku":"9-4","variant_title":null,"vendor":"ReuseRat","fulfillment_service":"manual","product_id":10013286724,"requires_shipping":true,"taxable":true,"gift_card":false,"name":"testest","variant_inventory_management":"shopify","properties":[],"product_exists":true,"fulfillable_quantity":1,"total_discount":"0.00","fulfillment_status":null,"tax_lines":[{"title":"IN State Tax","price":"0.07","rate":0.07}]}],"shipping_lines":[],"fulfillments":[],"refunds":[]}'
         self.body = json.loads(body)
         item_list = self.body['line_items']
-        self.item=ItemFactory()
-        self.itemOrderDetails = ItemOrderDetailsFactory()
-        self.item.id = body['product_id']
-        super(TestOrderOrderReceiver, self).setUp(body=self.body, topic='orders/paid')  # Set up the update request
+        self.item = ItemFactory(name=self.body['line_items'][0]['name']) # Set to the json name
+        self.user = UserFactory()  # Create user with valid stripe account to transfer funds over to.
+        self.item.id = self.body['line_items'][0]['product_id']
+        self.item.save()
+        self.item.shipment.user = self.user
+        self.item.shipment.save()
+        super().setUp(body=self.body, topic='orders/paid')  # Set up the update request
 
-        def test_order_payment(self):
-            response = self.send_request()
-            self.assertTrue(Item.objects.get(pk=self.item.id).exists())
-            item_object_created =Item.objects.get(pk=self.item.id)
-            self.assertEqual(item_object_created.status, Status.SOLD)
-            self.assertTrue(item_object_created.itemorderdetails.order_data)
-            self.assertTrue(item_object_created.itemorderdetails.order_data)
-            self.assertTrue(item_object_created.itemorderdetails.charge_id)
+    def test_order_payment(self):
+        """Calls Stripe API"""
+        response = self.send_request()
 
+        # Test the Item object 
+        item = Item.objects.get(pk=self.item.id)
+        balance_in_cents = self.user.stripe_account.retrieve_balance()
+        balance_in_dollars = cents_to_dollars(balance_in_cents)
+        self.assertEqual(item.status, Status.SOLD)
+        self.assertIsNotNone(item.itemorderdetails.order_data)
+        self.assertIsNotNone(item.itemorderdetails.transfer_id)
+
+        # Test that the Stripe transfer was successful
+        self.assertEqual(dollars_to_cents(float(self.body['line_items'][0]['price'])) * settings.SPLIT_PERCENT_PER_SALE, self.user.stripe_account.retrieve_balance())
+
+        # Test the transaction object that should be created
+        transaction = self.user.transaction_set.first()
+        self.assertEqual(transaction.user, self.user)
+        self.assertEqual(transaction.amount, balance_in_dollars)
+        self.assertEqual(TransactionPaymentTypeChoices.ITEM_SOLD, transaction.payment_type)
+        self.assertEqual(TransactionTypeChoices.IN, transaction.type)
+        self.assertEqual(transaction.message, 'Paid for selling the item: ' + self.body['line_items'][0]['name'])
 
