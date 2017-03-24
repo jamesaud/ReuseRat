@@ -100,7 +100,7 @@ class ShipmentDeleteView(LoginRequiredMixin, DeleteView):
         return HttpResponseRedirect(success_url)
 
     def get_success_url(self):
-         return reverse('users:detail', kwargs={'username': self.request.user.username})
+         return reverse('users:detail')
 
 
 

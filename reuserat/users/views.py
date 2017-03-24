@@ -122,8 +122,7 @@ class UserCompleteSignupView(UserUpdateMixin):
         self.request.user.paypal_account = paypal
         self.request.user.save()
 
-        return reverse('users:detail',
-                       kwargs={'username': self.request.user.username})
+        return reverse('users:detail')
 
     def get_context_data(self, **kwargs):
         context = super(UserCompleteSignupView, self).get_context_data(**kwargs)
@@ -140,7 +139,7 @@ class UserUpdateView(LoginUserCompleteSignupRequiredMixin, UserUpdateMixin):
 
     # send the user back to their own page after a successful update
     def get_success_url(self):
-        return reverse('users:detail',
+        return reverse('',
                        kwargs={'username': self.request.user.username})
 
 
@@ -148,8 +147,7 @@ class UserRedirectView(LoginUserCompleteSignupRequiredMixin, RedirectView):
     permanent = False
 
     def get_redirect_url(self):
-        return reverse('users:detail',
-                       kwargs={'username': self.request.user.username})
+        return reverse('users:detail')
 
 
 class UserListView(LoginRequiredMixin, ListView):

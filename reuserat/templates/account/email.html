@@ -63,7 +63,7 @@ active
             {% csrf_token %}
             {{ form|crispy }}
 
-            <a href="{% url 'users:detail' request.user.username %}" class="btn">Back to Dashboard</a>
+            <a href="{% url 'users:detail' %}" class="btn">Back to Dashboard</a>
             <button class="btn btn-primary" name="action_add" type="submit">{% trans "Add E-mail" %}</button>
         </form>
 

@@ -94,7 +94,7 @@
 
               {% if request.user.is_authenticated %}
                 <li class="nav-item">
-                  <a class="nav-link btn btn-white" href="{% url 'users:detail' request.user.username  %}">{% trans "Dashboard" %}<div class="ripple-container"></div></a>
+                  <a class="nav-link btn btn-white" href="{% url 'users:detail' %}">{% trans "Dashboard" %}<div class="ripple-container"></div></a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>

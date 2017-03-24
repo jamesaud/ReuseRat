@@ -15,7 +15,7 @@ urlpatterns = [
     url(settings.ADMIN_URL, admin.site.urls),
 
     # User management
-    url(r'^users/', include('reuserat.users.urls', namespace='users')),
+    url(r'^dashboard/', include('reuserat.users.urls', namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
 
     # Shipments
