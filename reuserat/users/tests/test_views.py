@@ -293,7 +293,7 @@ class TestMyCashOut(TestCase):
 
         mock_messages = patch('reuserat.users.views.messages').start()
         mock_messages.ERROR = error = 'error'
-        msg = "Paypal Account using email {} doesn't exist or is unregistered! Please add a correct Paypal email or contact support.".format(self.request.user.paypal_account.email.email)
+        msg = "Paypal Account using email {} doesn't exist or is unregistered! Please add an existing Paypal email or contact support.".format(self.request.user.paypal_account.email.email)
 
         old_balance = stripe_helpers.retrieve_balance(self.user.stripe_account.secret_key)
         response = CashOutView.as_view()(self.request)

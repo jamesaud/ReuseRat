@@ -1,10 +1,12 @@
-from reuserat.shopify.models import Item, Status, ItemOrderDetails
+from reuserat.shopify.models import Item, Status, ItemOrderDetails, Webhook
 from reuserat.shipments.models import Shipment
 from reuserat.users.models import User
 from reuserat.stripe.models import Transaction, TransactionPaymentTypeChoices, TransactionTypeChoices
 from reuserat.stripe.helpers import create_transfer_to_customer, cents_to_dollars, dollars_to_cents
 from django.conf import settings
+
 from stripe.error import StripeError
+
 from ..helpers import valid_sku
 
 '''
@@ -112,6 +114,17 @@ class OrderReceivers(AbstractShopifyReceiver):
     def order_payment(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
         item_list = shopify_json['line_items']
+
+        # Guarantee a webhook isn't repeated. Error is raised if it already exists.
+        try:
+            Webhook.objects.get(webhook_id=shopify_json['id'])
+        except Webhook.DoesNotExist:
+            webhook = Webhook(webhook_id=shopify_json['id'])
+            webhook.save()
+        else:
+            logger.error("WEBHOOK Already Exists! This is a duplicate! {}".format(shopify_json))
+            raise Exception("WEBHOOK Already Exists! This is a duplicate! {}".format(shopify_json))
+
         for item in item_list:
             try:
                 # Update the shipment model

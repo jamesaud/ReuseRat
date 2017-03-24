@@ -1,5 +1,6 @@
 {% extends "account/profile/base_account_profile.html" %}
-{% load static get_item %}
+{% load static %}
+{% load project_tags %}
 
 {% block breadcrumb %}
     {{ block.super }}
@@ -18,7 +19,7 @@ active
     {# Comment in Django, pretty neat! #}
     {% for transaction in transaction_set %}
         <div class="card card-nav-tabs">
-            <div class="head header-info"></div> <!-- the banner color -->
+            <div class="head header-{{transaction_type_css_lookup | get_item:transaction.type}}"></div> <!-- the banner color -->
             <div class='card-data'>
               <div class="row">
                   <div class="col-sm-9">
@@ -26,7 +27,7 @@ active
                       <h5>{{transaction.created}}</h5>
                   </div>
                   <div class="col-sm-3 ">
-                    <span class="label pull-right label-{{transaction_type_css_lookup | get_item:transaction.type}}">+ ${{ transaction.amount }}</span></h5>
+                    <span class="label pull-right label-{{transaction_type_css_lookup | get_item:transaction.type}}">${{ transaction.amount }} {{transaction.type}}</span></h5>
                   </div>
               </div>
                                 <hr>

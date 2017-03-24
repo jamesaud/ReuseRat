@@ -20,7 +20,7 @@ class Item(models.Model):
     """
     Represents a physical item that the user has, as well as containing the relevant shopify.com data.
     """
-    id = models.CharField(max_length=100, primary_key=True)  # Must Be Shopify product ID!!!
+    id = models.CharField(max_length=100, primary_key=True, unique=True)  # Must Be Shopify product ID!!!
     data = JSONField()  # Shopify Json Data
     shipment = models.ForeignKey(Shipment, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)  # Shopify  Name
@@ -54,8 +54,8 @@ class ItemOrderDetails(models.Model):
 
 
 # Store webhook in DB to make sure we don't give the user for hte same webhook twice, if shopify accidentally sends the same webhook.
-#class Webhook(models.Model):
-    #webhook_id = models.CharField(max_length=50, primary_key=True)
+class Webhook(models.Model):
+    webhook_id = models.CharField(max_length=50, primary_key=True)
 
 
 

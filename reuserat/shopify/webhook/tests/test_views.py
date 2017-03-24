@@ -4,7 +4,7 @@ from django.test import RequestFactory
 from test_plus.test import TestCase
 from reuserat.users.tests.factories import UserFactory
 from reuserat.shipments.tests.factories import ShipmentFactory
-from reuserat.shopify.models import Status
+from reuserat.shopify.models import Status, Webhook
 from reuserat.shopify.tests.factories import ItemFactory, ItemOrderDetailsFactory
 from reuserat.shopify.webhook.helpers import get_hmac
 from reuserat.stripe.helpers import cents_to_dollars, dollars_to_cents
@@ -191,4 +191,10 @@ class TestOrderOrderReceiver(BaseWebhookTestCase):
         self.assertEqual(TransactionPaymentTypeChoices.ITEM_SOLD, transaction.payment_type)
         self.assertEqual(TransactionTypeChoices.IN, transaction.type)
         self.assertEqual(transaction.message, 'Paid for selling the item: ' + self.body['line_items'][0]['name'])
+        self.assertTrue(Webhook.objects.get(webhook_id=self.body['id']))
+
+        # Test webhook exception called the second time the request is sent. We can check and make sure the funds should not be added to a user's account.
+        response = self.send_request()
+        self.assertEqual(transaction.amount, balance_in_dollars) # The transaction amount should not be added a second time.
+
 

@@ -21,10 +21,6 @@ from reuserat.stripe.forms import UpdatePaymentForm, PaypalUpdateForm, UserPayme
 from reuserat.stripe import helpers as stripe_helpers
 from reuserat.stripe import paypal_helpers
 
-
-from reuserat.stripe.tests.helpers import add_test_funds_to_account, add_test_funds_to_platform
-
-
 import time
 import logging
 
@@ -44,7 +40,7 @@ class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
         """
 
         if not (self.request.user.has_completed_signup()):
-            return redirect('users:complete_signup', username=self.request.user.username)
+            return redirect('users:complete_signup')
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -180,9 +176,9 @@ class TransactionListView(LoginRequiredMixin, TemplateView):
         # Associate a color with Transaction type
         css_lookup = defaultdict(lambda: 'default') # Set the color to grey if we didn't register it in the dictionary
         css_lookup.update({TransactionTypeChoices.IN: 'success',
-                TransactionTypeChoices.OUT: 'danger',
-                TransactionTypeChoices.FEE: 'warning',
-                TransactionTypeChoices.CREDIT: 'info',})
+                TransactionTypeChoices.OUT: 'info',
+                TransactionTypeChoices.FEE: 'danger',
+                TransactionTypeChoices.CREDIT: 'warning',})
         context.update({'transaction_set': transactions, 'transaction_type_css_lookup': css_lookup})
         return context
 
@@ -370,11 +366,11 @@ class CashOutView(LoginRequiredMixin, View):
             # Try to transfer the user's current balance to OUR stripe account.
             transfer_id = stripe_helpers.create_transfer_to_platform(account_id=self.request.user.stripe_account.account_id,
                                   balance_in_cents=balance_in_cents,
-                                  description="Cashing out using Paypal for user " + self.request.user.get_full_name())
+                                  description="Cashing out using Paypal")
 
         except StripeError as e:
             logger.error("Paypal Cash Out Exception (stripe error): " + str(e))
-            messages.add_message(self.request, messages.ERROR, 'Cashout with Paypal failed: ' + str(e))
+            messages.add_message(self.request, messages.ERROR, "Cashout with Paypal failed. That's our fault. Please try again later.")
             raise
 
         try:
@@ -391,7 +387,7 @@ class CashOutView(LoginRequiredMixin, View):
 
             # Handle specific Paypal errors to add specific messages
             if isinstance(e, paypal_helpers.PaypalReceiverUnregistered):
-                messages.add_message(self.request, messages.ERROR, "Paypal Account using email {} doesn't exist or is unregistered! Please add a correct Paypal email or contact support.".format(self.request.user.paypal_account.email.email))
+                messages.add_message(self.request, messages.ERROR, "Paypal Account using email {} doesn't exist or is unregistered! Please add an existing Paypal email or contact support.".format(self.request.user.paypal_account.email.email))
             else:
                 messages.add_message(self.request, messages.ERROR, "Cashout with Paypal failed, that's (probably) our fault! Please try again later.")
             raise

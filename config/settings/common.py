@@ -171,6 +171,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # Your stuff: custom template context processors go here
             ],
+            'libraries' : {
+                'project_tags': 'reuserat.template_tags.tags',
+            }
         },
     },
 ]
