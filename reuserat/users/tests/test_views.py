@@ -23,9 +23,6 @@ from ..views import (
 
 import stripe
 
-
-
-
 class BaseUserTestCase(TestCase):
     def setUp(self):
         self.user = self.make_user()
@@ -42,11 +39,10 @@ class TestUserRedirectView(BaseUserTestCase):
         request.user = self.user
         # Attach the request to the view
         view.request = request
-        # Expect: '/users/testuser/', as that is the default username for
         #   self.make_user()
         self.assertEqual(
             view.get_redirect_url(),
-            '/users/testuser/'
+            '/dashboard/'
         )
 
 
@@ -66,10 +62,7 @@ class TestUserUpdateView(BaseUserTestCase):
     def test_get_success_url(self):
         # Expect: '/users/testuser/', as that is the default username for
         #   self.make_user()
-        self.assertEqual(
-            self.view.get_success_url(),
-            '/users/testuser/'
-        )
+        self.assertEqual(self.view.get_success_url(), '/dashboard/')
 
 
 class TestUserCompleteSignup(TestCase):

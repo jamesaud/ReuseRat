@@ -135,8 +135,7 @@ class UserUpdateView(LoginUserCompleteSignupRequiredMixin, UserUpdateMixin):
 
     # send the user back to their own page after a successful update
     def get_success_url(self):
-        return reverse('',
-                       kwargs={'username': self.request.user.username})
+        return reverse('users:detail')
 
 
 class UserRedirectView(LoginUserCompleteSignupRequiredMixin, RedirectView):
@@ -395,7 +394,7 @@ class CashOutView(LoginRequiredMixin, View):
             # Create the transaction
             transaction = Transaction(user=self.request.user,
                                       payment_type=self.request.user.payment_type,
-                                      message="Cash Out with Paypal for user " + self.request.user.get_full_name(),
+                                      message="Cash Out with Paypal using email " + self.request.user.paypal_account.email.email,
                                       type=TransactionTypeChoices.OUT,
                                       amount=balance_in_dollars)  # Need to set the balance still
 
