@@ -82,3 +82,10 @@
 #cash-out-btn.btn {
   padding: 8px 17px 8px 17px;
   margin-top: 0px; }
+
+.item-table h4 {
+  display: inline-block; }
+
+.item-table small {
+  margin-top: 16px;
+  display: inline-block; }

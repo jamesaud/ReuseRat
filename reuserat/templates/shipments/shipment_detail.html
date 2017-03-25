@@ -93,23 +93,21 @@
                             </thead>
                             <tbody>
                                 {% for item in visible_items %}
-                                    {% if item.is_visible %}
-                                            <td>{{ item.name }}</td>
-                                            <td>
-                                                {% if item.is_sold %}
-                                                    <span>{{item.get_readable_status}} for <strong class="text-success">${{item.itemorderdetails.get_price}}</strong></span>
-                                                {% else %}
-                                                    {{ item.get_readable_status }}
-                                                {% endif %}
-                                            </td>
-                                            <td>
+                                    <tr>
+                                        <td>{{ item.name }}</td>
+                                        <td>
+                                            {% if item.is_sold %}
+                                                <span>{{item.get_readable_status}} for <strong class="text-success">${{item.itemorderdetails.get_price}}</strong></span>
+                                            {% else %}
+                                                {{ item.get_readable_status }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
                                             {% if not item.is_sold %}
                                                 <a href="{{ item.get_shopify_url }}" target='_blank'>See On Store</a>
                                             {% endif %}
-                                            </td>
-
-                                        </tr>
-                                    {% endif %}
+                                        </td>
+                                    </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
@@ -123,6 +121,7 @@
                 </div>
             </div>
 
+ {% if shipment.has_visible_items %}
             {% if not shipment.is_physical %}
             <hr>
             <div class='row'>
@@ -135,7 +134,7 @@
                 </div>
             </div>
             {% endif %}
-
+  {% endif %}
 
             <hr>
             <div class='row'>
@@ -160,6 +159,7 @@
                 </div>
             </div>
 
+{% if shipment.has_visible_items %}
             <hr>
             <div class='row'>
                 <div class='col-sm-4'>
@@ -172,8 +172,10 @@
                     </button>
                 </div>
             </div>
+{% endif %}
 
     <hr>
+
     <a class="btn btn-default" href="{% url 'users:detail' %}" role="button">Back to Dashboard</a>
 
 </div> <!-- /container -->

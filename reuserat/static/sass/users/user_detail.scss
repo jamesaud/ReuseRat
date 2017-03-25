@@ -121,3 +121,14 @@
     padding: 8px 17px 8px 17px; 
     margin-top: 0px;
 }
+ 
+
+.item-table{
+    h4{
+        display: inline-block;
+    }
+    small{
+        margin-top: 16px; // Keeps it inline with the h4  
+        display: inline-block;
+    }
+} 
