@@ -21,7 +21,7 @@ class Shipment(models.Model):
         return self.item_set.filter(is_visible=True)
 
     def has_visible_items(self):
-        return any(self.get_visible_items())
+        return self.get_visible_items().exists()
 
     def __str__(self):
         return "Name '{0}' for user '{1}'".format(self.name, str(self.user))

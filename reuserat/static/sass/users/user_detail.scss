@@ -1,8 +1,11 @@
 @import '../_colors.scss';
 @import '../_mixins.scss';
+@import '../_variables.scss';
+
 .card{
     p{
-        font-size: 15px;
+        font-size: 14px; 
+        line-height: 24px;
     }
     h4{
         font-weight: 400;
@@ -12,7 +15,12 @@
             margin-left: 10px;
             margin-right: 10px;
             white-space: normal;
+            // Ensure that the edit and delete buttons don't get pushed below the head
+            @media (max-width: 650px){
+                max-width: 50%;
+            }
         } 
+
 
         %button{
             margin-top: 12px;
@@ -72,7 +80,7 @@
         margin-top: 0px;
         margin-bottom: 0px;
     }
-}
+} 
 
 
 .top-buttons{
@@ -82,7 +90,27 @@
 .shipment-button{
     text-align: right;
     @include button_width_mobile(60%);
+    @media (max-width: $screen-sm-max){
+        text-align: center;
+    }
 }
+
+.item-table{
+    h4{
+        display: inline-block;
+    }
+    small{
+        margin-top: 16px; // Keeps it inline with the h4  
+        display: inline-block;
+    }
+} 
+
+
+#cash-out-btn.btn{
+    padding: 8px 17px 8px 17px; 
+    margin-top: 0px;
+}
+
 
 #shipping-instructions{
     margin-top: 6px;
@@ -94,41 +122,14 @@
 }
 
 
-@media screen and (min-width: 769px){
+@media (min-width: $screen-sm-min){
     .current-balance{
             bottom: 26px;
     }
 }
 
-@media screen and (max-width: 768px){
-    .top-row{
-        text-align: center;
-    }
-    .shipment-button{
-        text-align: center;
+.top-row{
+    @media (max-width: $screen-sm-max){
+    text-align: center;
     }
 }
-
-// Ensure that the edit and delete buttons don't get pushed below the head
-@media screen and (max-width: 650px){
-    .card .head > .btn{
-                    max-width: 50%;
-                }
-}
-      
-
-#cash-out-btn.btn{
-    padding: 8px 17px 8px 17px; 
-    margin-top: 0px;
-}
- 
-
-.item-table{
-    h4{
-        display: inline-block;
-    }
-    small{
-        margin-top: 16px; // Keeps it inline with the h4  
-        display: inline-block;
-    }
-} 

@@ -30,9 +30,10 @@ def shipment_detail_view(request, pk):
                            ShipmentDetailReceiptForm(request.POST or None, request.FILES or None, initial=object.__dict__)
 
     context['object'] = object
-    context['visible_items'] = object.get_visible_items() or None
+    context['visible_items'] = object.get_visible_items()
     context['form_tracking'] = form_track
     context['form_receipt'] = form_rec
+    context['is_visible'] = object.has_visible_items()
 
     def get_success_url():
         messages.add_message(request, messages.SUCCESS, 'Successfully Updated')

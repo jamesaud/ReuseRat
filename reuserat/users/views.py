@@ -49,7 +49,8 @@ class UserDetailView(LoginUserCompleteSignupRequiredMixin, TemplateView):
     model = User
     template_name = 'users/user_detail.html'
     # These next two lines tell the view to index lookups by username
-    items_to_show = 3
+    items_to_show = 3   # Items to show in html
+    description_characters = 220  # Characters of description to show in html
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -61,6 +62,8 @@ class UserDetailView(LoginUserCompleteSignupRequiredMixin, TemplateView):
         context['object'] = self.request.user
         context['items_to_show'] = self.items_to_show
         context['item_slice'] = ':' + str(self.items_to_show)  # To support the 'slice' template tag
+        context['description_slice'] = ':' + str(self.description_characters)
+        context['description_characters'] = self.description_characters
         return context
 
 

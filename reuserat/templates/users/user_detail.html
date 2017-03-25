@@ -58,7 +58,7 @@
 
           {% for shipment in user.shipment_set.all %}
                     <div class="card card-nav-tabs">
-                        <div class="head {% if shipment.item_set.exists %} header-info {% else %} header-grey {% endif %}">
+                        <div class="head {% if shipment.has_visible_items %} header-info {% else %} header-grey {% endif %}">
                           <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
                           <a class="btn btn-dark-blend" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">
                               {{ shipment.name }}
@@ -68,14 +68,13 @@
 
                           <div class='pull-right button-group'>
 
-
+                            {% if not shipment.has_visible_items %}
                                  <a href="{% url 'shipments:shipmentUpdate' shipment.id %}" type="button" rel="tooltip" title="" class="btn btn-simple btn-xs edit-btn" data-original-title="Edit Shipment">
 		                                <i class="fa fa-edit"></i>
 		                            <div class="ripple-container"></div>
                                 </a>
                               </a>
 
-                            {% if not shipment.item_set.all %}
                               <a data-toggle="modal" data-target="#shipment-delete-modal" rel="tooltip" title="" shipment-id='{{ shipment.id }}' class="btn btn-danger btn-simple btn-xs delete-btn" data-original-title="Delete Shipment">
 		                                <i class="fa fa-times"></i>
 		                            <div class="ripple-container"></div>
@@ -90,13 +89,17 @@
                         </div> <!-- /head -->
 
                         <div class="content">
-                          <div class='col-sm-4 col-md-6'>
+                          <div class='col-sm-4 col-md-4'>
                             <h4>Description</h4>
                             <p>
-                              {{ shipment.description }}
+                              {% if shipment.description|length > description_characters %} 
+                                {{ shipment.description|slice:description_slice }} <span class='ellipsis'>&hellip;</span>
+                              {% else %}
+                                {{shipment.description}}
+                              {% endif %}
                             </p>
                           </div>
-                          <div class='col-sm-8 col-md-6 item-table'>
+                          <div class='col-sm-8 col-md-7 col-md-offset-1 item-table'>
                             {% with shipment.get_visible_items as visible_items %}
 
                                 <h4>Items For Sale </h4>

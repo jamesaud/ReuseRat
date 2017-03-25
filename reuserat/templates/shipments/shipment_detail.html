@@ -16,20 +16,21 @@
         / <a class="nav-link" href="{% url 'shipments:shipmentDetail' object.id %}">My Shipment</a>
 
         <!-- Edit and delete buttons -->
+        {% if not object.has_visible_items %}
         <span class="pull-right">
                 <a href="{% url 'shipments:shipmentUpdate' object.id %}" type="button" rel="tooltip" title="" class="btn btn-warning edit-btn" data-original-title="Edit Shipment">
                     <i class="fa fa-edit"></i>
 
                     <div class="ripple-container"></div>
                 </a>
-                {% if not object.item_set.exists %}
                 <a data-toggle="modal" data-target="#shipment-delete-modal" rel="tooltip" title="" class="btn btn-danger" data-original-title="Delete Shipment">
                     		                                <i class="fa fa-times"></i>
 
                     <div class="ripple-container"></div>
                 </a>
-                {% endif %}
         </span>
+        {% endif %}
+
     {% endblock %}
 
 
@@ -46,23 +47,24 @@
                 <div class='col-sm-5'>
                 <h4>{{ object.name }}</h4>
                 </div>
-                <div class='col-sm-3 text-right'>
-                    {% if not object.tracking_number %}
-                        <a href='#' class='btn btn-simple btn-primary btn-outline btn-sm'
-                           data-toggle="modal" data-target="#shipment-tracking-number-modal"
-                           rel="tooltip" data-original-title="Add your USPS tracking number to see the live status of your shipment">
-                            <strong>Add Tracking Number</strong>
-                        </a>
-                        {% else %}
-                        <a href="https://track.aftership.com/usps/{{ object.tracking_number }}?" target="_blank" class='btn btn-simple btn-primary btn-outline btn-sm'>
-                        <strong>Track {{ object.tracking_number }}</strong>
-                        </a>
-                        <a href='#'data-toggle="modal" data-target="#shipment-tracking-number-modal">
-                            Edit
-                        </a>
-                    {% endif %}
-
-                </div>
+                {% if not is_visible %}
+                    <div class='col-sm-3 text-right'>
+                        {% if not object.tracking_number %}
+                            <a href='#' class='btn btn-simple btn-primary btn-outline btn-sm'
+                            data-toggle="modal" data-target="#shipment-tracking-number-modal"
+                            rel="tooltip" data-original-title="Add your USPS tracking number to see the live status of your shipment">
+                                <strong>Add Tracking Number</strong>
+                            </a>
+                            {% else %}
+                            <a href="https://track.aftership.com/usps/{{ object.tracking_number }}?" target="_blank" class='btn btn-simple btn-primary btn-outline btn-sm'>
+                            <strong>Track {{ object.tracking_number }}</strong>
+                            </a>
+                            <a href='#'data-toggle="modal" data-target="#shipment-tracking-number-modal">
+                                Edit
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
             <hr>
             <div class='row'>
@@ -121,7 +123,7 @@
                 </div>
             </div>
 
- {% if shipment.has_visible_items %}
+ {% if not is_visible %}
             {% if not shipment.is_physical %}
             <hr>
             <div class='row'>
@@ -159,7 +161,7 @@
                 </div>
             </div>
 
-{% if shipment.has_visible_items %}
+{% if not is_visible %}
             <hr>
             <div class='row'>
                 <div class='col-sm-4'>
