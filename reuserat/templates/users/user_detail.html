@@ -44,9 +44,7 @@
 </div>
 <!-- End Action buttons -->
 
-<!--TEST -->
 <hr>
-<!-- END TEST -->
 
   <div class="row">
     <div class="col-sm-12">
@@ -92,19 +90,26 @@
                         </div> <!-- /head -->
 
                         <div class="content">
-                          <div class='col-sm-7'>
+                          <div class='col-sm-4 col-md-6'>
                             <h4>Description</h4>
                             <p>
                               {{ shipment.description }}
                             </p>
                           </div>
-                          <div class='col-sm-5'>
+                          <div class='col-sm-8 col-md-6'>
                             <h4>Items For Sale</h4>
                                 <table class="table">
                                {% for item in shipment.get_visible_items %}
                                     <tr>
                                         <td>{{item.name}}</td>
-                                        <td><a href="{{ item.get_shopify_url }}" target="_blank">See On Store</a></td>
+                                        <td>
+                                            {% if item.is_sold %}
+                                                <span>{{item.get_readable_status}} for <strong class="text-success">${{item.itemorderdetails.get_price}}</strong></span>
+                                            {% else %}
+                                                {{ item.get_readable_status }}
+                                            {% endif %}
+                                        </td>
+                                        <td><a target="_blank" href="{{ item.get_shopify_url }}">See on Store</a></td>
                                     </tr>
                                     {% empty %}
                                     <p>

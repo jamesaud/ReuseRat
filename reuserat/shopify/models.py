@@ -30,17 +30,23 @@ class Item(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    def get_readable_status(self):
+        return self.status.title().replace('_', ' ')
+
     def get_shopify_url(self):
         return get_shopify_product_url(self.handle)
 
     def get_shopify_admin_url(self):
         return get_shopify_admin_url(self.id)
 
-    def __str__(self):
-        return self.name
-
     def is_sold(self):
         return self.status == Status.SOLD
+
+    def get_status_choices(self):
+        return Status
+
+    def __str__(self):
+        return self.name
 
 
 class ItemOrderDetails(models.Model):
@@ -48,6 +54,13 @@ class ItemOrderDetails(models.Model):
     item = models.OneToOneField(Item, primary_key=True)
     transfer_id = models.CharField(max_length=100)
     order_data = JSONField() # Shopify order data
+
+    def get_price(self):
+        for item in self.order_data['line_items']:
+            if str(item['product_id']) == self.item.id:
+                return item['price']
+        else:
+            return None
 
     def __str__(self):
         return "Order details for: " + str(self.item)

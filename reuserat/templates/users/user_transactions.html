@@ -41,7 +41,7 @@ active
         </div>
 
         {% empty %}
-        <h3>You don't have any transactions yet. If you ship it, they will come. </h3>
+        <h3 class='text-center'>You don't have any transactions yet. If you <a href="{% url 'shipments:shipmentOrder' %}">ship it</a>, they will come. </h3>
     {% endfor %}
 
     {# Pagination guide: https://simpleisbetterthancomplex.com/tutorial/2016/08/03/how-to-paginate-with-django.html #}
