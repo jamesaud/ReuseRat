@@ -29,7 +29,8 @@ services:
       - django
       - certbot
     environment:
-      - MY_DOMAIN_NAME=reuseratseller.com
+     # - MY_DOMAIN_NAME=reuseratseller.com  # Production
+      - MY_DOMAIN_NAME=testing-reuserat.tk  # Testing
     ports:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
@@ -39,7 +40,10 @@ services:
 
   certbot:
     image: quay.io/letsencrypt/letsencrypt
-    command: bash -c "sleep 6 && certbot certonly -n --standalone -d reuseratseller.com --text --agree-tos --email trashandtreasure67@gmail.com --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --keep-until-expiring --standalone-supported-challenges http-01"
+    # Proudction
+    #command: bash -c "sleep 6 && certbot certonly -n --standalone -d reuseratseller.com --text --agree-tos --email trashandtreasure67@gmail.com --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --keep-until-expiring --standalone-supported-challenges http-01"
+    #Testing
+    command: bash -c "sleep 6 && certbot certonly -n --standalone -d testing-reuserat.tk --text --agree-tos --email trashandtreasure67@gmail.com --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --keep-until-expiring --standalone-supported-challenges http-01"
     entrypoint: ""
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
