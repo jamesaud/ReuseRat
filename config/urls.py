@@ -11,12 +11,11 @@ from django.views import defaults as default_views
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
-
-    # Django Admin, use {% url 'admin:index' %}
+                  # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, admin.site.urls),
 
     # User management
-    url(r'^users/', include('reuserat.users.urls', namespace='users')),
+    url(r'^dashboard/', include('reuserat.users.urls', namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
 
     # Shipments
@@ -38,6 +37,7 @@ if settings.DEBUG:
         url(r'^403/$', default_views.permission_denied, kwargs={'exception': Exception('Permission Denied')}),
         url(r'^404/$', default_views.page_not_found, kwargs={'exception': Exception('Page not Found')}),
         url(r'^500/$', default_views.server_error),
+        url(r'^test/$', TemplateView.as_view(template_name='test.html'), name='test'),
     ]
     if 'debug_toolbar' in settings.INSTALLED_APPS:
         import debug_toolbar

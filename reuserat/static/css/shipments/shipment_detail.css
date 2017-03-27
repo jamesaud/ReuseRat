@@ -6,3 +6,6 @@ h3 {
 
 .file-input {
   max-width: 400px; }
+
+#shipment-receipt-form .form-group {
+  margin-top: 10px !important; }

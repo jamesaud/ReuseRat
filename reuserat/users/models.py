@@ -8,7 +8,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from localflavor.us import models as usmodels
 from reuserat.stripe.models import StripeAccount, PaypalAccount
-from reuserat.stripe.helpers import retrieve_balance
+from reuserat.stripe.helpers import retrieve_balance, cents_to_dollars
 import stripe
 from django.conf import settings
 
@@ -61,19 +61,16 @@ class User(AbstractUser):
         return self.username
 
     def get_absolute_url(self):
-        return reverse('users:detail', kwargs={'username': self.username})
-
+        return reverse('users:detail')
 
     def get_current_balance(self):
         # Call function here from helpers
         # External API Call
         try:
-            balance = retrieve_balance(self.stripe_account.secret_key)
-
-        except stripe.error.AuthenticationError:
-            balance = "Temporarily Unavailable"
-
-        return float("{:.2f}".format(balance))
+            balance = cents_to_dollars(retrieve_balance(self.stripe_account.secret_key))
+            return "{:.2f}".format(balance)
+        except Exception as e:
+            return "Temporarily Unavailable"
 
     def get_primary_email(self):
         return self.emailaddress_set.filter(primary=True).first() or None

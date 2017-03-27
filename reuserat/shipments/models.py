@@ -1,7 +1,4 @@
-from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext_lazy as _
 from reuserat.users.models import User
 
 class Shipment(models.Model):
@@ -21,10 +18,10 @@ class Shipment(models.Model):
         return "{0}-{1}".format(self.user_id, self.id)   # Set the sku to be <userid>-<shipmentid>
 
     def get_visible_items(self):
-        return (item for item in self.item_set.filter(is_visible=True))
+        return self.item_set.filter(is_visible=True)
 
     def has_visible_items(self):
-        return any(self.get_visible_items())
+        return self.get_visible_items().exists()
 
     def __str__(self):
         return "Name '{0}' for user '{1}'".format(self.name, str(self.user))

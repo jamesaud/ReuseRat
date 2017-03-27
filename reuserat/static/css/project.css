@@ -3448,6 +3448,13 @@ img.fit-width {
 .DEBUG div, .DEBUG span, .DEBUG p, .DEBUG h1, .DEBUG h2, .DEBUG h3, .DEBUG h4, .DEBUG h5 {
   border: 1px solid black !important; }
 
+.vcenter {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  /* align vertical */ }
+
 .btn-google {
   background-color: #e53935; }
 

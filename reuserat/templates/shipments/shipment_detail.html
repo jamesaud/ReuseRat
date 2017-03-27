@@ -16,20 +16,21 @@
         / <a class="nav-link" href="{% url 'shipments:shipmentDetail' object.id %}">My Shipment</a>
 
         <!-- Edit and delete buttons -->
+        {% if not object.has_visible_items %}
         <span class="pull-right">
                 <a href="{% url 'shipments:shipmentUpdate' object.id %}" type="button" rel="tooltip" title="" class="btn btn-warning edit-btn" data-original-title="Edit Shipment">
                     <i class="fa fa-edit"></i>
 
                     <div class="ripple-container"></div>
                 </a>
-                {% if not object.item_set.exists %}
                 <a data-toggle="modal" data-target="#shipment-delete-modal" rel="tooltip" title="" class="btn btn-danger" data-original-title="Delete Shipment">
                     		                                <i class="fa fa-times"></i>
 
                     <div class="ripple-container"></div>
                 </a>
-                {% endif %}
         </span>
+        {% endif %}
+
     {% endblock %}
 
 
@@ -41,45 +42,50 @@
 
             <div class="row">
                 <div class="col-sm-4">
-                <h3><strong>Name:</strong></h3>
+                <h4><strong>Name:</strong></h4>
                 </div>
                 <div class='col-sm-5'>
-                <h3>{{ object.name }}</h3>
+                <h4>{{ object.name }}</h4>
                 </div>
-                <div class='col-sm-3 text-right'>
-                    {% if not object.tracking_number %}
-                        <a href='#' class='btn btn-simple btn-primary btn-outline btn-sm'
-                           data-toggle="modal" data-target="#shipment-tracking-number-modal"
-                           rel="tooltip" data-original-title="Add your USPS tracking number to see the live status of your shipment">
-                            <strong>Add Tracking Number</strong>
-                        </a>
-                        {% else %}
-                        <a href="https://track.aftership.com/usps/{{ object.tracking_number }}?" target="_blank" class='btn btn-simple btn-primary btn-outline btn-sm'>
-                        <strong>Track {{ object.tracking_number }}</strong>
-                        </a>
-                        <a href='#'data-toggle="modal" data-target="#shipment-tracking-number-modal">
-                            Edit
-                        </a>
-                    {% endif %}
-
-                </div>
+                {% if not is_visible %}
+                    <div class='col-sm-3 text-right'>
+                        {% if not object.tracking_number %}
+                            <a href='#' class='btn btn-simple btn-primary btn-outline btn-sm'
+                            data-toggle="modal" data-target="#shipment-tracking-number-modal"
+                            rel="tooltip" data-original-title="Add your USPS tracking number to see the live status of your shipment">
+                                <strong>Add Tracking Number</strong>
+                            </a>
+                            {% else %}
+                            <a href="https://track.aftership.com/usps/{{ object.tracking_number }}?" target="_blank" class='btn btn-simple btn-primary btn-outline btn-sm'>
+                            <strong>Track {{ object.tracking_number }}</strong>
+                            </a>
+                            <a href='#'data-toggle="modal" data-target="#shipment-tracking-number-modal">
+                                Edit
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
             <hr>
             <div class='row'>
                 <div class='col-sm-4'>
-                <h3><strong>Description:</strong></h3>
+                <h4><strong>Description:</strong></h4>
                 </div>
                 <div class='col-sm-8'>
-                <h3>{{ object.description }}</h3>
+                <h4>{{ object.description }}</h4>
                 </div>
             </div>
 
                         <hr>
             <div class="row">
-                <div class="col-sm-4">
-                    <h3><strong>Items For Sale:</strong></h3>
+                <div class="col-sm-3">
+                    <h4><strong>Items For Sale:</strong></h4>
+                    {% if is_visible %}
+                    <p><i>Only see some of your items? We still may be in the process of adding them.
+                        Check back in 24 hours and your remaining items should appear. </i></p>
+                    {% endif %}
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-8 col-sm-offset-1">
 
                     {% if visible_items %}
 
@@ -89,26 +95,31 @@
                                     <th>Name</th>
                                     <th>Status</th>
                                     <th></th>
-
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for item in visible_items %}
-                                    {% if item.is_visible %}
-                                        <tr>
-
-                                            <td>{{ item.name }}</td>
-                                            <td>{{item.status}}</td>
-                                            <td><a href="{{ item.get_shopify_url }}" target='_blank'>See On Store</a></td>
-                                            <td>{{item.item_order_details.order_data}}1</td>
-                                        </tr>
-                                    {% endif %}
+                                    <tr>
+                                        <td>{{ item.name }}</td>
+                                        <td>
+                                            {% if item.is_sold %}
+                                                <span>{{item.get_readable_status}} for <strong class="text-success">${{item.itemorderdetails.get_price}}</strong></span>
+                                            {% else %}
+                                                {{ item.get_readable_status }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if not item.is_sold %}
+                                                <a href="{{ item.get_shopify_url }}" target='_blank'>See On Store</a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
 
                         {% else %}
-                        <h3> No items posted yet. </h3>
+                        <h4> No items posted yet. </h4>
                         <p>If your shipment has arrived, it will be processed soon. Items will show up as they are added to the store.</p>
 
                     {% endif %}
@@ -116,28 +127,29 @@
                 </div>
             </div>
 
+ {% if not is_visible %}
             {% if not shipment.is_physical %}
             <hr>
             <div class='row'>
                 <div class='col-sm-4'>
-                <h3><strong>Shipping Label:</strong></h3>
+                <h4><strong>Shipping Label:</strong></h4>
                 </div>
                 <div class='col-sm-8'>
-                <a class="nav-link" href="{% url 'shipments:shipmentLabel' object.id %}?html" target="_blank"><h3>Print in Browser</h3></a>
-                <a class="nav-link" href="{% url 'shipments:shipmentLabel' object.id %}" target="_blank"><h3>Download PDF</h3></a>
+                <a class="nav-link" href="{% url 'shipments:shipmentLabel' object.id %}?html" target="_blank"><h4>Print in Browser</h4></a>
+                <a class="nav-link" href="{% url 'shipments:shipmentLabel' object.id %}" target="_blank"><h4>Download PDF</h4></a>
                 </div>
             </div>
             {% endif %}
-
+  {% endif %}
 
             <hr>
             <div class='row'>
                 <div class='col-sm-4'>
-                    <h3><strong>Shipping Receipt:</strong></h3>
+                    <h4><strong>Shipping Receipt:</strong></h4>
                 </div>
                 <div class='col-sm-8'>
                     {% if object.receipt %}
-                    <h3><a href="{{object.receipt.url}}" target="_blank">Your Shipping Receipt</a></h3>
+                    <h4><a href="{{object.receipt.url}}" target="_blank">Your Shipping Receipt</a></h4>
                     <form id="shipment-receipt-form" enctype="multipart/form-data" method="POST" action="{% url 'shipments:shipmentDetail' object.id %}">
                         {% csrf_token %}
                         Update: <input style='display: inline;' data-show-preview="false" id="{{form_receipt.receipt.auto_id}}" name="form_receipt.receipt.name" type="file">
@@ -153,10 +165,11 @@
                 </div>
             </div>
 
+{% if not is_visible %}
             <hr>
             <div class='row'>
                 <div class='col-sm-4'>
-                    <h3><strong>Instructions:</strong></h3>
+                    <h4><strong>Instructions:</strong></h4>
                 </div>
                 <div class='col-sm-8'>
                     <button class='btn btn-primary' data-toggle="modal" data-target="#shipment-instructions-modal" rel="tooltip" title="">
@@ -165,9 +178,11 @@
                     </button>
                 </div>
             </div>
+{% endif %}
 
     <hr>
-    <a class="btn btn-default" href="{% url 'users:detail' request.user.username %}" role="button">Back to Dashboard</a>
+
+    <a class="btn btn-default" href="{% url 'users:detail' %}" role="button">Back to Dashboard</a>
 
 </div> <!-- /container -->
 {% endblock content %}
@@ -196,7 +211,7 @@
 
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal" class="btn btn-default btn-simple">Cancel</button>
-                        <button type="submit" class="btn btn-danger btn-simple">Submit</button>
+                        <button type="submit" class="btn btn-primary btn-simple">Submit</button>
                     </div>
                 </form>
             </div>

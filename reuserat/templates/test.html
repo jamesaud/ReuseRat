@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block css %}
+    {{ block.super }}
+
+  <link type='text/css' href="{% static 'css/test.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+<div class="wrap features">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h2 class="title">Can I Really Send Anything?</h2>
+                <h4>No, not really. But you can send a lot!</h4>
+            </div>
+            <div class="features-logo">
+<br>
+                <img src="{% static 'images/logo.png' %}" class="img-responsive">
+                <h4>Send What You Want, Make Money </h4>
+
+            </div>
+            <div class="circle">
+                <span class="voice" id="voice">AI <small>(Voice Apps)</small></span>
+                <div class="detail voice">
+                    <h3>AI <small>(Voice Apps)</small></h3>
+                    <p>Node.js apps running on containers help the bots chat with you</p>                </div>
+                                <span class="microservices" id="microservices">Microservices</span>
+                <div class="detail microservices">
+                    <h3>Microservices</h3>
+                    <p>Decompose the monolithic SOA into microservices running on containers</p>                </div>
+                                <span class="mobile icon-flag" id="mobile">Mobile Backends</span>
+                <div class="detail mobile">
+                    <h3>Mobile Backends</h3>
+                    <p>APIs deployed on containers on the cloud serve as an MBaaS to deliver Push, Geo, Offline</p>                </div>
+                    <span class="icon-home cloud-native " id="cloud-native">Cloud</span>
+                <div class="detail cloud-native">
+                    <h3>Cloud &amp; Container<br>Native Apps</h3>
+                    <p>Apps born on the cloud with backends being cloud services running on containers</p>                </div>
+                <span class="blacklist" id="blacklist">Blacklist</span>
+                <div class="detail blacklist">
+                    <h3>Items You Can't Send</h3>
+                    <li>Clothing</li>
+                </div>
+                <span class="electronics" id="electronics">Electronics</span>
+                <div class="detail electronics">
+                    <h3>Electronics</h3>
+                    <li>Phones</li>
+                    <li>Music Players</li>
+                    <li>Headphones &amp; Audio</li>
+                    <li>Home Appliances</li>
+                    <li>And More!</li>
+                </div>
+                                <span class="iot" id="iot">Books</span>
+                <div class="detail iot">
+                    <h3>IoT</h3>
+                    <p>Millions of devices connected to a device analytics and control gateway deployed on a large cluster of containers</p>                </div>
+                                <span class="mountain" id="mountain">Movies</span>
+                <div class="detail mountain">
+                    <h3>Big Apps <small>(Uber Large Workloads)</small></h3>
+                    <p>Apps having super large workloads (data intensive or compute intensive) needing to scale on the fly with containers.</p>                </div>
+                                <span class="realtime" id="realtime">Video Games</span>
+                <div class="detail realtime">
+                    <h3>Video Games</h3>
+                    <p>Messaging or chatty apps, which need to interact at near real-time built in node, deployed at scale using containers.</p>                </div>
+                            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

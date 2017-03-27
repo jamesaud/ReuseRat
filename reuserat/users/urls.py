@@ -8,8 +8,8 @@ from . import views
 urlpatterns = [
     url(
         regex=r'^$',
-        view=views.UserListView.as_view(),
-        name='list'
+        view=views.UserDetailView.as_view(),
+        name='detail'
     ),
     url(
         regex=r'^~redirect/$',
@@ -17,29 +17,18 @@ urlpatterns = [
         name='redirect'
     ),
     url(
-        regex=r'^(?P<username>[\w.@+-]+)/$',
-        view=views.UserDetailView.as_view(),
-        name='detail'
-    ),
-    url(
         regex=r'^~update/$',
         view=views.UserUpdateView.as_view(),
         name='update'
     ),
-
     url(
-        regex=r'^~transfer/$',
-        view=views.cash_out,
-        name='transfer'
-    ),
-    url(
-        regex=r'^~test-cash-out/$',
+        regex=r'^~cashout/$',
         view=views.CashOutView.as_view(),
-        name='cashout'
+        name='cash_out'
     ),
     url(
 
-        regex=r'^(?P<username>[\w.@+-]+)/complete_signup/$',
+        regex=r'^~complete_signup/$',
         view=views.UserCompleteSignupView.as_view(),
         name='complete_signup'
     ),
@@ -47,5 +36,10 @@ urlpatterns = [
         regex=r'^~updatepayment/$',
         view=views.UpdatePaymentInformation.as_view(),
         name='update_payment_information'
+    ),
+    url(
+        regex=r'^~transactions/$',
+        view=views.TransactionListView.as_view(),
+        name='transactions'
     ),
 ]

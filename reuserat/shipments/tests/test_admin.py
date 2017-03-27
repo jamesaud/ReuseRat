@@ -9,14 +9,14 @@ from ..models import Shipment
 
 
 
-class TestMyUserCreationForm(TestCase):
+class TestMyAdminShopifyItemTable(TestCase):
 
     def setUp(self):
         self.shipment = ShipmentFactory()
         self.shipment_admin = ShipmentAdmin(model=Shipment, admin_site='test')
 
 
-    def test_clean_username(self):
+    def test_generated_html(self):
         """
         Test the html returned on the admin page of shipments for the related items
         """
@@ -34,9 +34,7 @@ class TestMyUserCreationForm(TestCase):
 
         parser = AdminHTMLParser()  # Reset the tag counts
         # Add an item
-        item = ItemFactory()
-        item.shipment = self.shipment
-        item.save()
+        item = ItemFactory(shipment=self.shipment)
 
         html = self.shipment_admin.get_items(obj=self.shipment)
         parser.feed(html)

@@ -57,10 +57,12 @@ h5.description, h4.description, p.description{
     }
 
     span.arrow{
-      color: $grey-400;
+      color: $grey-300;
+      position: relative;
+      top: 3px;
     }
     span.and{
-      color: $grey-400;
+      color: $grey-300;
       font-weight: 400;
       }
  }

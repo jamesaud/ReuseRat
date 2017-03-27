@@ -1,22 +1,33 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+
+from collections import defaultdict
+
 from django.core.urlresolvers import reverse
 from django.views.generic import DetailView, ListView, RedirectView, TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required  # new#  import for function based view (FBV)
 from django.contrib import messages
 from django.shortcuts import redirect, render, HttpResponse, HttpResponseRedirect
-from django.views.generic.edit import  ProcessFormView
+from django.views.generic.edit import ProcessFormView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from stripe.error import StripeError
 
 from .models import User, Address, PaymentChoices
 from .forms import UserAddressForm, UserForm, UserCompleteSignupForm
 
-from reuserat.stripe.models import PaypalAccount
+from reuserat.stripe.models import PaypalAccount, Transaction, TransactionTypeChoices
 from reuserat.stripe.forms import UpdatePaymentForm, PaypalUpdateForm, UserPaymentForm
-from reuserat.stripe.helpers import create_account, update_payment_info, create_transfer
-from reuserat.stripe.paypal_helpers import make_payment_paypal
+from reuserat.stripe import helpers as stripe_helpers
+from reuserat.stripe import paypal_helpers
 
-import pprint
+import time
+import logging
+
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
 
 class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
     """
@@ -29,24 +40,30 @@ class LoginUserCompleteSignupRequiredMixin(LoginRequiredMixin):
         """
 
         if not (self.request.user.has_completed_signup()):
-            return redirect('users:complete_signup', username=self.request.user.username)
+            return redirect('users:complete_signup')
 
-        return super(LoginUserCompleteSignupRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
-class UserDetailView(LoginUserCompleteSignupRequiredMixin, DetailView):
+class UserDetailView(LoginUserCompleteSignupRequiredMixin, TemplateView):
     model = User
+    template_name = 'users/user_detail.html'
     # These next two lines tell the view to index lookups by username
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
+    items_to_show = 3   # Items to show in html
+    description_characters = 220  # Characters of description to show in html
 
     def get_context_data(self, **kwargs):
-        context = super(UserDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         # Put shipments with visible items on top.
-        context['user_shipments'] = sorted(self.object.shipment_set.all(),
+        context['user_shipments'] = sorted(self.request.user.shipment_set.all(),
                                            key=lambda s: s.has_visible_items(),
                                            reverse=True)
+        context['object'] = self.request.user
+        context['items_to_show'] = self.items_to_show
+        context['item_slice'] = ':' + str(self.items_to_show)  # To support the 'slice' template tag
+        context['description_slice'] = ':' + str(self.description_characters)
+        context['description_characters'] = self.description_characters
         return context
 
 
@@ -96,7 +113,7 @@ class UserCompleteSignupView(UserUpdateMixin):
     def get_success_url(self):
         # Pass the Ip address of the client.
         # Call to Stripe View to create a stripe account
-        account_instance = create_account(self.request.META['REMOTE_ADDR'])
+        account_instance = stripe_helpers.create_account(self.request.META['REMOTE_ADDR'])
         if account_instance:
             self.request.user.stripe_account = account_instance
             self.request.user.save()
@@ -107,8 +124,7 @@ class UserCompleteSignupView(UserUpdateMixin):
         self.request.user.paypal_account = paypal
         self.request.user.save()
 
-        return reverse('users:detail',
-                       kwargs={'username': self.request.user.username})
+        return reverse('users:detail')
 
     def get_context_data(self, **kwargs):
         context = super(UserCompleteSignupView, self).get_context_data(**kwargs)
@@ -125,16 +141,14 @@ class UserUpdateView(LoginUserCompleteSignupRequiredMixin, UserUpdateMixin):
 
     # send the user back to their own page after a successful update
     def get_success_url(self):
-        return reverse('users:detail',
-                       kwargs={'username': self.request.user.username})
+        return reverse('users:detail')
 
 
 class UserRedirectView(LoginUserCompleteSignupRequiredMixin, RedirectView):
     permanent = False
 
     def get_redirect_url(self):
-        return reverse('users:detail',
-                       kwargs={'username': self.request.user.username})
+        return reverse('users:detail')
 
 
 class UserListView(LoginRequiredMixin, ListView):
@@ -142,6 +156,36 @@ class UserListView(LoginRequiredMixin, ListView):
     # These next two lines tell the view to index lookups by username
     slug_field = 'username'
     slug_url_kwarg = 'username'
+
+
+
+class TransactionListView(LoginRequiredMixin, TemplateView):
+    model = Transaction
+    template_name = 'users/user_transactions.html'
+    slug_field = 'transactions'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs) or {}
+        transaction_list = self.request.user.transaction_set.all()
+        paginator = Paginator(transaction_list, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            transactions = paginator.page(page)
+        except PageNotAnInteger:
+            transactions = paginator.page(1)
+        except EmptyPage:
+            transactions = paginator.page(paginator.num_pages)
+
+        # Associate a color with Transaction type
+        css_lookup = defaultdict(lambda: 'default') # Set the color to grey if we didn't register it in the dictionary
+        css_lookup.update({TransactionTypeChoices.IN: 'success',
+                TransactionTypeChoices.OUT: 'info',
+                TransactionTypeChoices.FEE: 'danger',
+                TransactionTypeChoices.CREDIT: 'warning',})
+        context.update({'transaction_set': transactions, 'transaction_type_css_lookup': css_lookup})
+        return context
 
 
 class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateView, ProcessFormView):
@@ -166,10 +210,6 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
         self.PaypalFormChoices = ((email.email, email.email) for email in self.request.user.get_verified_emails())
         return super().dispatch(request, *args, **kwargs)
 
-        if address_form.is_valid() and user_form.is_valid():
-            new_address = Address(**address_form.cleaned_data)
-            new_address.save()  # Save Address first as there is an FK dependency between User & Address
-
     def get_success_url(self):
         return reverse('users:update_payment_information')
 
@@ -188,12 +228,10 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
             routing_number = '*' * 5 + stripe.routing_number_last_four
 
         # Set the Stripe form initial values. Set account_holder_name to the user's name if it's null.
-        stripe_form = stripe_form or self.StripeForm(
-            initial={"birth_date": self.request.user.birth_date,
+        stripe_form = stripe_form or self.StripeForm(initial={"birth_date": self.request.user.birth_date,
                      "account_holder_name": stripe.account_holder_name or self.request.user.get_full_name(),
                      "account_number": account_number,
-                     "routing_number": routing_number,
-                     })
+                     "routing_number": routing_number,})
 
         # Set the Paypal Form defaults
         paypal_form = paypal_form or self.PaypalForm(
@@ -205,8 +243,7 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
         context.update({"update_payment_form": stripe_form,
                         "paypal_form": paypal_form,
                         "user_payment_form": user_payment_form,
-                        "payment_choices": PaymentChoices
-                        })
+                        "payment_choices": PaymentChoices})
         return context
 
     def post(self, *args, **kwargs):
@@ -259,10 +296,17 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
         """
         user, request = self.request.user, self.request
 
+        user.birth_date = form.cleaned_data['birth_date']  # datetime.date instance.
+        user.save()  # So we can use the birthdate
+
         # Update the user's bank Stripe Banking info.
-        account = update_payment_info(str(user.stripe_account.account_id), request.POST["stripeToken"], user)
-        if account:  # Update User's Stripe account in our database
-            user.birth_date = form.cleaned_data['birth_date']  # datetime.date instance.
+        try:
+            account = stripe_helpers.update_payment_info(str(user.stripe_account.account_id), request.POST["stripeToken"], user)
+        except StripeError as e:
+            logger.error("Failed to update stripe account: " + str(e))
+            messages.add_message(request, messages.ERROR, "Server Error! That's on us. Please try again later.")
+            return False
+        else:
             user.stripe_account.account_holder_name = form.cleaned_data['account_holder_name']
             user.stripe_account.account_number_last_four = str(form.cleaned_data['account_number'])[-4:]
             user.stripe_account.routing_number_last_four = str(form.cleaned_data['routing_number'])[-4:]
@@ -271,9 +315,6 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
             user.save()
             messages.add_message(request, messages.SUCCESS, "Updated Bank Successfully")
             return form
-        else:
-            messages.add_message(request, messages.ERROR, "Server Error! Please try again later.")
-            return False
 
     def process_paypal(self, form):
         user, request = self.request.user, self.request
@@ -294,46 +335,102 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
 
 class CashOutView(LoginRequiredMixin, View):
 
-    def get(self, *args, **kwargs):
+    http_method_names = ['post']
+
+    def post(self, *args, **kwargs):
+        """All the 'use_<whatever>' functions should return a Transaction object, or raise an error."""
         payment_type = self.request.user.payment_type
 
-        if payment_type == PaymentChoices.PAYPAL:
-            response = self.use_paypal()
-            return HttpResponse(response)
+        try:
+            if payment_type == PaymentChoices.PAYPAL:
+                transaction = self.use_paypal()
 
+            elif payment_type == PaymentChoices.DIRECT_DEPOSIT:
+                transaction = self.use_stripe()
 
-        elif payment_type == PaymentChoices.DIRECT_DEPOSIT:
-            self.use_direct_deposit()
+            elif payment_type == PaymentChoices.CHECK:
+                transaction = self.use_check()
 
-        elif payment_type == PaymentChoices.CHECK:
-            self.use_check()
+        except (paypal_helpers.PaypalException, StripeError):
+            # Exception code goes here. Exception is being logged in the relevant function.
+            # Return the same page with error messages (created in the functions)
+            return redirect(self.get_success_url())
+
+        else:
+            return redirect(self.get_success_url())
+
+    def get_success_url(self):
+        return self.request.user.get_absolute_url()
+
 
     def use_paypal(self):
-        return str(make_payment_paypal(batch_id='batch_{}'.format(),
-                                       receiver_email="trashandtreasure67-buyer-1@gmail.com",
-                                       amount=1000,
-                                       note="Thanks for all the fish"))
+        balance_in_cents = int(self.request.user.stripe_account.retrieve_balance())
+        balance_in_dollars = stripe_helpers.cents_to_dollars(balance_in_cents)
 
-    def use_direct_deposit(self):
-        pass
+        try:
+            # Try to transfer the user's current balance to OUR stripe account.
+            transfer_id = stripe_helpers.create_transfer_to_platform(account_id=self.request.user.stripe_account.account_id,
+                                  balance_in_cents=balance_in_cents,
+                                  description="Cashing out using Paypal")
+
+        except StripeError as e:
+            logger.error("Paypal Cash Out Exception (stripe error): " + str(e))
+            messages.add_message(self.request, messages.ERROR, "Cashout with Paypal failed. That's our fault. Please try again later.")
+            raise
+
+        try:
+            # Try to send the user money via Paypal Mass Payments API
+            paypal_response = paypal_helpers.make_payment_paypal(batch_id='u-{0}-t-{1}'.format(self.request.user.id, time.time()), # Transaction ID is unique
+                                       receiver_email=self.request.user.paypal_account.email.email, # Send to the user's selected paypal email
+                                       amount_in_dollars=balance_in_dollars,
+                                       note="Your Cashout, With Love from ReuseRat")
+
+        except paypal_helpers.PaypalException as e:
+            # Reverse the transfer because we couldn't cash a user out to Paypal.
+            stripe_helpers.reverse_transfer(transfer_id, self.request.user.stripe_account.secret_key)
+            logger.error("Paypal Cash Out Exception: " + str(e))
+
+            # Handle specific Paypal errors to add specific messages
+            if isinstance(e, paypal_helpers.PaypalReceiverUnregistered):
+                messages.add_message(self.request, messages.ERROR, "Paypal Account using email {} doesn't exist or is unregistered! Please add an existing Paypal email or contact support.".format(self.request.user.paypal_account.email.email))
+            else:
+                messages.add_message(self.request, messages.ERROR, "Cashout with Paypal failed, that's (probably) our fault! Please try again later.")
+            raise
+        else:
+            # Create the transaction
+            transaction = Transaction(user=self.request.user,
+                                      payment_type=self.request.user.payment_type,
+                                      message="Cash Out with Paypal using email " + self.request.user.paypal_account.email.email,
+                                      type=TransactionTypeChoices.OUT,
+                                      amount=balance_in_dollars)  # Need to set the balance still
+
+            transaction.save()  # Will delete if the api calls don't go through. Need the transaction ID to set as the paypal batch id.
+
+            messages.add_message(self.request, messages.SUCCESS,
+                                 'Cashed out using Paypal successfully. Please accept the email sent to {}. To resend the email, please go to My Account > Transactions.'.format(self.request.user.paypal_account.email.email))
+            return transaction
+
+    def use_stripe(self):
+        # Amount to be transferred is the balance money in the stripe account
+        balance_in_cents = self.request.user.stripe_account.retrieve_balance()
+        try:
+            transfer_id = stripe_helpers.create_transfer_bank(api_key=self.request.user.stripe_account.secret_key,  # User's Bank account,
+                                          balance_in_cents=balance_in_cents, # Amount to transfer
+                                          user_name=self.request.user.get_full_name())
+        except StripeError as e:
+            logger.error("Stripe Cash Out Exception: " + str(e))
+            messages.add_message(self.request, messages.ERROR,'Failed to cash out using Direct Deposit: ' + str(e))
+            raise
+        else:
+            transaction = Transaction(user=self.request.user,
+                                      payment_type=self.request.user.payment_type,
+                                      message="Cash Out with Direct Deposit",
+                                      type = TransactionTypeChoices.OUT,
+                                      amount = stripe_helpers.cents_to_dollars(balance_in_cents))
+            transaction.save()
+            messages.add_message(self.request, messages.SUCCESS, 'Cashed out using Direct Deposit successfully. Check the status at My Account > Transactions')
+            return transaction
 
     def use_check(self):
         pass
 
-
-
-@login_required
-def cash_out(request):
-    if request.method == 'GET':
-        # Get the Stripe account id of the User
-        account_id = request.user.stripe_account.account_id
-
-        # Amount to be transferred is the balance money in the stripe account
-        balance_in_cents = int(request.user.get_current_balance() * 100)
-
-        # Get the user's full name for the description in the transfer
-        user_name = request.user.get_full_name()
-
-        transfer_id = create_transfer(account_id, balance_in_cents, user_name)
-
-        return redirect(reverse('users:detail', kwargs={'username': request.user.username}))

@@ -31,7 +31,10 @@
   <div class='col-sm-2 current-balance'>
     <small>Current Balance</small>
     <h2>${{ object.get_current_balance }}</h2>
-    <a class='btn  btn-success btn-success' href='{% url "users:transfer" %}'> Cash Out </a>
+        <form method="post" action="{% url 'users:cash_out' %}">
+            {% csrf_token %}
+            <button id="cash-out-btn" type="submit" class='btn btn-success' href='{% url "users:cash_out" %}'>Cash Out</button>
+        </form>
   </div>
 
   <div class='col-sm-5 shipment-button'>
@@ -41,9 +44,7 @@
 </div>
 <!-- End Action buttons -->
 
-<!--TEST -->
 <hr>
-<!-- END TEST -->
 
   <div class="row">
     <div class="col-sm-12">
@@ -55,9 +56,9 @@
 
             <br>
 
-          {% for shipment in user.shipment_set.all %}
-                    <div class="card card-nav-tabs ">
-                        <div class="head {% if shipment.item_set.exists %} header-info {% else %} header-grey {% endif %}">
+          {% for shipment in user_shipments %}
+                    <div class="card card-nav-tabs">
+                        <div class="head {% if shipment.has_visible_items %} header-info {% else %} header-grey {% endif %}">
                           <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
                           <a class="btn btn-dark-blend" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">
                               {{ shipment.name }}
@@ -67,14 +68,13 @@
 
                           <div class='pull-right button-group'>
 
-
+                            {% if not shipment.has_visible_items %}
                                  <a href="{% url 'shipments:shipmentUpdate' shipment.id %}" type="button" rel="tooltip" title="" class="btn btn-simple btn-xs edit-btn" data-original-title="Edit Shipment">
 		                                <i class="fa fa-edit"></i>
 		                            <div class="ripple-container"></div>
                                 </a>
                               </a>
 
-                            {% if not shipment.item_set.all %}
                               <a data-toggle="modal" data-target="#shipment-delete-modal" rel="tooltip" title="" shipment-id='{{ shipment.id }}' class="btn btn-danger btn-simple btn-xs delete-btn" data-original-title="Delete Shipment">
 		                                <i class="fa fa-times"></i>
 		                            <div class="ripple-container"></div>
@@ -89,28 +89,48 @@
                         </div> <!-- /head -->
 
                         <div class="content">
-                          <div class='col-sm-7'>
+                          <div class='col-sm-4 col-md-4'>
                             <h4>Description</h4>
                             <p>
-                              {{ shipment.description }}
+                              {% if shipment.description|length > description_characters %} 
+                                {{ shipment.description|slice:description_slice }} <span class='ellipsis'>&hellip;</span>
+                              {% else %}
+                                {{shipment.description}}
+                              {% endif %}
                             </p>
                           </div>
-                          <div class='col-sm-5'>
-                            <h4>Items For Sale</h4>
-                                <table class="table">
-                               {% for item in shipment.get_visible_items %}
-                                    <tr>
-                                        <td>{{item.name}}</td>
-                                        <td><a href="{{ item.get_shopify_url }}" target="_blank">See On Store</a></td>
-                                    </tr>
-                                    {% empty %}
-                                    <p>
-                                       No items selling yet. If your shipment has arrived, your items will be processed soon.
-                                    </p>
-                              {% endfor %}
-                                </table>
+                          <div class='col-sm-8 col-md-7 col-md-offset-1 item-table'>
+                            {% with shipment.get_visible_items as visible_items %}
 
-                          </div>
+                                <h4>Items For Sale </h4>
+                                {% if visible_items %}
+                                  <small class="pull-right">showing 
+                                  {% if visible_items|length > items_to_show %}{{ items_to_show }}{% else %}{{visible_items|length}}{% endif %}
+                                  of {{ visible_items|length }}</small>  
+                                {% endif %}
+                                <table class="table">
+                                {# Using the variable '3'  #}
+                                   {% for item in visible_items|slice:item_slice %}
+                                        <tr>
+                                            <td>{{item.name}}</td>
+                                            <td>
+                                                {% if item.is_sold %}
+                                                    <span>{{item.get_readable_status}} for <strong class="text-success">${{item.itemorderdetails.get_price}}</strong></span>
+                                                {% else %}
+                                                    {{ item.get_readable_status }}
+                                                {% endif %}
+                                            </td>
+                                            <td><a target="_blank" href="{{ item.get_shopify_url }}">See on Store</a></td>
+                                        </tr>
+                                        {% empty %}
+                                        <p>
+                                           No items selling yet. If your shipment has arrived, your items will be processed soon.
+                                        </p>
+                                  {% endfor %}
+                                </table>
+                             {% endwith %}
+
+                          </div> <!-- /col -->
                         </div>
                     </div>
           {% empty %}

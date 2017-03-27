@@ -2,6 +2,25 @@
   padding-top: 10px;
   padding-bottom: 10px; }
 
+.section-transactions .card h3 {
+  margin-top: 10px;
+  font-weight: 400; }
+
+.section-transactions .card .head {
+  height: 12px; }
+
+.section-transactions .card hr {
+  margin-top: 0px;
+  margin-bottom: 10px; }
+
+.section-transactions .card .card-data {
+  padding-left: 20px;
+  padding-right: 20px; }
+
+.section-transactions .card .label {
+  margin-top: 10px;
+  font-size: 13px; }
+
 ul.nav-pills {
   display: -ms-flexbox;
   display: flex;
