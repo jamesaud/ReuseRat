@@ -78,10 +78,14 @@
 
                         <hr>
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <h4><strong>Items For Sale:</strong></h4>
+                    {% if is_visible %}
+                    <p><i>Only see some of your items? We still may be in the process of adding them.
+                        Check back in 24 hours and your remaining items should appear. </i></p>
+                    {% endif %}
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-8 col-sm-offset-1">
 
                     {% if visible_items %}
 

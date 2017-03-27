@@ -27,14 +27,9 @@ services:
     build: ./compose/nginx
     depends_on:
       - django
-
       - certbot
-
-    ports:
-      - "0.0.0.0:80:80"
-
     environment:
-      - MY_DOMAIN_NAME=reuseratseller.com  # Or if let's letsencrypt doesnt like that, then make it www., and change back to pure domain after you get the secret key.
+      - MY_DOMAIN_NAME=reuseratseller.com
     ports:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
@@ -54,7 +49,6 @@ services:
       - "443"
     environment:
       - TERM=xterm
-
 
   redis:
     image: redis:latest
