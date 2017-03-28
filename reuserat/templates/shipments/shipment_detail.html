@@ -89,39 +89,11 @@
 
                     {% if visible_items %}
 
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in visible_items %}
-                                    <tr>
-                                        <td>{{ item.name }}</td>
-                                        <td>
-                                            {% if item.is_sold %}
-                                                <span>{{item.get_readable_status}} for <strong class="text-success">${{item.itemorderdetails.get_price}}</strong></span>
-                                            {% else %}
-                                                {{ item.get_readable_status }}
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if not item.is_sold %}
-                                                <a href="{{ item.get_shopify_url }}" target='_blank'>See On Store</a>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                        {% include 'shipments/snippets/items_table.html' with items=visible_items %}
 
-                        {% else %}
+                      {% else %}
                         <h4> No items posted yet. </h4>
                         <p>If your shipment has arrived, it will be processed soon. Items will show up as they are added to the store.</p>
-
                     {% endif %}
 
                 </div>

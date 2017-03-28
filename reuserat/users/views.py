@@ -62,8 +62,6 @@ class UserDetailView(LoginUserCompleteSignupRequiredMixin, TemplateView):
         context['object'] = self.request.user
         context['items_to_show'] = self.items_to_show
         context['item_slice'] = ':' + str(self.items_to_show)  # To support the 'slice' template tag
-        context['description_slice'] = ':' + str(self.description_characters)
-        context['description_characters'] = self.description_characters
         return context
 
 
@@ -346,7 +344,7 @@ class CashOutView(LoginRequiredMixin, View):
                 transaction = self.use_paypal()
 
             elif payment_type == PaymentChoices.DIRECT_DEPOSIT:
-                transaction = self.use_stripe()
+                transaction = self.use_direct_deposit()
 
             elif payment_type == PaymentChoices.CHECK:
                 transaction = self.use_check()
@@ -410,7 +408,7 @@ class CashOutView(LoginRequiredMixin, View):
                                  'Cashed out using Paypal successfully. Please accept the email sent to {}. To resend the email, please go to My Account > Transactions.'.format(self.request.user.paypal_account.email.email))
             return transaction
 
-    def use_stripe(self):
+    def use_direct_deposit(self):
         # Amount to be transferred is the balance money in the stripe account
         balance_in_cents = self.request.user.stripe_account.retrieve_balance()
         try:

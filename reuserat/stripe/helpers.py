@@ -114,7 +114,7 @@ def create_transfer_bank(api_key, balance_in_cents, user_name):
     return transfer['id']
 
 # Confusingly named function, because it's not transfering to a Stripe Customer.
-# It's transfering to a user with an account_id. 
+# It's transfering to a user with an account_id.
 def create_transfer_to_customer(account_id, balance_in_cents, description):
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 

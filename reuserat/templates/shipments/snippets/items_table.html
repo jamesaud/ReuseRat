@@ -1,0 +1,42 @@
+{# Displays shipment items in a nice table. #}
+
+{# Variables: #}
+ {# items_to_show: optional, int, the number of items to show #}
+ {# items: item_querry_set, the list of items to show as a querry set #}
+{% load project_tags %}
+
+<table class="table">
+  <small class="pull-right">
+      showing
+      {% if items|length > items_to_show %}{{ items_to_show }}{% else %}{{items|length}}{% endif %}
+      of {{ items|length }}
+  </small>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% with items_to_show.all|default:items|length as items_to_show %} {# for the slice_up_to tag, we will get everything if not set #}
+        {% for item in items|slice_up_to:items_to_show %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>
+                    {% if item.is_sold %}
+                        <span>{{item.get_readable_status}} for <strong class="text-success">${{item.itemorderdetails.get_price}}</strong></span>
+                    {% else %}
+                        {{ item.get_readable_status }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not item.is_sold %}
+                        <a href="{{ item.get_shopify_url }}" target='_blank'>See On Store</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    {% endwith %}
+    </tbody>
+</table>

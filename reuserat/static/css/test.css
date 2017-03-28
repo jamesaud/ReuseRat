@@ -1,6 +1,6 @@
 .main {
   min-height: 1000px;
-  background: gray !important; }
+  background: darkgrey !important; }
 
 .wrap.features h2 {
   text-align: center;
@@ -88,12 +88,10 @@
       height: 12.5vh;
       border-radius: 50%;
       border: #fdfdfd solid 0.4vh;
-      font-family: "joyent-icons";
       font-style: normal;
       font-weight: normal;
       display: block;
       text-decoration: inherit;
-      speak: none;
       font-variant: normal;
       text-transform: none;
       line-height: 1em;
@@ -104,7 +102,8 @@
       margin-top: 0;
       margin-bottom: 0.5vh;
       padding-top: 1.1vh;
-      content: '\e81a'; }
+      content: '\e81a';
+      color: white; }
     .wrap.features .circle span small {
       display: block;
       font-family: "open-sans", sans-serif;
@@ -124,60 +123,53 @@
     -webkit-transform: rotate(0deg) translate(40vw) rotate(0deg); } }
 
 .wrap.features .circle > span:nth-of-type(2) {
-  -webkit-transform: rotate(40deg) translate(32.5vh) rotate(-40deg); }
+  -webkit-transform: rotate(45deg) translate(32.5vh) rotate(-45deg); }
 
 @media (max-width: 700px) {
   .wrap.features .circle > span:nth-of-type(2) {
-    -webkit-transform: rotate(40deg) translate(40vw) rotate(-40deg); } }
+    -webkit-transform: rotate(45deg) translate(40vw) rotate(-45deg); } }
 
 .wrap.features .circle > span:nth-of-type(3) {
-  -webkit-transform: rotate(80deg) translate(32.5vh) rotate(-80deg); }
+  -webkit-transform: rotate(90deg) translate(32.5vh) rotate(-90deg); }
 
 @media (max-width: 700px) {
   .wrap.features .circle > span:nth-of-type(3) {
-    -webkit-transform: rotate(80deg) translate(40vw) rotate(-80deg); } }
+    -webkit-transform: rotate(90deg) translate(40vw) rotate(-90deg); } }
 
 .wrap.features .circle > span:nth-of-type(4) {
-  -webkit-transform: rotate(120deg) translate(32.5vh) rotate(-120deg); }
+  -webkit-transform: rotate(135deg) translate(32.5vh) rotate(-135deg); }
 
 @media (max-width: 700px) {
   .wrap.features .circle > span:nth-of-type(4) {
-    -webkit-transform: rotate(120deg) translate(40vw) rotate(-120deg); } }
+    -webkit-transform: rotate(135deg) translate(40vw) rotate(-135deg); } }
 
 .wrap.features .circle > span:nth-of-type(5) {
-  -webkit-transform: rotate(160deg) translate(32.5vh) rotate(-160deg); }
+  -webkit-transform: rotate(180deg) translate(32.5vh) rotate(-180deg); }
 
 @media (max-width: 700px) {
   .wrap.features .circle > span:nth-of-type(5) {
-    -webkit-transform: rotate(160deg) translate(40vw) rotate(-160deg); } }
+    -webkit-transform: rotate(180deg) translate(40vw) rotate(-180deg); } }
 
 .wrap.features .circle > span:nth-of-type(6) {
-  -webkit-transform: rotate(200deg) translate(32.5vh) rotate(-200deg); }
+  -webkit-transform: rotate(225deg) translate(32.5vh) rotate(-225deg); }
 
 @media (max-width: 700px) {
   .wrap.features .circle > span:nth-of-type(6) {
-    -webkit-transform: rotate(200deg) translate(40vw) rotate(-200deg); } }
+    -webkit-transform: rotate(225deg) translate(40vw) rotate(-225deg); } }
 
 .wrap.features .circle > span:nth-of-type(7) {
-  -webkit-transform: rotate(240deg) translate(32.5vh) rotate(-240deg); }
+  -webkit-transform: rotate(270deg) translate(32.5vh) rotate(-270deg); }
 
 @media (max-width: 700px) {
   .wrap.features .circle > span:nth-of-type(7) {
-    -webkit-transform: rotate(240deg) translate(40vw) rotate(-240deg); } }
+    -webkit-transform: rotate(270deg) translate(40vw) rotate(-270deg); } }
 
 .wrap.features .circle > span:nth-of-type(8) {
-  -webkit-transform: rotate(280deg) translate(32.5vh) rotate(-280deg); }
+  -webkit-transform: rotate(315deg) translate(32.5vh) rotate(-315deg); }
 
 @media (max-width: 700px) {
   .wrap.features .circle > span:nth-of-type(8) {
-    -webkit-transform: rotate(280deg) translate(40vw) rotate(-280deg); } }
-
-.wrap.features .circle > span:nth-of-type(9) {
-  -webkit-transform: rotate(320deg) translate(32.5vh) rotate(-320deg); }
-
-@media (max-width: 700px) {
-  .wrap.features .circle > span:nth-of-type(9) {
-    -webkit-transform: rotate(320deg) translate(40vw) rotate(-320deg); } }
+    -webkit-transform: rotate(315deg) translate(40vw) rotate(-315deg); } }
 
 .wrap.features .circle span.microservices:before {
   content: '\e80c';
@@ -205,12 +197,6 @@
 
 .wrap.features .circle span.iot:before {
   content: '\e81d'; }
-
-.wrap.features .circle span.mountain:before {
-  font-size: 10.7vh;
-  line-height: 10.7vh;
-  padding-top: 0;
-  content: '\e82a'; }
 
 @media (max-width: 700px) {
   .wrap.features {
