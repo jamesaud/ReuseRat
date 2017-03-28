@@ -8,8 +8,9 @@ Sell your junk, get paid
      :alt: Built with Cookiecutter Django
 
 
-:License: MIT
+:License: None. Not Open Source Code.
 
+If you wish to use code in this project, simply shoot me an email at audretschjames@gmail.com and I'll likely give permission.
 
 Settings
 --------
@@ -127,4 +128,7 @@ It's a bit different than normal django process.
 3. Add the app in "config/settings/common.py", under LOCAL_APPS
 4. Add the urls via "config/urls.py"
 5. Should be good to go and start writing views & templates.
+<<<<<<< HEAD
+=======
 >>>>>>> master
+>>>>>>> 6b0c7f4e2e52465e8c05699f067ae461464618a3
