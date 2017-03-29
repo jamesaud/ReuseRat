@@ -5,7 +5,9 @@
     {{ block.super }}
 
     <!-- SASS -->
+    <link type='text/css' href="{% static 'css/snippets/pages/circle_tabs.css' %}" rel="stylesheet">
     <link type='text/css' href="{% static 'css/home.css' %}" rel="stylesheet">
+
 {% endblock %}
 
 {% block body-tag %}
@@ -168,13 +170,13 @@
 
 						<div class="col-md-4">
 							<div class="image-container">
-								<img class="img" src="{% static 'images/test/cards-test.png' %}">
+								<img class="img img-raised" src="{% static 'images/home/clean.jpg' %}">
 							</div>
 						</div>
 
 						<div class="col-md-4 col-md-offset-3">
 							<div class="section-description">
-								<h3 class="title">Clean Out Your Closet, Get Paid</h3>
+								<h3 class="title">Clean Out Your House, Get Paid</h3>
 								<h6 class="description">It's so simple a rat could do it </h6>
 
 								<h5 class='description'>Customers buy your items on our premier second hand store <a href='https://reuserat.com' target="_blank" class='text-warning'>ReuseRat.com</a></h5>
@@ -189,6 +191,16 @@
 					</div>
 				</div>
 			</div>
+
+                <!-- test -->
+            <div class="section-circles">
+                <h2 class="title">I Can Really Send Anything?</h2>
+                <h3>You can send almost anything, here's what we accept:</h3>
+                <h5>(min ~$5 value, good condition items)</h5>
+</h2>
+                {% include 'pages/snippets/circle_tabs.html' %}
+            </div>
+                <!-- /test -->
 
 
 			<div class="section section-orange">

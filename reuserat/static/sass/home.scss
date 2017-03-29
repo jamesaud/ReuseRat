@@ -96,13 +96,22 @@ h5.description, h4.description, p.description{
 
 .section-orange{
     @extend .section-dark;
+    background: #ff4b1f; /* fallback for old browsers */
+    background: -webkit-linear-gradient(left, #ff4b1f, #ff9068);
+    background: -o-linear-gradient(left, #ff4b1f, #ff9068);
+    background: linear-gradient(to right, #ff4b1f, #ff9068); /* Chrome 10-25, Safari 5.1-6 */ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */                 
+}
 
-
-background: #ff4b1f; /* fallback for old browsers */
-background: -webkit-linear-gradient(left, #ff4b1f, #ff9068);
-background: -o-linear-gradient(left, #ff4b1f, #ff9068);
-background: linear-gradient(to right, #ff4b1f, #ff9068); /* Chrome 10-25, Safari 5.1-6 */ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-                
+.section-circles{
+  padding-top: 100px;
+  padding-bottom: 100px;
+ 
+  .wrap.circle-features{
+       .inner, .circle-features-logo{
+         background-color: $blue-grey-50;
+         border: 2px solid $grey-800;
+       }
+  }
 }
 
 
@@ -117,4 +126,5 @@ background: linear-gradient(to right, #ff4b1f, #ff9068); /* Chrome 10-25, Safari
 footer{
     margin-top: 0px; 
 }
+
 

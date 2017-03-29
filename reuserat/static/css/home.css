@@ -78,6 +78,13 @@ h5.description, h4.description, p.description {
   /* Chrome 10-25, Safari 5.1-6 */
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }
 
+.section-circles {
+  padding-top: 100px;
+  padding-bottom: 100px; }
+  .section-circles .wrap.circle-features .inner, .section-circles .wrap.circle-features .circle-features-logo {
+    background-color: #eceff1;
+    border: 2px solid #424242; }
+
 .image-container img {
   width: auto;
   height: auto;

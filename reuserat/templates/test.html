@@ -10,75 +10,38 @@
 
 
 {% block content %}
-<div class="wrap features">
+    <div class="section section-orange" style="background-color: grey !important;">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4 col-md-offset-1">
+							<div class="section-description">
+								<h3 class="title">Easy to Cash Out</h3>
+								<h6 class="description">Paypal, Check, or Direct Deposit</h6>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 text-center">
-                <h2 class="title">Can I Really Send Anything?</h2>
-                <h4>No, not really. But you can send a lot!</h4>
-            </div>
-            <div class="features-logo">
-<br>
-                <img src="{% static 'images/logo.png' %}" class="img-responsive">
-                <h4>Send What You Want, Make Money </h4>
+								<h5 class='description'>
+									View your balance and cash out at any time.
+								</h5>
+								<h5>
+									Use Direct deposit secured by Stripe Payments, or payout with Paypal.
+								</h5>
+								<h5>
+									Don't want to use an online payment method? We'll send you send a check in the mail!
+								</h5>
 
-            </div>
-            <div class="circle">
 
-                <span id="videogames">Video Games</span>
-                <div class="inner">
-                    <h3>Video Games</h3>
-                    <p>Decompose the monolithic SOA into microservices running on containers</p>
-                </div>
+							</div>
 
-                <span id="jewelry">Jewlery</span>
-                <div class="inner">
-                    <h3>Jewlery</h3>
-                    <p>Node.js apps running on containers help the bots chat with you</p>
-                </div>
+						</div>
+						<div class="col-md-4 col-md-offset-3">
+							<div class="image-container">
+								<img class="img" src="{% static 'images/test/cards-test.png' %}">
+							</div>
+						</div>
 
-                <span id="treasures">Treasures</span>
-                <div class="inner">
-                    <h3>Treasures</h3>
-                    <p>APIs deployed on containers on the cloud serve as an MBaaS to deliver Push, Geo, Offline</p>
-                </div>
 
-                <span id="kids">Kids</span>
-                <div class="inner">
-                    <h3>Kids</h3>
-                    <p>APIs deployed on containers on the cloud serve as an MBaaS to deliver Push, Geo, Offline</p>
-                </div>
 
-                <span class="blacklist" id="blacklist">Blacklist</span>
-                <div class="inner blacklist">
-                    <h3>Items You Can't Send</h3>
-                    <li>Clothing</li>
-                </div>
-
-                <span id="electronics">Electronics</span>
-                <div class="inner">
-                    <h3>Electronics</h3>
-                    <li>Phones</li>
-                    <li>Music Players</li>
-                    <li>Headphones &amp; Audio</li>
-                    <li>Home Appliances</li>
-                    <li>And More!</li>
-                </div>
-
-                <span id="books">Books</span>
-                <div class="inner">
-                    <h3>Books</h3>
-                    <p>Millions of devices connected to a device analytics and control gateway deployed on a large cluster of containers</p>
-                </div>
-
-                <span id="movies">Movies</span>
-                <div class="inner">
-                    <h3>Movies</h3>
-                    <p>Apps having super large workloads (data intensive or compute intensive) needing to scale on the fly with containers.</p>
-                </div>
-
-        </div>
-    </div>
-</div>
+					</div>
+				</div>
+			</div>
+{% include 'pages/snippets/circle_tabs.html' %}
 {% endblock content %}

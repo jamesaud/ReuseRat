@@ -1,10 +1,6 @@
-@import '_colors';
-@import '_variables';
-@import '_mixins';
-.main{
-    min-height: 1000px;
-    background: darkgrey !important;
-}
+@import '../../_colors';
+@import '../../_variables';
+@import '../../_mixins';
 
 // For the circles with icons in them
 $circle-size: 15.5vh;
@@ -15,7 +11,10 @@ $circle-padding: 2.1vh;  // Padding-top for the icons distance from the perimite
 $inner-circle-size: 40vh;
 $inner-circle-offset: -20vh;
 
-.wrap.features{
+.wrap.circle-features{
+    min-height: 100vh;
+    position: relative;
+
     h2 {
     text-align: center;
     font-size: 3.5vh;
@@ -23,6 +22,12 @@ $inner-circle-offset: -20vh;
     h4{
         font-size: 2.4vh;
     }
+
+    li{
+        font-size: 2.2vh;
+        line-height: 1.6;
+    }
+    
     .inner {
         transition: all 100ms ease-out 200ms;
         opacity: 0;
@@ -38,6 +43,7 @@ $inner-circle-offset: -20vh;
         background-color: rgba(253, 253, 253, 0.95);
         padding: 8vh 5vh;
         margin: $inner-circle-offset;
+ 
     h3 {
         margin-top: 0;
         font-family: "open-sans", sans-serif;
@@ -64,8 +70,7 @@ $inner-circle-offset: -20vh;
         }
     }
     
-
-    .features-logo {
+    .circle-features-logo {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -150,33 +155,48 @@ $inner-circle-offset: -20vh;
 
             &:hover:before,
             &:focus:before {
-                border-color: #011b2a;
-                color: #011b2a;
-            }
+                border-color: $grey-900 !important;
+                color: $grey-900 !important;
+            } 
         } // span
     } // circle
 
-    @mixin amount_of_circles($num){
+
+    @mixin amount_of_circles($num, $border-colors, $icon-colors){
         $degrees: 0deg;
         @for $i from 1 through $num{
              .circle > span:nth-of-type(#{$i}){
+                &:before{
+                  color: nth($icon-colors, $i); 
+                  border-color: nth($border-colors, $i);
+                  }
                 -webkit-transform: rotate($degrees) translate(32.5vh) rotate(-$degrees);
+                -ms-transform: rotate($degrees) translate(32.5vh) rotate(-$degrees); /* IE 9 */
+                transform: rotate($degrees) translate(32.5vh) rotate(-$degrees);
              }
             @media (max-width: 700px){
                 .circle > span:nth-of-type(#{$i}){
                     -webkit-transform: rotate($degrees) translate(40vw) rotate(-$degrees);
+                    -ms-transform: rotate($degrees) translate(40vw) rotate(-$degrees);
+                    transform: rotate($degrees) translate(40vw) rotate(-$degrees);
                 }
             }
             //Reassign variables
             $degrees: $degrees + (360/$num);
-
         }
     }
 
 
     // Generate circles
-    @include amount_of_circles(8);
+    $border-colors: $grey-500, $grey-500, $grey-500, $grey-500, $grey-500, $grey-500, $grey-500, $grey-500;
+    $icon-colors: $blue-300, $indigo-300, $purple-300, $blue-grey-300, $red-300, $orange-300, $yellow-300, $green-300;
+    @include amount_of_circles(8, $border-colors, $icon-colors); 
 
+    .blacklist{
+      i.fa-times{
+          color: $red-500;
+      } 
+    }
     #blacklist:before{
         border-color: $red-500;
         content: "\f00d";
@@ -223,7 +243,7 @@ $inner-circle-offset: -20vh;
 
 ///Media
 @media (max-width: 700px) {
-    .wrap.features{
+    .wrap.circle-features{
         height: 80vh;
         padding-top: 2.8vh;
         padding-bottom: 2.8vh;
@@ -249,7 +269,7 @@ $inner-circle-offset: -20vh;
                 line-height: 1.6;
             }
         }
-        .features-logo {
+        .circle-features-logo {
             position: absolute;
             width: 50vw;
             height: 50vw;
