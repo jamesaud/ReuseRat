@@ -6,26 +6,38 @@
     background: darkgrey !important;
 }
 
+// For the circles with icons in them
+$circle-size: 15.5vh;
+$circle-offset: -8.25vh;
+$circle-padding: 2.1vh;  // Padding-top for the icons distance from the perimiter
+
+// For the center circle
+$inner-circle-size: 40vh;
+$inner-circle-offset: -20vh;
+
 .wrap.features{
     h2 {
     text-align: center;
     font-size: 3.5vh;
     }
-    .detail {
-    transition: all 100ms ease-out 200ms;
-    opacity: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 35vh;
-    height: 35vh;
-    text-align: center;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
-    background-color: rgba(253, 253, 253, 0.95);
-    padding: 8vh 5vh;
-    margin: -17.5vh;
+    h4{
+        font-size: 2.4vh;
+    }
+    .inner {
+        transition: all 100ms ease-out 200ms;
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $inner-circle-size;
+        height: $inner-circle-size;
+        text-align: center;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        background-color: rgba(253, 253, 253, 0.95);
+        padding: 8vh 5vh;
+        margin: $inner-circle-offset;
     h3 {
         margin-top: 0;
         font-family: "open-sans", sans-serif;
@@ -54,18 +66,18 @@
     
 
     .features-logo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 35vh;
-    height: 35vh;
-    text-align: center;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
-    background-color: #fdfdfd;
-    padding: 6vh 5vh;
-    margin: -17.5vh;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $inner-circle-size;
+        height: $inner-circle-size;
+        text-align: center;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        background-color: #fdfdfd;
+        padding: 8vh 5vh;
+        margin: $inner-circle-offset;
     }
 
     .circle {
@@ -86,10 +98,11 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 12.5vh;
-            height: 3.5vh;
-            margin: -6.25vh;
+            width: $circle-size;
+            height: 6.5vh;
+            margin: $circle-offset;
         }
+        
         span {
             font-family: "open-sans", sans-serif;
             font-weight: 300;
@@ -98,15 +111,14 @@
             line-height: 2.5vh;
             text-align: center;
 
-            
-            &:hover + .detail,
-            &:focus + .detail {
+            &:hover + .inner,
+            &:focus + .inner {
                 opacity: 1;
                 }
 
             &:before{
-                width: 12.5vh;
-                height: 12.5vh;
+                width: $circle-size;
+                height: $circle-size;
                 border-radius: 50%;
                 border: #fdfdfd solid 0.4vh;
                 font-style: normal;
@@ -122,7 +134,7 @@
                 text-align: center;
                 margin-top: 0;
                 margin-bottom: 0.5vh;
-                padding-top: 1.1vh;
+                padding-top: $circle-padding;
                 content: '\e81a';
                 color: white ;
             }
@@ -165,41 +177,48 @@
     // Generate circles
     @include amount_of_circles(8);
 
-
-
-    .circle span.microservices:before {
-    content: '\e80c';
-    font-size: 8.5vh;
-    padding-top: 1.7vh;
-    }
-    .circle span.mobile:before {
-        content: "\f09b";
-        font-family: FontAwesome;
-    }
-    .circle span.cloud-native:before {
-        content: "\f09b";
-        font-family: FontAwesome;
-
-    }
-    .circle span.blacklist:before {
+    #blacklist:before{
+        border-color: $red-500;
         content: "\f00d";
-        font-family: FontAwesome;
+        font-family: 'FontAwesome';
     }
-    .circle span.realtime:before {
-    content: '\e817';
-    }
-    .circle span.electronics:before {
+
+    #electronics:before {
         content: "\f10a"; 
-        font-family: FontAwesome;
+        font-family: 'FontAwesome';
         }
-
-    .circle span.iot:before {
-    content: '\e81d';
+    
+    #books:before{
+        content: '\e865';
+        font-family: 'Material Icons';
     }
+
+    #movies:before{
+        content: '\e02c';
+        font-family: 'Material Icons';
+    }  
+
+    #videogames:before{
+        content: '\e338';
+        font-family: 'Material Icons';
+    }
+
+    #jewelry:before{
+        content: '\e334';
+        font-family: 'Material Icons';
+    }
+
+    #kids:before{
+        content: '\e332';
+        font-family: 'Material Icons';
+    }
+
+    #treasures:before{
+        content: '\eb3b';
+        font-family: 'Material Icons';
+    }
+
 }
-
-
-
 
 
 ///Media
@@ -212,7 +231,7 @@
         h2 {
             font-size: 3.5vh;
         }
-        .detail {
+        .inner {
             width: 50vw;
             height: 50vw;
             margin: -25vw;
@@ -235,6 +254,7 @@
             width: 50vw;
             height: 50vw;
             margin: -25vw;
+            padding: 5vh;
         }
         .circle {
             width: 80vw;

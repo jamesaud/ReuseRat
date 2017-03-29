@@ -5,8 +5,7 @@
 
 {% block css %}
     {{ block.super }}
-
-  <link type='text/css' href="{% static 'css/test.css' %}" rel="stylesheet">
+    <link type='text/css' href="{% static 'css/snippets/pages/circle_tabs.css' %}" rel="stylesheet">
 {% endblock %}
 
 
@@ -26,28 +25,39 @@
 
             </div>
             <div class="circle">
-                <span class="kitchen" id="kitchen">Kitchen</span>
-                <div class="detail kitchen">
-                    <h3>Kitchen</h3>
-                    <p>Node.js apps running on containers help the bots chat with you</p>                </div>
-                                <span class="microservices" id="microservices">Video Games</span>
-                <div class="detail microservices">
+
+                <span id="videogames">Video Games</span>
+                <div class="inner">
                     <h3>Video Games</h3>
-                    <p>Decompose the monolithic SOA into microservices running on containers</p>                </div>
-                                <span class="mobile icon-flag" id="mobile">Mobile Backends</span>
-                <div class="detail mobile">
-                    <h3>Mobile Backends</h3>
-                    <p>APIs deployed on containers on the cloud serve as an MBaaS to deliver Push, Geo, Offline</p>                </div>
-                    <span class="icon-home cloud-native " id="cloud-native">Cloud</span>
+                    <p>Decompose the monolithic SOA into microservices running on containers</p>
+                </div>
+
+                <span id="jewelry">Jewlery</span>
+                <div class="inner">
+                    <h3>Jewlery</h3>
+                    <p>Node.js apps running on containers help the bots chat with you</p>
+                </div>
+
+                <span id="treasures">Treasures</span>
+                <div class="inner">
+                    <h3>Treasures</h3>
+                    <p>APIs deployed on containers on the cloud serve as an MBaaS to deliver Push, Geo, Offline</p>
+                </div>
+
+                <span id="kids">Kids</span>
+                <div class="inner">
+                    <h3>Kids</h3>
+                    <p>APIs deployed on containers on the cloud serve as an MBaaS to deliver Push, Geo, Offline</p>
+                </div>
 
                 <span class="blacklist" id="blacklist">Blacklist</span>
-                <div class="detail blacklist">
+                <div class="inner blacklist">
                     <h3>Items You Can't Send</h3>
                     <li>Clothing</li>
                 </div>
 
-                <span class="electronics" id="electronics">Electronics</span>
-                <div class="detail electronics">
+                <span id="electronics">Electronics</span>
+                <div class="inner">
                     <h3>Electronics</h3>
                     <li>Phones</li>
                     <li>Music Players</li>
@@ -56,14 +66,17 @@
                     <li>And More!</li>
                 </div>
 
-                <span class="iot" id="iot">Books</span>
-                <div class="detail iot">
-                    <h3>IoT</h3>
-                    <p>Millions of devices connected to a device analytics and control gateway deployed on a large cluster of containers</p>                </div>
-                                <span class="mountain" id="mountain">Movies</span>
-                <div class="detail mountain">
-                    <h3>Big Apps <small>(Uber Large Workloads)</small></h3>
-                    <p>Apps having super large workloads (data intensive or compute intensive) needing to scale on the fly with containers.</p>                </div>
+                <span id="books">Books</span>
+                <div class="inner">
+                    <h3>Books</h3>
+                    <p>Millions of devices connected to a device analytics and control gateway deployed on a large cluster of containers</p>
+                </div>
+
+                <span id="movies">Movies</span>
+                <div class="inner">
+                    <h3>Movies</h3>
+                    <p>Apps having super large workloads (data intensive or compute intensive) needing to scale on the fly with containers.</p>
+                </div>
 
         </div>
     </div>

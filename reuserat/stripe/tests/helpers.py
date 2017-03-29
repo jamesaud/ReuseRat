@@ -4,7 +4,6 @@ import stripe
 
 
 
-
 def create_test_bank_token():
     return stripe.Token.create(bank_account={"country": 'US',
                                                     "currency": 'usd',
@@ -13,7 +12,6 @@ def create_test_bank_token():
                                                     "routing_number": '110000000',
                                                     "account_number": '000123456789'
                                                     },)
-
 
 
 # Create a test charge to a test customer and deposit it into an account
