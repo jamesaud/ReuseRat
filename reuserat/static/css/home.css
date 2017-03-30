@@ -48,6 +48,13 @@ h5.description, h4.description, p.description {
   background-attachment: fixed !important;
   margin-top: 60px; }
 
+.section-testimonials {
+  padding-top: 100px; }
+  .section-testimonials h5 {
+    text-align: center; }
+  .section-testimonials i.fa-quote-left {
+    color: #2196f3; }
+
 .section-dark, .section-blue, .section-orange {
   display: -ms-flexbox;
   display: flex;

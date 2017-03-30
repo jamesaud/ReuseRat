@@ -75,6 +75,16 @@ h5.description, h4.description, p.description{
      margin-top: 60px;
 }
 
+.section-testimonials{
+  padding-top: 100px;
+  h5{
+    text-align: center;
+  }
+  i.fa-quote-left{
+    color: $blue-500;
+  }
+}
+
 
 // Move to theme
 .section-dark{
