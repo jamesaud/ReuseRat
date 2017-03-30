@@ -42,7 +42,6 @@ THIRD_PARTY_APPS = (
     'allauth.account',  # Registration
     'allauth.socialaccount',  # Registration
     'localflavor', # Django LocalFlavor
-    'paypalrestsdk' # Paypal Rest SDK for paypal transactions
 )
 
 # Add Any Third Party apps that need to come before django built in apps.
@@ -359,6 +358,9 @@ PAYPAL_SECRET=env('PAYPAL_SECRET', default=None)
 PAYPAL_SANDBOX_BUYER_EMAIL = env('PAYPAL_SANDBOX_BUYER_EMAIL', default="trashandtreasure67-buyer@gmail.com")
 PAYPAL_MODE = env('PAYPAL_MODE', default="sandbox") # Or Production
 
+
+# Check API Lob
+LOB_TEST_API_KEY=env('LOB_TEST_API_KEY',default=None)
 
 # For the Shipping 'TO' address
 WAREHOUSE_NAME = 'ReuseRat Inc.'
