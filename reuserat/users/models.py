@@ -66,11 +66,7 @@ class User(AbstractUser):
     def get_current_balance(self):
         # Call function here from helpers
         # External API Call
-        try:
-            balance = cents_to_dollars(retrieve_balance(self.stripe_account.secret_key))
-            return "{:.2f}".format(balance)
-        except Exception as e:
-            return "Temporarily Unavailable"
+        return cents_to_dollars(retrieve_balance(self.stripe_account.secret_key))
 
     def get_primary_email(self):
         return self.emailaddress_set.filter(primary=True).first() or None
@@ -80,3 +76,8 @@ class User(AbstractUser):
 
     def get_verified_emails(self):
         return self.emailaddress_set.filter(verified=True)
+
+    @property
+    def PaymentChoices(self):
+        """Allow a views and templates to access payment choices easily."""
+        return PaymentChoices

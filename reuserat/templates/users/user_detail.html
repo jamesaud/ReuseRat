@@ -1,6 +1,7 @@
 {% extends "base_profile.html" %}
 {% load static %}
 {% load staticfiles i18n %}
+{% load project_tags %}
 
 {% block title %}Dashboard Home{% endblock %}
 
@@ -30,11 +31,13 @@
 
   <div class='col-sm-2 current-balance'>
     <small>Current Balance</small>
-    <h2>${{ object.get_current_balance }}</h2>
-        <form method="post" action="{% url 'users:cash_out' %}">
-            {% csrf_token %}
-            <button id="cash-out-btn" type="submit" class='btn btn-success' href='{% url "users:cash_out" %}'>Cash Out</button>
-        </form>
+    <h2>${{ balance|currency }}</h2>
+             {% if balance >= min_cash_out_amount %}
+                <button id="cash-out-btn" type="submit" class='btn btn-success' data-toggle="modal" data-target="#cash-out-modal">Cash Out</button>
+              </form>
+            {% else %}
+              <button id="cash-out-btn" class='btn btn-default' rel="tooltip" title="You can cash out after you have at least a ${{min_cash_out_amount|currency}} minimum balance.">Cash Out</button>
+            {% endif %}
   </div>
 
   <div class='col-sm-5 shipment-button'>
@@ -119,6 +122,7 @@
 {% block modal %}
   {% include "shipments/snippets/delete_shipment_modal.html" with shipment_id='000' %}
   {% include "shipments/snippets/instructions_shipment_modal.html" %}
+  {% include "users/snippets/cash_out_modal.html" with amount=balance %}
 {% endblock modal %}
 
 {% block javascript %}
