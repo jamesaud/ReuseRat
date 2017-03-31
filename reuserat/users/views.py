@@ -444,7 +444,7 @@ class CashOutView(LoginRequiredMixin, View):
         balance_in_cents = int(self.request.user.stripe_account.retrieve_balance())
         balance_in_dollars = stripe_helpers.cents_to_dollars(balance_in_cents)
         customer_name = self.request.user.get_full_name()
-        test_stripe_helpers.add_test_funds_to_account(self.request.user.stripe_account.account_id, 2500, "test deposit")
+       # test_stripe_helpers.add_test_funds_to_account(self.request.user.stripe_account.account_id, 2500, "test deposit")
 
         try:
             # Try to transfer the user's current balance to OUR stripe account.
@@ -475,5 +475,16 @@ class CashOutView(LoginRequiredMixin, View):
             logger.error("Check Error: " + str(e))
             raise
         else:
+            # Create the transaction
+            transaction = Transaction(user=self.request.user,
+                                      payment_type=self.request.user.payment_type,
+                                      message="Cash Out with Check ",
+                                      type=TransactionTypeChoices.OUT,
+                                      amount=balance_in_dollars,
+                                      check_id=check_response.id)  # Need to set the balance still
+
+            transaction.save()  # Will delete if the api calls don't go through. Need the transaction ID to set as the paypal batch id.
+
             messages.add_message(self.request, messages.SUCCESS,
                                  'Cashed out using Check successfully. The expected delivery date is {}.'.format(check_response.expected_delivery_date))
+            return check_response

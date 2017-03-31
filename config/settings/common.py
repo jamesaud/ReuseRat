@@ -360,7 +360,9 @@ PAYPAL_MODE = env('PAYPAL_MODE', default="sandbox") # Or Production
 
 
 # Check API Lob
+LOB_LIVE_API_KEY=env('LOB_LIVE_API_KEY',default=None)
 LOB_TEST_API_KEY=env('LOB_TEST_API_KEY',default=None)
+LOB_API_VERSION = env('LOB_API_VERSION',default=None)
 
 # For the Shipping 'TO' address
 WAREHOUSE_NAME = 'ReuseRat Inc.'
@@ -368,3 +370,11 @@ WAREHOUSE_ADDRESS_LINE = '504 E Cottage Grove'
 WAREHOUSE_ZIP = '47408'
 WAREHOUSE_CITY = 'Bloomington'
 WAREHOUSE_STATE = 'IN'
+
+# For the 'FROM' address for checks
+COMPANY_NAME = 'ReuseRat Inc.'
+COMPANY_ADDRESS_LINE = '504 E Cottage Grove'
+COMPANY_ADDRESS_LINE_APT= 'Apt #5'
+COMPANY_ZIP = '47408'
+COMPANY_CITY = 'Bloomington'
+COMPANY_STATE = 'IN'

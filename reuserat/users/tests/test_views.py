@@ -8,7 +8,7 @@ from django.conf import settings
 from reuserat.stripe import helpers as stripe_helpers
 from reuserat.stripe.models import Transaction, TransactionTypeChoices
 from reuserat.stripe.tests.helpers import add_test_funds_to_account
-
+import lob
 from ..models import PaymentChoices
 from .factories import EmailAddressFactory
 
@@ -228,7 +228,8 @@ class TestMyCashOut(TestCase):
         self.assertEqual(transaction_object.type, TransactionTypeChoices.OUT)
         self.assertEqual(transaction_object.amount, stripe_helpers.cents_to_dollars(old_balance))
 
-        
+
+
 
     def test_cashout_direct_deposit(self):
         """Check that the correct stripe funds are transfered to a user's bank account."""
@@ -303,6 +304,33 @@ class TestMyCashOut(TestCase):
 
 
 
+
+    def test_cashout_check(self):
+
+        """Check that the correct stripe funds are transfered"""
+        self.request.user.payment_type = PaymentChoices.CHECK
+
+        old_balance = stripe_helpers.retrieve_balance(self.user.stripe_account.secret_key)
+        response = CashOutView.as_view()(self.request)
+        new_balance = stripe_helpers.retrieve_balance(self.user.stripe_account.secret_key)
+        self.assertGreater(old_balance, 0)
+        self.assertEqual(new_balance, 0)
+        self._assert_transaction_cash_out_test(old_balance)
+        transaction_object = Transaction.objects.get(user=self.request.user)
+        self.assertEqual(lob.Check.retrieve(transaction_object.check_id).to_address.name,self.request.user.get_full_name())
+        self.assertEqual(lob.Check.retrieve(transaction_object.check_id).to_address.address_line1, self.request.user.address.address_line)
+        self.assertEqual(lob.Check.retrieve(transaction_object.check_id).to_address.address_line2,
+                         self.request.user.address.address_apartment)
+
+        self.assertEqual(lob.Check.retrieve(transaction_object.check_id).to_address.address_line2,
+                         self.request.user.address.address_apartment)
+
+        self.assertEqual(lob.Check.retrieve(transaction_object.check_id).to_address.address_city,
+                         self.request.user.address.city)
+        self.assertEqual(lob.Check.retrieve(transaction_object.check_id).to_address.address_state,
+                         self.request.user.address.state)
+        self.assertEqual(lob.Check.retrieve(transaction_object.check_id).to_address.address_zip,
+                         self.request.user.address.zipcode)
 
 
 
