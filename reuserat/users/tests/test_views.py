@@ -6,11 +6,11 @@ from config.settings import test
 from django.conf import settings
 
 from reuserat.stripe import helpers as stripe_helpers
-from reuserat.stripe.models import Transaction, TransactionTypeChoices
+from reuserat.stripe.models import Transaction, TransactionTypeChoices, StripeAccount, PaypalAccount
 from reuserat.stripe.tests.helpers import add_test_funds_to_account
 
 from ..models import PaymentChoices
-from .factories import EmailAddressFactory
+from .factories import EmailAddressFactory, FormUpdateUserFactory, FormUpdateUserAddressFactory
 
 from ..views import (
     UserRedirectView,
@@ -65,12 +65,44 @@ class TestUserUpdateView(BaseUserTestCase):
         self.assertEqual(self.view.get_success_url(), '/dashboard/')
 
 
-class TestUserCompleteSignup(TestCase):
-    # Need to write test cases.
-    # Test that other views redirect to this one if the user hasn't compelted signup.
-    # Test the form submission on user complete signup.
-    pass
+class TestUserCompleteSignup(BaseUserTestCase):
+    def setUp(self):
+        super(TestUserCompleteSignup, self).setUp()
+        self.view = UserCompleteSignupView
+        EmailAddressFactory(user=self.user)  # Add a valid email to the user, which happens prior to update view
+        # Post data to be submitted as Dict like objects
+        self.user_update_data = FormUpdateUserFactory()
+        self.user_address_data = FormUpdateUserAddressFactory()
+        self.request = self.factory.post(path='/~complete_signup/',
+                                    data={**self.user_update_data, **self.user_address_data}) # Merge dicts
+        self.request.user = self.user
 
+
+
+    def test_fields_added(self):
+        user_update_data, user_address_data = self.user_update_data, self.user_update_data
+
+        user = self.request.user
+        response = self.view.as_view()(self.request)
+
+        # Make sure the user was updated appropriately
+        self.assertEqual(user.first_name, user_update_data['first_name'])
+        self.assertEqual(user.last_name, user_update_data['last_name'])
+        self.assertEqual(user.payment_type, user_update_data['payment_type'])
+        self.assertEqual(user.phone, user_update_data['phone'])
+
+        self.assertEqual(user.address.address_line, user_address_data['address_line'])
+        self.assertEqual(user.address.address_apartment, str(user_address_data['address_apartment']))
+        self.assertEqual(user.address.city, user_address_data['city'])
+        self.assertEqual(user.address.state, user_address_data['state'])
+        self.assertEqual(user.address.zipcode, user_address_data['zipcode'])
+
+    def test_stripe_paypal_added(self):
+        response = self.view.as_view()(self.request)
+
+        # Stripe and Paypal should execute without error
+        stripe_account = StripeAccount.objects.get(user=self.user)
+        paypal_account = PaypalAccount.objects.get(email=self.user.emailaddress_set().all().first())
 
 class TestUpdatePaymentInformation(TestCase):
     def setUp(self):
@@ -228,7 +260,7 @@ class TestMyCashOut(TestCase):
         self.assertEqual(transaction_object.type, TransactionTypeChoices.OUT)
         self.assertEqual(transaction_object.amount, stripe_helpers.cents_to_dollars(old_balance))
 
-        
+
 
     def test_cashout_direct_deposit(self):
         """Check that the correct stripe funds are transfered to a user's bank account."""

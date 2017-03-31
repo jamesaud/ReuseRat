@@ -4,7 +4,7 @@ from reuserat.stripe.tests.factories import StripeAccountFactory, PaypalAccountF
 from reuserat.stripe.tests.helpers import add_test_funds_to_account, create_test_bank_token
 from reuserat.stripe.helpers import update_payment_info
 
-from reuserat.users.models import Address, PaymentChoices, User
+from ..models import Address, PaymentChoices, User
 
 from allauth.account.models import EmailAddress
 
@@ -67,4 +67,22 @@ class UserRegisteredBankFactory(UserFactory):
         # Set the paypal account to be assosciated with the user's email, with the email set above.
         update_payment_info(account_id=self.stripe_account.account_id, account_token= create_test_bank_token(), user_object=self)
 
+
+
+
+
+class FormUpdateUserFactory(dict):
+    """Return the data in a dictionary needed for updating a user"""
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.update({'first_name': 'test', 'last_name': 'test', 'payment_type': PaymentChoices.DIRECT_DEPOSIT,
+                     'phone': '812-444-5555'})
+
+
+class FormUpdateUserAddressFactory(dict):
+    """Return the data in a dictionary needed for updating a user"""
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.update({'address_line': '504 e cottage grove', 'address_apartment': 5, 'city': 'bloomington',
+                     'state': 'IN', 'zipcode': '47408'})
 

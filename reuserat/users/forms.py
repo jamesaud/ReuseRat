@@ -48,7 +48,7 @@ class UserAddressForm(forms.ModelForm):
 
     class Meta:
         model = Address
-        fields = ('address_line','address_apartment','city','state','zipcode')
+        fields = ('address_line', 'address_apartment', 'city', 'state', 'zipcode')
 
 
     def __init__(self, *args, **kwargs):

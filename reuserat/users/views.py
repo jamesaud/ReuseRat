@@ -86,6 +86,9 @@ class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
         user_form = self.user_form(request.POST)
         address_form = self.address_form(request.POST)
 
+        print(user_form.errors)
+        print(address_form.errors)
+
         if address_form.is_valid() and user_form.is_valid():
             new_address = Address(**address_form.cleaned_data)
             new_address.save()  # Save Address first as there is an FK dependency between User & Address
@@ -127,7 +130,7 @@ class UserCompleteSignupView(UserUpdateMixin):
         return reverse('users:detail')
 
     def get_context_data(self, **kwargs):
-        context = super(UserCompleteSignupView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['user_form'] = self.user_form(instance=self.request.user,
                                               initial={'payment_type': 'Paypal'})
         return context
