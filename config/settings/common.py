@@ -170,6 +170,8 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 # Your stuff: custom template context processors go here
+                "reuserat.context_processors.project_processors.variables",
+
             ],
             'libraries' : {
                 'project_tags': 'reuserat.template_tags.tags',
@@ -324,6 +326,26 @@ SOCIALACCOUNT_PROVIDERS = \
 
 
 
+# CUSTOM PROJECT SETTINGS
+# ------------------------------------------------------------------------------
+
+# Exposed in reuserat.context_processors.project_processors.variables function
+EXTERNAL_URLS = {
+    'SOCIAL':
+        {'reddit': 'https://www.reddit.com/user/reuserat/',
+         'facebook': 'https://www.facebook.com/pg/ReuseRat-1624736247551484/',
+         'twitter': 'https://twitter.com/ReuseRat',
+         'medium': 'https://medium.com/reuserat'},
+    'SITE':{
+        'store': 'https://reuserat.com',
+        'seller': 'https://reuseratseller.com',
+        'blog': 'https://reuserat.com/blog/news'}
+}
+
+
+
+# ENV LOADED KEYS AND SETTINGS
+# ------------------------------------------------------------------------------
 
 # For shopify webhooks
 SHOPIFY_WEBHOOK_API_KEY = env('SHOPIFY_WEBHOOK_API_KEY')

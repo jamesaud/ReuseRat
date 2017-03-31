@@ -64,11 +64,6 @@ body {
 	}
 }
 
-a, a:hover, a:active, a:visited, a:link {
-	color: $color-2;
-	text-decoration: none;
-}
-
 /* -------------------------------- 
 
 Main components 
@@ -311,6 +306,12 @@ header {
 .cd-faq-group {
 	/* hide group not selected */
 	display: none;
+
+	a, a:hover, a:active, a:visited, a:link {
+	color: $color-2;
+	text-decoration: none;
+	}
+	
 
 	&.selected {
 		display: block;

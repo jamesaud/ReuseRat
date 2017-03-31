@@ -3,15 +3,19 @@
 Primary style
 
 -------------------------------- */
-.cd-faq *, .cd-faq *::after, .cd-faq *::before {
+*, *::after, *::before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
-.cd-faq *::after, .cd-faq *::before {
+
+*::after, *::before {
   content: ''; }
 
 body {
-  color: #4e5359; }
+  font-size: 100%;
+  font-family: "Open Sans", sans-serif;
+  color: #4e5359;
+  background-color: #f3f3f5; }
   body::after {
     /* overlay layer visible on small devices when the right panel slides in */
     position: fixed;
@@ -19,6 +23,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    background-color: rgba(78, 83, 89, 0.8);
     visibility: hidden;
     opacity: 0;
     -webkit-transition: opacity .3s 0s, visibility 0s .3s;
@@ -34,6 +39,10 @@ body {
     body::after {
       display: none; } }
 
+a {
+  color: #a9c056;
+  text-decoration: none; }
+
 /* -------------------------------- 
 
 Main components 
@@ -44,16 +53,20 @@ header {
   height: 180px;
   line-height: 180px;
   text-align: center;
-  background-color: #0288d1; }
+  background-color: #a9c056; }
   header h1 {
     color: #ffffff;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale; }
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 20px;
+    font-size: 1.25rem; }
   @media only screen and (min-width: 1024px) {
     header {
       height: 240px;
       line-height: 240px; }
       header h1 {
+        font-size: 36px;
+        font-size: 2.25rem;
         font-weight: 300; } }
 
 .cd-faq {
@@ -108,6 +121,8 @@ header {
     float: left;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); }
     .cd-faq-categories a {
+      font-size: 13px;
+      font-size: 0.8125rem;
       font-weight: 600;
       padding-left: 24px;
       padding: 0 24px;
@@ -136,7 +151,7 @@ header {
       left: 0;
       height: 100%;
       width: 3px;
-      background-color: #0288d1;
+      background-color: #a9c056;
       opacity: 0;
       -webkit-transition: opacity 0.2s;
       -moz-transition: opacity 0.2s;
@@ -261,9 +276,6 @@ header {
 .cd-faq-group {
   /* hide group not selected */
   display: none; }
-  .cd-faq-group a, .cd-faq-group a:hover, .cd-faq-group a:active, .cd-faq-group a:visited, .cd-faq-group a:link {
-    color: #0288d1;
-    text-decoration: none; }
   .cd-faq-group.selected {
     display: block; }
   .cd-faq-group .cd-faq-title {
@@ -274,6 +286,8 @@ header {
       box-shadow: none; }
     .cd-faq-group .cd-faq-title h2 {
       text-transform: uppercase;
+      font-size: 12px;
+      font-size: 0.75rem;
       font-weight: 700;
       color: #bbbbc7; }
   .no-js .cd-faq-group {
@@ -300,10 +314,11 @@ header {
   position: relative;
   display: block;
   margin: 1.6em 0 .4em;
-  line-height: 1.2;
-  font-size: 22px; }
+  line-height: 1.2; }
   @media only screen and (min-width: 768px) {
     .cd-faq-trigger {
+      font-size: 24px;
+      font-size: 1.5rem;
       font-weight: 300;
       margin: 0;
       padding: 24px 72px 24px 24px; }
@@ -314,7 +329,7 @@ header {
         top: 50%;
         height: 2px;
         width: 13px;
-        background: #3cb9fd;
+        background: #cfdca0;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
         -webkit-transition-property: -webkit-transform;
@@ -350,19 +365,17 @@ header {
         transform: rotate(45deg); } }
 
 .cd-faq-content p {
+  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.4;
-  color: #6c7d8e;
-  font-size: 16px; }
+  color: #6c7d8e; }
 @media only screen and (min-width: 768px) {
   .cd-faq-content {
     display: none;
     padding: 0 24px 30px; }
     .cd-faq-content p {
-      line-height: 1.6;
-      font-size: 16px; }
+      line-height: 1.6; }
     .no-js .cd-faq-content {
       display: block; } }
 
-/*======*/
-
-/*# sourceMappingURL=mystyle.css.map */
+/*# sourceMappingURL=style.css.map */

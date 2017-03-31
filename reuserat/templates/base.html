@@ -68,7 +68,7 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="https://reuserat.com" target='_blank'>
+              <a class="navbar-brand" href="{{ EXTERNAL_URLS.SITE.store }}" target='_blank'>
                  <img class='logo' src="{% static 'images/logo.png' %}">
               </a>
             </div>
@@ -81,7 +81,7 @@
               </li>
 
               <li>
-                  <a href="http://blog.creative-tim.com">
+                  <a href="{{ EXTERNAL_URLS.SITE.store }}">
                     Store
                   </a>
               </li>
@@ -109,22 +109,22 @@
               {% endif %}
 
               <li>
-                <a href="https://twitter.com/CreativeTim" target="_blank" class="btn btn-simple btn-white btn-just-icon">
+                <a href="{{ EXTERNAL_URLS.SOCIAL.twitter }}" target="_blank" class="btn btn-simple btn-white btn-just-icon">
                   <i class="fa fa-twitter"></i>
                 </a>
               </li>
                   <li>
-                      <a href="https://www.facebook.com/CreativeTim" target="_blank" class="btn btn-simple btn-white btn-just-icon">
+                      <a href="{{ EXTERNAL_URLS.SOCIAL.facebook }}" target="_blank" class="btn btn-simple btn-white btn-just-icon">
                 <i class="fa fa-facebook-square"></i>
               </a>
                   </li>
                 <li>
-                  <a href="https://www.instagram.com/CreativeTimOfficial" target="_blank" class="btn btn-simple btn-white btn-just-icon">
+                  <a href="{{ EXTERNAL_URLS.SOCIAL.medium }}" target="_blank" class="btn btn-simple btn-white btn-just-icon">
                     <i class="fa fa-medium"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="https://www.instagram.com/CreativeTimOfficial" target="_blank" class="btn btn-simple btn-white btn-just-icon">
+                  <a href="{{ EXTERNAL_URLS.SOCIAL.reddit }}" target="_blank" class="btn btn-simple btn-white btn-just-icon">
                     <i class="fa fa-reddit"></i>
                   </a>
                 </li>
@@ -184,25 +184,29 @@
 	        <div class="container">
 
               <div class="row social-share text-center">
-	                    <button id="twitter" class="btn btn-raised btn-twitter sharrre">
+	                    <a id="twitter" href="{{ EXTERNAL_URLS.SOCIAL.twitter }}" target="_blank" class="btn btn-raised btn-twitter sharrre">
 	                        <i class="fa fa-twitter"></i>
 	                        Twitter
-	                    <div class="ripple-container"></div></button>
+    	                    <div class="ripple-container"></div>
+                        </a>
 
-	                    <button id="facebook" class="btn btn-raised btn-facebook sharrre">
+	                    <a id="facebook" href="{{ EXTERNAL_URLS.SOCIAL.facebook }}" target="_blank" class="btn btn-raised btn-facebook sharrre">
                         <i class="fa fa-facebook-square"></i>
                         Facebook
-                      </button>
+                            <div class="ripple-container"></div>
+                        </a>
 
-                      <button id="medium" class="btn btn-raised btn-medium sharrre">
+                        <a id="medium" href="{{ EXTERNAL_URLS.SOCIAL.medium }}" target="_blank" class="btn btn-raised btn-medium sharrre">
 	                        <i class="fa fa-medium"></i>
 	                        Medium
-	                    </button>
+                          <div class="ripple-container"></div>
+	                    </a>
 
-						          <button id="reddit" href="https://github.com/timcreative/material-kit" target="_blank" class="btn btn-raised btn-reddit">
+                        <a id="reddit" href="{{ EXTERNAL_URLS.SOCIAL.reddit }}" target="_blank" class="btn btn-raised btn-reddit">
 	                        <i class="fa fa-reddit"></i>
 	                    	Reddit
-	                    </button>
+                            <div class="ripple-container"></div>
+	                    </a>
 
                       <div class="dropup social-drop">
                         <button class='btn btn-raised btn-default' type="button" id="social-dropup-footer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -235,12 +239,12 @@
 	            <nav class="pull-left">
 	                <ul>
 	                    <li>
-	                        <a href="https://reuserat.com">
+	                        <a href="{{ EXTERNAL_URLS.SITE.store }}">
                                 <img class='logo' src="{% static 'images/logo.png' %}">
 	                        </a>
 	                    </li>
 	                    <li>
-	                        <a href="https://reuserat.com/blogs/news">
+	                        <a href="{{ EXTERNAL_URLS.SITE.blog }}">
 	                           Blog
 	                        </a>
 	                    </li>
@@ -249,18 +253,18 @@
 	                            Licenses
 	                        </a>
 	                    </li>
-              
+
                       <li>
 	                        <a href="{% url 'knowledge:questions' %}">
 	                            Knowledge Base
 	                        </a>
 	                    </li>
                       <li>
-	                        <a href="https://reuserat.com">
+	                        <a href="{{ EXTERNAL_URLS.SITE.store }}">
 	                            Store
 	                        </a>
 	                    </li>
-                      
+
                       {% if not request.user.is_authenticated %}
                       <li class="nav-item">
                         <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
