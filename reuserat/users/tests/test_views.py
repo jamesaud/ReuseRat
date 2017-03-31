@@ -80,7 +80,7 @@ class TestUserCompleteSignup(BaseUserTestCase):
 
 
     def test_fields_added(self):
-        user_update_data, user_address_data = self.user_update_data, self.user_update_data
+        user_update_data, user_address_data = self.user_update_data, self.user_address_data
 
         user = self.request.user
         response = self.view.as_view()(self.request)
@@ -102,7 +102,7 @@ class TestUserCompleteSignup(BaseUserTestCase):
 
         # Stripe and Paypal should execute without error
         stripe_account = StripeAccount.objects.get(user=self.user)
-        paypal_account = PaypalAccount.objects.get(email=self.user.emailaddress_set().all().first())
+        paypal_account = PaypalAccount.objects.get(email=self.user.emailaddress_set.all().first())
 
 class TestUpdatePaymentInformation(TestCase):
     def setUp(self):
