@@ -1,0 +1,116 @@
+<!-- Start Modal -->
+<style>
+    #shipment-instructions-modal .instructions-step p{
+        font-size: 18px;
+    }
+    #shipment-instructions-modal .instructions-step li{
+        font-size: 14px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+     #shipment-instructions-modal .modal-dialog{
+         margin-top: 20px;
+     }
+
+</style>
+<div class="modal fade" id="shipment-instructions-modal" tabindex="-1" role="dialog" aria-labelledby="shipmentInstructionsLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<i class="material-icons">clear</i>
+				</button>
+				<h3 class="modal-title">Shipping Instructions: Quick Guide</h3>
+			</div>
+			<div class="modal-body">
+                <div class='instructions-step'>
+                    <p>
+                        1. Pack Your Box
+                    </p>
+                    <ol>
+                        <li>
+                            - Find or buy a quality shipping box that won't break (old amazon boxes work fine).
+                        </li>
+                        <li>
+                            - Pack your items in the box. Be sure to protect delicate items with bubble wrap!
+                        </li>
+                    </ol>
+                </div>
+                <div class='instructions-step'>
+                    <p>
+                        2. Print Your Shipping Label  
+                    </p>
+                    <ol>
+                        <li>
+                            - Print off your shipping label from the <i>shipment detail</i> page.
+                        </li>
+                        <li>
+                            - Using a standard printer is fine.
+                        </li>
+                    </ol>
+                </div>
+                
+                <div class='instructions-step'>
+                    <p>
+                        3. Attach Your Shipping Label &amp; Tape the Box
+                    </p>
+                    <ol>
+                        <li>
+                            - Use strong tape (duck tape recommended) to tape the label to the side of the box.
+                        </li>
+                        <li>
+                            - Ensure all 4 sides are taped down, so there's no chance the label can fall off.
+                        </li>
+                        <li>
+                            - Tape the box generously with strong tape, ensuring it will not break during transit.
+                        </li>
+                    </ol>
+                </div>
+
+                <div class='instructions-step'>
+                    <p>
+                        4. Pay for Shipping (You'll Be Reimbursed) &amp; Send Your Box 
+                    </p>
+                    <ol>
+                        <li>
+                            - Find you local USPS store.
+                        </li>
+                        <li>
+                            - Bring your box &amp; to the drop off desk.
+                        </li>
+                        <li>
+                            - Request <strong>USPS Media Mail Shipping</strong> if all your items are books, CD's, or DVD's.
+                        </li>
+                        <li>
+                            - Request <strong>USPS Retail Ground Shipping</strong> if your items don't fit media mail criteria.
+                        </li>
+                
+                        <li>
+                            - <strong>Important:</strong> upload your receipt on the <i>shipment details</i> page.
+                        </li>
+                    </ol>
+                </div>
+
+                <div class='row'>
+                    <div class='col-sm-6'>
+                        <div><a href="{% url 'knowledge:shipping' %}"  target="_blank">Can I use my own shipping label?</a></div>
+                        <div><a href="{% url 'knowledge:shipping_calculator' %}"  target="_blank">How much will shipping cost?</a></div>
+                    </div>
+                    <div class='col-sm-6'>
+                        <div><a href="{% url 'knowledge:questions' %}"  target="_blank">When will I be reimbursed?</a></div>
+                        <div><a href="{% url 'knowledge:questions' %}"  target="_blank">Where can I buy boxes?</a></div>
+                    </div>
+                </div>
+
+			</div> <!-- /modal-body -->
+
+			<div class="modal-footer">
+				<button data-dismiss="modal" class="btn btn-default btn-simple">Okay, I've got it</button>
+				<a href="{% url 'knowledge:shipping' %}"  target="_blank">
+                    <button class="btn btn-info">Detailed Instructions</button>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+<!--  End Modal -->

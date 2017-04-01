@@ -1,0 +1,37 @@
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}
+
+.top5 { margin-top:5px; }
+.top7 { margin-top:7px; }
+.top10 { margin-top:10px; }
+.top15 { margin-top:15px; }
+.top17 { margin-top:17px; }
+.top30 { margin-top:20px; }
+.top30 { margin-top:30px; }
+.top40 { margin-top:40px; }
+.top50 { margin-top:50px; }
+.top60 { margin-top:60px; }
+.top70 { margin-top:70px; }
+.top90{
+    margin-top: 90px;
+}
+
+img.fit-width{
+    width: 100%;
+    height: auto;
+}
+
+
+.DEBUG{
+    div, span, p, h1, h2, h3, h4, h5{
+        border: 1px solid black !important;
+    }
+}
+
+
+.vcenter{
+    display: flex;
+    align-items: center; /* align vertical */
+}

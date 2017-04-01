@@ -1,0 +1,74 @@
+{% extends "base_profile.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block css %}
+    {{ block.super }}
+
+        <!-- SASS -->
+        <link type='text/css' href="{% static 'css/shipments/shipment_create.css' %}" rel="stylesheet">
+
+{% endblock css %}
+
+{% block breadcrumb %}
+    {{ block.super }}
+/ <a class="nav-link" href="{% url 'shipments:shipmentOrder' %}">My New Shipment</a>
+{% endblock %}
+
+{% block content %}
+<div class='container section-shipment-main'>
+  <div class='row'>
+    <div class='col-sm-12'>
+      <h1>Create Your Shipment</h1>
+      <form class="shipment" id="shipment_form" method="post" action="{% url 'shipments:shipmentOrder' %}">
+        {% csrf_token %}
+          <div class="row">
+              <div class="col-sm-6">
+                      {{ form.name|as_crispy_field }}
+              </div>
+              <div class="col-sm-6">
+                  <h4>Give a creative name to identify your shipment. Some examples...
+                  </h4>
+                      <ul>
+                          <li>"Collection of Books"</li>
+                          <li>"Kids Old Toys"</li>
+                          <li>"My Ex-Wife's Cooking Knives"</li>
+                      </ul>
+              </div>
+          </div>
+          <br><br>
+          <div class="row">
+              <div class="col-sm-6 input-description">
+                {{ form.description|as_crispy_field }}
+              </div>
+
+              <div class="col-sm-6">
+                  <h4>Describe what's going inside this shipment. Try to be detailed so we know that we
+                      received your shipment properly.
+                      Some examples...
+                  </h4>
+                  <ul>
+                      <li>"10 DVD's, 4 Books, and 6 notebooks that are practically brand new.
+                          The "Pirates of the Carribean" DVD sometimes skips parts of the movie.
+                          The books are in good condition, with a little wear and tear around the edges."</li>
+
+                      <li>"3 different sets of earings and 8 rings that haven't been used in a long time.
+                          The sapphire one is pretty scratched up, the rest are in decent condition.
+                          My kids' 3DS gameboys (2 of them) and chargers are included, fully functioning.
+
+                          "</li>
+                  </ul>
+              </div>
+          </div>
+        <div class="control-group">
+            <div class="controls">
+              <a class="btn btn-default" href="{% url 'users:detail' %}" class="btn">Back</a>
+              <button type="submit " class="btn btn-primary">Create Shipment</button>
+            </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+

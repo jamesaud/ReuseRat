@@ -1,0 +1,64 @@
+{% extends "knowledge/base_knowledge.html" %}
+{% load static %}
+
+
+{% block header-title %}
+<h1>Quickstart Guide</h1>
+{% endblock %}
+
+
+{% block quickstart-active %}active{% endblock %}
+
+{% block inner %}
+<h2>Start Selling Items &amp; Making Money Quickly</h2>
+
+<h3>1. Make Your Account</h3>
+<ol>
+    <li>
+        
+            First you need to register to start the process of sending your items.
+            You can <a class='text-danger' href="{% url 'account_signup' %}">sign up here</a>, it'll only take a minute!
+        
+    </li>
+    <li>
+        
+            Fill out your profile information and choose a payment method. You can be paid via Paypal, Check, or Direct Deposit.
+        
+    </li>
+    <li>
+            Tip: If you ever get lost, just hit the <i>dashboard</i> button at the top. 
+    </li>
+</ol>
+
+<h3>2. Create Your First Shipment</h3>
+<ol>
+    <li>
+        
+            Click the <i>create new shipment</i> button on the dashboard.
+        
+    </li>
+    <li>
+        
+            Next fill out your shipment information. Write a title to help  you remember what's in this shipment.
+            Then list the items going into this shipment in detail and describe their conditions.
+        
+    </li>
+    <li>
+        
+            Remember, a shipment is a single box! If you need to send multiple boxes, please create multiple shipments.
+        
+    </li>
+</ol>
+
+<h3>3. Get Ready For Shipping</h3>
+<ol>
+    <li>
+        Continue to the shipping guide and make your first shipment.       
+    </li>
+   
+</ol>
+    <a class='btn btn-default' href="{% url 'knowledge:shipping' %}">Continue to Shipping <i class="material-icons">chevron_right</i></a>
+
+
+
+{% endblock inner %}

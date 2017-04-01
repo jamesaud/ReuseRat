@@ -1,0 +1,313 @@
+@import '../../_colors';
+@import '../../_variables';
+@import '../../_mixins';
+
+// For the circles with icons in them
+$circle-size: 15.5vh;
+$circle-offset: -8.25vh;
+$circle-padding: 2.1vh;  // Padding-top for the icons distance from the perimiter
+
+// For the center circle
+$inner-circle-size: 40vh;
+$inner-circle-offset: -20vh;
+
+.wrap.circle-features{
+    min-height: 100vh;
+    position: relative;
+
+    h2 {
+    text-align: center;
+    font-size: 3.5vh;
+    }
+    h4{
+        font-size: 2.4vh;
+    }
+
+    li{
+        font-size: 2.2vh;
+        line-height: 1.6;
+    }
+    
+    .inner {
+        transition: all 100ms ease-out 200ms;
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $inner-circle-size;
+        height: $inner-circle-size;
+        text-align: center;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        background-color: rgba(253, 253, 253, 0.95);
+        padding: 8vh 5vh;
+        margin: $inner-circle-offset;
+ 
+    h3 {
+        margin-top: 0;
+        font-family: "open-sans", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 2.3vh;
+        line-height: 1.428571429;
+        &:small{
+                display: block;
+                font-family: "open-sans", sans-serif;
+                font-weight: 400;
+                font-style: normal;
+                font-size: 2.3vh;
+                line-height: 1.428571429;
+                color: #011b2a;
+            }
+        }
+    p {
+        font-family: "open-sans", sans-serif;
+        font-weight: 300;
+        font-style: normal;
+        font-size: 1.7vh;
+        line-height: 1.428571429;
+        }
+    }
+    
+    .circle-features-logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $inner-circle-size;
+        height: $inner-circle-size;
+        text-align: center;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        background-color: #fdfdfd;
+        padding: 8vh 5vh;
+        margin: $inner-circle-offset;
+    }
+
+    .circle {
+        position: relative;
+        width: 65vh;
+        height: 65vh;
+        padding: 0;
+        border-radius: 50%;
+        list-style: none;
+        box-sizing: content-box;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        
+        & > span {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: $circle-size;
+            height: 6.5vh;
+            margin: $circle-offset;
+        }
+        
+        span {
+            font-family: "open-sans", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+            font-size: 2.1vh;
+            line-height: 2.5vh;
+            text-align: center;
+
+            &:hover + .inner,
+            &:focus + .inner {
+                opacity: 1;
+                }
+
+            &:before{
+                width: $circle-size;
+                height: $circle-size;
+                border-radius: 50%;
+                border: #fdfdfd solid 0.4vh;
+                font-style: normal;
+                font-weight: normal;
+                display: block;
+                text-decoration: inherit;
+                font-variant: normal;
+                text-transform: none;
+                line-height: 1em;
+                font-size: 10vh;
+                color: #fdfdfd;
+                width: 100%;
+                text-align: center;
+                margin-top: 0;
+                margin-bottom: 0.5vh;
+                padding-top: $circle-padding;
+                content: '\e81a';
+                color: white ;
+            }
+
+            small {
+                display: block;
+                font-family: "open-sans", sans-serif;
+                font-weight: 300;
+                font-style: normal;
+                font-size: 1.7vh;
+                line-height: 1.428571429;
+            }
+
+            &:hover:before,
+            &:focus:before {
+                border-color: $grey-900 !important;
+                color: $grey-900 !important;
+            } 
+        } // span
+    } // circle
+
+
+    @mixin amount_of_circles($num, $border-colors, $icon-colors){
+        $degrees: 0deg;
+        @for $i from 1 through $num{
+             .circle > span:nth-of-type(#{$i}){
+                &:before{
+                  color: nth($icon-colors, $i); 
+                  border-color: nth($border-colors, $i);
+                  }
+                -webkit-transform: rotate($degrees) translate(32.5vh) rotate(-$degrees);
+                -ms-transform: rotate($degrees) translate(32.5vh) rotate(-$degrees); /* IE 9 */
+                transform: rotate($degrees) translate(32.5vh) rotate(-$degrees);
+             }
+            @media (max-width: 700px){
+                .circle > span:nth-of-type(#{$i}){
+                    -webkit-transform: rotate($degrees) translate(40vw) rotate(-$degrees);
+                    -ms-transform: rotate($degrees) translate(40vw) rotate(-$degrees);
+                    transform: rotate($degrees) translate(40vw) rotate(-$degrees);
+                }
+            }
+            //Reassign variables
+            $degrees: $degrees + (360/$num);
+        }
+    }
+
+
+    // Generate circles
+    $border-colors: $grey-500, $grey-500, $grey-500, $grey-500, $grey-500, $grey-500, $grey-500, $grey-500;
+    $icon-colors: $blue-300, $indigo-300, $purple-300, $blue-grey-300, $red-300, $orange-300, $yellow-300, $green-300;
+    @include amount_of_circles(8, $border-colors, $icon-colors); 
+
+    .blacklist{
+      i.fa-times{
+          color: $red-500;
+      } 
+    }
+    #blacklist:before{
+        border-color: $red-500;
+        content: "\f00d";
+        font-family: 'FontAwesome';
+    }
+
+    #electronics:before {
+        content: "\f10a"; 
+        font-family: 'FontAwesome';
+        }
+    
+    #books:before{
+        content: '\e865';
+        font-family: 'Material Icons';
+    }
+
+    #movies:before{
+        content: '\e02c';
+        font-family: 'Material Icons';
+    }  
+
+    #videogames:before{
+        content: '\e338';
+        font-family: 'Material Icons';
+    }
+
+    #jewelry:before{
+        content: '\e334';
+        font-family: 'Material Icons';
+    }
+
+    #kids:before{
+        content: '\e332';
+        font-family: 'Material Icons';
+    }
+
+    #treasures:before{
+        content: '\eb3b';
+        font-family: 'Material Icons';
+    }
+
+}
+
+
+///Media
+@media (max-width: 700px) {
+    .wrap.circle-features{
+        height: 80vh;
+        padding-top: 2.8vh;
+        padding-bottom: 2.8vh;
+    
+        h2 {
+            font-size: 3.5vh;
+        }
+        .inner {
+            width: 50vw;
+            height: 50vw;
+            margin: -25vw;
+            h3 {
+                font-size: 4vw;
+                & small {
+                font-size: 3.5vw;
+                }
+            }
+            p{
+                font-size: 3vw;
+            }
+            li{
+                font-size: 3vw;
+                line-height: 1.6;
+            }
+        }
+        .circle-features-logo {
+            position: absolute;
+            width: 50vw;
+            height: 50vw;
+            margin: -25vw;
+            padding: 5vh;
+        }
+        .circle {
+            width: 80vw;
+            height: 80vw;
+            padding: 0;
+            & > span {
+                display: block;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 11.5vw;
+                height: 11.5vw;
+                margin: -5.75vw;
+            }
+        
+            span {
+                font-size: 3vw;
+                line-height: 1.428571429;
+                small {
+                    font-size: 1.8vw;
+                    line-height: 1.428571429;
+                }
+
+                &:before {
+                    width: 11.5vw;
+                    height: 11.5vw;
+                    line-height: 1em;
+                    font-size: 9vw;
+                    margin-bottom: 0.5vw;
+                    padding-top: 1.1vw;
+                    content: '\e81a';
+                }
+            } 
+        }   
+    }   
+}

@@ -1,0 +1,135 @@
+@import '../_colors.scss';
+@import '../_mixins.scss';
+@import '../_variables.scss';
+
+.card{
+    p{
+        font-size: 14px; 
+        line-height: 24px;
+    }
+    h4{
+        font-weight: 400;
+    }
+    .head{
+        & > .btn{ //The shipment name btn
+            margin-left: 10px;
+            margin-right: 10px;
+            white-space: normal;
+            // Ensure that the edit and delete buttons don't get pushed below the head
+            @media (max-width: 650px){
+                max-width: 50%;
+            }
+        } 
+
+
+        %button{
+            margin-top: 12px;
+            margin-right: 5px;
+            margin-left: 5px;
+            padding: 5px;
+           
+            i{
+                font-size: 28px !important;
+            }
+        }
+    
+        .edit-btn{
+           @extend %button;
+           color: $grey-100;
+           background: transparent;
+           &:hover{
+               color: white ;
+           }
+           
+        }
+
+        .delete-btn{ 
+            @extend %button;
+            color: $red-600;
+            text-shadow: 0px 0px 1px white;
+            bottom: 1px;
+        }
+
+
+        /* 
+        The button group margin-left is 0px & the label margin-right is 20px in case the 
+        label drops to the line below on smaller screens
+        */
+        .button-group{
+            margin-right: 20px;
+            margin-left: 0px;
+        }
+      
+        .label{
+            margin-right: 20px;
+            font-size: 11px;
+            margin-top: 19px;
+            font-weight: 400;
+            background-color: $yellow-500;
+        }
+    }
+}
+
+.current-balance{
+    text-align: center;
+    small{
+        margin: 0px;
+        color: $grey-700;
+    }
+    h2{
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+} 
+
+
+.top-buttons{
+    @include button_width_mobile(50%);
+}
+
+.shipment-button{
+    text-align: right;
+    @include button_width_mobile(60%);
+    @media (max-width: $screen-sm-max){
+        text-align: center;
+    }
+}
+
+.item-table{
+    h4{
+        display: inline-block;
+    }
+    small{
+        margin-top: 16px; // Keeps it inline with the h4  
+        display: inline-block;
+    }
+} 
+
+
+#cash-out-btn.btn{
+    padding: 8px 17px 8px 17px; 
+    margin-top: 0px;
+}
+
+
+#shipping-instructions{
+    margin-top: 6px;
+    margin-bottom: 0px;
+    padding-top: 7px;
+    padding-bottom: 6px;
+    position: absolute;
+
+}
+
+
+@media (min-width: $screen-sm-min){
+    .current-balance{
+            bottom: 26px;
+    }
+}
+
+.top-row{
+    @media (max-width: $screen-sm-max){
+    text-align: center;
+    }
+}

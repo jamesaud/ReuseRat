@@ -40,11 +40,22 @@ pytz==2016.10
 django-redis==4.7.0
 redis>=2.10.5
 
+rcssmin==1.0.6
+#django-compressor==2.1
 
+# HTML conversion to PDF direct output support
+django_pdfkit==0.2.1
 
+# DJango admin themes
+django-flat-responsive==1.2.0
 
-rcssmin==1.0.6 
-django-compressor==2.1
+# Shoipfy api wrapper
+ShopifyAPI==2.1.8
 
+django-localflavor==1.4
+
+stripe==1.48.1
+
+paypalrestsdk==1.12.0
 
 # Your custom requirements go here

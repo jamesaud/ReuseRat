@@ -1,0 +1,79 @@
+@import '../standalone/x_material_kit_free_v1.1.1/assets/sass/material-kit.scss';
+
+.btn.btn-dark-blend{@include btn-styles(transparentize(black, .8)); }
+
+.btn.btn-light-blend{ @include btn-styles(transparentize(white, .8));}
+    
+.btn.btn-light-blend1{@include btn-styles(transparentize(white, .7)); }
+
+.btn.btn-light-blend2{@include btn-styles(transparentize(white, .6)); }
+
+.btn.btn-light-blend3{@include btn-styles(transparentize(white, .5));}
+    
+.btn.btn-light-blend4{@include btn-styles(transparentize(white, .4));}
+
+    
+    
+
+    
+h1, h2, h3, h4, h5, h6, p{
+  font-weight: 300;
+}
+
+.textarea, input{
+    &.form-control{
+        font-size: 15px;
+    }
+}
+
+.header-grey{
+    background-color: $grey-500;
+}
+
+li{
+  list-style: none;
+}
+
+
+.wizard-choice{
+        text-align: center;
+        cursor: pointer;
+        margin-top: 20px;
+
+        .icon{
+            text-align: center;
+            vertical-align: middle;
+            height: 116px;
+            width: 116px;
+            border-radius: 50%;
+            color: $gray-color;
+            margin: 0 auto 20px;
+            border: 4px solid #CCCCCC;
+            transition: all 0.2s;
+            -webkit-transition: all 0.2s;
+        }
+
+        i{
+            font-size: 40px;
+            line-height: 111px;
+        }
+
+        &:hover,
+        &.active{
+            .icon{
+                border-color: #2ca8ff;
+            }
+        }
+
+        input[type="radio"],
+        input[type="checkbox"]{
+            position: absolute;
+            left: -10000px;
+            z-index: -1;
+        }
+    }
+
+// It would be nice to have btn-outline work for all btn types, not just btn-primary.btn-simple
+.btn-primary.btn-simple.btn-outline{
+    border: 1px solid $purple-400;
+} 

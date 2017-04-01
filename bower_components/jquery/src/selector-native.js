@@ -17,7 +17,7 @@ define( [
  * Attribute not equal selector
  * Positional selectors (:first; :eq(n); :odd; etc.)
  * Type selectors (:input; :checkbox; :button; etc.)
- * State-based selectors (:animated; :visible; :hidden; etc.)
+ * State-based selectors (:animated; :is_visible; :hidden; etc.)
  * :has(selector)
  * :not(complex selector)
  * custom selectors via Sizzle extensions

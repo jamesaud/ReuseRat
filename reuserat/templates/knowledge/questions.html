@@ -1,0 +1,63 @@
+{% extends "knowledge/base_knowledge.html" %}
+{% load static %}
+
+
+{% block css %}
+    {{ block.super }}
+	<!-- Use customized css versions of the blueprint given by Codyhouse.io -->
+    <link rel="stylesheet" href="{% static 'standalone/faq-template/css/myreset.css' %}">
+	<link rel="stylesheet" href="{% static 'standalone/faq-template/css/mystyle.css' %}">
+
+	<script src="{% static 'standalone/faq-template/js/modernizr.js' %}"></script> <!-- Modernizr -->
+{% endblock css %}
+
+
+{% block questions-active %}active{% endblock %}
+
+
+{% block header-title %}
+<h1>Frequently Asked Questions</h1>
+{% endblock %}
+
+
+{% block inner %}
+
+
+
+<section class="cd-faq">
+    
+	<ul class="cd-faq-categories">
+		{% for category in faq_categories %}
+			<li><a href="#{{category|cut:' '}}">{{category.name}}</a></li>
+		{% endfor %}
+
+	</ul> <!-- cd-faq-categories -->
+
+	<div class="cd-faq-items">
+		{% for category in faq_categories %}
+			<ul id="{{category.name|cut:' '}}" class="cd-faq-group">
+				<li class="cd-faq-title"><h2>{{category.name}}</h2></li>				
+				{% for faq in category.faq_set.all %}
+					<li>
+						<a class="cd-faq-trigger" href="#0">{{faq.question}}</a>
+						<div class="cd-faq-content">
+							<p>{{faq.answer}}</p>
+						</div> <!-- cd-faq-content -->
+					</li>
+				{% endfor %}
+			</ul>
+			{% empty %}
+			<h3>FAQ's are down, sit tight and we'll be fixing this shortly! Contact customer support for help.</h3>
+		{% endfor %}
+	</div> <!-- cd-faq-items -->
+	<a href="#0" class="cd-close-panel">Close</a>
+</section> <!-- cd-faq -->
+
+{% endblock inner %}
+
+
+{% block javascript %}
+    {{block.super}}
+    <script src="{% static 'standalone/faq-template/js/jquery.mobile.custom.min.js' %}"></script>
+    <script src="{% static 'standalone/faq-template/js/main.js' %}"></script> <!-- Resource jQuery -->
+{% endblock %}

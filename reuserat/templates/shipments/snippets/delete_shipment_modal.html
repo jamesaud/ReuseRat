@@ -1,0 +1,26 @@
+<!-- Start Modal -->
+<div class="modal fade" id="shipment-delete-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<i class="material-icons">clear</i>
+				</button>
+				<h4 class="modal-title">Delete Shipment</h4>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to delete this shipment? You won't be able to take this action back.
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" data-dismiss="modal" class="btn btn-default btn-simple">Cancel</button>
+                <form id="shipment-delete-form" method="POST" action="{% url 'shipments:shipmentDelete' shipment_id %}" style='display:inline;'>
+                    {% csrf_token %}
+				    <button type="submit" class="btn btn-danger btn-simple">Delete</button>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
+<!--  End Modal -->
+

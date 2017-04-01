@@ -1,0 +1,40 @@
+<!-- Start Modal -->
+{% with payment_type=request.user.payment_type PaymentChoices=request.user.PaymentChoices %}
+<div class="modal fade" id="cash-out-modal" tabindex="-1" role="dialog" aria-labelledby="cashoutmodal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<i class="material-icons">clear</i>
+				</button>
+				<h3 class="modal-title">Cash Out</h3>
+			</div>
+			<div class="modal-body">
+                <h4>You are about to cash out using <strong class='text-info'>{{ payment_type }}</strong> for <strong class="text-success">${{ amount }}</strong></strong>.</h4>
+                {% if payment_type == PaymentChoices.PAYPAL %}
+                    <p>An email will be sent to <strong>{{ request.user.paypal_account.email.email }}</strong> with the funds.
+                        You'll need to click the email to get paid.</p>
+                {% elif payment_type == PaymentChoices.DIRECT_DEPOSIT %}
+                    <p>A deposit will be made in the bank account ending in <strong>{{ request.user.stripe_account.account_number_last_four }}</strong>.</p>
+                {% elif payment_type == PaymentChoices.CHECK %}
+                    <p>A check will be made out and sent to:</p><h6><li>{{ request.user.get_full_name }}</li>{{ request.user.address.to_html|safe }}</h6>
+                    <p>and arrive in 3-7 days. You may track your check's progress at My Account > Transactions.</p>
+                {% endif %}
+
+                <p>If you are ready to cash out, please submit with the button below.
+                    If you would like to change your payment information, <a href="{% url 'users:update_payment_information' %}">click here</a>.</p>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" data-dismiss="modal" class="btn btn-default btn-simple">I'm not ready yet</button>
+              	<form method="post" action="{% url 'users:cash_out' %}" style='display: inline;'>
+                    {% csrf_token %}
+				    <button type="submit" class="btn btn-success">Cash Out</button>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
+<!--  End Modal -->
+
+{% endwith %}

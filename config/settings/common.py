@@ -28,26 +28,34 @@ DJANGO_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # Useful template tags:
-    # 'django.contrib.humanize',
+    'django.contrib.humanize',
 
     # Admin
     'django.contrib.admin',
 )
+
 THIRD_PARTY_APPS = (
     'crispy_forms',  # Form layouts
-    'allauth',  # registration
-    'allauth.account',  # registration
-    'allauth.socialaccount',  # registration
+    'django_pdfkit',
+    'allauth',  # Registration
+    'allauth.account',  # Registration
+    'allauth.socialaccount',  # Registration
+    'localflavor', # Django LocalFlavor
 )
+
+# Add Any Third Party apps that need to come before django built in apps.
+DJANGO_APPS = ('flat_responsive',) + DJANGO_APPS
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
     # custom users app
     'reuserat.users.apps.UsersConfig',
     'reuserat.shipments.apps.ShipmentsConfig',
-    # Your stuff: custom apps go here
+    'reuserat.shopify.apps.ShopifyConfig',
+    'reuserat.knowledge.apps.KnowledgeConfig',
+    'reuserat.stripe.apps.StripeConfig',
+
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -86,6 +94,7 @@ FIXTURE_DIRS = (
 # EMAIL CONFIGURATION
 # ------------------------------------------------------------------------------
 EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+
 
 # MANAGER CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -160,7 +169,12 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 # Your stuff: custom template context processors go here
+                "reuserat.context_processors.project_processors.variables",
+
             ],
+            'libraries' : {
+                'project_tags': 'reuserat.template_tags.tags',
+            }
         },
     },
 ]
@@ -232,9 +246,15 @@ AUTHENTICATION_BACKENDS = (
 
 
 # Some really nice defaults
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+
+ACCOUNT_USERNAME_REQUIRED = False
+
 
 ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', True)
 ACCOUNT_ADAPTER = 'reuserat.users.adapters.AccountAdapter'
@@ -248,15 +268,15 @@ LOGIN_URL = 'account_login'
 
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
-# django-compressor
-# ------------------------------------------------------------------------------
-INSTALLED_APPS += ("compressor", )
-STATICFILES_FINDERS += ("compressor.finders.CompressorFinder", )
 
-COMPRESS_PRECOMPILERS = (
-    ('text/sass', 'sass {infile} {outfile}'),
-    ('text/scss', 'sass --scss {infile} {outfile}'),
-)
+# ------------------------------------------------------------------------------
+INSTALLED_APPS += (
+    # Social auth providers
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+    )
+
+
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
 ADMIN_URL = r'^admin/'
@@ -265,3 +285,118 @@ ADMIN_URL = r'^admin/'
 
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+
+SOCIALACCOUNT_PROVIDERS = \
+    {'facebook':
+       {'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile', 'user_friends'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time'],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC':  lambda request: 'en_US',
+        'VERIFIED_EMAIL': True,
+        'VERSION': 'v2.4'},
+    'google':
+       {'METHOD': 'oauth2',
+        'SCOPE': ['email'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC':  lambda request: 'en_US',
+        'VERIFIED_EMAIL': True,
+        'VERSION': 'v2.4'}
+        }
+
+
+
+# CUSTOM PROJECT SETTINGS
+# ------------------------------------------------------------------------------
+
+# Exposed in reuserat.context_processors.project_processors.variables function
+EXTERNAL_URLS = {
+    'SOCIAL':
+        {'reddit': 'https://www.reddit.com/user/reuserat/',
+         'facebook': 'https://www.facebook.com/pg/ReuseRat-1624736247551484/',
+         'twitter': 'https://twitter.com/ReuseRat',
+         'medium': 'https://medium.com/reuserat'},
+    'SITE':{
+        'store': 'https://reuserat.com',
+        'seller': 'https://reuseratseller.com',
+        'blog': 'https://reuserat.com/blog/news'}
+}
+
+
+
+# ENV LOADED KEYS AND SETTINGS
+# ------------------------------------------------------------------------------
+
+# For shopify webhooks
+SHOPIFY_WEBHOOK_API_KEY = env('SHOPIFY_WEBHOOK_API_KEY')
+
+# What comes between "www" and ".com" eg. for www.reuserat.com it would be 'reuserat'
+SHOPIFY_DOMAIN_NAME = env('SHOPIFY_DOMAIN_NAME', default='reuserat')
+SHOPIFY_APP_NAME = env('SHOPIFY_APP_NAME', default='sell-stuff-get-paid.myshopify.com')
+
+SHOPIFY_API_KEY = env('SHOPIFY_API_KEY')
+SHOPIFY_APP_API_SECRET = SHOPIFY_API_KEY
+
+SHOPIFY_PASSWORD = env('SHOPIFY_PASSWORD')
+
+# What comes between "www" and ".com" eg. for www.reuserat.com it would be 'reuserat'
+SHOPIFY_DOMAIN_NAME = env('SHOPIFY_DOMAIN_NAME', default='reuserat')
+
+
+SPLIT_PERCENT_PER_SALE = .5  # A number from 0 to 1, how much the customer gets for each item sold.
+
+# Stripe Company Account API Keys.
+# See your keys here: https://dashboard.stripe.com/account/apikeys
+STRIPE_TEST_SECRET_KEY  = env('STRIPE_TEST_SECRET_KEY', default=None)
+STRIPE_TEST_PUBLISHABLE_KEY = env('STRIPE_TEST_PUBLISHABLE_KEY', default=None)
+
+# Fake test Stripe data
+STRIPE_TEST_ACCOUNT_NUMBER = '000123456789'
+STRIPE_TEST_ROUTING_NUMBER = '111000025'
+
+# Paypal Production
+PAYPAL_CLIENT_ID=env('PAYPAL_CLIENT_ID', default=None)
+PAYPAL_SECRET=env('PAYPAL_SECRET', default=None)
+
+PAYPAL_SANDBOX_BUYER_EMAIL = env('PAYPAL_SANDBOX_BUYER_EMAIL', default="trashandtreasure67-buyer@gmail.com")
+PAYPAL_MODE = env('PAYPAL_MODE', default="sandbox") # Or Production
+
+
+# Check API Lob
+LOB_LIVE_API_KEY=env('LOB_LIVE_API_KEY',default=None)
+LOB_TEST_API_KEY=env('LOB_TEST_API_KEY',default=None)
+LOB_API_VERSION = env('LOB_API_VERSION',default=None)
+
+# For the Shipping 'TO' address
+WAREHOUSE_NAME = 'ReuseRat Inc.'
+WAREHOUSE_ADDRESS_LINE = '504 E Cottage Grove'
+WAREHOUSE_ZIP = '47408'
+WAREHOUSE_CITY = 'Bloomington'
+WAREHOUSE_STATE = 'IN'
+
+# For the 'FROM' address for checks
+COMPANY_NAME = 'ReuseRat Inc.'
+COMPANY_ADDRESS_LINE = '504 E Cottage Grove'
+COMPANY_ADDRESS_LINE_APT= 'Apt #5'
+COMPANY_ZIP = '47408'
+COMPANY_CITY = 'Bloomington'
+COMPANY_STATE = 'IN'

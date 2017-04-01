@@ -1,37 +1,139 @@
 {% extends "base_profile.html" %}
 {% load static %}
+{% load staticfiles i18n %}
+{% load project_tags %}
 
-{% block title %}User: {{ object.username }}{% endblock %}
+{% block title %}Dashboard Home{% endblock %}
+
+{% block css %}
+{{block.super}}
+    <!-- SASS -->
+    <link type='text/css' href="{% static 'css/users/user_detail.css' %}" rel="stylesheet">
+
+{% endblock css %}
+
+{% block breadcrumb %}
+{{block.super}}
+<span class='pull-right'>
+  Welcome back, {{ object.first_name }}
+  </span>
+{% endblock %}
+
 
 {% block content %}
 <div class="container">
 
-  <div class="row">
-    <div class="col-sm-12">
-
-      <h2>{{ object.username }}</h2>
-      {% if object.name %}
-        <p>{{ object.name }}</p>
-      {% endif %}
-    </div>
+<!-- Action buttons -->
+<div class="row top-row">
+  <div class='col-sm-5 top-buttons'>
+    <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Account</a>
   </div>
 
-{% if object == request.user %}
-<!-- Action buttons -->
-<div class="row">
+  <div class='col-sm-2 current-balance'>
+    <small>Current Balance</small>
+    <h2>${{ balance|currency }}</h2>
+             {% if balance >= min_cash_out_amount %}
+                <button id="cash-out-btn" type="submit" class='btn btn-success' data-toggle="modal" data-target="#cash-out-modal">Cash Out</button>
+              </form>
+            {% else %}
+              <button id="cash-out-btn" class='btn btn-default' rel="tooltip" title="You can cash out after you have a ${{min_cash_out_amount|currency}} minimum balance.">Cash Out</button>
+            {% endif %}
+  </div>
 
-  <div class="col-sm-12">
-    <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
-    <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
-    <a class="btn btn-primary" href="{% url 'shipments:shipmentOrder' %}" role="button">Shipment Order</a>
-    <!-- Your Stuff: Custom user template urls -->
+  <div class='col-sm-5 shipment-button'>
+    <a class="btn btn-danger " href="{% url 'shipments:shipmentOrder' %}" role="button">Create New Shipment</a>
   </div>
 
 </div>
 <!-- End Action buttons -->
-{% endif %}
+
+<hr>
+
+  <div class="row">
+    <div class="col-sm-12">
+          <!---shipment_set is the name generated automatically for the FK in play here of the USER -->
+
+            <a id='shipping-instructions' data-toggle="modal" data-target="#shipment-instructions-modal" rel="tooltip" title="" class='btn btn-primary btn-simple btn-outline pull-left btn-sm'>
+ Shipping instructions <!--  <i class="material-icons">info_outline</i>  -->
+            </a>
+
+            <br>
+
+          {% for shipment in user_shipments %}
+                    <div class="card card-nav-tabs">
+                        <div class="head {% if shipment.has_visible_items %} header-info {% else %} header-grey {% endif %}">
+                          <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                          <a class="btn btn-dark-blend" href="{% url 'shipments:shipmentDetail' shipment.id %}" role="button">
+                              {{ shipment.name }}
+                              <i class="material-icons">arrow_forward</i>
+                              <div class="ripple-container"></div>
+                          </a>
+
+                          <div class='pull-right button-group'>
+
+                            {% if not shipment.has_visible_items %}
+                                 <a href="{% url 'shipments:shipmentUpdate' shipment.id %}" type="button" rel="tooltip" title="" class="btn btn-simple btn-xs edit-btn" data-original-title="Edit Shipment">
+		                                <i class="fa fa-edit"></i>
+		                            <div class="ripple-container"></div>
+                                </a>
+                              </a>
+
+                              <a data-toggle="modal" data-target="#shipment-delete-modal" rel="tooltip" title="" shipment-id='{{ shipment.id }}' class="btn btn-danger btn-simple btn-xs delete-btn" data-original-title="Delete Shipment">
+		                                <i class="fa fa-times"></i>
+		                            <div class="ripple-container"></div>
+                              </a>
+                            {% endif %}
+                          </div> <!-- /pull-right -->
+
+                            {% if shipment.is_physical %}
+                                <span class="label pull-right" rel="tooltip" title="A ReuseRat agent picked up your items in person.">Physical</span>
+                            {% endif %}
+
+                        </div> <!-- /head -->
+
+                        <div class="content">
+                          <div class='col-sm-12 item-table'> <!-- custom item table styling -->
+                            {% with shipment.get_visible_items as visible_items %}
+                                {% if visible_items %}
+                                    <h4>Items For Sale</h4>
+                                    {% include 'shipments/snippets/items_table.html' with items=visible_items %}
+                                {% else %}
+                                    <h4>No Items Posted Yet</h4>
+                                    <p>If your shipment has arrived, it will be processed soon. Items will show up as they are added to the store.</p>
+                                    <br>
+                                {% endif %}
+                             {% endwith %}
+
+                          </div> <!-- /col -->
+                        </div>
+                    </div>
+          {% empty %}
+              <br>
+              <h3>No shipments yet! Please <a class="text-danger" href="{% url 'shipments:shipmentOrder' %}">create a new shipment</a> to start selling.</h3><br>
+
+        {% endfor %}
+    </div>
+  </div>
 
 
 </div>
 {% endblock content %}
 
+{% block modal %}
+  {% include "shipments/snippets/delete_shipment_modal.html" with shipment_id='000' %}
+  {% include "shipments/snippets/instructions_shipment_modal.html" %}
+  {% include "users/snippets/cash_out_modal.html" with amount=balance %}
+{% endblock modal %}
+
+{% block javascript %}
+    {{ block.super }}
+
+    <!-- place project specific Javascript in this file -->
+          <script>
+            $('.delete-btn').on('click', function (e) {
+                // 000 is a placeholder to replace with the shipment id, so that we can use django url generation for the url.
+                $('#shipment-delete-form').attr("action", "{% url 'shipments:shipmentDelete' 000 %}".replace(000, $(this).attr('shipment-id')) );
+            });
+          </script>
+
+{% endblock javascript %}

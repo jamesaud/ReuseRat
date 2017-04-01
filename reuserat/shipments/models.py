@@ -1,20 +1,30 @@
-from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext_lazy as _
 from reuserat.users.models import User
 
 class Shipment(models.Model):
-    name =  models.CharField(max_length=200)
-    user =  models.ForeignKey(User)
-    created = models.DateTimeField(auto_now_add=True,)
-    modified = models.DateTimeField(auto_now=True,)
+    user =  models.ForeignKey(User,
+                              on_delete=models.CASCADE)
+    name =  models.CharField(max_length=50)
+    description =  models.CharField(max_length=1000, blank=False)
+    is_physical = models.BooleanField(default=False)
 
+    tracking_number = models.CharField(max_length=25, null=True, blank=True)  # USPS tracking number
+    receipt = models.ImageField(null=True, blank=True)
 
-class Item(models.Model):
-    shipment = models.ForeignKey(Shipment)
-    name =  models.CharField(max_length=200)
-    description =  models.CharField(max_length=1000,blank=True)
-    created = models.DateTimeField(auto_now_add=True,)
-    modified = models.DateTimeField(auto_now=True,)
-    
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    def get_shipment_sku(self):
+        return "{0}-{1}".format(self.user_id, self.id)   # Set the sku to be <userid>-<shipmentid>
+
+    def get_visible_items(self):
+        return self.item_set.filter(is_visible=True)
+
+    def has_visible_items(self):
+        return self.get_visible_items().exists()
+
+    def __str__(self):
+        return "Name '{0}' for user '{1}'".format(self.name, str(self.user))
+
+    class Meta:
+        ordering = ('modified',)

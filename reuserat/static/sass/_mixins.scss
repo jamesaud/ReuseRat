@@ -1,0 +1,14 @@
+@import '../standalone/bourbon/bourbon';
+
+//Sets a width to buttons on mobile, and optionally centers them
+@mixin button_width_mobile($width){
+    @media (max-width: 768px) {
+        .btn, .btn-group {
+            width: $width;
+        }
+    }
+}
+ 
+
+
+

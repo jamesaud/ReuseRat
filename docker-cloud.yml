@@ -1,0 +1,42 @@
+postgres:
+  image: reuserat/reuserat_django
+  volumes:
+    - /postgres_data:/var/lib/postgresql/data
+    - /postgres_backup:/backups
+django:
+  image: reuserat/reuserat_django
+  user: django
+  command: /gunicorn.sh
+  links:
+    - postgres
+    - redis
+nginx:
+  image: reuserat/reuserat_nginx
+  environment:
+    - MY_DOMAIN_NAME=testing-reuserat.tk
+  links:
+    - django
+  ports:
+    - "80:80"
+    - "443:443"
+  roles:
+    - global
+  volumes:
+    - /etc/letsencrypt:/etc/letsencrypt
+    - /var/lib/letsencrypt:/var/lib/letsencrypt
+certbot:
+  image: quay.io/letsencrypt/letsencrypt
+  command: bash -c "sleep 6 && certbot certonly -n --standalone -d testing-reuserat.tk --text --agree-tos --email trashandtreasure67@gmail.com --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --keep-until-expiring --standalone-supported-challenges http-01"
+  volumes:
+    - /etc/letsencrypt:/etc/letsencrypt
+    - /var/lib/letsencrypt:/var/lib/letsencrypt
+  ports:
+    - "80"
+    - "443"
+  links:
+    - nginx
+  environment:
+    - TERM=xterm
+redis:
+  image: redis:latest
+

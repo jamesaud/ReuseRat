@@ -1,24 +1,26 @@
 @import '../standalone/bourbon/bourbon';
-@import '../standalone/x_material_kit_free_v1.1.1/assets/sass/material-kit/_colors.scss';
+@import '_theme.scss';
+@import '_colors.scss';
+@import '_utility.scss';
+@import '_social_buttons.scss';
 
-////////////////////////////////
+//////////////////////////////// 
 		//Django Toolbar//
 ////////////////////////////////
 
 // Display django-debug-toolbar.
 // See https://github.com/django-debug-toolbar/django-debug-toolbar/issues/742
 // and https://github.com/pydanny/cookiecutter-django/issues/317
-
 [hidden][style="display: block;"] {
   display: block !important;
 }
-
-
+ 
+  
 .logo{
-  max-width: 150px;
-}
+  max-width: 150px; 
+} 
 
-.navbar {
+.navbar { 
   .navbar-brand{
     padding-top: 5px !important;
   }
@@ -36,16 +38,86 @@
 }
 
 
-.wrapper > .header{
-  height: 200px !important;
-  min-height: 200px !important;
-  .btn-danger{
-    i{margin-right: 4px;}
-  }
-}
-
-
 .main{
-  padding-top: 40px;
+    padding-top: 40px;
     padding-bottom: 60px;
 }
+
+
+.form-group .help-block {
+    position: relative;
+    display: inline;  
+    }
+
+.form-group label{
+  color: $grey-600;
+} 
+
+.navbar{  
+  .nav-link.btn-white{
+      color: $grey-800 !important;
+  }            
+}
+   
+.close-alert{  
+  font-size: 20px;
+} 
+
+//Vertically center text in the top header  
+.header-top {
+  color: white;
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
+}
+
+
+footer{
+  margin-top: 30px;
+  background-color: $grey-900;
+  li{
+    color: $grey-100;
+  }
+  .copyright{
+    max-width: 300px;
+    color: $grey-100;
+    padding-top: 22px;
+    padding-bottom: 0px;
+    position: relative;
+  }
+
+}
+
+   
+#fixed-social-drop{         
+  position: fixed;
+  margin-top: 3px;
+  > button{
+    padding-left: 6px;
+    padding-right: 6px;
+    background-color: transparentize($first-color, .1);
+
+    &[aria-expanded="true"]{
+      background-color: transparentize(black, .6);
+      }
+    }
+}
+
+.main-raised{
+  //Change margin from 30px so that social share fits perfectly inside
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+@media screen and (max-width: 768px){
+  .main-raised{
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
+    
+
+
+
+
+

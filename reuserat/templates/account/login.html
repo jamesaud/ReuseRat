@@ -7,7 +7,7 @@
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block inner %}
-
+<div class='text-center'>
 <h1>{% trans "Sign In" %}</h1>
 
 {% get_providers as socialaccount_providers %}
@@ -20,10 +20,10 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
 <div class="socialaccount_ballot">
 
   <ul class="socialaccount_providers">
-    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+    {% include "socialaccount/snippets/provider_list.html" with process="login" btn_text="Sign in with"  %}
   </ul>
 
-  <div class="login-or">{% trans 'or' %}</div>
+  <h5 class="login-or">{% trans 'Or if you like to keep it oldschool' %}</h5>
 
 </div>
 
@@ -32,8 +32,10 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
 {% else %}
 <p>{% blocktrans %}If you have not created an account yet, then please
 <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+
 {% endif %}
 
+</div>
 <form class="login" method="POST" action="{% url 'account_login' %}">
   {% csrf_token %}
   {{ form|crispy }}

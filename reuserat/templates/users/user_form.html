@@ -1,28 +1,46 @@
-{% extends "base_profile.html" %}
+{% extends "account/profile/base_account_profile.html" %}
 {% load crispy_forms_tags %}
 
 {% block title %}{{ user.username }}{% endblock %}
 
+
 {% block breadcrumb %}
-/ <a class="nav-link" href="{% url 'users:update' %}">My Info</a>
+    {{ block.super }}
+/ <a class="nav-link" href="{% url 'users:update' %}">Basic Info</a>
 {% endblock %}
 
-{% block content %}
-<div class="container">
+{% block basic_info %}
+active
+{% endblock %}
+
+{% block inner %}
   <div class="row">
-    <div class="col-sm-12">
-  <h1>{{ user.username }}</h1>
-  <form class="form-horizontal" method="post" action="{% url 'users:update' %}">
+    <div class="col-sm-8 col-sm-offset-2">
+  <form method="post" action="{% url 'users:update' %}">
     {% csrf_token %}
-    {{ form|crispy }}
-    {{form.as_p}}
-    <div class="control-group">
+      <div class='row'>
+        <div class='col-md-12'>
+          <h3>Personal Information</h3>
+        </div>
+        {% crispy user_form %}
+      </div>
+      <div class='row'>
+        <div class='col-md-12'>
+          <h3>Address</h3>
+        </div>
+        {% crispy address_form %}
+      </div>
+
+      <div class="control-group">
       <div class="controls">
-        <button type="submit" class="btn">Update</button>
+          <a href="{% url 'users:detail' %}" type="submit" class="btn">Back to Dashboard</a>
+        <button type="submit" class="btn btn-primary">Update Info</button>
       </div>
     </div>
   </form>
     </div>
   </div>
-</div>
-{% endblock content %}
+{% endblock inner %}
+
+
+

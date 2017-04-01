@@ -1,0 +1,39 @@
+{% load static %}
+<html>
+    <Title>Shipment Label </Title>
+    <head>
+    <!-- Latest compiled and minified Bootstrap 4 Alpha 4 CSS -->
+    <!-- SASS -->
+    <!-- This file stores project-specific CSS -->
+    <link type='text/css' href="{% static 'css/shipment_label.css' %}" rel="stylesheet">
+    <meta name="pdfkit-page-size" content="Legal"/>
+    <meta name="pdfkit-orientation" content="Landscape"/>
+    </head>
+    <body>
+        <div class="body-border">
+            <div class="pdf-section--left">
+                <div class='from'>
+                    <h5>From:</h5>
+                    <p style='list-style-type: none;'>
+                        {{ user.get_full_name | upper }}
+                        {{ user.address.to_html | upper | safe }}
+                    </p>
+                </div>
+             
+            </div>
+            <div class="to-address">
+                <h2>To: </h2>
+                <div>
+                    {{warehouse_html | safe}}
+                </div>
+            </div>
+            <div class="shipment-id">
+                    <h5>Shipment ID:</h5>
+                    <p>{{ shipment.id }}</p>
+                    <br><h5>User ID:</h5>
+                    <p>{{ user.id }}</p>
+            </div>
+        </div>
+    </body>
+</html>
+

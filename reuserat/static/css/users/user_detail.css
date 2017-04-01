@@ -1,0 +1,92 @@
+.card p {
+  font-size: 14px;
+  line-height: 24px; }
+
+.card h4 {
+  font-weight: 400; }
+
+.card .head {
+  /* 
+        The button group margin-left is 0px & the label margin-right is 20px in case the 
+        label drops to the line below on smaller screens
+        */ }
+  .card .head > .btn {
+    margin-left: 10px;
+    margin-right: 10px;
+    white-space: normal; }
+    @media (max-width: 650px) {
+      .card .head > .btn {
+        max-width: 50%; } }
+  .card .head .edit-btn, .card .head .delete-btn {
+    margin-top: 12px;
+    margin-right: 5px;
+    margin-left: 5px;
+    padding: 5px; }
+    .card .head .edit-btn i, .card .head .delete-btn i {
+      font-size: 28px !important; }
+  .card .head .edit-btn {
+    color: #f5f5f5;
+    background: transparent; }
+    .card .head .edit-btn:hover {
+      color: white; }
+  .card .head .delete-btn {
+    color: #e53935;
+    text-shadow: 0px 0px 1px white;
+    bottom: 1px; }
+  .card .head .button-group {
+    margin-right: 20px;
+    margin-left: 0px; }
+  .card .head .label {
+    margin-right: 20px;
+    font-size: 11px;
+    margin-top: 19px;
+    font-weight: 400;
+    background-color: #fec60a; }
+
+.current-balance {
+  text-align: center; }
+  .current-balance small {
+    margin: 0px;
+    color: #616161; }
+  .current-balance h2 {
+    margin-top: 0px;
+    margin-bottom: 0px; }
+
+@media (max-width: 768px) {
+  .top-buttons .btn, .top-buttons .btn-group {
+    width: 50%; } }
+
+.shipment-button {
+  text-align: right; }
+  @media (max-width: 768px) {
+    .shipment-button .btn, .shipment-button .btn-group {
+      width: 60%; } }
+  @media (max-width: 991px) {
+    .shipment-button {
+      text-align: center; } }
+
+.item-table h4 {
+  display: inline-block; }
+
+.item-table small {
+  margin-top: 16px;
+  display: inline-block; }
+
+#cash-out-btn.btn {
+  padding: 8px 17px 8px 17px;
+  margin-top: 0px; }
+
+#shipping-instructions {
+  margin-top: 6px;
+  margin-bottom: 0px;
+  padding-top: 7px;
+  padding-bottom: 6px;
+  position: absolute; }
+
+@media (min-width: 768px) {
+  .current-balance {
+    bottom: 26px; } }
+
+@media (max-width: 991px) {
+  .top-row {
+    text-align: center; } }
