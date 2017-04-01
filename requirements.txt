@@ -1,0 +1,2 @@
+# if a system needs requiremenst.txt in root directory
+-r requirements/production.txt
