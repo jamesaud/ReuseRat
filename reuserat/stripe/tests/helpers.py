@@ -2,17 +2,14 @@ from django.conf import settings
 import stripe
 
 
-
-
 def create_test_bank_token():
     return stripe.Token.create(bank_account={"country": 'US',
-                                                    "currency": 'usd',
-                                                    "account_holder_name": 'Jane Doe',
-                                                    "account_holder_type": 'individual',
-                                                    "routing_number": '110000000',
-                                                    "account_number": '000123456789'
-                                                    },)
-
+                                             "currency": 'usd',
+                                             "account_holder_name": 'Jane Doe',
+                                             "account_holder_type": 'individual',
+                                             "routing_number": '110000000',
+                                             "account_number": '000123456789'
+                                             }, )
 
 # Create a test charge to a test customer and deposit it into an account
 def add_test_funds_to_account(account_id, amount_in_cents, description):
@@ -43,12 +40,13 @@ def add_test_funds_to_account(account_id, amount_in_cents, description):
     charge_details = stripe.Charge.create(
         amount=amount_in_cents,
         currency="usd",
-        customer = customer.id,
+        customer=customer.id,
         description=description,
         destination=account_id
     )
 
     return charge_details['id']
+
 
 def add_test_funds_to_platform(amount_in_cents, description):
     """
@@ -78,7 +76,7 @@ def add_test_funds_to_platform(amount_in_cents, description):
     charge_details = stripe.Charge.create(
         amount=amount_in_cents,
         currency="usd",
-        customer = customer.id,
+        customer=customer.id,
         description=description,
     )
 

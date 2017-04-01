@@ -22,12 +22,12 @@ class TransactionPaymentTypeChoices:
 
 
 class TransactionTypeChoices:
-    IN = 'Funds Added'        #  Money added to user's Stripe account                          
-    OUT = 'Cash Out'          #  Money being cashed out from a user's Stripe account                           
-    CREDIT = 'Credit'         # Store Credit added to account 
-    FEE = 'Fee'               # Charging the user's Stripe account for something                                 
+    IN = 'Funds Added'        #  Money added to user's Stripe account
+    OUT = 'Cash Out'          #  Money being cashed out from a user's Stripe account
+    CREDIT = 'Credit'         # Store Credit added to account
+    FEE = 'Fee'               # Charging the user's Stripe account for something
     Choices = (
-        (IN, 'Funds Added'),   
+        (IN, 'Funds Added'),
         (OUT, 'Cash Out'),
         (CREDIT, 'Credit'),
         (FEE, 'Fee')
@@ -68,10 +68,14 @@ class Transaction(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+    check_id = models.CharField(max_length=255,null=True)#Lob Api ,to retrieve the tracking number
 
     class Meta:
         ordering = ['-created']
 
     def __str__(self):
         return '{type} with {payment} for {user}'.format(user=self.user, payment=self.payment_type, type=self.type)
-    
+
+    def retrieve_tracking_number(self):
+        from .check_helpers import retrieve_tracking_number
+        return retrieve_tracking_number(self.check_id)

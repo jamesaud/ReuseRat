@@ -46,7 +46,6 @@ def update_payment_info(account_id, account_token, user_object):
     stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
     account = stripe.Account.retrieve(account_id)
 
-
     # Update the display name for the account
     account.business_name = user_object.first_name
 
@@ -74,7 +73,7 @@ def update_payment_info(account_id, account_token, user_object):
     account.legal_entity.type = "individual"
 
     account.external_accounts.create(external_account=account_token,
-                                    default_for_currency=True,)
+                                     default_for_currency=True, )
 
     account.save()
     return account['id']
@@ -113,6 +112,7 @@ def create_transfer_bank(api_key, balance_in_cents, user_name):
 
     return transfer['id']
 
+
 # Confusingly named function, because it's not transfering to a Stripe Customer.
 # It's transfering to a user with an account_id.
 def create_transfer_to_customer(account_id, balance_in_cents, description):
@@ -146,12 +146,11 @@ def create_transfer_to_platform(account_id, balance_in_cents, description):
         amount=balance_in_cents,
         currency="usd",
         description=description,
-        destination = platform_account_id,
-        stripe_account = account_id,
-        source_type = 'bank_account'
+        destination=platform_account_id,
+        stripe_account=account_id,
+        source_type='bank_account'
     )
     return transfer['id']
-
 
 
 def reverse_transfer(transfer_id, api_key=None):
@@ -164,4 +163,5 @@ def reverse_transfer(transfer_id, api_key=None):
     transfer = stripe.Transfer.retrieve(transfer_id)
     reversal = transfer.reversals.create()
     return reversal['id']
+
 
