@@ -87,6 +87,29 @@ footer{
 
 }
 
+.main-raised{
+  //Change margin from 30px so that social share fits perfectly inside
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+#bloomington{
+  div{
+    position: absolute; 
+    top: -70px; 
+    left: 18px;
+  }
+  a{
+    color: $yellow-400; 
+    font-weight: 500;
+    &:hover{
+      text-decoration: none;
+      border-bottom: 3px solid white;
+      font-style: italic;
+    }
+  }
+}
+
 #footer-support{
    a{
      color: $grey-100;
@@ -108,11 +131,7 @@ footer{
     }
 }
 
-.main-raised{
-  //Change margin from 30px so that social share fits perfectly inside
-  margin-left: 25px;
-  margin-right: 25px;
-}
+
 
 @media screen and (max-width: 768px){
   .main-raised{

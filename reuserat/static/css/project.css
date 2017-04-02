@@ -3545,6 +3545,23 @@ footer {
     padding-bottom: 0px;
     position: relative; }
 
+.main-raised {
+  margin-left: 25px;
+  margin-right: 25px; }
+
+#bloomington div {
+  position: absolute;
+  top: -70px;
+  left: 18px; }
+
+#bloomington a {
+  color: #ffee58;
+  font-weight: 500; }
+  #bloomington a:hover {
+    text-decoration: none;
+    border-bottom: 3px solid white;
+    font-style: italic; }
+
 #footer-support a {
   color: #f5f5f5;
   font-weight: 600; }
@@ -3558,10 +3575,6 @@ footer {
     background-color: rgba(2, 136, 209, 0.9); }
     #fixed-social-drop > button[aria-expanded="true"] {
       background-color: rgba(0, 0, 0, 0.4); }
-
-.main-raised {
-  margin-left: 25px;
-  margin-right: 25px; }
 
 @media screen and (max-width: 768px) {
   .main-raised {
