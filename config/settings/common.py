@@ -338,7 +338,7 @@ EXTERNAL_URLS = {
     'SITE':{
         'store': 'https://reuserat.com',
         'seller': 'https://reuseratseller.com',
-        'blog': 'https://reuserat.com/blog/news'}
+        'blog': 'https://reuserat.com/blogs/news'}
 }
 
 
