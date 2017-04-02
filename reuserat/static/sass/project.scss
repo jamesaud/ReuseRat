@@ -81,13 +81,18 @@ footer{
   .copyright{
     max-width: 300px;
     color: $grey-100;
-    padding-top: 22px;
     padding-bottom: 0px;
     position: relative;
   }
 
 }
 
+#footer-support{
+   a{
+     color: $grey-100;
+     font-weight: 600;
+   }
+}
    
 #fixed-social-drop{         
   position: fixed;
