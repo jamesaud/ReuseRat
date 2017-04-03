@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block css %}
+    {{ block.super }}
+
+    <!-- SASS -->
+  <!-- SASS -->
+  <!-- This file stores project-specific CSS -->
+  <link type='text/css' href="{% static 'css/knowledge.css' %}" rel="stylesheet">
+
+{% endblock %}
+{% block header-top-style %}
+background-image: url('{% static "images/pickup/pickup2.jpg" %}') !important;
+{% endblock %}
+{% block header-title %}
+    <h1>Pickup Guide</h1>
+{% endblock %}
+
+{% block body-tag %}
+<body class='landing-page'>
+{% endblock body-tag %}
+
+{% block content%}
+    <div class="container">
+{% block inner %}
+  <h2>Scheduling a pickup is as easy as 1-2-3!</h2>
+    <h4>1.Schedule a pick up by filling out the form below !!!!</h4>
+    <h4>2.We will deliver boxes for the pickup & get in touch with you regarding your pickup date.</h4>
+    <h4>3.Our driver will pick up your boxes !!!.You just Relax and earn money.Also you can designate another person to be present during pickup, if you are not available.</h4>
+    <h4>If you have any more questions ,Please refer our <a href="https://sell.reuserat.com/#faq">FAQ</a> section </h4>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfHm3aks0WMPHBi3Qdf8Dhq5GbkEe2vlDv6zwem2iy0SuVe-Q/viewform?embedded=true" width="900" height="900" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+{% endblock inner %}
+
+{% endblock content %}
