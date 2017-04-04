@@ -3530,7 +3530,7 @@ img.fit-width {
 .close-alert {
   font-size: 20px; }
 
-.wrapper > .header {
+.header-top {
   color: white;
   display: -ms-flexbox;
   display: flex;
@@ -3539,13 +3539,7 @@ img.fit-width {
   /* align horizontal */
   -ms-flex-align: center;
       align-items: center;
-  /* align vertical */
-  -ms-flex-direction: column;
-      flex-direction: column;
-  resize: vertical;
-  overflow: auto; }
-  .wrapper > .header .subtitle {
-    margin-top: 0px; }
+  /* align vertical */ }
 
 footer {
   margin-top: 30px;
