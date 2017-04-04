@@ -158,15 +158,15 @@
 
       {% block content-wrapper %}
         <div class="wrapper">
-        <div class="header header-top" style="{% block header-top-style %} {% endblock %}">
-          {% block header-title %} {% endblock header-title %}
-        </div>
-        <div class="main main-raised">
-          {% block pre-content %} {% endblock %}
-          {% block content %} {% endblock %}
-          {% block post-content %} {% endblock %}
+            <div id="main-header" class="header header-top" style="{% block header-top-style %} {% endblock %}">
+              {% block header-title %} {% endblock header-title %}
+            </div>
+            <div class="main main-raised">
+              {% block pre-content %} {% endblock %}
+              {% block content %} {% endblock %}
+              {% block post-content %} {% endblock %}
 
-        </div>
+            </div>
         </div>
 
       {% endblock content-wrapper %}

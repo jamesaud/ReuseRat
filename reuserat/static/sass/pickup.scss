@@ -1,0 +1,33 @@
+@import '_colors';
+
+.wrapper > .header{
+  height: 600px;
+  min-height: 600px;
+}   
+
+.section-steps{
+    text-align: center;
+    $size: 70px;
+    $color: $primary-color;
+     h2.title{
+            margin-bottom: 60px;
+        }
+    .step{
+       
+        .number{
+            margin: 0 auto;
+            margin-bottom: 12px;
+            color: $color;
+            border-radius: 50%;
+            width: $size; 
+            font: 40px Arial, sans-serif;
+            border: 2px solid $color;
+            font-weight: 900;
+            span{
+                text-align: center;
+                line-height: $size;
+                display: block;
+            }
+        }
+    }
+}
