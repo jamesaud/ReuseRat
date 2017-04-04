@@ -3,10 +3,12 @@
 
 
 {% block css %}
+
 	<!-- Use customized css versions of the blueprint given by Codyhouse.io -->
+    {{ block.super }}
     <link rel="stylesheet" href="{% static 'standalone/faq-template/css/myreset.css' %}">
 	<link rel="stylesheet" href="{% static 'standalone/faq-template/css/mystyle.css' %}">
-    {{ block.super }}
+
 
 
 	<script src="{% static 'standalone/faq-template/js/modernizr.js' %}"></script> <!-- Modernizr -->
