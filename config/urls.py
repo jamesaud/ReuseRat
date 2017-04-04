@@ -25,7 +25,10 @@ urlpatterns = [
     url(r'^shopify/', include('reuserat.shopify.urls', namespace='shopify')),
 
     # Knowledge Base
-     url(r'^knowledge/', include('reuserat.knowledge.urls', namespace='knowledge')),
+    url(r'^knowledge/', include('reuserat.knowledge.urls', namespace='knowledge')),
+
+    # Pickup Page
+    url(r'^pickup/', TemplateView.as_view(template_name='pages/pickup.html'), name='pickup'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
