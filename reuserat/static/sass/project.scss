@@ -16,14 +16,22 @@
 }
  
   
-.logo{
-  max-width: 150px; 
-} 
 
-.navbar { 
-  .navbar-brand{
-    padding-top: 5px !important;
-  }
+
+#main-navigation{
+    .navbar-brand{
+        max-width: 220px;
+        top: -15px;
+        height: auto;
+        position: relative;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-left: 7px;
+    } 
+    .logo{
+      max-width: 100%;
+      height: auto;
+      }
 }
 
 .header-cards{
@@ -93,23 +101,6 @@ footer{
   margin-right: 25px;
 }
 
-#bloomington{
-  div{
-    position: absolute; 
-    top: -70px; 
-    left: 18px;
-  }
-  a{
-    color: $yellow-400; 
-    font-weight: 500;
-    &:hover{
-      text-decoration: none;
-      border-bottom: 3px solid white;
-      font-style: italic;
-    }
-  }
-}
-
 #footer-support{
    a{
      color: $grey-100;
@@ -142,6 +133,13 @@ footer{
     
 
 
-
+.footer{
+  img.logo{
+    max-width: 160px;
+    height: auto;
+    position: relative;
+    bottom: 10px;
+  }
+}
 
 
