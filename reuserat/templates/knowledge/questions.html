@@ -3,10 +3,13 @@
 
 
 {% block css %}
-    {{ block.super }}
+
 	<!-- Use customized css versions of the blueprint given by Codyhouse.io -->
+    {{ block.super }}
     <link rel="stylesheet" href="{% static 'standalone/faq-template/css/myreset.css' %}">
 	<link rel="stylesheet" href="{% static 'standalone/faq-template/css/mystyle.css' %}">
+
+
 
 	<script src="{% static 'standalone/faq-template/js/modernizr.js' %}"></script> <!-- Modernizr -->
 {% endblock css %}
@@ -22,10 +25,8 @@
 
 {% block inner %}
 
-
-
 <section class="cd-faq">
-    
+
 	<ul class="cd-faq-categories">
 		{% for category in faq_categories %}
 			<li><a href="#{{category|cut:' '}}">{{category.name}}</a></li>
@@ -36,12 +37,12 @@
 	<div class="cd-faq-items">
 		{% for category in faq_categories %}
 			<ul id="{{category.name|cut:' '}}" class="cd-faq-group">
-				<li class="cd-faq-title"><h2>{{category.name}}</h2></li>				
+				<li class="cd-faq-title"><h2>{{category.name}}</h2></li>
 				{% for faq in category.faq_set.all %}
 					<li>
 						<a class="cd-faq-trigger" href="#0">{{faq.question}}</a>
 						<div class="cd-faq-content">
-							<p>{{faq.answer}}</p>
+							<p>{{faq.answer|safe}}</p>
 						</div> <!-- cd-faq-content -->
 					</li>
 				{% endfor %}
@@ -52,6 +53,7 @@
 	</div> <!-- cd-faq-items -->
 	<a href="#0" class="cd-close-panel">Close</a>
 </section> <!-- cd-faq -->
+
 
 {% endblock inner %}
 

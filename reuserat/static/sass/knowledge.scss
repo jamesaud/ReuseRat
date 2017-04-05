@@ -15,12 +15,12 @@
   }
 }
 
-.knowledge-body{
-  h4, h5{
+.knowledge-body {
+  h4, h5 {
     margin-left: 20px;
   }
-  ol{
-    > li{
+  ol {
+    > li {
       list-style-type: disc;
 
       font-size: 17px;
@@ -31,5 +31,11 @@
 
       color: $grey-700;
     }
+  }
+}
+
+.cd-faq-group {
+  .cd-faq-content {
+    a{color: $primary-color !important;}
   }
 }
