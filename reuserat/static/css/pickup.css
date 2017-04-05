@@ -19,3 +19,13 @@
       text-align: center;
       line-height: 70px;
       display: block; }
+
+.section-items ul {
+  padding-left: 10px; }
+  .section-items ul li {
+    font-size: 16px;
+    line-height: 25px; }
+
+.section-items .description, .section-iu .description {
+  color: #616161;
+  font-weight: 300; }

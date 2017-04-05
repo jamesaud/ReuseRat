@@ -34,27 +34,74 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
             </div>
         </div>
 <hr>
-        <div class="section">
+        <div class="section section-iu">
             <div class="row">
                 <div class="col-sm-4 col-sm-offset-1">
                     <h2 class="title">Are You An IU Student Leaving For Summer?</h2>
-                    <h5>Don't wait until the last minute to deal with your belongings.
+                    <h5 class="description">Don't wait until the last minute to deal with your belongings.
                         Using our service you can clean out for the Summer while making money!</h5>
-                    <h5>Storage is expensive. ReuseRat Pickup is 100% free!</h5>
+                    <h5 class="description">ReuseRat Pickup is 100% free!</h5>
                 </div>
                 <div class="col-sm-6 col-sm-offset-1">
-                    <h3 class="description"><strong>Delivery &amp; Pickup</strong></h3>
-                    <h4>Your Box Delivery Date is <strong>April xxth &amp; April xxth.</strong></h4>
-                    <h4>Your Pickup Date is <strong>April xxth &amp; April xxth.</strong></h4>
+                    <h3 class="text-info"><strong>Delivery &amp; Pickup</strong></h3>
+                    <h4>Your Box Delivery Date is <strong>April 23rd &amp; April 24th</strong>
+                    <br>
+                    <small>Sunday &amp; Monday after Little 500 <i class='fa fa-bicycle text-primary'></i></small></h4>
+
+                    
+                    <h4>Your Pickup Date is <strong>April 29th &amp; April 30th</strong>
+                    <br>
+                    <small>Saturday &amp; Sunday after Dead Week <i class="fa fa-graduation-cap text-primary"></i></small></h4>
 
                     <br>
 
-                    <h3 class="description"><strong>Get Paid</strong></h3>
+                    <h3 class="text-info"><strong>Get Paid</strong></h3>
                     <h4>We sell your items while you are gone for the Summer.</h4>
                     <h4>We split the sale 50/50.</h4>
                     <h4>If an item doesn't sell in 120 days, we'll return it to you for free!
                         <br><small>(Items typically sell in 10-60 days)</small></h4>
                 </div>
+            </div>
+        </div>
+
+<hr>
+
+        <div class="section section-items">
+            <div class="row">
+
+                <div class="col-sm-4 col-sm-offset-1">
+                    <h2 class="title">What Items Do You Accept?</h2>
+                    <h5 class="description">Items qualify if they can fit into a 24 in x 24 in box.</h5>
+                    <h5 class="description">However, there are exceptions for some large items that we also accept:</h5>
+                    <h5 class="description">TVs, Mini Fridges, and Computer Monitors are all eligible for pickups.</h5>
+                </div>
+
+                <div class="col-sm-6 col-sm-offset-1">
+                    <h3 class="text-success"><strong>Allowed Items</strong> <small>(not an exhaustive list)</small></h3>
+                    <ul>
+                        <li><i class='fa fa-check text-success'></i> TVs</li>
+                        <li><i class='fa fa-check text-success'></i> Speakers</li>
+                        <li><i class='fa fa-check text-success'></i> Laptops &amp; Computers</li>
+                        <li><i class='fa fa-check text-success'></i> Mini Fridges</li>
+                        <li><i class='fa fa-check text-success'></i> Video Game Systems &amp; Video Games</li>
+                        <li><i class='fa fa-check text-success'></i> Dorm Items (Lights, Small Tables, Etc.)</li>
+                        <li><i class='fa fa-check text-success'></i> Items smaller than 24 in x 24 in</li>
+
+                        <li><i>&nbsp;&nbsp;&nbsp;&nbsp; <a href="{% url 'home' %}#what-can-i-send" target="_blank">+ More</a></i></li>
+
+                    </ul>
+                    <br>
+
+                    <h3 class="text-danger"><strong>Not Allowed</strong></h3>
+                    <ul>
+                        <li><i class='fa fa-times text-danger'></i> Mattresses</li>
+                        <li><i class='fa fa-times text-danger'></i> Clothing</li>
+                        <li><i class='fa fa-times text-danger'></i> Shoes</li>
+                        <li><i class='fa fa-times text-danger'></i> Items exceeding 24 in x 24 in (if not specified above)</li>
+                    </ul>
+                    
+                </div>
+
             </div>
         </div>
 
