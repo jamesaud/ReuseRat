@@ -23,40 +23,115 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
 
 {% block content%}
     <div class="container">
+        <div class='row'>
+            <div class='col-sm-8 col-sm-offset-2'>
+                <div class='alert alert-success text-center'>
+                    <h4 style="margin-bottom: 0px;">
+                    <span style='position:relative; margin-top: 7px; top:5px;'><i class="material-icons">info_outline</i></span>
+                    IU students must sign up by <strong>April 21st!</strong>
+                    </h4>
+                </div>
+            </div>
+        </div>
         <div class="section-steps section">
             <div class="row">
                 <h2 class="title col-sm-12">Scheduling a Pickup is Easy as 1-2-3</h2>
             </div>
             <div class="row">
-                <div class="col-sm-4 step"><h4><div class="number"><span>1</span></div> Schedule a pick up by filling out the form below.</h4></div>
-                <div class="col-sm-4 step"><h4><div class="number"><span>2</span></div> We will deliver boxes so you can pack up your items.</h4></div>
-                <div class="col-sm-4 step"><h4><div class="number"><span>3</span></div> Our driver will pick up your boxes. Time to relax, you'll be earning cash in no time!</h4></div>
+                <div class="col-sm-4 step"><h4 class="description"><div class="number"><span>1</span></div> Schedule a pick up by filling out the form below.</h4></div>
+                <div class="col-sm-4 step"><h4 class="description"><div class="number"><span>2</span></div> We will deliver boxes so you can pack up your items.</h4></div>
+                <div class="col-sm-4 step"><h4 class="description"><div class="number"><span>3</span></div> Our driver will pick up your boxes. Time to relax, you'll be earning cash in no time!</h4></div>
             </div>
         </div>
 <hr>
-        <div class="section">
+        <div class="section section-iu">
             <div class="row">
                 <div class="col-sm-4 col-sm-offset-1">
                     <h2 class="title">Are You An IU Student Leaving For Summer?</h2>
-                    <h5>Don't wait until the last minute to deal with your belongings.
+                    <h5 class="description">Don't wait until the last minute to deal with your belongings.
                         Using our service you can clean out for the Summer while making money!</h5>
-                    <h5>Storage is expensive. ReuseRat Pickup is 100% free!</h5>
+                    <h5 class="description">ReuseRat Pickup is 100% free!</h5>
                 </div>
                 <div class="col-sm-6 col-sm-offset-1">
-                    <h3 class="description"><strong>Delivery &amp; Pickup</strong></h3>
-                    <h4>Your Box Delivery Date is <strong>April xxth &amp; April xxth.</strong></h4>
-                    <h4>Your Pickup Date is <strong>April xxth &amp; April xxth.</strong></h4>
+                    <h3 class="text-info"><strong>Delivery &amp; Pickup</strong></h3>
+                    <h4>Your Box Delivery Date is <strong>April 23rd &amp; April 24th</strong>
+                    <br>
+                    <small>Sunday &amp; Monday after Little 500 <i class='fa fa-bicycle text-primary'></i></small></h4>
+
+
+                    <h4>Your Pickup Date is <strong>April 29th &amp; April 30th</strong>
+                    <br>
+                    <small>Saturday &amp; Sunday after Dead Week <i class="fa fa-graduation-cap text-primary"></i></small></h4>
 
                     <br>
 
-                    <h3 class="description"><strong>Get Paid</strong></h3>
+                    <h3 class="text-info"><strong>Get Paid</strong></h3>
                     <h4>We sell your items while you are gone for the Summer.</h4>
                     <h4>We split the sale 50/50.</h4>
                     <h4>If an item doesn't sell in 120 days, we'll return it to you for free!
-                        <br><small>(Items typically sell in 10-60 days)</small></h4>
+                        <br><small>Items typically sell in 10-60 days</small></h4>
                 </div>
             </div>
         </div>
+
+<hr>
+
+        <div class="section section-items">
+            <div class="row">
+
+                <div class="col-sm-4 col-sm-offset-1">
+                    <h2 class="title">What Items Do You Accept?</h2>
+                    <h5 class="description">Items qualify if they can fit into a 24 in x 24 in box.</h5>
+                    <h5 class="description">However, there are exceptions for some large items that we also accept:</h5>
+                    <h5 class="description">TVs, Mini Fridges, Microwaves, and Computer Monitors are all eligible for pickups.</h5>
+                </div>
+
+                <div class="col-sm-6 col-sm-offset-1">
+                    <h3 class="text-success"><strong>Allowed Items</strong> <small>(not an exhaustive list)</small></h3>
+                    <ul>
+                        <li><i class='fa fa-check text-success'></i> TVs</li>
+                        <li><i class='fa fa-check text-success'></i> Speakers</li>
+                        <li><i class='fa fa-check text-success'></i> Laptops &amp; Computers</li>
+                        <li><i class='fa fa-check text-success'></i> Mini Fridges</li>
+                        <li><i class='fa fa-check text-success'></i> Video Game Systems &amp; Games</li>
+                        <li><i class='fa fa-check text-success'></i> Appliances (Microwaves, Coffee Makers, Etc.)</li>
+                        <li><i class='fa fa-check text-success'></i> Dorm Items (Lights, Small Tables, Etc.)</li>
+                        <li><i class='fa fa-check text-success'></i> Items smaller than 24 in x 24 in</li>
+
+                        <li><i>&nbsp;&nbsp;&nbsp;&nbsp; <a href="{% url 'home' %}#what-can-i-send" target="_blank">+ More</a></i></li>
+
+                    </ul>
+                    <br>
+
+                    <h3 class="text-danger"><strong>Not Allowed</strong></h3>
+                    <ul>
+                        <li><i class='fa fa-times text-danger'></i> Mattresses</li>
+                        <li><i class='fa fa-times text-danger'></i> Clothing</li>
+                        <li><i class='fa fa-times text-danger'></i> Shoes</li>
+                        <li><i class='fa fa-times text-danger'></i> Items exceeding 24 in x 24 in (if not specified above)</li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+
+<hr>
+
+ <div class='section section-bonus row'>
+     <div class='col-sm-6 col-sm-offset-2 text-left'>
+         <div><h2>Sharing is Caring <i style='position: relative; top: -2px;' class='fa fa-heart text-danger'></i></h3>
+            <h4 class= style='font-weight: 400;'><strong>Referral Bonus</strong> - Any friend that refers your name in the sign up form below scores you an incredible bonus!</h4>
+            <h4 class="description">You'll get paid a <strong class='text-success'>10% bonus</strong> for every item they sell.</h4>
+            <h4 class="description">They will make <strong class='text-success'>10% more</strong> by using you as a referrer.</h4>
+            <h4 class="description">There is no limit to the amount of referrals!</h4>
+            <h3><small>Limited time only!</small></h3>
+         </div>
+     </div>
+     <div class='col-sm-2 col-sm-offset-1'>
+        {% include "snippets/_social_drop_list.html" with destination_url=request.build_absolute_uri email_subject="These guys pick up your items and sell them for you!" message="If you use my name as a referral we will both earn 10 percent more!" %}
+     </div>
+ </div>
 
  <hr>
 
@@ -68,7 +143,7 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
                 </div>
             </div>
             <br><br>
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdi1gcMeQfigpVFQCQzu_pPJF6eroQTmqjmEzMuHkCboEe4nA/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdi1gcMeQfigpVFQCQzu_pPJF6eroQTmqjmEzMuHkCboEe4nA/viewform?embedded=true" width="100%" height="1350px" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
         </div>
 
 

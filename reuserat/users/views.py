@@ -470,8 +470,8 @@ class CashOutView(LoginRequiredMixin, View):
             zipcode = self.request.user.address.zipcode
             country = self.request.user.address.country
             check_response = check_helpers.create_check(customer_name,address_line1,address_line2,city,state,zipcode,country,balance_in_dollars)
-
             print(check_response)
+
         except Exception as e:
             logger.error("Check Error: " + str(e))
             raise
