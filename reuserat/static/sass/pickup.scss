@@ -5,6 +5,10 @@
   min-height: 600px;
 }   
 
+.description{
+    color: $grey-600;
+}
+
 .section-steps{
     text-align: center;
     $size: 70px;
@@ -31,15 +35,6 @@
     }
 }
 
-.section-items{
-    ul{
-        padding-left: 10px;
-        li{
-            font-size: 16px;
-            line-height: 25px;
-        }
-    }
-}
 
 %section{
     .description{
@@ -49,6 +44,14 @@
 
 .section-items{
     @extend %section;
+    ul{
+        padding-left: 10px;
+        li{
+            font-size: 16px;
+            line-height: 25px;
+            color: $grey-600;
+        }
+    }
 }
 
 .section-iu{

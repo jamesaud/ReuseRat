@@ -2,6 +2,9 @@
   height: 600px;
   min-height: 600px; }
 
+.description {
+  color: #757575; }
+
 .section-steps {
   text-align: center; }
   .section-steps h2.title {
@@ -20,14 +23,15 @@
       line-height: 70px;
       display: block; }
 
+.section-items .description, .section-iu .description {
+  color: #616161; }
+
 .section-items ul {
   padding-left: 10px; }
   .section-items ul li {
     font-size: 16px;
-    line-height: 25px; }
-
-.section-items .description, .section-iu .description {
-  color: #616161; }
+    line-height: 25px;
+    color: #757575; }
 
 .section-bonus h4 {
   margin-bottom: 18px; }
