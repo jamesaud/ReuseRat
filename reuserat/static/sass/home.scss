@@ -2,7 +2,6 @@
 @import '_mixins.scss';
 
 
-
 //HOMEPAGE
 .wrapper > .header{
   min-height: 780px !important;
@@ -144,10 +143,13 @@ footer{
 
  
 #bloomington{
-  div{
-    position: absolute; 
-    top: -70px; 
-    left: 18px;
+  padding-left: 20px;
+  @media screen and (min-width: 992px){
+    div{
+      position: absolute; 
+      top: -70px; 
+      left: 18px;
+    }
   }
   a{
     color: $logo-yellow; 
@@ -159,3 +161,4 @@ footer{
     }
   }
 }
+

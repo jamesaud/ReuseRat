@@ -102,15 +102,17 @@ h5.description, h4.description, p.description {
 footer {
   margin-top: 0px; }
 
-#bloomington div {
-  position: absolute;
-  top: -70px;
-  left: 18px; }
-
-#bloomington a {
-  color: #FFF64A;
-  font-weight: 500; }
-  #bloomington a:hover {
-    text-decoration: none;
-    border-bottom: 3px solid white;
-    font-style: italic; }
+#bloomington {
+  padding-left: 20px; }
+  @media screen and (min-width: 992px) {
+    #bloomington div {
+      position: absolute;
+      top: -70px;
+      left: 18px; } }
+  #bloomington a {
+    color: #FFF64A;
+    font-weight: 500; }
+    #bloomington a:hover {
+      text-decoration: none;
+      border-bottom: 3px solid white;
+      font-style: italic; }
