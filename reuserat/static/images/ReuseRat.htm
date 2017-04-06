@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:3000/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>ReuseRat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+
+    
+    
+    <!-- Latest compiled and minified Bootstrap 4 Alpha 4 CSS -->
+    <link rel="stylesheet" href="./ReuseRat_files/bootstrap.min.css">
+
+    <link rel="stylesheet" href="./ReuseRat_files/icon">
+	  <link rel="stylesheet" href="./ReuseRat_files/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./ReuseRat_files/css">
+
+
+    <!-- SASS -->
+    <!-- This file stores project-specific CSS -->
+    <link type="text/css" href="./ReuseRat_files/project.css" rel="stylesheet">
+
+    
+
+    <!-- SASS -->
+    <link type="text/css" href="./ReuseRat_files/circle_tabs.css" rel="stylesheet">
+    <link type="text/css" href="./ReuseRat_files/home.css" rel="stylesheet">
+
+
+
+
+
+  <script>var tvt = tvt || {}; tvt.captureVariables = function (a){for(var b=new Date,c={},d=Object.keys(a||{}),e=0,f;f=d[e];e++)if(a.hasOwnProperty(f)&&
+"undefined"!=typeof a[f])try{var g=[];c[f]=JSON.stringify(a[f],function(a,b){try{if("function"!==typeof b){if("object"===typeof b&&null!==b){if(b instanceof HTMLElement||b instanceof Node||-1!=g.indexOf(b))return;g.push(b)}return b}}catch(c){}})}catch(l){}a=document.createEvent("CustomEvent");a.initCustomEvent("TvtRetrievedVariablesEvent",!0,!0,{variables:c,date:b});window.dispatchEvent(a)};window.setTimeout(function() {tvt.captureVariables({'dataLayer': window['dataLayer']})}, 2000);</script></head>
+
+
+<body class="landing-page"><script id="__bs_script__">//<![CDATA[
+    document.write("<script async src='/browser-sync/browser-sync-client.js?v=2.18.8'><\/script>".replace("HOST", location.hostname));
+//]]></script><script async="" src="./ReuseRat_files/browser-sync-client.js"></script>
+
+
+
+
+      
+
+
+      <nav id="main-navigation" class="navbar navbar-transparent navbar-absolute">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="https://reuserat.com/" target="_blank">
+                 <img class="logo" src="./ReuseRat_files/logo.png">
+              </a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navigation-example">
+              <ul class="nav navbar-nav navbar-right">
+
+              <li class="">
+                <a class="" href="http://localhost:3000/">Home</a>
+              </li>
+
+              <li>
+                  <a href="https://reuserat.com/">
+                    Store
+                  </a>
+              </li>
+
+              <li>
+                <a href="http://localhost:3000/knowledge/common-questions/">
+                  Knowledge
+                </a>
+              </li>
+
+              
+                <li class="nav-item">
+                  <a id="sign-up-link" class="nav-link" href="http://localhost:3000/accounts/signup/">Sign Up</a>
+                </li>
+                <li class="nav-item">
+                  <a id="log-in-link" class="nav-link" href="http://localhost:3000/accounts/login/">Sign In</a>
+                </li>
+              
+
+              <li>
+                <a href="https://twitter.com/ReuseRat" target="_blank" class="btn btn-simple btn-white btn-just-icon">
+                  <i class="fa fa-twitter"></i>
+                </a>
+              </li>
+                  <li>
+                      <a href="https://www.facebook.com/pg/ReuseRat-1624736247551484/" target="_blank" class="btn btn-simple btn-white btn-just-icon">
+                <i class="fa fa-facebook-square"></i>
+              </a>
+                  </li>
+                <li>
+                  <a href="https://medium.com/reuserat" target="_blank" class="btn btn-simple btn-white btn-just-icon">
+                    <i class="fa fa-medium"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.reddit.com/user/reuserat/" target="_blank" class="btn btn-simple btn-white btn-just-icon">
+                    <i class="fa fa-reddit"></i>
+                  </a>
+                </li>
+                <li>
+
+                  <div id="fixed-social-drop" class="dropdown social-drop">
+                     <button href="#" data-toggle="dropdown" class="btn  btn-just-icon dropdown-toggle">
+                        <i class="fa fa-share-alt"></i>
+                        <b class="caret"></b>
+                     </button>
+
+                    <ul class="dropdown-menu pull-right" aria-labelledby="social-dropup-footer">
+                      
+                        <li>
+    <a class="btn btn-just-icon btn-round btn-facebook" href="https://www.facebook.com/sharer/sharer.php?u=//localhost:3000/" target="_blank">
+        <i class="fa fa-facebook"> </i>
+        <div class="ripple-container"></div>
+    </a>
+</li>
+<li>
+    <a class="btn btn-just-icon btn-round btn-twitter" href="https://twitter.com/intent/tweet?url=//localhost:3000/" target="_blank">
+        <i class="fa fa-twitter"> </i>
+        <div class="ripple-container"></div>
+    </a>
+</li>
+<li>
+    <a class="btn btn-just-icon btn-round btn-google" href="https://plus.google.com/share?url=//localhost:3000/" target="_blank">
+        <i class="fa fa-google"> </i>
+         <div class="ripple-container"></div>
+    </a>
+</li>
+<li>
+    <a class="btn btn-just-icon btn-round btn-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=//localhost:3000/" target="_blank">
+        <i class="fa fa-linkedin"> </i>
+        <div class="ripple-container"></div>
+    </a>
+</li>
+
+<li>
+    <a class="btn btn-just-icon btn-round btn-reddit" href="http://www.reddit.com/submit?url=//localhost:3000/" target="_blank">
+        <i class="fa fa-reddit"> </i>
+        <div class="ripple-container"></div>
+    </a>
+</li>
+<li>
+    <a class="btn btn-just-icon btn-round btn-email" href="mailto:?subject=I%20wanted%20you%20to%20see%20this%20site!&amp;body=Check%20out%20this%20site!%20-%20Shared%20by%20//localhost:3000/" title="Share by Email" target="_blank">
+        <i class="fa fa-envelope-o"> </i>
+        <div class="ripple-container"></div>
+    </a>
+</li>
+                      
+                    </ul>
+                  </div>
+
+
+                </li>
+
+              </ul>
+            </div>
+        </div>
+      </nav>
+
+
+    <div>
+
+
+
+      
+
+
+    <div class="wrapper">
+        <div class="header header-filter" style="background-image: url(&#39;/static/images/main-min.jpeg&#39;);">
+            <div class="container">
+                <div id="bloomington" class="row" style="position: relative;">
+                    <div>
+                        <h3><a href="http://localhost:3000/pickup/">Live in Bloomington? Click here!</a></h3>
+                    </div>
+                </div>
+                <div class="row">
+					<div class="col-md-6">
+						<h1 class="title">Ship Your Junk, Get Paid. It's That Easy.</h1>
+	                    <h4>
+                            Look around you - it's time to clean out your house. Selling online can be time consuming and confusing - we make it simple.
+							Make money when your items sell on <a href="https://reuserat.com/" target="_blank" class="text-warning">ReuseRat.com</a>
+                        </h4>
+
+	                    <br>
+                            <a href="http://localhost:3000/accounts/signup/" class="btn btn-danger btn-raised btn-lg">
+                                <i class="material-icons">launch</i>Get Started for Free
+                            </a>
+					</div>
+                    <div class="header-cards col-md-4 col-md-offset-1 text-center">
+                            <div class="card">
+                                <div class="content">
+                                    <i class="fa fa-gift fa-2x text-primary	"></i>
+                                    <h4>Pack Your Junk</h4>
+                                    <p>Almost anything - if it fits in a box, we'll take it</p>
+
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="content">
+                                    <i class="fa fa-send fa-2x text-warning"></i>
+                                    <h4>Send With USPS</h4>
+                                    <p>We'll even reimburse your shipping costs</p>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="content">
+                                    <i class="fa fa-money fa-2x text-success"></i>
+                                    <h4>Get Paid</h4>
+                                    <p>We post your items on <a href="https://reuserat.com/" target="_blank">ReuseRat.com</a> &amp; pay you when an item sells</p>
+                                </div>
+                            </div>
+                    </div> <!-- /header-cards -->
+                </div> <!-- /row-->
+            </div> <!-- /container -->
+        </div> <!-- /header-filter -->
+
+		<div class="main main-raised">
+		    <div class="section text-center section-landing">
+				<div class="container highlight">
+
+	                <div class="row">
+	                    <div class="col-md-8 col-md-offset-2">
+	                        <h2 class="title">Making Money Has Never Been So Easy</h2>
+	                        <h5 class="description">9/10 financial experts agree: making money is better than not. Instead of letting your unused items collect dust in storage, we can sell them for you. Managing an Ebay or Amazon account can take hours and unneeded responsibility to ship items on time.
+								Your friends will notice your clean house and you'll have extra spending money!</h5>
+	                    </div>
+	                </div>
+				</div> <!-- /container -->
+				<div class="container-fluid">
+					<div class="row steps" style="
+						background-image: url(&#39;/static/images/test/beachedit.jpg&#39;) !important;
+						background-position: center !important;
+						background-attachment: scroll !important;">
+
+						<div class="col-md-10 col-md-offset-1">
+														<h2> <span class="prior">You Do You</span> <span class="and"> | </span> <span class="prior">Live Your Life</span></h2>
+
+							<h3>
+									<span class="we">We Do</span> <span class="step">Selling</span> <span class="arrow"><i class="material-icons">arrow_forward</i></span> <span class="step">Packaging </span> <span class="arrow"><i class="material-icons">arrow_forward</i></span> <span class="step">Delivery</span> <span class="arrow"><i class="material-icons">arrow_forward</i></span> <span class="step">Customer Service</span>
+							</h3>
+
+						</div>
+					</div>
+				</div>
+				<div class="container">
+					<div class="features">
+						<div class="row">
+							<div class="col-md-8 col-md-offset-2">
+								<h2 class="title">Keep It Easy With 6 Simple Steps</h2>
+							</div>
+                            <div class="col-md-4">
+								<div class="info">
+									<div class="icon icon-primary">
+										<i class="material-icons">account_circle</i>
+									</div>
+									<h4 class="info-title">1. Register Your Information</h4>
+									<h5>We just need a few details from you to make sure the process goes smoothly.</h5>
+                                    <a id="sign-up-link" class="btn btn-primary btn-simple btn-outline" href="http://localhost:3000/accounts/signup/">Register now</a>
+								</div>
+		                    </div>
+		                    <div class="col-md-4">
+								<div class="info">
+									<div class="icon icon-info">
+										<i class="material-icons">video_label</i>
+									</div>
+									<h4 class="info-title">2. Package Your Items</h4>
+									<h5>Whether it's a new laptop or old toys,  we'll take it.
+                                        Pack as much as you want - we can even send you boxes (coming soon). </h5>
+								</div>
+		                    </div>
+		                    <div class="col-md-4">
+								<div class="info">
+									<div class="icon icon-default">
+										<i class="material-icons">local_printshop</i>
+									</div>
+									<h4 class="info-title">3. Print Your Shipping Label</h4>
+									<h5>Simply print out the label we provide and stick it on your box. We'll even reimburse shipping costs when the box arrives. </h5>
+
+								</div>
+		                    </div>
+						</div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                    <div class="info">
+                                        <div class="icon icon-danger">
+                                            <i class="material-icons">local_shipping</i>
+                                        </div>
+                                        <h4 class="info-title">4. Send Boxes Via USPS</h4>
+                                        <h5>Drop off your boxes at your mailbox, USPS drop box, or local post office.</h5>
+                                    </div>
+                            </div>
+
+                            <div class="col-md-4">
+								<div class="info">
+									<div class="icon icon-warning">
+										<i class="material-icons">weekend</i>
+									</div>
+									<h4 class="info-title">5. ?????</h4>
+									<h5>Time to sit back and relax. We do the work of handling the sales process. You live your life, whether it's Binging Netflix or Extreme Snowboarding.</h5>
+								</div>
+		                    </div>
+
+		                    <div class="col-md-4">
+								<div class="info">
+									<div class="icon icon-success">
+										<i class="material-icons">attach_money</i>
+									</div>
+									<h4 class="info-title">6. Profit</h4>
+									<h5>Congratulations! We sold your item and now it's time to get paid. We split 50/50 and pay by Check, Paypal or Direct Deposit.</h5>
+								</div>
+		                    </div>
+
+
+                        </div> <!-- /row -->
+		            </div> <!-- /features -->
+
+		    	</div> <!-- /container -->
+				<!-- TESTING -->
+			<div class="section section-blue">
+				<div class="container">
+					<div class="row">
+
+						<div class="col-md-4">
+							<div class="image-container">
+								<img class="img img-raised" src="./ReuseRat_files/clean.jpeg">
+							</div>
+						</div>
+
+						<div class="col-md-4 col-md-offset-3">
+							<div class="section-description">
+								<h3 class="title">Clean Out Your House, Get Paid</h3>
+								<h6 class="description">It's so simple a rat could do it </h6>
+
+								<h5 class="description">Customers buy your items on our premier second hand store <a href="https://reuserat.com/" target="_blank" class="text-warning">ReuseRat.com</a></h5>
+								<h5>When your item sells, you make money!</h5>
+
+								<a href="https://reuserat.com/" target="_blank" class="btn btn-light-blend2">See the Store</a>
+
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+                <!-- test -->
+            <div id="what-can-i-send" class="section-circles">
+                <h2 class="title">I Can Really Send Anything?</h2>
+                <h3>You can send almost anything, here's what we accept:</h3>
+                <h5>(min ~$5 value, good condition items)</h5>
+
+                
+
+<div class="wrap circle-features">
+
+        <div class="row">
+            <div class="circle-features-logo">
+                <br>
+                <img src="./ReuseRat_files/logo.png" class="img-responsive">
+                <h4>Send What You Want, Make Money </h4>
+
+            </div>
+            <div class="circle">
+
+                <span id="videogames">Video Games</span>
+                <div class="inner">
+                    <h3>Video Games</h3>
+                    <li>New &amp; Legacy Consoles</li>
+                    <li>PS4 Games</li>
+                    <li>Xbox One Games</li>
+                    <li>Switch Games</li>
+                    <li>Legacy Games</li>
+                    <li>And More!</li>
+                </div>
+
+                <span id="jewelry">Jewlery</span>
+                <div class="inner">
+                    <h3>Jewlery</h3>
+                    <li>Diamonds</li>
+                    <li>Bracelets</li>
+                    <li>Necklaces</li>
+                    <li>Earings</li>
+                    <li>Watches</li>
+                    <li>And More!</li>
+                </div>
+
+                <span id="treasures">Treasures</span>
+                <div class="inner">
+                    <h3>Treasures</h3>
+                    <li>Hand-made Crafts</li>
+                    <li>Pottery</li>
+                    <li>Glass Items</li>
+                    <li>Gold</li>
+                    <li>Hand-made Fabrics</li>
+                    <li>And More!</li>
+                </div>
+
+                <span id="kids">Kids</span>
+                <div class="inner">
+                    <h3>Kids</h3>
+                    <li>Games</li>
+                    <li>Stuffed Animals</li>
+                    <li>Toys</li>
+                    <li>Dolls</li>
+                    <li>And More!</li>
+                </div>
+
+                <span class="blacklist" id="blacklist">Blacklist</span>
+                <div class="inner blacklist">
+                    <h3>Items You Can't Send</h3>
+                    <li><i class="fa fa-times"></i>Clothing <small>(sorry <i class="fa fa-frown-o"></i>)</small></li>
+                    <li><i class="fa fa-times"></i>Cheap Items <small>(&lt; $5)</small></li>
+                    <li><i class="fa fa-times"></i>Illegal Items</li>
+
+                </div>
+
+                <span id="electronics">Electronics</span>
+                <div class="inner">
+                    <h3>Electronics</h3>
+                    <li>Phones</li>
+                    <li>Music Players</li>
+                    <li>Headphones &amp; Audio</li>
+                    <li>Laptops</li>
+                    <li>And More!</li>
+                </div>
+
+                <span id="books">Books</span>
+                <div class="inner">
+                    <h3>Books</h3>
+                    <li>Hardcover</li>
+                    <li>Paperback</li>
+                    <li>Textbooks</li>
+                    <li>Used &amp; New</li>
+                </div>
+
+                <span id="movies">Movies</span>
+                <div class="inner">
+                    <h3>Movies</h3>
+                    <li>DVDs</li>
+                    <li>BlueRays</li>
+                </div>
+
+        </div>
+    </div>
+</div>
+
+            </div>
+                <!-- /test -->
+
+
+			<div class="section section-orange">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4 col-md-offset-1">
+							<div class="section-description">
+								<h3 class="title">Relax, It's Easy to Cash Out</h3>
+								<h6 class="description">Paypal, Check, or Direct Deposit</h6>
+
+								<h5 class="description">
+									View your balance and cash out at any time.
+								</h5>
+								<h5>
+									Use direct deposit (secured by Stripe Payments), or payout with Paypal.
+								</h5>
+								<h5>
+									Don't want to use an online payment method? We'll send you a check in the mail!
+								</h5>
+
+
+							</div>
+
+						</div>
+						<div class="col-md-5 col-md-offset-2">
+							<div class="image-container">
+								<img class="img img-raised" src="./ReuseRat_files/relax.jpeg">
+							</div>
+						</div>
+
+
+
+					</div>
+				</div>
+			</div>
+				<!-- END TESTING -->
+
+			<div class="container">
+	        	<div class="section section-testimonials text-center" style="display: none;">
+	                <h2 class="title">Your Friends <i class="fa fa-heart text-danger"></i> Our Service</h2>
+
+					<div class="team">
+						<div class="row">
+							<div class="col-md-4">
+			                    <div class="team-player">
+			                        <img src="./ReuseRat_files/avatar.jpg" alt="Thumbnail Image" class="img-raised img-circle">
+			                        <h4 class="title">Gigi Hadid <br>
+										<small class="text-muted">Student</small>
+									</h4>
+			                        <h5 class="description"><i class="fa fa-quote-left"></i>
+									This website changed my life. For the better.
+									</h5>
+			                    </div>
+			                </div>
+			                <div class="col-md-4">
+			                    <div class="team-player">
+			                        <img src="./ReuseRat_files/christian.jpg" alt="Thumbnail Image" class="img-raised img-circle">
+			                        <h4 class="title">Christian Louboutin<br>
+										<small class="text-muted">Designer</small>
+									</h4>
+			                        <h5 class="description"><i class="fa fa-quote-left"></i>
+									I cleaned out my house and I have extra spending money! Two birds with one stone.
+									</h5>
+			                    </div>
+			                </div>
+			                <div class="col-md-4">
+			                    <div class="team-player">
+			                        <img src="./ReuseRat_files/kendall.jpg" alt="Thumbnail Image" class="img-raised img-circle">
+			                        <h4 class="title">Kendall Jenner<br>
+										<small class="text-muted">Human Being</small>
+									</h4>
+
+                                    <h5 class="description"><i class="fa fa-quote-left"></i>
+									Simply the best way to get rid of electronics. Stuff that would ended up in a dumpster is making me extra cash.
+									</h5>
+			                    </div>
+			                </div>
+						</div>
+					</div>
+
+	            </div>
+
+
+	        	<div class="section landing-section">
+	                <div class="row">
+	                    <div class="col-md-8 col-md-offset-2">
+                            <br><br><br> <!-- temporary until testimonials are back -->
+	                        <h2 class="text-center title">Let's Get Started</h2>
+							<h4 class="text-center description">
+                                Are you ready to start freeing up space and begin making money? Start the process with the button below.
+                                One small click for you, a giant leap for your wallet.
+                            </h4>
+                             <a href="http://localhost:3000/accounts/signup/" class="btn btn-primary btn-lg btn-raised text-center">
+									Let's Go Make Some $$
+							</a>
+	                    </div>
+	                </div>
+
+	            </div>
+	        </div> <!-- /container -->
+
+
+
+	</div>
+   </div>
+
+   <div class="main header-filter section-faq" style="
+        background-image: url(&#39;/static/images/blue-stones.jpg&#39;) !important;
+	   background-position: center !important;
+	   background-attachment: fixed !important;
+   ">
+
+	   <div class="container">
+	   <div class="row">
+		   <div class="col-sm-12 text-center">
+			   <h2 class="title" style="color: white !important;">Frequently Asked Questions</h2>
+		   </div>
+	   </div>
+
+	   <div class="col-sm-10 col-sm-offset-1">
+		   <div class="col-md-4">
+			   <div class="card card-nav-tabs text-center">
+								   <div class="header-info content">How long does it take to get paid?</div>
+				   <div class="content">
+					   <p>That depends! Within a few weeks you can expect a few of your items to sell. We post an item for a maximum of 70 days before moving it to clearance.</p>
+				   </div>
+			   </div>
+		   </div>
+               <div class="col-md-4">
+                   <div class="card card-nav-tabs text-center">
+                       <div class="header-info content">How do I start making money?</div>
+                       <div class="content">
+                           <a href="http://localhost:3000/accounts/signup/" class="btn btn-danger btn-simple">Sign Up Now For Free!</a>
+                       </div>
+                   </div>
+               </div>
+		   <div class="col-md-4">
+			   <div class="card card-nav-tabs text-center">
+								   <div class="header-info content">How much will my items sell for?</div>
+				   <div class="content">
+					   <p>It's in our best interest to sell your items at a reasonable price. Using our price match algorithm, we decrease prices over time the longer an item doesn't sell.</p>
+				   </div>
+			   </div>
+		   </div>
+               <div class="col-md-4">
+                   <div class="card card-nav-tabs text-center">
+                       <div class="header-info content">What if an item doesn't sell?</div>
+                       <div class="content">
+                           <p>If an item doesn't sell after 90 days, you have two options.
+							You can choose for us to donate the item on your behalf, or we can send the item back to you.</p>
+                       </div>
+                   </div>
+               </div>
+                <div class="col-md-4">
+                   <div class="card card-nav-tabs text-center">
+                                       <div class="header-info content">Will I get reimbursed for shipping?</div>
+                       <div class="content">
+                           <p>You sure will! Simply upload your shipping receipt and you'll receive store credit. Desire more?
+							   Follow us on social media for discounts!</p>
+                       </div>
+                   </div>
+               </div>
+
+                <div class="col-md-4">
+                   <div class="card card-nav-tabs text-center">
+                                       <div class="header-info content">Why don't you take clothing?</div>
+                       <div class="content">
+                           <p>
+							   Used clothing is difficult to accept, as we must reject most items based on quality requirements.
+							   <a href="https://thredup.com/" target="_blank">ThredUp</a> is a pretty cool place for clothing <i class="fa fa-smile-o"></i>
+							</p>
+                       </div>
+                   </div>
+               </div>
+               <div class="col-md-4 col-md-offset-4 text-center top40">
+                   <a href="http://localhost:3000/knowledge/common-questions/" class="btn btn-lg btn-white">
+                       <span class="text-primary">More Answers</span>
+                   </a>
+               </div>
+	   </div>
+
+	   </div> <!-- /container -->
+
+   </div> <!-- /faq -->
+</div> <!-- wrapper -->
+
+
+    </div>
+
+    
+
+
+
+    
+
+      <footer class="footer">
+
+	        <div class="container">
+
+              <div class="row social-share text-center">
+	                    <a id="twitter" href="https://twitter.com/ReuseRat" target="_blank" class="btn btn-raised btn-twitter sharrre">
+	                        <i class="fa fa-twitter"></i>
+	                        Twitter
+    	                    <div class="ripple-container"></div>
+                        </a>
+
+	                    <a id="facebook" href="https://www.facebook.com/pg/ReuseRat-1624736247551484/" target="_blank" class="btn btn-raised btn-facebook sharrre">
+                        <i class="fa fa-facebook-square"></i>
+                        Facebook
+                            <div class="ripple-container"></div>
+                        </a>
+
+                        <a id="medium" href="https://medium.com/reuserat" target="_blank" class="btn btn-raised btn-medium sharrre">
+	                        <i class="fa fa-medium"></i>
+	                        Medium
+                          <div class="ripple-container"></div>
+	                    </a>
+
+                        <a id="reddit" href="https://www.reddit.com/user/reuserat/" target="_blank" class="btn btn-raised btn-reddit">
+	                        <i class="fa fa-reddit"></i>
+	                    	Reddit
+                            <div class="ripple-container"></div>
+	                    </a>
+
+                      <div class="dropup social-drop">
+                        <button class="btn btn-raised btn-default" type="button" id="social-dropup-footer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-share-alt"></i>
+                                                Share
+                                                <b class="caret"></b>
+
+                        </button>
+
+                        <ul class="dropdown-menu pull-right" aria-labelledby="social-dropup-footer">
+                          
+                              <li>
+    <a class="btn btn-just-icon btn-round btn-facebook" href="https://www.facebook.com/sharer/sharer.php?u=//localhost:3000/" target="_blank">
+        <i class="fa fa-facebook"> </i>
+        <div class="ripple-container"></div>
+    </a>
+</li>
+<li>
+    <a class="btn btn-just-icon btn-round btn-twitter" href="https://twitter.com/intent/tweet?url=//localhost:3000/" target="_blank">
+        <i class="fa fa-twitter"> </i>
+        <div class="ripple-container"></div>
+    </a>
+</li>
+<li>
+    <a class="btn btn-just-icon btn-round btn-google" href="https://plus.google.com/share?url=//localhost:3000/" target="_blank">
+        <i class="fa fa-google"> </i>
+         <div class="ripple-container"></div>
+    </a>
+</li>
+<li>
+    <a class="btn btn-just-icon btn-round btn-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=//localhost:3000/" target="_blank">
+        <i class="fa fa-linkedin"> </i>
+        <div class="ripple-container"></div>
+    </a>
+</li>
+
+<li>
+    <a class="btn btn-just-icon btn-round btn-reddit" href="http://www.reddit.com/submit?url=//localhost:3000/" target="_blank">
+        <i class="fa fa-reddit"> </i>
+        <div class="ripple-container"></div>
+    </a>
+</li>
+<li>
+    <a class="btn btn-just-icon btn-round btn-email" href="mailto:?subject=I%20wanted%20you%20to%20see%20this%20site!&amp;body=Check%20out%20this%20site!%20-%20Shared%20by%20//localhost:3000/" title="Share by Email" target="_blank">
+        <i class="fa fa-envelope-o"> </i>
+        <div class="ripple-container"></div>
+    </a>
+</li>
+                          
+                        </ul>
+                      </div>
+
+                      <!--<button id="share-button" href="https://github.com/timcreative/material-kit" target="_blank" class="btn btn-raised btn-default">
+	                        <i class="fa fa-share-alt"></i>
+	                    	Share
+	                    </button>-->
+	            </div> <!-- /social-share -->
+
+
+
+
+              <!-- tTEST -->
+
+              <!-- -->
+
+	            <nav class="pull-left">
+	                <ul>
+	                    <li>
+	                        <a href="https://reuserat.com/">
+                                <img class="logo" src="./ReuseRat_files/logo.png">
+	                        </a>
+	                    </li>
+	                    <li>
+	                        <a href="https://reuserat.com/blogs/news">
+	                           Blog
+	                        </a>
+	                    </li>
+	                    <li>
+	                        <a href="http://www.creative-tim.com/license">
+	                            Licenses
+	                        </a>
+	                    </li>
+
+                      <li>
+	                        <a href="http://localhost:3000/knowledge/common-questions/">
+	                            Knowledge
+	                        </a>
+	                    </li>
+                      <li>
+	                        <a href="https://reuserat.com/">
+	                            Store
+	                        </a>
+	                    </li>
+
+                      
+                      <li class="nav-item">
+                        <a id="sign-up-link" class="nav-link" href="http://localhost:3000/accounts/signup/">Sign Up</a>
+                      </li>
+                      
+	                </ul>
+	            </nav>
+	            <div class="copyright pull-right text-right">
+                   Questions? Email <span id="footer-support"><a href="mailto:support@reuserat.com">support@reuserat.com</a></span><br>
+                       © 2017, made with <i class="fa fa-heart heart text-info"></i> by ReuseRat<p></p>
+	            </div>
+	        </div>
+	    </footer>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+      <script src="./ReuseRat_files/jquery.min.js"></script>
+      <script src="./ReuseRat_files/tether.min.js"></script>
+      <script src="./ReuseRat_files/bootstrap.min.js"></script>
+
+      <!-- Material Design -->
+      	<script src="./ReuseRat_files/material.min.js"></script>
+
+      <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+      <script src="./ReuseRat_files/nouislider.min.js" type="text/javascript"></script>
+
+      <!--  Plugin for the Datepicker, full documentation here: http://www.eyecon.ro/bootstrap-datepicker/ -->
+      <script src="./ReuseRat_files/bootstrap-datepicker.js" type="text/javascript"></script>
+
+      <!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
+      <script src="./ReuseRat_files/material-kit.js" type="text/javascript"></script>
+
+      <!-- Your stuff: Third-party javascript libraries go here -->
+
+      <!-- place project specific Javascript in this file -->
+      <script src="./ReuseRat_files/project.js"></script>
+
+    
+  
+
+
+</body></html>
