@@ -45,7 +45,7 @@
     .description{
         color: $grey-700;
     }
-}
+}  
 
 .section-items{
     @extend %section;
@@ -53,4 +53,10 @@
 
 .section-iu{
     @extend %section;
+}
+
+.section-bonus{
+    h4{
+        margin-bottom: 18px;
+    }
 }

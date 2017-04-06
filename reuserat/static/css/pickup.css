@@ -27,5 +27,7 @@
     line-height: 25px; }
 
 .section-items .description, .section-iu .description {
-  color: #616161;
-  font-weight: 300; }
+  color: #616161; }
+
+.section-bonus h4 {
+  margin-bottom: 18px; }

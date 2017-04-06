@@ -23,6 +23,16 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
 
 {% block content%}
     <div class="container">
+        <div class='row'>
+            <div class='col-sm-8 col-sm-offset-2'>
+                <div class='alert alert-success text-center'>
+                    <h4 style="margin-bottom: 0px;">
+                    <span style='position:relative; margin-top: 7px; top:5px;'><i class="material-icons">info_outline</i></span>
+                    IU students must sign up by <strong>April 21st!</strong>
+                    </h4>
+                </div>
+            </div>
+        </div>
         <div class="section-steps section">
             <div class="row">
                 <h2 class="title col-sm-12">Scheduling a Pickup is Easy as 1-2-3</h2>
@@ -59,7 +69,7 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
                     <h4>We sell your items while you are gone for the Summer.</h4>
                     <h4>We split the sale 50/50.</h4>
                     <h4>If an item doesn't sell in 120 days, we'll return it to you for free!
-                        <br><small>(Items typically sell in 10-60 days)</small></h4>
+                        <br><small>Items typically sell in 10-60 days</small></h4>
                 </div>
             </div>
         </div>
@@ -73,7 +83,7 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
                     <h2 class="title">What Items Do You Accept?</h2>
                     <h5 class="description">Items qualify if they can fit into a 24 in x 24 in box.</h5>
                     <h5 class="description">However, there are exceptions for some large items that we also accept:</h5>
-                    <h5 class="description">TVs, Mini Fridges, and Computer Monitors are all eligible for pickups.</h5>
+                    <h5 class="description">TVs, Mini Fridges, Microwaves, and Computer Monitors are all eligible for pickups.</h5>
                 </div>
 
                 <div class="col-sm-6 col-sm-offset-1">
@@ -83,7 +93,8 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
                         <li><i class='fa fa-check text-success'></i> Speakers</li>
                         <li><i class='fa fa-check text-success'></i> Laptops &amp; Computers</li>
                         <li><i class='fa fa-check text-success'></i> Mini Fridges</li>
-                        <li><i class='fa fa-check text-success'></i> Video Game Systems &amp; Video Games</li>
+                        <li><i class='fa fa-check text-success'></i> Video Game Systems &amp; Games</li>
+                        <li><i class='fa fa-check text-success'></i> Appliances (Microwaves, Coffee Makers, Etc.)</li>
                         <li><i class='fa fa-check text-success'></i> Dorm Items (Lights, Small Tables, Etc.)</li>
                         <li><i class='fa fa-check text-success'></i> Items smaller than 24 in x 24 in</li>
 
@@ -105,6 +116,23 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
             </div>
         </div>
 
+<hr>
+
+ <div class='section section-bonus row'>
+     <div class='col-sm-7 col-sm-offset-2 text-left'>
+         <div><h2>Sharing is Caring <i style='position: relative; top: -2px;' class='fa fa-heart text-danger'></i></h3>
+            <h4 style='font-weight: 400;'><strong>Referral Bonus</strong> - Any friend that refers your name in the sign up form below scores you an incredible bonus!</h4>
+            <h4>You'll get paid a <strong class='text-success'>10% bonus</strong> for every item they sell.</h4>
+            <h4>They will make <strong class='text-success'>10% more</strong> by using you as a referrer.</h4>
+            <h4>There is no limit to the amount of referrals!</h4>
+            <h3><small>Limited time only!</small></h3>
+         </div>
+     </div>
+     <div class='col-sm-2 col-sm-offset-1'>
+        {% include "snippets/_social_drop_list.html" with destination_url=request.build_absolute_uri email_subject="These guys pick up your items and sell them for you!" email_body="If you use my name as a referral we will both earn 10 percent more!" %}
+     </div>
+ </div>
+
  <hr>
 
         <div class="section text-center">
@@ -115,7 +143,7 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
                 </div>
             </div>
             <br><br>
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfHm3aks0WMPHBi3Qdf8Dhq5GbkEe2vlDv6zwem2iy0SuVe-Q/viewform?embedded=true" width="100%" height="1500px" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfHm3aks0WMPHBi3Qdf8Dhq5GbkEe2vlDv6zwem2iy0SuVe-Q/viewform?embedded=true" width="100%" height="1350px" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
         </div>
 
 
