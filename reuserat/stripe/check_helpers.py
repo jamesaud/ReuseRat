@@ -60,10 +60,7 @@ def create_check(customer_name, address_line1, address_line2, city, state, zipco
         )
 
     except Exception as e:
-        print('Error: ' + str(e))
-        print('Failed to create check')
         raise
-    print("Checks", check_response)
     return check_response
 
 
