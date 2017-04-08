@@ -337,7 +337,7 @@ EXTERNAL_URLS = {
          'medium': 'https://medium.com/reuserat'},
     'SITE':{
         'store': 'https://reuserat.com',
-        'seller': 'https://reuseratseller.com',
+        'seller': 'https://sell.reuserat.com',
         'blog': 'https://reuserat.com/blogs/news'}
 }
 

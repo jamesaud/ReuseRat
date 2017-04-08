@@ -78,4 +78,8 @@ class Transaction(models.Model):
 
     def retrieve_tracking_number(self):
         from .check_helpers import retrieve_tracking_number
-        return retrieve_tracking_number(self.check_id)
+        import lob
+        try:
+            return retrieve_tracking_number(self.check_id)
+        except lob.error.InvalidRequestError:
+            return None
