@@ -61,7 +61,7 @@ gulp.task('styles', function() {
 
 // Javascript minification
 gulp.task('scripts', function() {
-  return gulp.src(paths.js + '/project.js')
+  return gulp.src(paths.js + '/**/*.js')
     .pipe(plumber()) // Checks for errors
     .pipe(uglify()) // Minifies the js
     .pipe(rename({ suffix: '.min' }))
@@ -104,7 +104,7 @@ gulp.task('default', function() {
 gulp.task('watch', ['default'], function() {
   gulp.watch(paths.sass + '/**/*.scss', ['styles']);
   gulp.watch(paths.css + '/**/*.css').on("change", reload);
-  gulp.watch(paths.js + '/*.js', ['scripts']).on("change", reload);
+  gulp.watch(paths.js + '/**/*.js', ['scripts']).on("change", reload);
   gulp.watch(paths.images + '/*', ['imgCompression']);
   gulp.watch(paths.templates + '/**/*.html').on("change", reload);
 
