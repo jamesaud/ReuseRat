@@ -15,6 +15,7 @@
     <!--[if lt IE 9]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
+    <script src="{% static 'js/third_party_scripts.min.js' %}"></script>
 
     {% block css %}
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
@@ -73,6 +74,10 @@
 
               <li class="">
                 <a class="" href="{% url 'home' %}">Home</a>
+              </li>
+
+              <li class="">
+                <a class="" href="{% url 'pickup' %}">Schedule A Pickup</a>
               </li>
 
               <li>
@@ -297,7 +302,7 @@
       <!-- Your stuff: Third-party javascript libraries go here -->
 
       <!-- place project specific Javascript in this file -->
-      <script src="{% static 'js/project.js' %}"></script>
+      <script src="{% static 'js/project.min.js' %}"></script>
 
     {% endblock javascript %}
   </body>
