@@ -137,6 +137,7 @@ ANYMAIL = {
     "MAILGUN_SENDER_DOMAIN": env('MAILGUN_SENDER_DOMAIN')
 }
 EMAIL_BACKEND = "anymail.backends.mailgun.MailgunBackend"
+#deprecated in new update, use: anymail.backends.mailgun.EmailBackend
 
 # TEMPLATE CONFIGURATION
 # ------------------------------------------------------------------------------
