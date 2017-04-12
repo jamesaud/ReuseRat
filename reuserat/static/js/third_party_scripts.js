@@ -1,4 +1,4 @@
-// Third Party Scripts go here
+// Third Party Scripts go here in the HEADER of the html page
 
 
 // Google Analytics Tracking
