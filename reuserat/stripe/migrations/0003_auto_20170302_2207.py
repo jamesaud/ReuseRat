@@ -16,11 +16,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='stripeaccount',
             name='account_number_last_four',
-            field=models.IntegerField(validators=django.core.validators.MinLengthValidator(4)),
+            field=models.IntegerField(validators=[django.core.validators.MinLengthValidator(4)]),
         ),
         migrations.AlterField(
             model_name='stripeaccount',
             name='routing_number_last_four',
-            field=models.IntegerField(validators=django.core.validators.MinLengthValidator(4)),
+            field=models.IntegerField(validators=[django.core.validators.MinLengthValidator(4)]),
         ),
     ]
