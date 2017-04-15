@@ -42,9 +42,11 @@ WHITENOISE_MIDDLEWARE = ('whitenoise.middleware.WhiteNoiseMiddleware', )
 MIDDLEWARE = WHITENOISE_MIDDLEWARE + MIDDLEWARE
 RAVEN_MIDDLEWARE = ('raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware', )
 MIDDLEWARE = RAVEN_MIDDLEWARE + MIDDLEWARE
+
 # opbeat integration
 # See https://opbeat.com/languages/django/
 INSTALLED_APPS += ('opbeat.contrib.django',)
+
 OPBEAT = {
     'ORGANIZATION_ID': env('DJANGO_OPBEAT_ORGANIZATION_ID'),
     'APP_ID': env('DJANGO_OPBEAT_APP_ID'),
