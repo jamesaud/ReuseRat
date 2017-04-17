@@ -6,13 +6,29 @@
     margin-right: 4px; }
 
 h5.description, h4.description, p.description {
-  color: #757575; }
+  color: #616161; }
 
 .features {
   padding-top: 90px;
   padding-bottom: 90px; }
-  .features h5 {
-    color: #757575; }
+  .features p, .features h5 {
+    color: #616161; }
+  .features .btn {
+    margin-top: 0px;
+    padding-top: 7px !important;
+    padding-bottom: 7px !important; }
+  .features [class^='col']:nth-child(6) i {
+    color: #2196f3; }
+  .features [class^='col']:nth-child(5) i {
+    color: #309df4; }
+  .features [class^='col']:nth-child(4) i {
+    color: #3ea4f5; }
+  .features [class^='col']:nth-child(3) i {
+    color: #4dabf5; }
+  .features [class^='col']:nth-child(2) i {
+    color: #5bb1f6; }
+  .features [class^='col']:nth-child(1) i {
+    color: #6ab8f7; }
 
 .highlight {
   padding-bottom: 100px; }
@@ -20,7 +36,7 @@ h5.description, h4.description, p.description {
 .steps {
   padding-top: 60px;
   padding-bottom: 60px;
-  color: grey-100;
+  color: #f5f5f5;
   /*background: #e53935;
     background: -webkit-linear-gradient(to left, #e53935 , #e35d5b); 
     background: linear-gradient(to left, #e53935 , #e35d5b);  */
@@ -81,9 +97,9 @@ h5.description, h4.description, p.description {
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }
 
 .section-orange {
-  background: #ff4b1f;
+  background: #f57f17;
   /* fallback for old browsers */
-  background: linear-gradient(to right, #ff4b1f, #ff9068);
+  background: linear-gradient(to right, #f57f17, #ffd54f);
   /* Chrome 10-25, Safari 5.1-6 */
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }
 
@@ -91,8 +107,8 @@ h5.description, h4.description, p.description {
   padding-top: 100px;
   padding-bottom: 100px; }
   .section-circles .wrap.circle-features .inner, .section-circles .wrap.circle-features .circle-features-logo {
-    background-color: #eceff1;
-    border: 2px solid #424242; }
+    background-color: #fafafa;
+    border: 0px solid #fdd835; }
 
 .image-container img {
   width: auto;
