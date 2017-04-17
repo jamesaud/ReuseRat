@@ -124,7 +124,7 @@
                     <h4><a href="{{object.receipt.url}}" target="_blank">Your Shipping Receipt</a></h4>
                     <form id="shipment-receipt-form" enctype="multipart/form-data" method="POST" action="{% url 'shipments:shipmentDetail' object.id %}">
                         {% csrf_token %}
-                        Update: <input style='display: inline;' data-show-preview="false" id="{{form_receipt.receipt.auto_id}}" name="form_receipt.receipt.name" type="file">
+                        Update: <input style='display: inline;' data-show-preview="false" id="{{form_receipt.receipt.auto_id}}" name="{{form_receipt.receipt.name}}" type="file">
                     </form>
 
                     {% else %}

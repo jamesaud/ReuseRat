@@ -23,11 +23,12 @@ from django.contrib import messages
 
 @login_required
 def shipment_detail_view(request, pk):
+
     object = Shipment.objects.get(pk=pk)
     context = {}
     template_name = 'shipments/shipment_detail.html'
     form_track, form_rec = ShipmentDetailTrackingForm(request.POST or None, initial=object.__dict__),\
-                           ShipmentDetailReceiptForm(request.POST or None, request.FILES or None, initial=object.__dict__)
+                           ShipmentDetailReceiptForm(request.POST or None, request.FILES or None, )
 
     context['object'] = object
     context['visible_items'] = object.get_visible_items()
@@ -38,7 +39,7 @@ def shipment_detail_view(request, pk):
     def get_success_url():
         messages.add_message(request, messages.SUCCESS, 'Successfully Updated')
         return reverse('shipments:shipmentDetail', kwargs={'pk': object.pk})
-
+    
     if request.method == 'POST':
         if form_track.is_valid():
             object.tracking_number = form_track.cleaned_data['tracking_number']
