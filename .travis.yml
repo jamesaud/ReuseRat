@@ -9,6 +9,7 @@ before_install:
  - chmod +x docker-compose
  - sudo mv docker-compose /usr/local/bin
  - touch .env
+ - printenv > .env
 
 script:
   - docker-compose -f dev.yml build
