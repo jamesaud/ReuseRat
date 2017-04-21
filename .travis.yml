@@ -1,12 +1,21 @@
-sudo: true
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq build-essential gettext python-dev zlib1g-dev libpq-dev xvfb
-  - sudo apt-get install -qq libtiff4-dev libjpeg8-dev libfreetype6-dev liblcms1-dev libwebp-dev
-  - sudo apt-get install -qq graphviz-dev python-setuptools python3-dev python-virtualenv python-pip
-  - sudo apt-get install -qq firefox automake libtool libreadline6 libreadline6-dev libreadline-dev
-  - sudo apt-get install -qq libsqlite3-dev libxml2 libxml2-dev libssl-dev libbz2-dev wget curl llvm
 language: python
 python:
-- "3.5"
+  - 3.6
+sudo: required
+services:
+  - docker #Travis CI automatically routes builds to run on Trusty when services: docker is configured.
+  - postgresql
+env:
+  DOCKER_COMPOSE_VERSION: 2
+before_install:
+  - sudo apt-get -o Dpkg::Options::="--force-confdef" \
+     -o Dpkg::Options::="--force-confold" --assume-yes install docker-engine
+  - docker version
+  - sudo pip install docker-compose
+  - docker-compose version
 
+install:
+  - docker-compose -f dev.yml build
+script:
+  - docker-compose -f dev.yml up
+  - docker-compose -f dev.yml run django py.test
