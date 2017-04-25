@@ -5,6 +5,9 @@ import stripe
 import time
 
 
+
+
+
 # Creating Managed Connected Account in Stripe
 def create_account(ip_addr=None):
     """
@@ -12,7 +15,7 @@ def create_account(ip_addr=None):
     :param ip_addr: The ip_address of the user, used to sign the Connected Stripe Account agreement.
     :return: StripeAccount, an object from the model StripeAccount
     """
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
+    stripe.api_key = settings.STRIPE_SECRET_KEY  # REAL KEY HERE
 
     acct = stripe.Account.create(
         managed=True,  # Managed Account
@@ -43,7 +46,7 @@ def retrieve_balance(secret_key):
 
 
 def update_payment_info(account_id, account_token, user_object):
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # REAL KEY HERE
+    stripe.api_key = settings.STRIPE_SECRET_KEY  # REAL KEY HERE
     account = stripe.Account.retrieve(account_id)
 
     # Update the display name for the account
@@ -116,7 +119,7 @@ def create_transfer_bank(api_key, balance_in_cents, user_name):
 # Confusingly named function, because it's not transfering to a Stripe Customer.
 # It's transfering to a user with an account_id.
 def create_transfer_to_customer(account_id, balance_in_cents, description):
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+    stripe.api_key = settings.STRIPE_SECRET_KEY
 
     if not isinstance(balance_in_cents, int):  # Don't want any rounding to happen if it is a Float.
         raise ValueError("Cents must be an int")
@@ -136,7 +139,7 @@ def create_transfer_to_platform(account_id, balance_in_cents, description):
     Transfers money from a connected Stripe account to our Platform Stripe account.
     :return:
     """
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+    stripe.api_key = settings.STRIPE_SECRET_KEY
     platform_account_id = stripe.Account.retrieve().id
 
     if not isinstance(balance_in_cents, int):  # Don't want any rounding to happen if it is a Float.
@@ -159,7 +162,7 @@ def reverse_transfer(transfer_id, api_key=None):
     :param api_key: String, optionally the api key of the connected account. Will use the platform api key if not using account
     :return:
     """
-    stripe.api_key = api_key or settings.STRIPE_TEST_SECRET_KEY
+    stripe.api_key = api_key or settings.STRIPE_SECRET_KEY
     transfer = stripe.Transfer.retrieve(transfer_id)
     reversal = transfer.reversals.create()
     return reversal['id']

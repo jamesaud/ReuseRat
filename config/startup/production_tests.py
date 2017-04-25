@@ -19,3 +19,4 @@ class test_api_keys(TestCase):
     def test_shopify_app_name(self):
         pass
 
+
