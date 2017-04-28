@@ -9,6 +9,7 @@ var gulp = require('gulp'),
       gutil = require('gulp-util'),
       sass = require('gulp-sass'),
       autoprefixer = require('gulp-autoprefixer'),
+      concat = require('gulp-concat'),
       cssnano = require('gulp-cssnano'),
       rename = require('gulp-rename'),
       del = require('del'),
@@ -26,6 +27,7 @@ var gulp = require('gulp'),
 // Relative paths function
 var pathsConfig = function (appName) {
   this.app = "./" + (appName || pjson.name);
+  this.appignore ="!./" + (appName || pjson.name);
 
   return {
     app: this.app,
@@ -34,7 +36,8 @@ var pathsConfig = function (appName) {
     sass: this.app + '/static/sass',
     fonts: this.app + '/static/fonts',
     images: this.app + '/static/images',
-    js: this.app + '/static/js'
+    js: this.app + '/static/js',
+    ignorejs: this.appignore+'/static/js'
   }
 };
 
@@ -58,14 +61,13 @@ gulp.task('styles', function() {
 });
 
 
-
 // Javascript minification
 gulp.task('scripts', function() {
-  return gulp.src(paths.js + '/**/*.js')
-    .pipe(plumber()) // Checks for errors
-    .pipe(uglify()) // Minifies the js
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(gulp.dest(paths.js));
+  return gulp.src([paths.js + '/**/*.js',paths.ignorejs+'/**/*.min.js'])
+      .pipe(plumber()) // Checks for errors
+      .pipe(uglify()) // Minifies the js
+      .pipe(rename({ suffix: '.min' }))
+      .pipe(gulp.dest(paths.js));
 });
 
 // Image compression
