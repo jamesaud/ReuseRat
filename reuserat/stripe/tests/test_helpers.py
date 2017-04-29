@@ -47,7 +47,7 @@ class TestStripeApi(TestCase):
 
     # UpdatePaymentInfo : Success
     def test_success_update_payment_info(self):
-        user_object = factories.UserFactory(stripe_account=self.account)
+        user_object = factories.UserCompleteFactory(stripe_account=self.account)
         account_token = create_test_bank_token()
         account_id = self.account.account_id
         stripe.api_key = settings.STRIPE_SECRET_KEY  # Platform Test Secret Key.
@@ -87,7 +87,7 @@ class TestStripeApi(TestCase):
 
     # UpdatePaymentInfo : Failure
     def test_failure_update_payment_info(self):
-        user_object = factories.UserFactory()
+        user_object = factories.UserCompleteFactory()
         account_token = "FAIL_TOKEN"
         account_id = "FAIL_ACCOUNT_ID"
         with self.assertRaises(stripe.error.PermissionError):
@@ -133,7 +133,7 @@ class TestStripeApi(TestCase):
         transfer_amount = 100
 
         # Update the account with a bank account.
-        user_object = factories.UserFactory(stripe_account=self.account)
+        user_object = factories.UserCompleteFactory(stripe_account=self.account)
         account_token = create_test_bank_token()
 
         update_payment_info(self.account.account_id, account_token, user_object)

@@ -8,6 +8,7 @@ from ..models import Address, PaymentChoices, User
 
 from allauth.account.models import EmailAddress
 
+
 class AddressFactory(factory.django.DjangoModelFactory):
     address_line = "2661 East 7th Street"
     address_apartment = "D"
@@ -20,7 +21,6 @@ class AddressFactory(factory.django.DjangoModelFactory):
         model = Address
 
 
-
 class EmailAddressFactory(factory.DjangoModelFactory):
     user = factory.SubFactory('reuserat.users.tests.factories.UserFactory')
     verified = True
@@ -31,7 +31,7 @@ class EmailAddressFactory(factory.DjangoModelFactory):
         model = EmailAddress
 
 
-class BaseUserFactory(factory.django.DjangoModelFactory):
+class UserFactory(factory.django.DjangoModelFactory):
     username = factory.Sequence(lambda n: 'user-{0}'.format(n))
     password = factory.PostGenerationMethodCall('set_password', 'password')
     address = factory.SubFactory(AddressFactory)
@@ -39,14 +39,14 @@ class BaseUserFactory(factory.django.DjangoModelFactory):
     last_name = factory.Sequence(lambda n: 'Doe-{0}'.format(n))
     payment_type = PaymentChoices.CHECK
     phone = factory.Sequence(lambda n: '123-555-%04d' % n)
-    birth_date  = datetime.date(2001, 5, 5)
+    birth_date = datetime.date(2001, 5, 5)
 
     class Meta:
         model = User
         django_get_or_create = ('username',)
 
 
-class UserFactory(BaseUserFactory):
+class UserCompleteFactory(UserFactory):
     stripe_account = factory.SubFactory(StripeAccountFactory)
 
     # Create email associated with user - reverse foreign key relationship
@@ -58,21 +58,20 @@ class UserFactory(BaseUserFactory):
         self.paypal_account = PaypalAccountFactory(email=self.emailaddress_set.first())
 
 
-class UserRegisteredBankFactory(UserFactory):
 
+class UserRegisteredBankFactory(UserCompleteFactory):
     @factory.post_generation
-    def post(self, create, extracted, **kwargs): # Can't use super, so wehave to repeat the setting of the paypal account
+    def post(self, create, extracted, **kwargs):  # Can't use super, so wehave to repeat the setting of the paypal account
         self.paypal_account = PaypalAccountFactory(email=self.emailaddress_set.first())
 
         # Set the paypal account to be assosciated with the user's email, with the email set above.
-        update_payment_info(account_id=self.stripe_account.account_id, account_token= create_test_bank_token(), user_object=self)
-
-
-
+        update_payment_info(account_id=self.stripe_account.account_id, account_token=create_test_bank_token(),
+                            user_object=self)
 
 
 class FormUpdateUserFactory(dict):
     """Return the data in a dictionary needed for updating a user"""
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.update({'first_name': 'test', 'last_name': 'test', 'payment_type': PaymentChoices.DIRECT_DEPOSIT,
@@ -81,8 +80,8 @@ class FormUpdateUserFactory(dict):
 
 class FormUpdateUserAddressFactory(dict):
     """Return the data in a dictionary needed for updating a user"""
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.update({'address_line': '504 e cottage grove', 'address_apartment': 5, 'city': 'bloomington',
                      'state': 'IN', 'zipcode': '47408'})
-

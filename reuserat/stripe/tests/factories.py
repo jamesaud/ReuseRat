@@ -22,6 +22,7 @@ def _stripe_account_generator():
         },
     )
 
+
 class StripeAccountFactory(factory.django.DjangoModelFactory):
     account_id = 'replaced'
     user = None
@@ -34,7 +35,7 @@ class StripeAccountFactory(factory.django.DjangoModelFactory):
 
     @factory.post_generation
     def post(self, create, extracted, **kwargs):
-        account =  _stripe_account_generator()
+        account = _stripe_account_generator()
         self.account_id = account['id']
         self.secret_key = account['keys']['secret']
         self.publishable_key = account['keys']['publishable']
@@ -45,7 +46,4 @@ class PaypalAccountFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = PaypalAccount
-        django_get_or_create = ('email', )
-
-
-
+        django_get_or_create = ('email',)

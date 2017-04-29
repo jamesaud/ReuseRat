@@ -1,20 +1,17 @@
 from test_plus.test import TestCase
 
 from reuserat.shopify.tests.factories import ItemFactory
+from reuserat.users.tests.factories import UserFactory
 from .factories import ShipmentFactory
 from .helpers import AdminHTMLParser
 from ..admin import ShipmentAdmin
 from ..models import Shipment
 
 
-
-
 class TestMyAdminShopifyItemTable(TestCase):
-
     def setUp(self):
         self.shipment = ShipmentFactory()
         self.shipment_admin = ShipmentAdmin(model=Shipment, admin_site='test')
-
 
     def test_generated_html(self):
         """
@@ -29,7 +26,7 @@ class TestMyAdminShopifyItemTable(TestCase):
 
         # There should be only the header tags (counted by total open & close tags)
         self.assertEqual(tags['th'], 8)
-        self.assertEqual(tags['table'], 2) # <table> + </table> = 2
+        self.assertEqual(tags['table'], 2)  # <table> + </table> = 2
         self.assertEqual(tags['tr'], 2)
 
         parser = AdminHTMLParser()  # Reset the tag counts
@@ -43,11 +40,6 @@ class TestMyAdminShopifyItemTable(TestCase):
         # Each shipment has 3 fields.
         self.assertEqual(tags['th'], 8)
         self.assertEqual(tags['td'], 8)
-        self.assertEqual(tags['table'], 2)  #<table> + </table> = 2 total tags
+        self.assertEqual(tags['table'], 2)  # <table> + </table> = 2 total tags
         self.assertEqual(tags['a'], 2)
         self.assertEqual(tags['tr'], 4)
-
-
-
-
-

@@ -1,5 +1,5 @@
 import factory
-from reuserat.users.tests.factories import UserFactory
+from reuserat.users.tests.factories import UserCompleteFactory,UserFactory
 
 
 class ShipmentFactory(factory.django.DjangoModelFactory):

@@ -10,7 +10,7 @@ from reuserat.stripe.models import Transaction, TransactionTypeChoices, StripeAc
 from reuserat.stripe.tests.helpers import add_test_funds_to_account
 import lob
 from ..models import PaymentChoices
-from .factories import EmailAddressFactory, FormUpdateUserFactory, FormUpdateUserAddressFactory
+from .factories import EmailAddressFactory, FormUpdateUserFactory, FormUpdateUserAddressFactory,UserCompleteFactory
 
 from ..views import (
     UserRedirectView,
@@ -21,6 +21,7 @@ from ..views import (
 )
 
 import stripe
+
 
 class BaseUserTestCase(TestCase):
     def setUp(self):
@@ -73,10 +74,8 @@ class TestUserCompleteSignup(BaseUserTestCase):
         self.user_update_data = FormUpdateUserFactory()
         self.user_address_data = FormUpdateUserAddressFactory()
         self.request = self.factory.post(path='/~complete_signup/',
-                                    data={**self.user_update_data, **self.user_address_data}) # Merge dicts
+                                         data={**self.user_update_data, **self.user_address_data})  # Merge dicts
         self.request.user = self.user
-
-
 
     def test_fields_added(self):
         user_update_data, user_address_data = self.user_update_data, self.user_address_data
@@ -103,14 +102,15 @@ class TestUserCompleteSignup(BaseUserTestCase):
         stripe_account = StripeAccount.objects.get(user=self.user)
         paypal_account = PaypalAccount.objects.get(email=self.user.emailaddress_set.all().first())
 
+
 class TestUpdatePaymentInformation(TestCase):
     def setUp(self):
         self.factory = RequestFactory()  # Generate a mock request
-        self.user = factories.UserFactory()  # Generate a mock user
+        self.user = factories.UserCompleteFactory()  # Generate a mock user
         account = self.user.stripe_account
         account.account_id = test.TEST_CUSTOMER_STRIPE_ACCOUNT_ID  # Test Stripe account id
         account.save()
-        stripe.api_key = settings.STRIPE_SECRET_KEY  # Platform test Secret Key.
+        stripe.api_key = settings.STRIPE_SECRET_KEY  # Stripe test Secret Key.
 
     def test_get(self):
         # Create an instance of a GET request.
@@ -171,7 +171,6 @@ class TestUpdatePaymentInformation(TestCase):
         self.assertTrue(self.user.stripe_account.has_bank())
         self.assertTrue(self.user.payment_type, PaymentChoices.DIRECT_DEPOSIT)
 
-
     def test_paypal_account(self):
         """
         Test that the email submitted becomes the user's paypal account's new email.
@@ -228,15 +227,14 @@ class TestUpdatePaymentInformation(TestCase):
         self.assertEqual(self.user.payment_type, PaymentChoices.CHECK)
 
 
-
-
 class TestCashOut(TestCase):
     def setUp(self):
         self.factory = RequestFactory()  # Generate a mock request
         self.user = factories.UserRegisteredBankFactory()  # Generate a mock user
         self.request = self.factory.post('/~cashout/')
         self.request.user = self.user
-        add_test_funds_to_account(self.user.stripe_account.account_id, 100, 'test_my_cash_out_setup') # Add a dollar before each cash out test.
+        add_test_funds_to_account(self.user.stripe_account.account_id, 100,
+                                  'test_my_cash_out_setup')  # Add a dollar before each cash out test.
 
     def _assert_transaction_cash_out_test(self, old_balance):
         """Run after each cash_out test to make sure that the correct Transaction object is created."""
@@ -245,7 +243,6 @@ class TestCashOut(TestCase):
         self.assertEqual(transaction_object.payment_type, self.request.user.payment_type)
         self.assertEqual(transaction_object.type, TransactionTypeChoices.OUT)
         self.assertEqual(transaction_object.amount, stripe_helpers.cents_to_dollars(old_balance))
-
 
     def test_cashout_direct_deposit(self):
         """Check that the correct stripe funds are transfered to a user's bank account."""
@@ -266,20 +263,18 @@ class TestCashOut(TestCase):
         self.assertEqual(0, new_balance)
         self._assert_transaction_cash_out_test(old_balance)
 
-
-
     def test_cashout_paypal(self):
-
         """Check that the correct stripe funds are transfered to the user's paypal acount"""
         self.request.user.payment_type = PaymentChoices.PAYPAL
-        email = EmailAddressFactory(email=settings.PAYPAL_SANDBOX_BUYER_EMAIL, user=self.request.user)  # Set to a valid Paypal email during testing
+        email = EmailAddressFactory(email=settings.PAYPAL_SANDBOX_BUYER_EMAIL,
+                                    user=self.request.user)  # Set to a valid Paypal email during testing
         self.request.user.paypal_account.email = email
         self.request.user.paypal_account.save()
 
         mock_messages = patch('reuserat.users.views.messages').start()
         mock_messages.SUCCESS = success = 'success'
-        msg = 'Cashed out using Paypal successfully. Please accept the email sent to {}. To resend the email, please go to My Account > Transactions.'.format(self.request.user.paypal_account.email.email)
-
+        msg = 'Cashed out using Paypal successfully. Please accept the email sent to {}. To resend the email, please go to My Account > Transactions.'.format(
+            self.request.user.paypal_account.email.email)
 
         old_balance = stripe_helpers.retrieve_balance(self.user.stripe_account.secret_key)
         response = CashOutView.as_view()(self.request)
@@ -292,18 +287,18 @@ class TestCashOut(TestCase):
         self.assertEqual(new_balance, 0)
         self._assert_transaction_cash_out_test(old_balance)
 
-
     def test_fail_cashout_paypal(self):
-
         """Check that the correct stripe funds are transfered to the user's paypal acount"""
         self.request.user.payment_type = PaymentChoices.PAYPAL
-        email = EmailAddressFactory(email='unverifiedemail1929304219470@gmail.com', user=self.request.user)  # Set to a valid Paypal email during testing
+        email = EmailAddressFactory(email='unverifiedemail1929304219470@gmail.com',
+                                    user=self.request.user)  # Set to a valid Paypal email during testing
         self.request.user.paypal_account.email = email
         self.request.user.paypal_account.save()
 
         mock_messages = patch('reuserat.users.views.messages').start()
         mock_messages.ERROR = error = 'error'
-        msg = "Paypal Account using email {} doesn't exist or is unregistered! Please add an existing Paypal email or contact support.".format(self.request.user.paypal_account.email.email)
+        msg = "Paypal Account using email {} doesn't exist or is unregistered! Please add an existing Paypal email or contact support.".format(
+            self.request.user.paypal_account.email.email)
 
         old_balance = stripe_helpers.retrieve_balance(self.user.stripe_account.secret_key)
         response = CashOutView.as_view()(self.request)
@@ -313,13 +308,11 @@ class TestCashOut(TestCase):
         new_balance = stripe_helpers.retrieve_balance(self.user.stripe_account.secret_key)
 
         self.assertGreater(old_balance, 0)
-        self.assertEqual(new_balance, old_balance) # Balance should not change! Refund via Stripe should be called.
-        with self.assertRaises(Transaction.DoesNotExist): # If a cashout fails, transaction object should not exsist
+        self.assertEqual(new_balance, old_balance)  # Balance should not change! Refund via Stripe should be called.
+        with self.assertRaises(Transaction.DoesNotExist):  # If a cashout fails, transaction object should not exsist
             Transaction.objects.get(user=self.request.user)
 
-
     def test_cashout_check(self):
-
         """Check that the correct stripe funds are transfered"""
         self.request.user.payment_type = PaymentChoices.CHECK
 
@@ -330,8 +323,10 @@ class TestCashOut(TestCase):
         self.assertEqual(new_balance, 0)
         self._assert_transaction_cash_out_test(old_balance)
         transaction_object = Transaction.objects.get(user=self.request.user)
-        self.assertEqual(lob.Check.retrieve(transaction_object.check_id).to_address.name,self.request.user.get_full_name())
-        self.assertEqual(lob.Check.retrieve(transaction_object.check_id).to_address.address_line1, self.request.user.address.address_line)
+        self.assertEqual(lob.Check.retrieve(transaction_object.check_id).to_address.name,
+                         self.request.user.get_full_name())
+        self.assertEqual(lob.Check.retrieve(transaction_object.check_id).to_address.address_line1,
+                         self.request.user.address.address_line)
         self.assertEqual(lob.Check.retrieve(transaction_object.check_id).to_address.address_line2,
                          self.request.user.address.address_apartment)
 
@@ -344,6 +339,3 @@ class TestCashOut(TestCase):
                          self.request.user.address.state)
         self.assertEqual(lob.Check.retrieve(transaction_object.check_id).to_address.address_zip,
                          self.request.user.address.zipcode)
-
-
-

@@ -7,7 +7,7 @@ from reuserat.static.images import check
 logger = logging.getLogger(__name__)
 
 # TODO: Provide your API Key, keep this secure when we go live
-lob.api_key = settings.LOB_TEST_API_KEY
+lob.api_key = settings.LOB_API_KEY
 # set an api version (optional)
 lob.api_version = settings.LOB_API_VERSION
 
