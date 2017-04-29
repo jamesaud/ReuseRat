@@ -110,7 +110,7 @@ class TestUpdatePaymentInformation(TestCase):
         account = self.user.stripe_account
         account.account_id = test.TEST_CUSTOMER_STRIPE_ACCOUNT_ID  # Test Stripe account id
         account.save()
-        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform test Secret Key.
+        stripe.api_key = settings.STRIPE_SECRET_KEY  # Platform test Secret Key.
 
     def test_get(self):
         # Create an instance of a GET request.

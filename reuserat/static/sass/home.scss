@@ -14,26 +14,45 @@
 }
 
 h5.description, h4.description, p.description{
-   color: $grey-600;
+   color: $grey;
 }
 
  
  .features{
    padding-top: 90px;
    padding-bottom: 90px; 
-   h5{
-     color: $grey-600;
+   p, h5{
+     color: $grey;
    }
+
+    .btn{
+      margin-top: 0px;
+      padding-top: 7px !important;
+      padding-bottom: 7px !important;
+    }
+   
+
+   // Give gradually increasing purple color to icons
+   $color: $primary-color;
+   @for $i from 1 to 7{
+    $new-color: lighten($color, 3%); 
+    $num: 7 - $i;
+    [class^='col']:nth-child(#{$num}) i{
+      color: $color; 
+    }
+    $color: $new-color;
+   }
+
  }
 
-.highlight{
+.highlight{ 
   padding-bottom: 100px;
 }
 
  .steps{
    padding-top: 60px;
    padding-bottom: 60px;
-   color: grey-100;
+   color: $grey-100;
 
 
     /*background: #e53935;
@@ -108,10 +127,12 @@ h5.description, h4.description, p.description{
 
 .section-orange{
     @extend .section-dark;
-    background: #ff4b1f; /* fallback for old browsers */
-    background: -webkit-linear-gradient(left, #ff4b1f, #ff9068);
-    background: -o-linear-gradient(left, #ff4b1f, #ff9068);
-    background: linear-gradient(to right, #ff4b1f, #ff9068); /* Chrome 10-25, Safari 5.1-6 */ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */                 
+    $col-2:  $amber-300;  
+    $col-1: $yellow-900;
+    background: $col-1; /* fallback for old browsers */
+    background: -webkit-linear-gradient(left, $col-1, $col-2);
+    background: -o-linear-gradient(left, $col-1, $col-2);
+    background: linear-gradient(to right, $col-1, $col-2); /* Chrome 10-25, Safari 5.1-6 */ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */                 
 }
 
 .section-circles{
@@ -120,8 +141,8 @@ h5.description, h4.description, p.description{
  
   .wrap.circle-features{
        .inner, .circle-features-logo{
-         background-color: $blue-grey-50;
-         border: 2px solid $grey-800;
+         background-color: $grey-50;
+         border: 0px solid $yellow-600;
        }
   }
 }

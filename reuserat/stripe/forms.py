@@ -15,7 +15,7 @@ class UpdatePaymentForm(forms.Form):
     Form for updating payment information like account number and routing number for making transaction .
     """
 
-    PUBLISHABLE_KEY = settings.STRIPE_TEST_PUBLISHABLE_KEY  # Required by the stripe javascript call.
+    PUBLISHABLE_KEY = settings.STRIPE_PUBLISHABLE_KEY  # Required by the stripe javascript call.
 
     account_number = forms.CharField(required=True,label='Account Number',
                                         widget=forms.TextInput(attrs={'data-stripe' : 'account_number'}))
@@ -49,7 +49,7 @@ class UpdatePaymentForm(forms.Form):
             Div(MultiWidgetField('birth_date',
                                  attrs=({'style': 'width: 32%; display: inline-block;'})),
                                  css_class="col-md-6"),
-         
+
             'country',
             'currency',
             'account_holder_type'
