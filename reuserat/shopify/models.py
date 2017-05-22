@@ -66,7 +66,7 @@ class ItemOrderDetails(models.Model):
         return "Order details for: " + str(self.item)
 
 
-# Store webhook in DB to make sure we don't give the user for hte same webhook twice, if shopify accidentally sends the same webhook.
+# Store webhook in DB to make sure we don't give the user for the same webhook twice, if shopify accidentally sends the same webhook.
 class Webhook(models.Model):
     webhook_id = models.CharField(max_length=50, primary_key=True)
 
