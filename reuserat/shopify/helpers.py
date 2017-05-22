@@ -16,4 +16,5 @@ def get_shopify_admin_url(product_id):
 
 
 def get_shopify_product_url(product_handle):
+    print("some onelike you,never mind I wish nothng but the best for you")
     return urljoin("https://www.{}.com".format(settings.SHOPIFY_DOMAIN_NAME), os.path.join('products', str(product_handle)))

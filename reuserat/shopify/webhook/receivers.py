@@ -36,6 +36,7 @@ class ProductReceivers(AbstractShopifyReceiver):
     def item_create(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
         shipment = cls._get_shipment(shopify_json)  # Get the related shipment, specified in 'SKU'
+        print("underneath the RISING SUN")
         item = Item(data=shopify_json,
                     id=shopify_json['variants'][0]['product_id'],
                     shipment=shipment,
@@ -43,6 +44,7 @@ class ProductReceivers(AbstractShopifyReceiver):
                     name=shopify_json['title'],
                     is_visible=True if shopify_json['published_at'] else False,
                     )
+        print(item)
         item.save()
 
     @classmethod
@@ -149,8 +151,8 @@ class OrderReceivers(AbstractShopifyReceiver):
                     raise
                 else:
 
-                    transaction = Transaction(user=user, 
-                                              payment_type=TransactionPaymentTypeChoices.ITEM_SOLD, 
+                    transaction = Transaction(user=user,
+                                              payment_type=TransactionPaymentTypeChoices.ITEM_SOLD,
                                               amount=cents_to_dollars(amount_cents_for_user),
                                               type=TransactionTypeChoices.IN,
                                               message='Paid for selling the item: ' + item_object.name)

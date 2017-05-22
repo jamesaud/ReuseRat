@@ -8,6 +8,7 @@ from .config import product_base_json, product_create_url, shopify_intialize
 from django.conf import settings
 
 
+
 def create_product(sku, title):
     shopify_intialize()
     base_json = product_base_json()
@@ -36,6 +37,7 @@ def create_product(sku, title):
     if product.errors:
         raise Exception(product.errors.full_messages())  # Maybe should make a new exception type?
 
+    print("SKINNY LOVE ",product.title)
     return product
 
 
