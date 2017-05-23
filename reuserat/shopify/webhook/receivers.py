@@ -35,6 +35,7 @@ class ProductReceivers(AbstractShopifyReceiver):
     @classmethod
     def item_create(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
+        print("SHOPIFY JSONNN IN webhook/receivers.py",shopify_json)
         shipment = cls._get_shipment(shopify_json)  # Get the related shipment, specified in 'SKU'
         print("underneath the RISING SUN")
         item = Item(data=shopify_json,

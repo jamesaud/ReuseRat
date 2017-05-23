@@ -29,6 +29,7 @@ def shipment_detail_view(request, pk):
     template_name = 'shipments/shipment_detail.html'
     form_track, form_rec = ShipmentDetailTrackingForm(request.POST or None, initial=object.__dict__),\
                            ShipmentDetailReceiptForm(request.POST or None, request.FILES or None, )
+    print("OBJECT BURSAR in shipments/view.py",object)
 
     context['object'] = object
     context['visible_items'] = object.get_visible_items()
@@ -39,7 +40,7 @@ def shipment_detail_view(request, pk):
     def get_success_url():
         messages.add_message(request, messages.SUCCESS, 'Successfully Updated')
         return reverse('shipments:shipmentDetail', kwargs={'pk': object.pk})
-    
+
     if request.method == 'POST':
         if form_track.is_valid():
             object.tracking_number = form_track.cleaned_data['tracking_number']
@@ -51,7 +52,7 @@ def shipment_detail_view(request, pk):
             return redirect(get_success_url())
 
     return render(request, template_name, context=context)
-        
+
 
 class ShipmentOrderView(LoginRequiredMixin, CreateView):
      model = Shipment
@@ -103,8 +104,6 @@ class ShipmentDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
          return reverse('users:detail')
-
-
 
 
 class ShipmentPdfView(LoginRequiredMixin, PDFView):

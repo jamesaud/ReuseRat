@@ -32,6 +32,7 @@ product_base_json = lambda: {
 
 
 def shopify_intialize():
+    print("START HERE shopify/config.py ")
     shopify.ShopifyResource.set_site(SHOPIFY_SHOP_URL)
     shop = shopify.Shop.current()
 

@@ -1,4 +1,3 @@
-
 from django.http.response import HttpResponse
 from ..helpers import valid_sku
 import shopify
@@ -6,7 +5,6 @@ import requests
 
 from .config import product_base_json, product_create_url, shopify_intialize
 from django.conf import settings
-
 
 
 def create_product(sku, title):
@@ -25,7 +23,7 @@ def create_product(sku, title):
     base_json['product']['variants'][0]['sku'] = sku
 
     response = requests.post(url=product_create_url,
-                  json=base_json)
+                             json=base_json)
 
     if response.status_code != 201:
         return response.raise_for_status()
@@ -37,8 +35,5 @@ def create_product(sku, title):
     if product.errors:
         raise Exception(product.errors.full_messages())  # Maybe should make a new exception type?
 
-    print("SKINNY LOVE ",product.title)
+    print("SKINNY LOVE in shopify/api/helpers.py-- ", product.title)
     return product
-
-
-

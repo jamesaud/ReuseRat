@@ -68,7 +68,9 @@ class ShipmentAdmin(admin.ModelAdmin):
             format_string=inner_template_html,
             args_generator=((item.id, item.name, item.is_visible, item.get_shopify_admin_url()) for item in obj.item_set.all())
         )
-
+        print("HUSH shipments/admin.py -")
+        for item in obj.item_set.all():
+            print("LOVE  -",item.name,item.is_visible)
         return format_html(wrapper_html, inner_html)  # Works the same as str.format() and also escapes html
 
     get_items.short_description = 'Items'

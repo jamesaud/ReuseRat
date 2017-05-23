@@ -37,6 +37,7 @@ class ShopifyWebhookBaseView(View):
         # Convert the topic to a signal name and trigger it.
         signal_name = get_signal_name_for_topic(request.webhook_topic)
         try:
+            print("SINGAL NAME - WEBHOOK.VIEWS.PY",signal_name)
             signals.webhook_received.send_robust(self, domain = request.webhook_domain, topic = request.webhook_topic, data = request.webhook_data)
             getattr(signals, signal_name).send_robust(self, domain = request.webhook_domain, topic = request.webhook_topic, data = request.webhook_data)
 
@@ -46,7 +47,6 @@ class ShopifyWebhookBaseView(View):
 
 
         return HttpResponse("Ok") #200 response code
-
 
 
 
