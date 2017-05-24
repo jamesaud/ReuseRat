@@ -30,7 +30,7 @@ def create_product(sku, title):
 
     id = response.json()['product']['id']
 
-    product = shopify.Product.find(id)  # Turn the item into a ShopifyAPI active resource object.
+    product = shopify.Product.find(id)# Turn the item into a ShopifyAPI active resource object.
 
     if product.errors:
         raise Exception(product.errors.full_messages())  # Maybe should make a new exception type?

@@ -18,6 +18,7 @@ def create_item(request):
         if form.is_valid():
             shipment = get_object_or_404(Shipment, pk=form.cleaned_data.get('shipment_id'))
             sku = shipment.get_shipment_sku()
+            print("shopify/api/view.py SKU-",sku)
             try:
                 product = create_product(sku=sku, title=form.cleaned_data.get('item_name'))  # Returns a Shopify Product
                 product_id = product.id
