@@ -1,6 +1,8 @@
 from django.conf import settings
 import shopify
 import os
+import logging
+logger = logging.getLogger(__name__)
 
 
 
@@ -32,7 +34,7 @@ product_base_json = lambda: {
 
 
 def shopify_intialize():
-    print("START HERE shopify/config.py ")
+    logger.info("START HERE shopify/config.py ")
     shopify.ShopifyResource.set_site(SHOPIFY_SHOP_URL)
     shop = shopify.Shop.current()
 

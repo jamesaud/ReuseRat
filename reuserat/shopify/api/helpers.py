@@ -7,9 +7,14 @@ from .config import product_base_json, product_create_url, shopify_intialize
 from django.conf import settings
 
 
+import logging
+logger = logging.getLogger(__name__)
+
 def create_product(sku, title):
+    logger.info("IN CREATE_PRODUCT")
     shopify_intialize()
     base_json = product_base_json()
+    logger.info("PRINTING BASE JSON FOLLOWED BY SLINNY LOEV",base_json)
 
     if not (title and sku):
         raise ValueError("Must provide sku and title, was given: sku- {}  title-{}".format(sku, title))
@@ -35,5 +40,5 @@ def create_product(sku, title):
     if product.errors:
         raise Exception(product.errors.full_messages())  # Maybe should make a new exception type?
 
-    print("SKINNY LOVE in shopify/api/helpers.py-- ", product.title)
+    logger.info("SKINNY LOVE in shopify/api/helpers.py-- ", product.title)
     return product
