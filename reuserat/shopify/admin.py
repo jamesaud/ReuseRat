@@ -8,7 +8,7 @@ class ItemOrderDetailsAdmin(admin.ModelAdmin):
 class ItemAdmin(admin.ModelAdmin):
     model = Item
     list_display = ('id', 'name', 'handle', 'shipment', 'is_visible', 'created', 'modified')
-    readonly_fields = ('shipment', 'handle', 'id', 'name', 'is_visible', 'data', 'created', 'modified')
+    readonly_fields = ('shipment', 'handle', 'id', 'name', 'data', 'created', 'modified')
 
 
 

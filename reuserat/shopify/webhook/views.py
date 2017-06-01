@@ -33,7 +33,7 @@ class ShopifyWebhookBaseView(View):
         The reason we use "raise" is to prevent the overrided classes from having to check the status code that is returned.
         When inherriting it isn't necessary to check the status code, as only a 200 status can pass through.
         """
-        logger.info("I MA HERE INSIDE SHOPIFY")
+        print("I MA HERE INSIDE SHOPIFY")
         # Convert the topic to a signal name and trigger it.
         signal_name = get_signal_name_for_topic(request.webhook_topic)
         try:

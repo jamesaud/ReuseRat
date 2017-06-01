@@ -35,17 +35,17 @@ class ProductReceivers(AbstractShopifyReceiver):
     @classmethod
     def item_create(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
-        logger.info("SHOPIFY JSON IN webhook/receivers.py",shopify_json)
+        print("SHOPIFY JSON IN webhook/receivers.py",shopify_json)
         shipment = cls._get_shipment(shopify_json)  # Get the related shipment, specified in 'SKU'
-        logger.info("underneath the RISING SUN",shipment)
+        print("underneath the RISING SUN",shipment)
         item = Item(data=shopify_json,
                     id=shopify_json['variants'][0]['product_id'],
                     shipment=shipment,
                     handle=shopify_json['handle'],
                     name=shopify_json['title'],
-                    is_visible=True if shopify_json['published_at'] else False,
+                    is_visible=True if shopify_json['id'] else False,
                     )
-        logger.info(item,"NETWORLS")
+        print(item.id,"NETWORLS",shopify_json['variants'][0]['product_id'])
         item.save()
 
     @classmethod
@@ -55,7 +55,7 @@ class ProductReceivers(AbstractShopifyReceiver):
         item.data = shopify_json
         item.handle = shopify_json['handle']
         item.name = shopify_json['title']
-        item.is_visible = True if shopify_json['published_at'] else False
+        item.is_visible = True if shopify_json['id'] else False
         item.save()
 
     @classmethod
@@ -67,9 +67,20 @@ class ProductReceivers(AbstractShopifyReceiver):
 
     @classmethod
     def item_delete(cls, sender, **kwargs):
+        print(kwargs,"shopify json in item_delete")
         shopify_json = cls._get_shopify_json(kwargs)
-        item = cls._get_item(shopify_json)
-        item.delete()
+        print("disease", shopify_json)
+        # When we were deleting a product ,the json data only includes the product_id.
+        #item = cls._get_item(shopify_json)  this was there before.
+        try:
+            item = Item.objects.get(pk=shopify_json['id'])
+            print(item, "webhooks/receivers.py")
+            item.delete()
+            print("ITEM",item.delete())
+        except Exception as e:
+            print("MESSAGE",e)
+
+
 
     """
     Helper Functions Below
@@ -78,6 +89,7 @@ class ProductReceivers(AbstractShopifyReceiver):
     @classmethod
     def _get_item(self, json_data):
         try:
+            print(json_data,"JSON DATA _get_item receviers.py")
             item = Item.objects.get(pk=json_data['variants'][0]['product_id'])
         except Item.DoesNotExist:
             logger.error("Getting item using primary key found from 'id' in json does not exist: {}".format(json_data))
