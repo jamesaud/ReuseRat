@@ -31,15 +31,15 @@ class ShopifyWebhookBaseView(View):
         """
         Receive a webhook POST request.
         The reason we use "raise" is to prevent the overrided classes from having to check the status code that is returned.
-        When inherriting it isn't necessary to check the status code, as only a 200 status can pass through.
+        When inheriting it isn't necessary to check the status code, as only a 200 status can pass through.
         """
-        print("I MA HERE INSIDE SHOPIFY")
+        print("I AM HERE INSIDE SHOPIFY")
         # Convert the topic to a signal name and trigger it.
         signal_name = get_signal_name_for_topic(request.webhook_topic)
         try:
-            print("SINGAL NAME - WEBHOOK.VIEWS.PY",signal_name)
             signals.webhook_received.send_robust(self, domain = request.webhook_domain, topic = request.webhook_topic, data = request.webhook_data)
             getattr(signals, signal_name).send_robust(self, domain = request.webhook_domain, topic = request.webhook_topic, data = request.webhook_data)
+            print("SINGAL NAME - WEBHOOK.VIEWS.PY", signal_name)
 
         except AttributeError as e:
             logger.error("Encountered Shopify Webhook Signal Error: {0}".format(e))

@@ -21,4 +21,5 @@ class ShopifyConfig(AppConfig):
         signals.products_update.connect(receivers.ProductReceivers.item_update_or_create)
         signals.products_delete.connect(receivers.ProductReceivers.item_delete)
         signals.orders_paid.connect(receivers.OrderReceivers.order_payment)
+        signals.refunds_create.connect(receivers.OrderReceivers.order_refund)
 
