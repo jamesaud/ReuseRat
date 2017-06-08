@@ -1,13 +1,24 @@
-sudo: true
+sudo: required
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq build-essential gettext python-dev zlib1g-dev libpq-dev xvfb
-  - sudo apt-get install -qq libtiff4-dev libjpeg8-dev libfreetype6-dev liblcms1-dev libwebp-dev
-  - sudo apt-get install -qq graphviz-dev python-setuptools python3-dev python-virtualenv python-pip
-  - sudo apt-get install -qq firefox automake libtool libreadline6 libreadline6-dev libreadline-dev
-  - sudo apt-get install -qq libsqlite3-dev libxml2 libxml2-dev libssl-dev libbz2-dev wget curl llvm
+- sudo apt-get update -qq
+- sudo apt-get install -qq build-essential gettext python-dev zlib1g-dev libpq-dev
+  xvfb
+- sudo apt-get install -qq libtiff4-dev libjpeg8-dev libfreetype6-dev liblcms1-dev
+  libwebp-dev
+- sudo apt-get install -qq graphviz-dev python-setuptools python3-dev python-virtualenv
+  python-pip
+- sudo apt-get install -qq firefox automake libtool libreadline6 libreadline6-dev
+  libreadline-dev
+- sudo apt-get install -qq libsqlite3-dev libxml2 libxml2-dev libssl-dev libbz2-dev
+  wget curl llvm
 language: python
 script: echo foo
 python:
-- "3.5"
-
+- '3.5'
+deploy:
+  provider: heroku
+  api_key:
+    secure: k/LTX3Hk8vd9WOpL+I8V1E4bfmMLU+x9oratIAjB/4DipmLbY34nZZzMX4o7tZR9I3WTqlNbX5oZwg35iYHY/S5sbopkj4ohUj8JumXm0QxqXHtkuH4rspyqYCo+jkpauz8d627QbQMmRRl9lSJB6clI0qKwvq4EjhioPLPbXa2VNYTCyswlnauzIPImev5tUYtbh1iJ+GOp2hc4bwBH2cxZCb+dCEqoeLAzWx5EJAqr8/KrXtl3duNqdyvQpP+jcAeA7OGdCfCHhoDkV8yxoHt+K5B5f7sr5P3FxAAppb5+eQk2aCsW3m165rS9PFaY7YQomWrRckao41itTnJOz2QTjL519z1kNCJ1oi6N5mlLc3tGZSsWFEnDmWy0KCwvPNKs8jJeSmiV8b8SgQ483/kQH4Bcn+30tdWVLbxGORiZw93mNg2bR3BMi9Y5ywhVOgpg2UYx4ILzyHSw332xOj0tVxbE2RP7bpH9i5w4L8IEyQrZjKKFJ1wMPD0Rkryx5lIqBwLuBLyWghD/2q7caTEroc07SKoXu+TJocplBpysuyepSjjVsazwfvk+/ZCHW48dDFqsH4k6ZCOe+VW3UVRIOKBEGkxCAvbKZ0h4iACjt6dDJRMd0J4NEwX3tvPcstiBh8v2tDKCWKjWbp3T0jRhZDa/gjT+xZSqMbznqiQ=
+  app: reuseratseller
+  on:
+    repo: jamesaud/ReuseRat
