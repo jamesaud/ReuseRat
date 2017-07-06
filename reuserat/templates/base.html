@@ -17,14 +17,14 @@
     <![endif]-->
 
   <!-- third party tracking tags -->
-    <script src="{% static 'js/third_party_scripts.min.js' %}"></script>
-    {% include 'snippets/_header_js_tags.html' %}
+    <script src="{% static 'js/third_party_tracking.min.js' %}"></script>
 
     {% block css %}
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+
         <link type='text/css' href="{% static 'css/project.css' %}" rel="stylesheet">
 
     {% endblock %}
@@ -32,11 +32,17 @@
 
     <link rel="shortcut icon" href="{%  static 'favicon/favicon.ico' %}">
 
+    <!-- third party tracking that belongs in the header -->
+      {% include 'third_party/_header_tags.html' %}
+
   </head>
 
 {% block body-tag %}
 <body>
 {% endblock %}
+
+  <!-- tracking tags that need to be in the body -->
+  {% include 'third_party/_body_tags.html' %}
 
 {% block messages %}
       {% if messages %}

@@ -117,3 +117,4 @@ class ShipmentPdfView(LoginRequiredMixin, PDFView):
         return context
 
 
+

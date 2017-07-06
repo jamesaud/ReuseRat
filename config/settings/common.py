@@ -338,7 +338,9 @@ EXTERNAL_URLS = {
     'SITE':{
         'store': 'https://reuserat.com',
         'seller': 'https://sell.reuserat.com',
-        'blog': 'https://reuserat.com/blogs/news'}
+        'blog': 'https://reuserat.com/blogs/news',
+        'schedule_pickup': 'https://reuserat.youcanbook.me',
+        'schedule_boxes': 'https://reuserat-pickup.youcanbook.me'}
 }
 
 

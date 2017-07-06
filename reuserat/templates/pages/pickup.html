@@ -20,6 +20,10 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
 
 {% block body-tag %}
 <body class='landing-page'>
+
+    <!-- Track ad converisons on clicking the scheduling buttons -->
+    {% include 'third_party/ad_conversion_tags/google_ads/_schedule_booking.html' %}
+
 {% endblock body-tag %}
 
 {% block content%}
@@ -82,12 +86,24 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
             </div>
             <div class="row">
                 <div class="col-sm-12">
-<a href="https://reuserat.youcanbook.me" target="_blank" class="btn btn-primary btn-raised btn-lg">
-                                Schedule Box Drop Off Now <i class="material-icons">launch</i>
-                            <div class="ripple-container"></div></a>                </div>
-                <a href="https://reuserat-pickup.youcanbook.me/" target="_blank" class="btn btn-primary btn-raised btn-lg">
-                                Schedule Pickup Now <i class="material-icons">launch</i>
-                            <div class="ripple-container"></div></a>
+                    <a href="{% url 'tracking:track_schedule_pickup' next=EXTERNAL_URLS.SITE.schedule_boxes %}"
+                       target="_blank"
+                       class="btn btn-outline btn-raised btn-lg">
+                        Schedule Box Drop Off Now
+                        <i class="material-icons">launch</i>
+                        <div class="ripple-container"></div>
+                    </a>
+                    <a href="{% url 'tracking:track_schedule_pickup' next=EXTERNAL_URLS.SITE.schedule_pickup %}"
+                       target="_blank"
+                       class="btn btn-primary btn-raised btn-primary btn-lg">
+                        Schedule Pickup Now
+                        <i class="material-icons">launch</i>
+                                <div class="ripple-container"></div>
+                    </a>
+
+                </div>
+
+
             </div>
         </div>
 

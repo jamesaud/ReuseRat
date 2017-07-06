@@ -1,0 +1,25 @@
+{# variables: 'redirect_url', the url to redirect to #}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}ReuseRat{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <META NAME="ROBOTS" CONTENT="NOINDEX, FOLLOW">
+  </head>
+  <body>
+        {% for page in tracking_pages %}
+                {% include page %}
+        {% endfor %}
+
+        <a href="{{ redirect_url }}">Redirecting... if you are not redirected, click here</a>
+
+        <script>
+            window.location.replace("{{ redirect_url }}")
+        </script>
+  </body>
+
+
