@@ -1,3 +1,5 @@
+@import '_mixins';
+
 .no-gutter > [class*='col-'] {
     padding-right:0;
     padding-left:0;
@@ -35,3 +37,13 @@ img.fit-width{
     display: flex;
     align-items: center; /* align vertical */
 }
+
+
+
+.grayscale {
+    @include grayscale_element(100%);
+    transition: all 200ms ease-in-out;
+    &:hover {
+        @include grayscale_element(0);
+    }
+} 

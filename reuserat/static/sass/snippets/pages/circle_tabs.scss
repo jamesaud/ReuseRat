@@ -43,6 +43,8 @@ $inner-circle-offset: -20vh;
         background-color: rgba(253, 253, 253, 0.95);
         padding: 8vh 5vh;
         margin: $inner-circle-offset;
+        
+        
  
     h3 {
         margin-top: 0;
@@ -311,3 +313,13 @@ $inner-circle-offset: -20vh;
         }   
     }   
 }
+
+ 
+  .wrap.circle-features{
+       .inner, .circle-features-logo{
+         background-color: $blue-grey-50;
+         border: 2px solid $grey-800;
+       }
+  }
+
+

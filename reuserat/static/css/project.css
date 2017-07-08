@@ -3455,6 +3455,14 @@ img.fit-width {
       align-items: center;
   /* align vertical */ }
 
+.grayscale {
+  -moz-filter: grayscale(100%);
+  filter: grayscale(100%);
+  transition: all 200ms ease-in-out; }
+  .grayscale:hover {
+    -moz-filter: grayscale(0);
+    filter: grayscale(0); }
+
 .btn-google {
   background-color: #e53935; }
 

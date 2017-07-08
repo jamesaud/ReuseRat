@@ -267,3 +267,7 @@
           margin-bottom: 0.5vw;
           padding-top: 1.1vw;
           content: '\e81a'; } }
+
+.wrap.circle-features .inner, .wrap.circle-features .circle-features-logo {
+  background-color: #eceff1;
+  border: 2px solid #424242; }

@@ -90,9 +90,6 @@ h5.description, h4.description, p.description {
 .section-circles {
   padding-top: 100px;
   padding-bottom: 100px; }
-  .section-circles .wrap.circle-features .inner, .section-circles .wrap.circle-features .circle-features-logo {
-    background-color: #eceff1;
-    border: 2px solid #424242; }
 
 .image-container img {
   width: auto;

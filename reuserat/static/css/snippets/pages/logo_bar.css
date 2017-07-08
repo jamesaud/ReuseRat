@@ -1,0 +1,21 @@
+.logo-bar {
+  text-align: center;
+  margin: 0 auto; }
+  .logo-bar .logo-title {
+    font-weight: 400; }
+  .logo-bar img {
+    width: 165px;
+    height: auto;
+    padding: 10px;
+    -moz-filter: grayscale(100%);
+    filter: grayscale(100%);
+    transition: all 200ms ease-in-out; }
+    .logo-bar img:hover {
+      -moz-filter: grayscale(0);
+      filter: grayscale(0); }
+
+#reuserat-logo {
+  width: 214.5px; }
+
+#walmart-logo {
+  width: 214.5px; }
