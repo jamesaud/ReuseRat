@@ -16,13 +16,17 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
     <h2 class='subtitle' style="font-weight: 400;">We Sell Your Stuff, You Get Paid</h2>
     <h3 style='color: ghostwhite;'>Available in <strong>Bloomington, IN</strong> and <strong>Indiana University</strong></h3>
 
+    <a href="{{ EXTERNAL_URLS.SITE.schedule_pickup }}"
+                       target="_blank"
+                       class="btn btn-primary btn-raised btn-danger btn-lg track-schedule-click">
+                        Schedule Pickup Now
+                        <i class="material-icons">launch</i>
+                                <div class="ripple-container"></div>
+                    </a>
 {% endblock %}
 
 {% block body-tag %}
 <body class='landing-page'>
-
-    <!-- Track ad converisons on clicking the scheduling buttons -->
-    {% include 'third_party/ad_conversion_tags/google_ads/_schedule_booking.html' %}
 
 {% endblock body-tag %}
 
@@ -47,7 +51,7 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
                     <h2 class="title">Are You Ready To Clean Your House & Make Money?</h2>
                     <h5 class="description">You don't have to wait until Spring to clean out your house.
                         Using our service you can declutter your house and make money!</h5>
-                    <h5 class="description">Your items are sold on our premier online store.
+                    <h5 class="description">
                         Sit back and earn while we handle the sales process.</h5>
                     <h5 class="text-primary" style="font-weight: 400;">ReuseRat Pickup is 100% free!</h5>
                 </div>
@@ -56,19 +60,16 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
                     <h3 class="text-info"><strong>Get Paid</strong></h3>
                     <h4>We sell your items on our premier online store.</h4>
                     <h4>We split the sale 50/50.</h4>
-                    <h4>If an item doesn't sell in 90 days, we'll return it to you for free.</h4>
                     <h4>Cash out funds with our easy to use dashboard!</h4>
+                        <small>*Items typically sell in 10-60 days.</small>
+                        <br><small>*We can ship back unsold items.</small>
 
-                        <h5><small>*Items typically sell in 10-60 days.</small>
-                        <br><small>*We can ship back unsold items if you want it back.</small>
-                        </h5>
-                    <br>
+                    <br><br>
+                    <h3 class="text-info"><strong>What If an Item Doesn't Sell?</strong></h3>
+                    <h4>If an item doesn't sell in 90 days, we'll return it to you for free.</h4>
 
-                    <h3 class="text-info"><strong>Can I Donate My Items?</strong></h3>
-                    <h4>You can donate your items through ReuseRat.</h4>
-                    <h4>We will be happy to give it to any charity organizations.</h4>
-                    <small>If your items is not compliant with our Accepted Items checklist and
-                       <br> you are ready to donate them ,we will be happy to do it for you. </small></h4>
+                    <h4>You can also opt to donate your unsold items.</h4>
+                    <h4>We are happy to donate eligable items to charity organizations.</h4>
 
                 </div>
             </div>
@@ -79,23 +80,24 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
             <div class="row">
                 <div class="col-sm-12">
                     <h2 class="title">Schedule Your Box Drop Off &amp; Pickup Now</h2>
-                    <h4>1) We will drop off boxes to your address. We just request that someone is present to let us in.</h4>
-                    <h4>2) After scheduling your box drop off, you'll receive an email to schedule your pick up time.</h4>
+                    <h4>1) We can drop off boxes to your address. We just request that someone is present to let us in.</h4>
+                    <h4>2) If you have your own boxes, you can schedule a pickup directly.</h4>
                     <h4>3) All of your details are kept secure &amp; confidential. No spam, ever! </h4>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <a href="{% url 'tracking:track_schedule_pickup' next=EXTERNAL_URLS.SITE.schedule_boxes %}"
+                    <a href="{{ EXTERNAL_URLS.SITE.schedule_boxes }}"
                        target="_blank"
-                       class="btn btn-outline btn-raised btn-lg">
-                        Schedule Box Drop Off Now
+                       class="btn btn-outline btn-raised btn-lg track-schedule-click">
+                        Schedule Box Drop Off
                         <i class="material-icons">launch</i>
                         <div class="ripple-container"></div>
                     </a>
-                    <a href="{% url 'tracking:track_schedule_pickup' next=EXTERNAL_URLS.SITE.schedule_pickup %}"
+
+                    <a href="{{ EXTERNAL_URLS.SITE.schedule_pickup }}"
                        target="_blank"
-                       class="btn btn-primary btn-raised btn-primary btn-lg">
+                       class="btn btn-primary btn-raised btn-primary btn-lg track-schedule-click">
                         Schedule Pickup Now
                         <i class="material-icons">launch</i>
                                 <div class="ripple-container"></div>
@@ -153,7 +155,7 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
 
  <div class='section section-bonus row'>
      <div class='col-sm-6 col-sm-offset-2 text-left'>
-         <div><h2>Sharing is Caring <i style='position: relative; top: -2px;' class='fa fa-heart text-danger'></i></h3>
+         <div><h2>Sharing is Caring <i style='position: relative; top: -2px;' class='fa fa-heart text-danger'></i></h2>
             <h4 class= style='font-weight: 400;'><strong>Referral Bonus</strong> - Any friend that refers your name in the sign up form below scores you an incredible bonus!</h4>
             <h4 class="description">You'll get paid a <strong class='text-success'>10% bonus</strong> for every item they sell.</h4>
             <h4 class="description">They will make <strong class='text-success'>10% more</strong> by using you as a referrer.</h4>
@@ -174,3 +176,9 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
         </div>
     </div>
 {% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+
+
+{% endblock javascript %}

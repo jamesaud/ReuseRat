@@ -27,9 +27,6 @@ urlpatterns = [
     # Knowledge Base
     url(r'^knowledge/', include('reuserat.knowledge.urls', namespace='knowledge')),
 
-    # Tracking
-    url(r'^tracking/', include('reuserat.tracking.urls', namespace='tracking')),
-
     # Pickup Page
     url(r'^pickup/', TemplateView.as_view(template_name='pages/pickup.html'), name='pickup'),
 

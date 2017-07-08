@@ -1,7 +1,7 @@
 {% load static %}
 {% load i18n %}
 
-<!DOCTYPE html>
+<!DOCTYPE html>]
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -16,8 +16,6 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
 
-  <!-- third party tracking tags -->
-    <script src="{% static 'js/third_party_tracking.min.js' %}"></script>
 
     {% block css %}
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
@@ -32,9 +30,17 @@
 
     <link rel="shortcut icon" href="{%  static 'favicon/favicon.ico' %}">
 
+    {% block header-js %}
+
     <!-- third party tracking that belongs in the header -->
       {% include 'third_party/_header_tags.html' %}
 
+
+      <script src="{% static 'js/third_party/google-analytics.min.js' %}"></script>
+
+
+
+    {% endblock header-js %}
   </head>
 
 {% block body-tag %}
@@ -312,7 +318,17 @@
 
       <!-- place project specific Javascript in this file -->
       <script src="{% static 'js/project.min.js' %}"></script>
-      <script src="{% static 'js/mouseflow_code.min.js' %}"></script>
+      <script src="{% static 'js/third_party/mouseflow_code.min.js' %}"></script>
+
+      <!-- google ad conversion tracking -->
+      <script type="text/javascript"
+         src="//www.googleadservices.com/pagead/conversion_async.js">
+      </script>
+
+        <!-- conversion tracking -->
+        <script src="{% static 'js/third_party/ad_conversion_tags/tracking.min.js' %}"></script>
+
+
     {% endblock javascript %}
   </body>
 </html>
