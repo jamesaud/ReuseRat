@@ -25,7 +25,7 @@ services:
       - USE_DOCKER=yes
       - SHOPIFY_APP_NAME=sell-stuff-get-paid.myshopify.com
       - SHOPIFY_DOMAIN_NAME=reuserat
-    envfile: .env
+    env_file: .env
     volumes:
       - .:/app
     ports:
