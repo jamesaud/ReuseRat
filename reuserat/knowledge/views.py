@@ -4,17 +4,19 @@ from django.conf import settings
 import logging
 
 
+def setup_logger():
+    if not settings.DEBUG:
+        # new logging code, because the above doesn't work
+        from raven.handlers.logging import SentryHandler
+        from raven.conf import setup_logging
+
+        handler = SentryHandler(settings.SENTRY_DSN)
+        handler.setLevel(logging.INFO)
+
+        setup_logging(handler)
+
+setup_logger()
 logger = logging.getLogger(__name__)
-
-if not settings.DEBUG:
-    # new logging code, because the above doesn't work
-    from raven.handlers.logging import SentryHandler
-    from raven.conf import setup_logging
-
-    handler = SentryHandler(settings.SENTRY_DSN)
-    handler.setLevel(logging.INFO)
-
-    setup_logging(handler)
 
 def faq_view(request):
 
