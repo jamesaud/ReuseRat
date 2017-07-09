@@ -33,6 +33,5 @@ services:
       - "35729:35729"
     links:
       - postgres
-      - mailhog
 
 
