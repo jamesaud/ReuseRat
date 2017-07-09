@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from config.logging import setup_logger
 from reuserat.knowledge.models import FAQCategory
-
+import logging
 
 setup_logger()
 logger = logging.getLogger(__name__)
