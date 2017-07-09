@@ -93,7 +93,7 @@ class ProductReceivers(AbstractShopifyReceiver):
 
             item = Item.objects.get(pk=json_data['variants'][0]['product_id'])
         except Item.DoesNotExist:
-            logger.error("Getting item using primary key found from 'id' in json does not exist: {}".format(json_data))
+            logger.error("Getting item using primary key found from 'id' in json does not exist: {}".format(json_data), exc_info=True)
             raise
         return item
 
@@ -103,7 +103,7 @@ class ProductReceivers(AbstractShopifyReceiver):
             id = cls._get_shipment_id(json_data)
             return Shipment.objects.get(pk=id)
         except Shipment.DoesNotExist:
-            logger.error("Shipment with ID + does not exist in database from json_data: {}".format(json_data))
+            logger.error("Shipment with ID + does not exist in database from json_data: {}".format(json_data), exc_info=True)
             raise
 
     @classmethod
@@ -137,7 +137,7 @@ class OrderReceivers(AbstractShopifyReceiver):
         try:
             Webhook.objects.get(webhook_id=shopify_json['id'])
         except Webhook.DoesNotExist:
-            logger.error("WEBHOOK Already Exists! This is a duplicate! {}".format(shopify_json))
+            logger.error("WEBHOOK Already Exists! This is a duplicate! {}".format(shopify_json), exc_info=True)
             raise Exception("WEBHOOK Already Exists! This is a duplicate! {}".format(shopify_json))
         else:
             print("IN ELSE NOW")
@@ -156,8 +156,7 @@ class OrderReceivers(AbstractShopifyReceiver):
             except Item.DoesNotExist as e:
                 # This could happen if we add items manually to Shopify that don't belong to users. In that case, it is okay skip over.
                 # However, we should log the occurences to make sure nothing is wrong.
-                print("FAILED TO GET ITEM {0} FROM DATABASE. | Shopify Json: {1} | Error {2}".format(item, shopify_json, e))
-                logger.error("FAILED TO GET ITEM {0} FROM DATABASE. | Shopify Json: {1} | Error {2}".format(item, shopify_json, e))
+                logger.error("FAILED TO GET ITEM {0} FROM DATABASE. | Shopify Json: {1} | Error {2}".format(item, shopify_json, e), exc_info=True)
             else:
                 item_object.status = Status.SOLD
                 print(item_object.status)
@@ -170,7 +169,7 @@ class OrderReceivers(AbstractShopifyReceiver):
                                                               balance_in_cents=amount_cents_for_user,
                                                               description='{0} Sold Item {1}'.format(user.get_full_name(), item_object.name))
                 except StripeError as e:
-                    logger.error("FAILED TO CREATE CHARGE FOR ITEM: {0} | Shopify Json: {1} | Error: {2} | User: {3}".format(item, shopify_json, e, user.get_full_name()))
+                    logger.error("FAILED TO CREATE CHARGE FOR ITEM: {0} | Shopify Json: {1} | Error: {2} | User: {3}".format(item, shopify_json, e, user.get_full_name()), exc_info=True)
                     raise
                 else:
 

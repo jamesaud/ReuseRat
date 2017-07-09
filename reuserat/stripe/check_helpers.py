@@ -39,7 +39,7 @@ def create_check(customer_name, address_line1, address_line2, city, state, zipco
 
     except Exception as e:
 
-        logger.error("LOB Exception: " + str(e))
+        logger.error("LOB Exception: " + str(e), exc_info=True)
         print('Failed to create from_address.')
         raise
 

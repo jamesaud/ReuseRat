@@ -42,7 +42,7 @@ class ShopifyWebhookBaseView(View):
             print("SINGAL NAME - WEBHOOK.VIEWS.PY", signal_name)
 
         except AttributeError as e:
-            logger.error("Encountered Shopify Webhook Signal Error: {0}".format(e))
+            logger.error("Encountered Shopify Webhook Signal Error: {0}".format(e), exc_info=True)
             raise SuspiciousOperation
 
 

@@ -306,7 +306,7 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
             account = stripe_helpers.update_payment_info(str(user.stripe_account.account_id),
                                                          request.POST["stripeToken"], user)
         except StripeError as e:
-            logger.error("Failed to update stripe account: " + str(e))
+            logger.error("Failed to update stripe account: " + str(e), exc_info=True)
             messages.add_message(request, messages.ERROR, "Server Error! That's on us. Please try again later.")
             return False
         else:
@@ -373,7 +373,7 @@ class CashOutView(LoginRequiredMixin, View):
                                                               balance_in_cents=balance_in_cents,  # Amount to transfer
                                                               user_name=self.request.user.get_full_name())
         except StripeError as e:
-            logger.error("Stripe Cash Out Exception: " + str(e))
+            logger.error("Stripe Cash Out Exception: " + str(e), exc_info=True)
             messages.add_message(self.request, messages.ERROR, 'Failed to cash out using Direct Deposit: ' + str(e))
             raise
         else:
@@ -399,7 +399,7 @@ class CashOutView(LoginRequiredMixin, View):
                 description="Cashing out using Paypal")
 
         except StripeError as e:
-            logger.error("Paypal Cash Out Exception (stripe error): " + str(e))
+            logger.error("Paypal Cash Out Exception (stripe error): " + str(e), exc_info=True)
             messages.add_message(self.request, messages.ERROR,
                                  "Cashout with Paypal failed. That's our fault. Please try again later.")
             raise
@@ -415,7 +415,7 @@ class CashOutView(LoginRequiredMixin, View):
         except paypal_helpers.PaypalException as e:
             # Reverse the transfer because we couldn't cash a user out to Paypal.
             stripe_helpers.reverse_transfer(transfer_id, self.request.user.stripe_account.secret_key)
-            logger.error("Paypal Cash Out Exception: " + str(e))
+            logger.error("Paypal Cash Out Exception: " + str(e), exc_info=True)
 
             # Handle specific Paypal errors to add specific messages
             if isinstance(e, paypal_helpers.PaypalReceiverUnregistered):
@@ -455,7 +455,7 @@ class CashOutView(LoginRequiredMixin, View):
                 description="Cashing out using Check")
 
         except StripeError as e:
-            logger.error("Paypal Cash Out Exception (stripe error): " + str(e))
+            logger.error("Paypal Cash Out Exception (stripe error): " + str(e), exc_info=True)
             messages.add_message(self.request, messages.ERROR,
                                  "Cashout with Check failed. That's our fault. Please try again later.")
             raise
@@ -473,7 +473,7 @@ class CashOutView(LoginRequiredMixin, View):
             print(check_response)
 
         except Exception as e:
-            logger.error("Check Error: " + str(e))
+            logger.error("Check Error: " + str(e), exc_info=True)
             raise
         else:
             # Create the transaction
