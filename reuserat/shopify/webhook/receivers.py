@@ -128,6 +128,7 @@ class OrderReceivers(AbstractShopifyReceiver):
 
     @classmethod
     def order_payment(cls, sender, **kwargs):
+        print("IN ORDER")
         shopify_json = cls._get_shopify_json(kwargs)
         item_list = shopify_json['line_items']
 
@@ -144,6 +145,7 @@ class OrderReceivers(AbstractShopifyReceiver):
         # TODO: Write a case to check if the item status is already sold.
 
         for item in item_list:
+            print(item)
             try:
                 item_object = Item.objects.get(pk="11076598724")
             except Item.DoesNotExist as e:

@@ -4,6 +4,15 @@ from django.conf import settings
 import logging
 
 
+# new logging code, because the above doesn't work
+from raven.handlers.logging import SentryHandler
+from raven.conf import setup_logging
+
+handler = SentryHandler(settings.SENTRY_DSN)
+handler.setLevel(logging.INFO)
+
+setup_logging(handler)
+
 logger = logging.getLogger(__name__)
 
 
