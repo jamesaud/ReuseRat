@@ -35,17 +35,14 @@ class ProductReceivers(AbstractShopifyReceiver):
     @classmethod
     def item_create(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
-        print("SHOPIFY JSON IN webhook/receivers.py",shopify_json)
         shipment = cls._get_shipment(shopify_json)  # Get the related shipment, specified in 'SKU'
-        print("underneath the RISING SUN",shipment)
         item = Item(data=shopify_json,
                     id=shopify_json['variants'][0]['product_id'],
                     shipment=shipment,
                     handle=shopify_json['handle'],
                     name=shopify_json['title'],
-                    is_visible=True if shopify_json['id'] else False,
+                    is_visible=False,  # Is set to visible when visible in shopify store
                     )
-        print(item.id,"NETWORLS",shopify_json['variants'][0]['product_id'])
         item.save()
 
     @classmethod
@@ -67,18 +64,19 @@ class ProductReceivers(AbstractShopifyReceiver):
 
     @classmethod
     def item_delete(cls, sender, **kwargs):
-        print(kwargs,"shopify json in item_delete")
         shopify_json = cls._get_shopify_json(kwargs)
-        print("disease", shopify_json)
+        print(shopify_json)
+        print("ASETASTSA")
         # When we were deleting a product ,the json data only includes the product_id.
         #item = cls._get_item(shopify_json)  this was there before.
+
         try:
             item = Item.objects.get(pk=shopify_json['id'])
-            print(item, "webhooks/receivers.py")
-            item.delete()
-            print("ITEM",item.delete())
         except Exception as e:
-            print("MESSAGE",e)
+            logger.error("Item does not exist while trying to delete")
+        else:
+            item.delete()
+
 
 
 
@@ -126,33 +124,32 @@ class OrderReceivers(AbstractShopifyReceiver):
     This class is responsible for handling order related webhooks from Shopify
     """
 
-    @classmethod
-    def order_payment(cls, sender, **kwargs):
-        print("IN ORDER")
-        shopify_json = cls._get_shopify_json(kwargs)
-        item_list = shopify_json['line_items']
-
-        # Guarantee a webhook isn't repeated. Error is raised if it already exists.
+    def _validate_webhook(self, webhook_id):
         try:
-            Webhook.objects.get(webhook_id=shopify_json['id'])
+            Webhook.objects.get(pk=webhook_id)
         except Webhook.DoesNotExist:
-            logger.error("WEBHOOK Already Exists! This is a duplicate! {}".format(shopify_json), exc_info=True)
-            raise Exception("WEBHOOK Already Exists! This is a duplicate! {}".format(shopify_json))
+            logger.error("WEBHOOK Already Exists! This is a duplicate! {}".format(webhook_id), exc_info=True)
+            raise Exception("WEBHOOK Already Exists! This is a duplicate! {}".format(webhook_id))
         else:
-            webhook = Webhook(webhook_id=shopify_json['id'])
+            webhook = Webhook(pk=webhook_id)
             webhook.save()
 
-        # TODO: Write a case to check if the item status is already sold.
+    @classmethod
+    def order_payment(cls, sender, **kwargs):
+        shopify_json = cls._get_shopify_json(kwargs)
+        item_list = shopify_json['line_items']
+        # Guarantee a webhook isn't repeated. Error is raised if it already exists.
+
 
         for item in item_list:
-            print(item)
             try:
-                item_object = Item.objects.get(pk="11076598724")
+                item_object = Item.objects.get(pk=item['product_id'])
             except Item.DoesNotExist as e:
                 # This could happen if we add items manually to Shopify that don't belong to users. In that case, it is okay skip over.
                 # However, we should log the occurences to make sure nothing is wrong.
                 logger.error("FAILED TO GET ITEM {0} FROM DATABASE. | Shopify Json: {1} | Error {2}".format(item, shopify_json, e), exc_info=True)
             else:
+                print("THE ITEM EXISTS")
                 item_object.status = Status.SOLD
                 user = item_object.shipment.user
                 # Create transfer, give the user a their cut of the sale.

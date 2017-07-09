@@ -235,14 +235,7 @@ RAVEN_CONFIG = {
 
 SENTRY_AUTO_LOG_STACKS = True
 
-# new logging code, because the above doesn't work
-from raven.handlers.logging import SentryHandler
-from raven.conf import setup_logging
 
-handler = SentryHandler(settings.SENTRY_DSN)
-handler.setLevel(logging.INFO)
-
-setup_logging(handler)
 
 # Custom Admin URL, use {% url 'admin:index' %}
 ADMIN_URL = env('DJANGO_ADMIN_URL')
