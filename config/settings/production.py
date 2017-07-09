@@ -239,7 +239,7 @@ SENTRY_AUTO_LOG_STACKS = True
 from raven.handlers.logging import SentryHandler
 from raven.conf import setup_logging
 
-handler = SentryHandler(settings.SENTRY_DSN)
+handler = SentryHandler(SENTRY_DSN)
 handler.setLevel(logging.INFO)
 
 setup_logging(handler)

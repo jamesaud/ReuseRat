@@ -130,8 +130,6 @@ class OrderReceivers(AbstractShopifyReceiver):
     def order_payment(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
         item_list = shopify_json['line_items']
-        print(type(item_list))
-
 
         # Guarantee a webhook isn't repeated. Error is raised if it already exists.
         try:
@@ -140,26 +138,20 @@ class OrderReceivers(AbstractShopifyReceiver):
             logger.error("WEBHOOK Already Exists! This is a duplicate! {}".format(shopify_json), exc_info=True)
             raise Exception("WEBHOOK Already Exists! This is a duplicate! {}".format(shopify_json))
         else:
-            print("IN ELSE NOW")
             webhook = Webhook(webhook_id=shopify_json['id'])
             webhook.save()
 
+        # TODO: Write a case to check if the item status is already sold.
 
         for item in item_list:
             try:
-                #print('ITEM',type(char(item['product_id'])))
-                # Update the shipment model
-                # Update the status of the item to Sold
-                #print(Item.objects.all())
                 item_object = Item.objects.get(pk="11076598724")
-                print(item_object, "JESSE WHY DID YOU CHOOSE HIME OVER?")
             except Item.DoesNotExist as e:
                 # This could happen if we add items manually to Shopify that don't belong to users. In that case, it is okay skip over.
                 # However, we should log the occurences to make sure nothing is wrong.
                 logger.error("FAILED TO GET ITEM {0} FROM DATABASE. | Shopify Json: {1} | Error {2}".format(item, shopify_json, e), exc_info=True)
             else:
                 item_object.status = Status.SOLD
-                print(item_object.status)
                 user = item_object.shipment.user
                 # Create transfer, give the user a their cut of the sale.
                 item_price = dollars_to_cents(float(item['price'])) # Stripe takes cents!
