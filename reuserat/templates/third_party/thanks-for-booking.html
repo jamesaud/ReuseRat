@@ -73,4 +73,18 @@
                 s.src = ('https:' == window.location.protocol ? 'https' : 'http')+'://addtocalendar.com/atc/1.5/atc.min.js';
                 var h = d[g]('body')[0];h.appendChild(s); }})();
     </script>
+
+
+    <!-- Facebook track as registration -->
+    <script>
+     fbq('track', 'CompleteRegistration', {
+        value: 0.00,
+        currency: 'USD',
+        description: 'Finished scheduling a booking',
+        type: '{{ type }}'
+     });
+    </script>
+
+    {% include 'third_party/ad_conversion_tags/google_ads/finished_scheduled_booking.html' %}
+
 {% endblock %}

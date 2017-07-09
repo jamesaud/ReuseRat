@@ -52,7 +52,8 @@ var track_schedule_click = function (url) {
     // facebook tracking
     fbq('track', 'Lead', {
     value: 0.00,
-    currency: 'USD'
+    currency: 'USD',
+    description: 'Clicked on a schedule booking button'
     });
 };
 
