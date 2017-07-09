@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from reuserat.knowledge.models import FAQCategory
 from django.conf import settings
-
+import logging
 
 
 from raven.handlers.logging import SentryHandler
@@ -13,7 +13,6 @@ from raven.conf import setup_logging
 setup_logging(handler)
 
 
-import logging
 logger = logging.getLogger(__name__)
 
 
