@@ -32,9 +32,11 @@
 
     {% block header-js %}
 
+        {# don't run facebook pixel in development #}
+        {% if not debug %}
     <!-- third party tracking that belongs in the header -->
-      {% include 'third_party/_header_tags.html' %}
-
+      {% include 'third_party/ad_conversion_tags/facebook_ads/facebook_pixel.html' %}
+        {% endif %}
 
       <script src="{% static 'js/third_party/google-analytics.min.js' %}"></script>
 
@@ -47,8 +49,6 @@
 <body>
 {% endblock %}
 
-  <!-- tracking tags that need to be in the body -->
-  {% include 'third_party/_body_tags.html' %}
 
 {% block messages %}
       {% if messages %}
@@ -318,6 +318,9 @@
 
       <!-- place project specific Javascript in this file -->
       <script src="{% static 'js/project.min.js' %}"></script>
+
+
+      <!-- THIRD PARTY TRACKING -->
       <script src="{% static 'js/third_party/mouseflow_code.min.js' %}"></script>
 
       <!-- google ad conversion tracking -->
