@@ -18,6 +18,9 @@ Improve:
 '''
 
 import logging
+from config.logging import setup_logger
+
+setup_logger()
 logger = logging.getLogger(__name__)
 
 

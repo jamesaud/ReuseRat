@@ -10,7 +10,9 @@ from django.views.generic import View, TemplateView
 from reuserat.shopify.webhook import signals
 from .decorators import webhook, app_proxy
 from .helpers import get_signal_name_for_topic
+from config.logging import setup_logger
 
+setup_logger()
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 

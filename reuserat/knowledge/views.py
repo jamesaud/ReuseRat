@@ -1,8 +1,9 @@
 from django.shortcuts import render
 
-from config.logging import setup_logger
 from reuserat.knowledge.models import FAQCategory
 import logging
+
+from config.logging import setup_logger
 
 setup_logger()
 logger = logging.getLogger(__name__)

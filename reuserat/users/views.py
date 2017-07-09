@@ -24,6 +24,9 @@ from reuserat.stripe import paypal_helpers, check_helpers
 
 import time
 import logging
+from config.logging import setup_logger
+
+setup_logger()
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)

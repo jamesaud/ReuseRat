@@ -2,7 +2,9 @@ from django.conf import settings
 import lob
 import logging
 from reuserat.static.images import check
+from config.logging import setup_logger
 
+setup_logger()
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 

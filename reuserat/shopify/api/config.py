@@ -2,6 +2,9 @@ from django.conf import settings
 import shopify
 import os
 import logging
+from config.logging import setup_logger
+
+setup_logger()
 logger = logging.getLogger(__name__)
 
 
