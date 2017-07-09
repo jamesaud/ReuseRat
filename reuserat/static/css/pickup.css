@@ -36,5 +36,9 @@
 .section-bonus h4 {
   margin-bottom: 18px; }
 
+.section-logo-bar {
+  padding-top: 50px;
+  padding-bottom: 50px; }
+
 #full-list {
   font-style: italic; }

@@ -1,7 +1,7 @@
 {% load static %}
 {% load i18n %}
 
-<!DOCTYPE html>]
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -68,7 +68,7 @@
           {% endfor %}
       {% endif %}
 {% endblock messages %}
-
+{% block navbar %}
       <nav id="main-navigation" class="navbar navbar-transparent navbar-absolute">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -165,7 +165,7 @@
             </div>
         </div>
       </nav>
-
+    {% endblock navbar %}
 
     <div>
 
@@ -326,7 +326,7 @@
       </script>
 
         <!-- conversion tracking -->
-        <script src="{% static 'js/third_party/ad_conversion_tags/tracking.min.js' %}"></script>
+        <script src="{% static 'js/third_party/ad_conversion_tags/tracking.js' %}"></script>
 
 
     {% endblock javascript %}

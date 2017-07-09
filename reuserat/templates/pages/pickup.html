@@ -21,7 +21,7 @@
 {% endblock %}
 
 {% block header-title %}
-    <h1>Pickup Service</h1>
+    <h1>Free Pickup Service</h1>
     <h2 class='subtitle' style="font-weight: 400;">We Sell Your Stuff, You Get Paid</h2>
     <h3 style='color: ghostwhite;'>Available in <strong>Bloomington, IN</strong> and <strong>Indiana University</strong></h3>
 
@@ -42,18 +42,14 @@
 {% block content%}
     <div class="container">
 
-        <hr>
-        {% include 'pages/snippets/logo-bar.html' %}
-        <hr>
-
         <div class="section-steps section">
             <div class="row">
                 <h2 class="title col-sm-12">Scheduling a Pickup is Easy as 1-2-3</h2>
             </div>
             <div class="row">
-                <div class="col-sm-4 step"><h4 class="description"><div class="number"><span>1</span></div> Schedule your box drop off and pick up times below.</h4></div>
-                <div class="col-sm-4 step"><h4 class="description"><div class="number"><span>2</span></div> We will deliver boxes so you can pack up your items.</h4></div>
-                <div class="col-sm-4 step"><h4 class="description"><div class="number"><span>3</span></div> Our driver will pick up your boxes. Time to relax, you'll be earning cash in no time!</h4></div>
+                <div class="col-sm-4 step"><h3 class="description"><div class="number"><span>1</span></div> Schedule Your Pickup Time</h3><h5><a href="">Schedule Now</a></h5></div>
+                <div class="col-sm-4 step"><h3 class="description"><div class="number"><span>2</span></div> Pack Up Your Items</h3><h5><a href="">Get Free Boxes Delivered</a></h5></div>
+                <div class="col-sm-4 step"><h3 class="description"><div class="number"><span>3</span></div> We'll Pick Up Your Boxes</h3></div>
             </div>
         </div>
 
@@ -61,7 +57,7 @@
         <div class="section section-iu">
             <div class="row">
                 <div class="col-sm-4 col-sm-offset-1">
-                    <h2 class="title">Are You Ready To Clean Your House & Make Money?</h2>
+                    <h2 class="title">Clean Out Your House & Make Money!</h2>
                     <h5 class="description">You don't have to wait until Spring to clean out your house.
                         Using our service you can declutter your house and make money!</h5>
                     <h5 class="description">
@@ -69,33 +65,46 @@
                     <h5 class="text-primary" style="font-weight: 400;">ReuseRat Pickup is 100% free!</h5>
                 </div>
                 <div class="col-sm-6 col-sm-offset-1">
+                   <img class="img-rounded img-responsive" src="{% static 'images/pickup/lv4.jpg' %}">
 
+                </div>
+            </div>
+        </div>
+
+        <div class="section section-iu">
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-1">
+                   <img class="img-rounded img-responsive" src="{% static 'images/pickup/box.png' %}">
+                </div>
+                <div class="col-sm-6 col-sm-offset-1">
+                    <h2 class="title">Your Life Made Easier</h2>
                     <h3 class="text-info"><strong>Get Paid</strong></h3>
-                    <h4>We sell your items on our premier online store.</h4>
-                    <h4>We split the sale 50/50.</h4>
-                    <h4>Cash out funds with our easy to use dashboard!</h4>
+                    <h4 class="description">We sell your items on our premier online store.</h4>
+                    <h4 class="description">We split the sale 50/50.</h4>
+                    <h4 class="description">Cash out funds with our easy to use dashboard!</h4>
                         <small>*Items typically sell in 10-60 days.</small>
                         <br><small>*We can ship back unsold items.</small>
 
                     <br><br>
-                    <h3 class="text-info"><strong>What If an Item Doesn't Sell?</strong></h3>
-                    <h4>If an item doesn't sell in 90 days, we'll return it to you for free.</h4>
+                    <h3 class="text-info"><strong>Free Your Used Items</strong></h3>
+                    <h4 class="description">If an item doesn't sell in 90 days, we'll return it to you for free.</h4>
 
-                    <h4>You can also opt to donate your unsold items.</h4>
-                    <h4>We are happy to donate eligable items to charity organizations.</h4>
+                    <h4 class="description">You can also opt to donate your unsold items.</h4>
+                    <h4 class="description">We are happy to donate eligable items to charity organizations.</h4>
 
                 </div>
             </div>
         </div>
 
 
+
         <div class="section text-center">
             <div class="row">
                 <div class="col-sm-12">
                     <h2 class="title">Schedule Your Box Drop Off &amp; Pickup Now</h2>
-                    <h4>1) We can drop off boxes to your address. We just request that someone is present to let us in.</h4>
-                    <h4>2) If you have your own boxes, you can schedule a pickup directly.</h4>
-                    <h4>3) All of your details are kept secure &amp; confidential. No spam, ever! </h4>
+                    <h3 class="description">Get boxes for free or schedule a pickup directly.</h3>
+                    <h3 class="description">All details are kept secure &amp; confidential. No spam, ever - we promise! </h3>
+                    <br>
                 </div>
             </div>
             <div class="row">
@@ -125,15 +134,15 @@
         <div class="section section-items">
             <div class="row">
 
-                <div class="col-sm-4 col-sm-offset-1">
+                <div class="col-sm-4 col-sm-offset-2">
                     <h2 class="title">What Items Do You Accept?</h2>
                     <h5 class="description">Items qualify if they can fit into a 18 in x 24 in box.</h5>
                     <h5 class="description">However, there are exceptions for some large items that we also accept:</h5>
                     <h5 class="description">TVs, Mini Fridges, Microwaves, and Computer Monitors are all eligible for pickups.</h5>
                 </div>
 
-                <div class="col-sm-6 col-sm-offset-1">
-                    <h3 class="text-success"><strong>Allowed Items</strong> <small>(not an exhaustive list)</small></h3>
+                <div class="col-sm-4 col-sm-offset-1">
+                    <h3 class="text-success"><strong>Allowed Items</strong></h3>
                     <ul>
                         <li><i class='fa fa-check text-success'></i> TVs</li>
                         <li><i class='fa fa-check text-success'></i> Speakers</li>
@@ -143,7 +152,7 @@
                         <li><i class='fa fa-check text-success'></i> Jewelry & Watches</li>
                         <li><i class='fa fa-check text-success'></i> Crafts & Glass Items</li>
                         <li><i class='fa fa-check text-success'></i> Video Game Systems &amp; Games</li>
-                        <li><i class='fa fa-check text-success'></i> Kids Stuff</li>
+                        <li><i class='fa fa-check text-success'></i> Kids Items</li>
                         <li><i class='fa fa-check text-success'></i> Appliances (Microwaves, Coffee Makers, Etc.)</li>
                         <li><i class='fa fa-check text-success'></i> Dorm Items (Lights, Small Tables, Etc.)</li>
                         <li><i class='fa fa-check text-success'></i> Items smaller than 18 in x 24 in</li>
@@ -165,6 +174,13 @@
 
             </div>
         </div>
+
+
+    <div class="row section-logo-bar">
+        <div class="col-sm-12">
+            {% include 'pages/snippets/logo-bar.html' %}
+        </div>
+    </div>
 
 
  <div class='section section-bonus row'>

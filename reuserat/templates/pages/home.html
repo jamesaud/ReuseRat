@@ -5,8 +5,14 @@
     {{ block.super }}
 
     <!-- SASS -->
+    <!-- for circle -->
     <link type='text/css' href="{% static 'css/snippets/pages/circle_tabs.css' %}" rel="stylesheet">
+
     <link type='text/css' href="{% static 'css/home.css' %}" rel="stylesheet">
+
+        <!-- for the logo bar -->
+    <link type='text/css' href="{% static 'css/snippets/pages/logo_bar.css' %}" rel="stylesheet">
+
 
 {% endblock %}
 
@@ -30,13 +36,8 @@
 						<h1 class="title">Ship Your Stuff, Get Paid. It's That Easy.</h1>
 	                    <h4>
                             Look around you - it's time to clean out your house. Selling online can be time consuming and confusing - we make it simple.
-							Make money when we sell your items. <a href="{% url 'account_signup' %}" target='_blank' class='text-warning'>Sign Up Here</a>
-                        </h4>
+							Make money when we sell your items. <br>
 
-                         <h4>
-                            Are you an apartment owner? Do your tenants leave stuff behind that you end up throwing away or donating? Why waste time dealing with this process, when you could let us sell them for you?
-                             <a href="{% url 'account_signup' %}" target='_blank' class='text-warning'>Sign Up Here</a>
-                        </h4>
 
 	                    <br />
                             <a href="{% url 'account_signup' %}" class="btn btn-danger btn-raised btn-lg">
@@ -63,7 +64,7 @@
                                 <div class='content'>
                                     <i class="fa fa-money fa-2x text-success"></i>
                                     <h4>Get Paid</h4>
-                                    <p>We post your items on <a href="{{ EXTERNAL_URLS.SITE.store }}" target="_blank">ReuseRat.com</a> &amp; pay you when your items sell</p>
+                                    <p>We post your items &amp; pay you when your items sell</p>
                                 </div>
                             </div>
                     </div> <!-- /header-cards -->
@@ -294,10 +295,16 @@
 	            </div>
 
 
+            <div class="row section-logo-bar">
+                <div class="col-sm-12">
+                    {% include 'pages/snippets/logo-bar.html' %}
+                </div>
+            </div>
+
+
 	        	<div class="section landing-section">
 	                <div class="row">
 	                    <div class="col-md-8 col-md-offset-2">
-                            <br><br><br> <!-- temporary until testimonials are back -->
 	                        <h2 class="text-center title">Let's Get Started</h2>
 							<h4 class="text-center description">
                                 Are you ready to start freeing up space and begin making money? Start the process with the button below.

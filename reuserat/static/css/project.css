@@ -3524,6 +3524,9 @@ img.fit-width {
 .alert {
   margin-bottom: 0px; }
 
+.header-top {
+  background-color: #0288d1; }
+
 .main {
   padding-top: 40px;
   padding-bottom: 60px; }
@@ -3555,6 +3558,8 @@ img.fit-width {
       flex-direction: column;
   resize: vertical;
   overflow: auto; }
+  .wrapper > .header .title, .wrapper > .header .subtitle {
+    text-align: center; }
   .wrapper > .header .subtitle {
     margin-top: 0px; }
 

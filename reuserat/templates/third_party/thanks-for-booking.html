@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+    {{ block.super }}
+
+    <link type='text/css' href="{% static 'css/third-party/thanks-for-booking.css' %}" rel="stylesheet">
+
+    <!-- for add to calendar -->
+    <link href="http://addtocalendar.com/atc/1.5/atc-style-blue.css" rel="stylesheet" type="text/css">
+
+{% endblock %}
+
+{# remove navbar #}
+{% block navbar %}{% endblock %}
+
+
+{% block header-title %}
+    <img class="" height="100px" width="auto" src="{% static 'images/logo/logo 2.png' %}">
+    <h2 class="title">{{ text }}</h2>
+{% endblock header-title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <p class="description">Thanks {{ fname }}!</p>
+                <p class="description">Your appointment is booked for <strong>{{ start }}</strong>.</p>
+                <p class="description">Please check <strong>{{ email }}</strong> now for further details!</p>
+
+
+<br>
+                <p>    <!-- 3. Place event data for calendar-->
+                    <span class="addtocalendar atc-style-blue">
+                        <var class="atc_event">
+                            <var class="atc_date_start">{{ start }}</var>
+                            <var class="atc_date_end">{{ end }}</var>
+                            <var class="atc_timezone">America/Indiana/Indianapolis</var>
+                            <var class="atc_title">{{ text }}</var>
+                            <var class="atc_description">You made an appointment with ReuseRat! Please check your email for more details.</var>
+                            <var class="atc_location">{{ address }}</var>
+                            <var class="atc_organizer">ReuseRat</var>
+                            <var class="atc_organizer_email">support@reuserat.com</var>
+                        </var>
+                    </span>
+                </p>
+<br><br>
+                <p><a href="{% url 'home' %}">Back to the ReuseRat homepage</a></p>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock content %}
+
+{# remove footer #}
+{% block footer %} {% endblock %}
+
+
+{% block javascript %}
+    {{ block.super }}
+
+        <!-- 2. Include script for calendar -->
+    <script type="text/javascript">(function () {
+            if (window.addtocalendar)if(typeof window.addtocalendar.start == "function")return;
+            if (window.ifaddtocalendar == undefined) { window.ifaddtocalendar = 1;
+                var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+                s.type = 'text/javascript';s.charset = 'UTF-8';s.async = true;
+                s.src = ('https:' == window.location.protocol ? 'https' : 'http')+'://addtocalendar.com/atc/1.5/atc.min.js';
+                var h = d[g]('body')[0];h.appendChild(s); }})();
+    </script>
+{% endblock %}
