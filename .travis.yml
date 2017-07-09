@@ -11,7 +11,7 @@ before_install:
   libreadline-dev
 - sudo apt-get install -qq libsqlite3-dev libxml2 libxml2-dev libssl-dev libbz2-dev
   wget curl llvm
-- pip install -f requirements.txt
+- sudo pip install -r requirements/test.txt
 language: python
 script: py.test
 python:
