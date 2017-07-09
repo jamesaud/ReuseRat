@@ -384,7 +384,7 @@ PAYPAL_MODE = env('PAYPAL_MODE', default="sandbox") # Or Production
 
 
 # Check API Lob
-LOB_LIVE_API_KEY=env('LOB_LIVE_API_KEY', )
+LOB_LIVE_API_KEY=env('LOB_LIVE_API_KEY')
 LOB_TEST_API_KEY=env('LOB_TEST_API_KEY', default=None)
 LOB_API_VERSION = env('LOB_API_VERSION', default=None)
 

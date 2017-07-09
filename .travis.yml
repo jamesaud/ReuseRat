@@ -3,6 +3,7 @@ services:
   - docker
 before_install:
   - printenv > .env
+  - cat .env
   - docker-compose -f test.yml build
   - docker ps -a
 
