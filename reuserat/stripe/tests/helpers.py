@@ -26,7 +26,7 @@ def add_test_funds_to_account(account_id, amount_in_cents, description):
     if not isinstance(amount_in_cents, int):  # Don't want any rounding to happen if it is a Float.
         raise ValueError("Cents must be an int")
 
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+    stripe.api_key = settings.STRIPE_SECRET_KEY
 
     # Create a temporary customer and verify the bank account
     customer = stripe.Customer.create(
@@ -62,7 +62,7 @@ def add_test_funds_to_platform(amount_in_cents, description):
     if not isinstance(amount_in_cents, int):  # Don't want any rounding to happen if it is a Float.
         raise ValueError("Cents must be an int")
 
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+    stripe.api_key = settings.STRIPE_SECRET_KEY
 
     # Create a temporary customer and verify the bank account
     customer = stripe.Customer.create(

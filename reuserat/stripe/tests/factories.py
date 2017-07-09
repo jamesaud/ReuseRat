@@ -5,7 +5,7 @@ import stripe, time
 
 
 def _stripe_account_generator():
-    stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+    stripe.api_key = settings.STRIPE_SECRET_KEY
     return stripe.Account.create(
         managed=True,
         country='US',

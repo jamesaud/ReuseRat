@@ -13,8 +13,8 @@ class TestCheckApi(TestCase):
         super(TestCheckApi, cls).setUpClass()
         lob.api_key = settings.LOB_TEST_API_KEY  # Platform Test API Key.
         lob.api_version = settings.LOB_API_VERSION
-        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Test Secret Key.
-        cls.test_secret_key = settings.STRIPE_TEST_SECRET_KEY  # test.TEST_CUSTOMER_STRIPE_SECRET
+        stripe.api_key = settings.STRIPE_SECRET_KEY  # Platform Test Secret Key.
+        cls.test_secret_key = settings.STRIPE_SECRET_KEY  # test.TEST_CUSTOMER_STRIPE_SECRET
         cls.user_object = factories.UserFactory()
         # Create Stripe account for cashing out
         cls.account = create_account('149.160.154.217')  # Stripe Account model instance

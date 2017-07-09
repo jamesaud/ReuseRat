@@ -157,8 +157,8 @@ $inner-circle-offset: -20vh;
 
             &:hover:before,
             &:focus:before {
-                border-color: $grey-900 !important;
-                color: $grey-900 !important;
+                border-color: lighten($primary-color, 15%) !important;
+                color: lighten($primary-color, 15%) !important;
             } 
         } // span
     } // circle
@@ -191,16 +191,23 @@ $inner-circle-offset: -20vh;
 
     // Generate circles
     $border-colors: $grey-500, $grey-500, $grey-500, $grey-500, $grey-500, $grey-500, $grey-500, $grey-500;
-    $icon-colors: $blue-300, $indigo-300, $purple-300, $blue-grey-300, $red-300, $orange-300, $yellow-300, $green-300;
+    $circle-color: lighten($primary-color, 0%);
+    $icon-colors: $circle-color, $circle-color, $circle-color, $circle-color, $circle-color, $circle-color, $circle-color, $circle-color;
     @include amount_of_circles(8, $border-colors, $icon-colors); 
 
     .blacklist{
       i.fa-times{
           color: $red-500;
       } 
+       &:hover:before,
+        &:focus:before{
+            color: $red-500;
+            border-color: $red-500;
+        }
     }
     #blacklist:before{
-        border-color: $red-500;
+        border-color: $grey-900;
+        color: $grey-900;
         content: "\f00d";
         font-family: 'FontAwesome';
     }

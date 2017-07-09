@@ -1,4 +1,5 @@
 @import '../standalone/x_material_kit_free_v1.1.1/assets/sass/material-kit.scss';
+@import '_colors.scss';
 
 .btn.btn-dark-blend{@include btn-styles(transparentize(black, .8)); }
 
@@ -75,5 +76,9 @@ li{
 
 // It would be nice to have btn-outline work for all btn types, not just btn-primary.btn-simple
 .btn-primary.btn-simple.btn-outline{
-    border: 1px solid $purple-400;
+    border: 1px solid $primary-color;
+} 
+
+.btn-danger.btn-simple.btn-outline{
+    border: 1px solid $red-500; 
 } 
