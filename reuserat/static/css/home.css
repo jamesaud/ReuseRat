@@ -1,5 +1,6 @@
 .wrapper > .header {
-  min-height: 780px !important; }
+  min-height: 780px !important;
+  text-align: left !important; }
   .wrapper > .header .container {
     padding-top: 20vh; }
   .wrapper > .header .btn-danger i {
