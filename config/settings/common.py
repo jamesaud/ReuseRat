@@ -368,8 +368,8 @@ SPLIT_PERCENT_PER_SALE = .5  # A number from 0 to 1, how much the customer gets 
 
 # Stripe Company Account API Keys.
 # See your keys here: https://dashboard.stripe.com/account/apikeys
-STRIPE_SECRET_KEY  = env('STRIPE_SECRET_KEY', default=None)
-STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY', default=None)
+STRIPE_SECRET_KEY  = env('STRIPE_SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
 
 # Fake test Stripe data
 STRIPE_TEST_ACCOUNT_NUMBER = '000123456789'
@@ -384,9 +384,9 @@ PAYPAL_MODE = env('PAYPAL_MODE', default="sandbox") # Or Production
 
 
 # Check API Lob
-LOB_LIVE_API_KEY=env('LOB_LIVE_API_KEY',default=None)
-LOB_TEST_API_KEY=env('LOB_TEST_API_KEY',default=None)
-LOB_API_VERSION = env('LOB_API_VERSION',default=None)
+LOB_LIVE_API_KEY=env('LOB_LIVE_API_KEY', )
+LOB_TEST_API_KEY=env('LOB_TEST_API_KEY', default=None)
+LOB_API_VERSION = env('LOB_API_VERSION', default=None)
 
 # For the Shipping 'TO' address
 WAREHOUSE_NAME = 'ReuseRat Inc.'
