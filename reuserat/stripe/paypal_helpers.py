@@ -18,7 +18,7 @@ class PaypalException(Exception):
         Prefix is used to auto-generate the Paypal error name. It comes in as 'RECEIVER_UNREGISTERED', converts to 'PaypalReceiverUnregistered'
         :return:
         """
-        pythonic_name = 'Paypal'+name.title().replace("_",'') if prefix else name
+        pythonic_name = 'Paypal' + name.title().replace("_",'') if prefix else name
         return type(pythonic_name, (cls,), {})  # Create a new class, inheriting from parent class.
 
 
@@ -61,6 +61,8 @@ def make_payment_paypal(batch_id, receiver_email, amount_in_dollars, note):
     })
 
     if payout.create(sync_mode=True):
+        print("PAYING OUT")
+        print(payout)
         error = payout.items[0].errors
         if error:
             # Lookup tohe error class, or create New error class based on the type of Paypal Error
