@@ -41,6 +41,10 @@ class Address(models.Model):
         <li>{city}, {state}, {zip}</li>
         """.format(add=self.address_line, city=self.city, state=self.state, zip=self.zipcode, apt=apt)
 
+    def get_full_address_line(self):
+        if self.address_apartment:
+            return self.address_line + ", " + self.address_apartment
+        return self.address_line
 
 @python_2_unicode_compatible
 class User(AbstractUser):

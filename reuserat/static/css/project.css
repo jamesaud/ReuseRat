@@ -3398,6 +3398,11 @@ li {
     left: -10000px;
     z-index: -1; }
 
+.date-input select, .date-input .input-group, .date-input .form-control {
+  max-width: 32%;
+  min-width: 90px;
+  display: inline; }
+
 .btn-primary.btn-simple.btn-outline {
   border: 1px solid #2196f3; }
 

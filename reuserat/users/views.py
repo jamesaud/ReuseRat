@@ -87,9 +87,6 @@ class UserUpdateMixin(LoginRequiredMixin, TemplateView, ProcessFormView):
         user_form = self.user_form(request.POST)
         address_form = self.address_form(request.POST)
 
-        print(user_form.errors)
-        print(address_form.errors)
-
         if address_form.is_valid() and user_form.is_valid():
             new_address = Address(**address_form.cleaned_data)
             new_address.save()  # Save Address first as there is an FK dependency between User & Address
@@ -115,18 +112,30 @@ class UserCompleteSignupView(UserUpdateMixin):
     user_form = UserCompleteSignupForm
 
     def get_success_url(self):
+        user = self.request.user
         # Pass the Ip address of the client.
         # Call to Stripe View to create a stripe account
-        account_instance = stripe_helpers.create_account(self.request.META['REMOTE_ADDR'])
-        if account_instance:
-            self.request.user.stripe_account = account_instance
-            self.request.user.save()
+        stripe_account_instance = stripe_helpers.create_account(self.request.META['REMOTE_ADDR'])
+        user.stripe_account = stripe_account_instance
+        user.save()
+
+        stripe_helpers.update_account(user.stripe_account.account_id,
+                                      first_name=user.first_name,
+                                      last_name=user.last_name,
+                                      address_line=user.address.get_full_address_line(),
+                                      address_city=user.address.city,
+                                      address_state=user.address.state,
+                                      address_zip=user.address.zipcode,
+                                      dob_day=user.birth_date.day,
+                                      dob_month=user.birth_date.month,
+                                      dob_year=user.birth_date.year
+                                      )
 
         # Create default paypal account for the user.
-        paypal = PaypalAccount(email=self.request.user.get_primary_email())
+        paypal = PaypalAccount(email=user.get_primary_email())
         paypal.save()
-        self.request.user.paypal_account = paypal
-        self.request.user.save()
+        user.paypal_account = paypal
+        user.save()
 
         return reverse('users:detail')
 

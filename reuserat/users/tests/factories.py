@@ -75,14 +75,22 @@ class FormUpdateUserFactory(dict):
     """Return the data in a dictionary needed for updating a user"""
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.update({'first_name': 'test', 'last_name': 'test', 'payment_type': PaymentChoices.DIRECT_DEPOSIT,
-                     'phone': '812-444-5555'})
+        self.update({'first_name': 'test',
+                     'last_name': 'test',
+                     'payment_type': PaymentChoices.DIRECT_DEPOSIT,
+                     'phone': '812-444-5555',
+                     'birth_date_month': '5',
+                     'birth_date_day': '5',
+                     'birth_date_year': '2001',})
 
 
 class FormUpdateUserAddressFactory(dict):
     """Return the data in a dictionary needed for updating a user"""
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.update({'address_line': '504 e cottage grove', 'address_apartment': 5, 'city': 'bloomington',
-                     'state': 'IN', 'zipcode': '47408'})
+        self.update({'address_line': '504 e cottage grove',
+                     'address_apartment': 5,
+                     'city': 'bloomington',
+                     'state': 'IN',
+                     'zipcode': '47408'})
 

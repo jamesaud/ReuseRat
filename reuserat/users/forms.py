@@ -6,12 +6,17 @@ from .models import Address
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, HTML, Field
+from django.forms import extras
 
 
 class UserCompleteSignupForm(forms.ModelForm):
+    birth_date = forms.DateField(required=True,
+                                label='Birth Date',
+                                widget=extras.SelectDateWidget(years=[y for y in range(1930,2017)]))
+
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'payment_type', 'phone',)
+        fields = ('first_name', 'last_name', 'payment_type', 'phone', 'birth_date')
         widgets = {
             'payment_type': forms.RadioSelect(),
         }

@@ -11,7 +11,7 @@ from reuserat.stripe.tests.helpers import add_test_funds_to_account
 import lob
 from ..models import PaymentChoices
 from .factories import EmailAddressFactory, FormUpdateUserFactory, FormUpdateUserAddressFactory
-
+import stripe
 from ..views import (
     UserRedirectView,
     UserUpdateView,
@@ -65,6 +65,7 @@ class TestUserUpdateView(BaseUserTestCase):
 
 
 class TestUserCompleteSignup(BaseUserTestCase):
+
     def setUp(self):
         super(TestUserCompleteSignup, self).setUp()
         self.view = UserCompleteSignupView
@@ -82,21 +83,44 @@ class TestUserCompleteSignup(BaseUserTestCase):
         user_update_data, user_address_data = self.user_update_data, self.user_address_data
 
         user = self.request.user
-        response = self.view.as_view()(self.request)
 
-        self.assertEqual(1, 2)
+        response = self.view.as_view()(self.request)
 
         # Make sure the user was updated appropriately
         self.assertEqual(user.first_name, user_update_data['first_name'])
         self.assertEqual(user.last_name, user_update_data['last_name'])
         self.assertEqual(user.payment_type, user_update_data['payment_type'])
         self.assertEqual(user.phone, user_update_data['phone'])
+        self.assertEqual(str(user.birth_date.day), user_update_data['birth_date_day'])
+        self.assertEqual(str(user.birth_date.month), user_update_data['birth_date_month'])
+        self.assertEqual(str(user.birth_date.year), user_update_data['birth_date_year'])
 
         self.assertEqual(user.address.address_line, user_address_data['address_line'])
         self.assertEqual(user.address.address_apartment, str(user_address_data['address_apartment']))
         self.assertEqual(user.address.city, user_address_data['city'])
         self.assertEqual(user.address.state, user_address_data['state'])
         self.assertEqual(user.address.zipcode, user_address_data['zipcode'])
+
+
+
+
+    def test_stripe_fields_added(self):
+        response = self.view.as_view()(self.request)
+
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        account = stripe.Account.retrieve(self.request.user.stripe_account.account_id)
+
+        self.assertEqual(account.legal_entity.first_name, self.user.first_name)
+        self.assertEqual(account.legal_entity.last_name, self.user.last_name)
+        self.assertEqual(account.legal_entity.address.line1, self.user.address.get_full_address_line())
+        self.assertEqual(account.legal_entity.address.city, self.user.address.city)
+        self.assertEqual(account.legal_entity.address.state, self.user.address.state)
+        self.assertEqual(account.legal_entity.address.postal_code, self.user.address.zipcode)
+        self.assertEqual(account.legal_entity.dob.day, self.user.birth_date.day)
+        self.assertEqual(account.legal_entity.dob.month, self.user.birth_date.month)
+        self.assertEqual(account.legal_entity.dob.year, self.user.birth_date.year)
+
 
     def test_stripe_paypal_added(self):
         response = self.view.as_view()(self.request)

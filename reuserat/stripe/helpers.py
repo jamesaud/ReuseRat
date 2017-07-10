@@ -55,15 +55,20 @@ def retrieve_balance(secret_key):
 
 
 
-def update_account(account_id, first_name=None, last_name=None, business_name=None, address_line=None, address_city=None,
-                   address_state=None, address_zip=None, dob_day=None, dob_month=None, dob_year=None):
-    logger.error("In stripe/helpers.py/update_payment_info -- beggining", account_id)
+def update_account(account_id,
+                   first_name=None,
+                   last_name=None,
+                   business_name=None,
+                   address_line=None,
+                   address_city=None,
+                   address_state=None,
+                   address_zip=None,
+                   dob_day=None,
+                   dob_month=None,
+                   dob_year=None):
 
     stripe.api_key = settings.STRIPE_SECRET_KEY  # REAL KEY HERE
     account = stripe.Account.retrieve(account_id)
-
-    # Update the display name for the account.
-    account.business_name = account.business_name or business_name
 
     # Update the address.
     account.legal_entity.address.line1 = address_line or account.legal_entity.address.line1
@@ -73,11 +78,12 @@ def update_account(account_id, first_name=None, last_name=None, business_name=No
     account.legal_entity.address.state = address_state or account.legal_entity.address.state
     account.legal_entity.address.postal_code = address_zip or account.legal_entity.address.postal_code
 
-    account.legal_entity.dob.day = dob_day or account.legal_entity.dob.day
-    account.legal_entity.dob.month = dob_month or account.legal_entity.dob.month
+    if dob_day:
+        account.legal_entity.dob.day = '{:02d}'.format(dob_day)
+    if dob_month:
+        account.legal_entity.dob.month = '{:02d}'.format(dob_month)
     account.legal_entity.dob.year = dob_year or account.legal_entity.dob.year
 
-    ### Commented out, as Stripe returns an error: "You cannot change `legal_entity[first_name]` via API if an account is verified."
     account.legal_entity.first_name = first_name or account.legal_entity.first_name
     account.legal_entity.last_name = last_name or account.legal_entity.last_name
 
@@ -85,20 +91,12 @@ def update_account(account_id, first_name=None, last_name=None, business_name=No
 
     logger.error("In stripe/helpers.py/update_payment_info -- about to create", account_id)
 
-
-    account.external_accounts.create(external_account=account_token,
-                                     default_for_currency=True, )
-
-    logger.error("In stripe/helpers.py/update_payment_info --- Updated Payment Info stripe,and actual thing", account.legal_entity.address.line2,user_object.address.address_apartment)
-    logger.error("In stripe/helpers.py/update_payment_info --- Updated Payment Info stripe,and actual thing",account.legal_entity.address.city, user_object.address.city)
-    logger.error("In stripe/helpers.py/update_payment_info --- and actual thing",user_object.address,user_object.birth_date,user_object.first_name)
     account.save()
     return account['id']
 
 
 
 def update_payment_info(account_id, account_token, user_object):
-    logger.error("In stripe/helpers.py/update_payment_info -- beggining", account_id, user_object)
 
     stripe.api_key = settings.STRIPE_SECRET_KEY  # REAL KEY HERE
     account = stripe.Account.retrieve(account_id)
@@ -129,12 +127,11 @@ def update_payment_info(account_id, account_token, user_object):
 
     account.legal_entity.type = "individual"
 
-    logger.error("In stripe/helpers.py/update_payment_info -- about to create", account_id, user_object)
-
-    logger.error("In stripe/helpers.py/update_payment_info --- Updated Payment Info stripe,and actual thing", account.legal_entity.address.line2,user_object.address.address_apartment)
-    logger.error("In stripe/helpers.py/update_payment_info --- Updated Payment Info stripe,and actual thing",account.legal_entity.address.city, user_object.address.city)
-    logger.error("In stripe/helpers.py/update_payment_info --- and actual thing",user_object.address,user_object.birth_date,user_object.first_name)
     account.save()
+
+    # Ad the bank account
+    account.external_accounts.create(external_account=account_token,
+                                     default_for_currency="true", )
 
     return account['id']
 
