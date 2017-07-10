@@ -157,12 +157,13 @@ class FulfillmentReceivers(AbstractShopifyReceiver):
 
     @classmethod
     def fulfillment_create(cls, sender, **kwargs):
-        print("TESTS inside fulfillment")
+        logger.info("Fulfillment Triggered")
         shopify_json = cls._get_shopify_json(kwargs)
         item_list = shopify_json['line_items']
         # Guarantee a webhook isn't repeated. Error is raised if it already exists.
 
         for item in item_list:
+            logger.info("Trying to fulfill item: " + item)
             try:
                 item_object = Item.objects.get(pk=item['product_id'])
             except Item.DoesNotExist as e:
@@ -195,6 +196,7 @@ class FulfillmentReceivers(AbstractShopifyReceiver):
                             item, shopify_json, e, user.get_full_name()), exc_info=True)
                     raise
                 else:
+                    logger.info("Creating transaction information")
                     cls._create_transaction(item_object, user, amount_cents_for_user)
                     cls._update_item_status(item_object)
                     cls._create_item_order_details(item_object, transfer_id, shopify_json)
