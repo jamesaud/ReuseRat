@@ -157,6 +157,8 @@ class TestFulfillmentsReceiver(BaseWebhookTestCase):
         body = '{"id":123456,"order_id":820982911946154500,"status":"pending","created_at":"2017-07-10T13:09:15-04:00","service":null,"updated_at":"2017-07-10T13:09:15-04:00","tracking_company":"UPS","shipment_status":null,"email":"jon@doe.ca","destination":{"first_name":"Steve","address1":"123 Shipping Street","phone":"555-555-SHIP","city":"Shippington","zip":"K2P0S0","province":"Kentucky","country":"United States","last_name":"Shipper","address2":null,"company":"Shipping Company","latitude":null,"longitude":null,"name":"Steve Shipper","country_code":"US","province_code":"KY"},"tracking_number":"1z827wk74630","tracking_numbers":["1z827wk74630"],"tracking_url":"http://wwwapps.ups.com/etracking/tracking.cgi?InquiryNumber1=1z827wk74630&TypeOfInquiryNumber=T&AcceptUPSLicenseAgreement=yes&submit=Track","tracking_urls":["http://wwwapps.ups.com/etracking/tracking.cgi?InquiryNumber1=1z827wk74630&TypeOfInquiryNumber=T&AcceptUPSLicenseAgreement=yes&submit=Track"],"receipt":{},"line_items":[{"id":866550311766439000,"variant_id":null,"title":"Apples to Apples Junior!","quantity":1,"price":"5.00","grams":680,"sku":"A353","variant_title":null,"vendor":null,"fulfillment_service":"manual","product_id":10083851844,"requires_shipping":true,"taxable":true,"gift_card":false,"name":"Apples to Apples Junior!","variant_inventory_management":null,"properties":[],"product_exists":true,"fulfillable_quantity":1,"total_discount":"0.00","fulfillment_status":null,"tax_lines":[]},{"id":141249953214522980,"variant_id":null,"title":"Legacy Of Love Sisters Figurine by Kim Lawrence. Gregg Gift Company","quantity":1,"price":"7.99","grams":1451,"sku":"32-22","variant_title":null,"vendor":null,"fulfillment_service":"manual","product_id":11360551364,"requires_shipping":true,"taxable":true,"gift_card":false,"name":"Legacy Of Love Sisters Figurine by Kim Lawrence. Gregg Gift Company","variant_inventory_management":null,"properties":[],"product_exists":true,"fulfillable_quantity":1,"total_discount":"5.00","fulfillment_status":null,"tax_lines":[]}]}'
         self.body = json.loads(body)
 
+        self.item_price = float(self.body['line_items'][0]['price'])
+        print(self.item_price)
         # Create an item in our database, set the user to the shipment
         self.user = UserFactory()
         self.item = ItemFactory(name=self.body['line_items'][0]['name'])
@@ -171,7 +173,15 @@ class TestFulfillmentsReceiver(BaseWebhookTestCase):
 
     def test_payment_to_user(self):
         """Calls Stripe API"""
+        old_balance = self.user.get_current_balance()
+
         response = self.send_request()
+
+        new_balance = self.user.get_current_balance()
+
+        print(old_balance, new_balance)
+        # Make sure the user was paid the correct amount of Stripe
+        self.assertEqual(old_balance, new_balance - (self.item_price * settings.SPLIT_PERCENT_PER_SALE))
 
         # Test the Item object
         item = Item.objects.get(pk=self.item.id)
@@ -194,10 +204,10 @@ class TestFulfillmentsReceiver(BaseWebhookTestCase):
         self.assertEqual(transaction.message, 'Paid for selling the item: ' + self.body['line_items'][0]['name'])
 
         #  We can check and make sure the funds should not be added to a user's account if request comes a second time.
-        current_balance = self.user.get_current_balance()
+        old_balance = self.user.get_current_balance()
         self.send_request()
         new_balance = self.user.get_current_balance() # Should be the same as current balance
-        self.assertEqual(current_balance, new_balance)  # Don't pay the user twice if we already heard a fulfillment webhook.
+        self.assertEqual(old_balance, new_balance)  # Don't pay the user twice if we already heard a fulfillment webhook.
 
 
 
