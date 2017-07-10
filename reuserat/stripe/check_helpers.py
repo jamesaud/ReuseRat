@@ -2,7 +2,9 @@ from django.conf import settings
 import lob
 import logging
 from reuserat.static.images import check
+from config.logging import setup_logger
 
+setup_logger()
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
@@ -39,7 +41,7 @@ def create_check(customer_name, address_line1, address_line2, city, state, zipco
 
     except Exception as e:
 
-        logger.error("LOB Exception: " + str(e))
+        logger.error("LOB Exception: " + str(e), exc_info=True)
         print('Failed to create from_address.')
         raise
 

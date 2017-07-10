@@ -3399,7 +3399,10 @@ li {
     z-index: -1; }
 
 .btn-primary.btn-simple.btn-outline {
-  border: 1px solid #ab47bc; }
+  border: 1px solid #2196f3; }
+
+.btn-danger.btn-simple.btn-outline {
+  border: 1px solid #f44336; }
 
 .no-gutter > [class*='col-'] {
   padding-right: 0;
@@ -3454,6 +3457,14 @@ img.fit-width {
   -ms-flex-align: center;
       align-items: center;
   /* align vertical */ }
+
+.grayscale {
+  -moz-filter: grayscale(100%);
+  filter: grayscale(100%);
+  transition: all 200ms ease-in-out; }
+  .grayscale:hover {
+    -moz-filter: grayscale(0);
+    filter: grayscale(0); }
 
 .btn-google {
   background-color: #e53935; }
@@ -3546,7 +3557,8 @@ img.fit-width {
   -ms-flex-direction: column;
       flex-direction: column;
   resize: vertical;
-  overflow: auto; }
+  overflow: auto;
+  text-align: center; }
   .wrapper > .header .subtitle {
     margin-top: 0px; }
 

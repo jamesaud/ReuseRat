@@ -29,7 +29,6 @@ def shipment_detail_view(request, pk):
     template_name = 'shipments/shipment_detail.html'
     form_track, form_rec = ShipmentDetailTrackingForm(request.POST or None, initial=object.__dict__),\
                            ShipmentDetailReceiptForm(request.POST or None, request.FILES or None, )
-    print("OBJECT BURSAR in shipments/view.py",object)
 
     context['object'] = object
     context['visible_items'] = object.get_visible_items()
@@ -115,5 +114,6 @@ class ShipmentPdfView(LoginRequiredMixin, PDFView):
         context['shipment'] = get_object_or_404(Shipment, pk=self.kwargs.get('shipment_id'))
         context['warehouse_html'] = warehouse_address_to_html()
         return context
+
 
 

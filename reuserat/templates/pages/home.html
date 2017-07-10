@@ -5,8 +5,14 @@
     {{ block.super }}
 
     <!-- SASS -->
+    <!-- for circle -->
     <link type='text/css' href="{% static 'css/snippets/pages/circle_tabs.css' %}" rel="stylesheet">
+
     <link type='text/css' href="{% static 'css/home.css' %}" rel="stylesheet">
+
+        <!-- for the logo bar -->
+    <link type='text/css' href="{% static 'css/snippets/pages/logo_bar.css' %}" rel="stylesheet">
+
 
 {% endblock %}
 
@@ -30,13 +36,8 @@
 						<h1 class="title">Ship Your Stuff, Get Paid. It's That Easy.</h1>
 	                    <h4>
                             Look around you - it's time to clean out your house. Selling online can be time consuming and confusing - we make it simple.
-							Make money when we sell your items. <a href="{% url 'account_signup' %}" target='_blank' class='text-warning'>Sign Up Here</a>
-                        </h4>
+							Make money when we sell your items. <br>
 
-                         <h4>
-                            Are you an apartment owner? Do your tenants leave stuff behind that you end up throwing away or donating? Why waste time dealing with this process, when you could let us sell them for you?
-                             <a href="{% url 'account_signup' %}" target='_blank' class='text-warning'>Sign Up Here</a>
-                        </h4>
 
 	                    <br />
                             <a href="{% url 'account_signup' %}" class="btn btn-danger btn-raised btn-lg">
@@ -46,7 +47,7 @@
                     <div class='header-cards col-md-4 col-md-offset-1 text-center'>
                             <div class='card'>
                                 <div class='content'>
-                                    <i class="fa fa-gift fa-2x text-primary	"></i>
+                                    <i class="fa fa-gift fa-2x text-info"></i>
                                     <h4>Pack Your Items</h4>
                                     <p>Almost anything - if you can fit it, ship it</p>
 
@@ -54,16 +55,16 @@
                             </div>
                             <div class='card'>
                                 <div class='content'>
-                                    <i class="fa fa-send fa-2x text-warning"></i>
+                                    <i class="fa fa-send fa-2x text-info"></i>
                                     <h4>Send Via USPS</h4>
                                     <p>You will even be reimbursed for shipping</p>
                                 </div>
                             </div>
                             <div class='card'>
                                 <div class='content'>
-                                    <i class="fa fa-money fa-2x text-success"></i>
+                                    <i class="fa fa-money fa-2x text-info"></i>
                                     <h4>Get Paid</h4>
-                                    <p>We post your items on <a href="{{ EXTERNAL_URLS.SITE.store }}" target="_blank">ReuseRat.com</a> &amp; pay you when your items sell</p>
+                                    <p>We post your items &amp; pay you when they sell</p>
                                 </div>
                             </div>
                     </div> <!-- /header-cards -->
@@ -105,66 +106,66 @@
 							<div class='col-md-8 col-md-offset-2'>
 								<h2 class='title'>Keep It Easy With 6 Simple Steps</h2>
 							</div>
-                            <div class="col-md-4">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 col-sm-3">
 								<div class="info">
 									<div class="icon icon-primary">
 										<i class="material-icons">account_circle</i>
 									</div>
-									<h4 class="info-title">1. Register Your Information</h4>
-									<h5>We just need a few details from you to make sure the process goes smoothly.</h5>
-                                    <a id="sign-up-link" class="btn btn-primary btn-simple btn-outline" href="{% url 'account_signup' %}">Register now</a>
+									<h4 class="info-title">1. Register</h4>
+									<p>We just need a few details.</p>
+                                    <a id="sign-up-link" class="btn btn-danger btn-sm" href="{% url 'account_signup' %}">Register now</a>
 								</div>
 		                    </div>
-		                    <div class="col-md-4">
+		                    <div class="col-md-2 col-sm-3">
 								<div class="info">
-									<div class="icon icon-info">
+									<div class="icon">
 										<i class="material-icons">video_label</i>
 									</div>
-									<h4 class="info-title">2. Pack Your Items</h4>
-									<h5>Whether it's a new laptop or old toys,  we'll take it.
-                                        Pack as much as you want - we can even send you boxes (coming soon). </h5>
+									<h4 class="info-title">2. Pack Items</h4>
+									<p>Whether it's a new laptop or old toys,  we'll take it.
+                                        </p>
 								</div>
 		                    </div>
-		                    <div class="col-md-4">
+		                    <div class="col-md-2 col-sm-3">
 								<div class="info">
-									<div class="icon icon-default">
+									<div class="icon">
 										<i class="material-icons">local_printshop</i>
 									</div>
-									<h4 class="info-title">3. Print Your Shipping Label</h4>
-									<h5>Simply print out the label we provide and stick it on your box. We'll even reimburse shipping costs when the box arrives. </h5>
+									<h4 class="info-title">3. Print Label</h4>
+									<p>Simply print out the shipping label we provide and stick it on your box.</p>
 
 								</div>
 		                    </div>
-						</div>
 
-                        <div class='row'>
-                            <div class="col-md-4">
+                            <div class="col-md-2 col-sm-3">
                                     <div class="info">
-                                        <div class="icon icon-danger">
+                                        <div class="icon">
                                             <i class="material-icons">local_shipping</i>
                                         </div>
-                                        <h4 class="info-title">4. Send Boxes Via USPS</h4>
-                                        <h5>Drop off your boxes at your mailbox, USPS drop box, or local post office.</h5>
+                                        <h4 class="info-title">4. Send Boxes</h4>
+                                        <p>Drop off boxes at your mailbox, USPS drop box, or local post office.</p>
                                     </div>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-2 col-sm-3">
 								<div class="info">
-									<div class="icon icon-warning">
+									<div class="icon">
 										<i class="material-icons">weekend</i>
 									</div>
 									<h4 class="info-title">5. ?????</h4>
-									<h5>Time to sit back and relax. We do the work of handling the sales process. You live your life, whether it's Binging Netflix or Extreme Snowboarding.</h5>
+									<p>Time to sit back and relax. We handle the sales process.</p>
 								</div>
 		                    </div>
 
-		                    <div class="col-md-4">
+		                    <div class="col-md-2 col-sm-3">
 								<div class="info">
-									<div class="icon icon-success">
+									<div class="icon">
 										<i class="material-icons">attach_money</i>
 									</div>
 									<h4 class="info-title">6. Profit</h4>
-									<h5>Congratulations! We sold your items and now it's time to get paid. We split 50/50 and pay by Check, Paypal or Direct Deposit.</h5>
+									<p>Congratulations! We sold your items and it's time to get paid.</p>
 								</div>
 		                    </div>
 
@@ -180,7 +181,7 @@
 
 						<div class="col-md-4">
 							<div class="image-container">
-								<img class="img img-raised" src="{% static 'images/home/clean.jpeg' %}">
+								<img class="img img-raised img-responsive" src="{% static 'images/home/clean.jpeg' %}">
 							</div>
 						</div>
 
@@ -237,7 +238,7 @@
 						</div>
 						<div class="col-md-5 col-md-offset-2">
 							<div class="image-container">
-								<img class="img img-raised" src="{% static 'images/home/relax.jpeg' %}">
+								<img class="img img-raised img-responsive" src="{% static 'images/home/relax.jpeg' %}">
 							</div>
 						</div>
 
@@ -294,16 +295,22 @@
 	            </div>
 
 
+            <div class="row section-logo-bar">
+                <div class="col-sm-12">
+                    {% include 'pages/snippets/logo-bar.html' %}
+                </div>
+            </div>
+
+
 	        	<div class="section landing-section">
 	                <div class="row">
 	                    <div class="col-md-8 col-md-offset-2">
-                            <br><br><br> <!-- temporary until testimonials are back -->
 	                        <h2 class="text-center title">Let's Get Started</h2>
 							<h4 class="text-center description">
                                 Are you ready to start freeing up space and begin making money? Start the process with the button below.
                                 One small click for you, a giant leap for your wallet.
                             </h4>
-                             <a href="{% url 'account_signup' %}" class="btn btn-primary btn-lg btn-raised text-center">
+                             <a href="{% url 'account_signup' %}" class="btn btn-danger btn-lg btn-raised text-center">
 									Let's Go Make Some $$
 							</a>
 	                    </div>
@@ -336,15 +343,15 @@
 			   <div class='card card-nav-tabs text-center'>
 								   <div class="header-info content">How long does it take to get paid?</div>
 				   <div class='content'>
-					   <p>That depends! Within a few weeks you can expect a few of your items to sell. We post an item for a maximum of 70 days before moving it to clearance.</p>
+					   <p>That depends! Within a few weeks you can expect a some of your items to sell. We post an item for a maximum of 70 days before moving it to clearance.</p>
 				   </div>
 			   </div>
 		   </div>
                <div class='col-md-4'>
                    <div class='card card-nav-tabs text-center'>
-                       <div class="header-info content">How do I start making money?</div>
+                       <div class="header-info content">What percent do you take?</div>
                        <div class='content'>
-                           <a href="{% url 'account_signup' %}" class='btn btn-danger btn-simple'>Sign Up Now For Free!</a>
+						   <p>We split the sale 50/50. This is for our service of pricing, packaging, selling, shipping, and customer service for selling your items on your behalf. </p>
                        </div>
                    </div>
                </div>
@@ -382,7 +389,8 @@
                        <div class='content'>
                            <p>
 							   It’s difficult to do a quality check on used clothing. The good people at <a href="https://thredup.com" target="_blank">ThredUp </a>
-                               focus on this task and does it better than us <i class='fa fa-smile-o'></i>
+                               focus on this task and do it better than us <i class='fa fa-smile-o'></i>
+
 							</p>
                        </div>
                    </div>

@@ -14,8 +14,8 @@ class TestStripeApi(TestCase):
     @classmethod
     def setUpClass(cls):
         super(TestStripeApi, cls).setUpClass()
-        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Test Secret Key.
-        cls.test_secret_key = settings.STRIPE_TEST_SECRET_KEY # test.TEST_CUSTOMER_STRIPE_SECRET
+        stripe.api_key = settings.STRIPE_SECRET_KEY  # Platform Test Secret Key.
+        cls.test_secret_key = settings.STRIPE_SECRET_KEY # test.TEST_CUSTOMER_STRIPE_SECRET
         # Tokens are unique, so we lambda it to create a new token each time. Needs to take 1 argument because it's called with self
         cls.account = create_account('149.160.154.217') # Stripe Account model instance
 
@@ -50,7 +50,7 @@ class TestStripeApi(TestCase):
         user_object = factories.UserFactory(stripe_account=self.account)
         account_token = create_test_bank_token()
         account_id = self.account.account_id
-        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Test Secret Key.
+        stripe.api_key = settings.STRIPE_SECRET_KEY  # Platform Test Secret Key.
 
         test_account_id = update_payment_info(account_id, account_token, user_object)
         test_account = stripe.Account.retrieve(test_account_id)
@@ -98,11 +98,11 @@ class TestStripeApi(TestCase):
         account_id = self.account.account_id
         transfer_amount = 100  # in cents
 
-        old_balance_platform, old_balance_user = retrieve_balance(settings.STRIPE_TEST_SECRET_KEY), retrieve_balance(self.account.secret_key) # Get platform balance
+        old_balance_platform, old_balance_user = retrieve_balance(settings.STRIPE_SECRET_KEY), retrieve_balance(self.account.secret_key) # Get platform balance
         transfer_id = create_transfer_to_customer(account_id, transfer_amount, "test_sucess_create_transfer_to_customer")
-        new_balance_platform, new_balance_user = retrieve_balance(settings.STRIPE_TEST_SECRET_KEY), retrieve_balance(self.account.secret_key)
+        new_balance_platform, new_balance_user = retrieve_balance(settings.STRIPE_SECRET_KEY), retrieve_balance(self.account.secret_key)
 
-        transfer = stripe.Transfer.retrieve(transfer_id, api_key=settings.STRIPE_TEST_SECRET_KEY) # Log in as the customer
+        transfer = stripe.Transfer.retrieve(transfer_id, api_key=settings.STRIPE_SECRET_KEY) # Log in as the customer
 
         self.assertEqual(transfer['amount'], transfer_amount)
         self.assertEqual(transfer['destination'], account_id)
@@ -119,9 +119,9 @@ class TestStripeApi(TestCase):
         transfer_amount = 100
         account_id = self.account.account_id
 
-        old_balance_platform, old_balance_user = retrieve_balance(settings.STRIPE_TEST_SECRET_KEY), retrieve_balance(self.account.secret_key) # Get platform balance
+        old_balance_platform, old_balance_user = retrieve_balance(settings.STRIPE_SECRET_KEY), retrieve_balance(self.account.secret_key) # Get platform balance
         transfer_id = create_transfer_to_platform(account_id, transfer_amount, 'test_success_create_transfer_to_platform') # Transfer 1 dollar
-        new_balance_platform, new_balance_user = retrieve_balance(settings.STRIPE_TEST_SECRET_KEY), retrieve_balance(self.account.secret_key)
+        new_balance_platform, new_balance_user = retrieve_balance(settings.STRIPE_SECRET_KEY), retrieve_balance(self.account.secret_key)
         transfer = stripe.Transfer.retrieve(transfer_id)
 
         self.assertEqual(transfer_id, transfer['id'])
@@ -138,7 +138,7 @@ class TestStripeApi(TestCase):
 
         update_payment_info(self.account.account_id, account_token, user_object)
         print(stripe.Balance.retrieve(api_key=self.account.secret_key))
-        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY  # Platform Test Secret Key.
+        stripe.api_key = settings.STRIPE_SECRET_KEY  # Platform Test Secret Key.
         old_balance_user = retrieve_balance(self.account.secret_key)
         transfer_id = create_transfer_bank(self.account.secret_key, transfer_amount, "test_create_transfer_bank")
         new_balance_user = retrieve_balance(self.account.secret_key)

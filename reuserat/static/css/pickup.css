@@ -12,11 +12,11 @@
   .section-steps .step .number {
     margin: 0 auto;
     margin-bottom: 12px;
-    color: #9c27b0;
+    color: #2196f3;
     border-radius: 50%;
     width: 70px;
     font: 40px Arial, sans-serif;
-    border: 2px solid #9c27b0;
+    border: 2px solid #2196f3;
     font-weight: 900; }
     .section-steps .step .number span {
       text-align: center;
@@ -35,3 +35,10 @@
 
 .section-bonus h4 {
   margin-bottom: 18px; }
+
+.section-logo-bar {
+  padding-top: 50px;
+  padding-bottom: 50px; }
+
+#full-list {
+  font-style: italic; }

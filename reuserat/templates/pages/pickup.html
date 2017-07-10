@@ -7,19 +7,36 @@
 
   <link type='text/css' href="{% static 'css/pickup.css' %}" rel="stylesheet">
 
-{% endblock %}
+    <!-- for the circle modal -->
+    <link type='text/css' href="{% static 'css/snippets/pages/circle_tabs.css' %}" rel="stylesheet">
+
+    <!-- for the logo bar -->
+    <link type='text/css' href="{% static 'css/snippets/pages/logo_bar.css' %}" rel="stylesheet">
+
+
+{% endblock css %}
+
 {% block header-top-style %}
-background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
+    background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
 {% endblock %}
+
 {% block header-title %}
-    <h1>Pickup Service</h1>
+    <h1>Free Pickup Service</h1>
     <h2 class='subtitle' style="font-weight: 400;">We Sell Your Stuff, You Get Paid</h2>
     <h3 style='color: ghostwhite;'>Available in <strong>Bloomington, IN</strong> and <strong>Indiana University</strong></h3>
 
+    <a href="{{ EXTERNAL_URLS.SITE.schedule_pickup }}"
+                       target="_blank"
+                       class="btn btn-primary btn-raised btn-danger btn-lg track-schedule-click">
+                        Schedule Pickup Now
+                        <i class="material-icons">launch</i>
+                                <div class="ripple-container"></div>
+                    </a>
 {% endblock %}
 
 {% block body-tag %}
 <body class='landing-page'>
+
 {% endblock body-tag %}
 
 {% block content%}
@@ -30,9 +47,9 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
                 <h2 class="title col-sm-12">Scheduling a Pickup is Easy as 1-2-3</h2>
             </div>
             <div class="row">
-                <div class="col-sm-4 step"><h4 class="description"><div class="number"><span>1</span></div> Schedule your box drop off and pick up times below.</h4></div>
-                <div class="col-sm-4 step"><h4 class="description"><div class="number"><span>2</span></div> We will deliver boxes so you can pack up your items.</h4></div>
-                <div class="col-sm-4 step"><h4 class="description"><div class="number"><span>3</span></div> Our driver will pick up your boxes. Time to relax, you'll be earning cash in no time!</h4></div>
+                <div class="col-sm-4 step"><h3 class="description"><div class="number"><span>1</span></div> Schedule Your Pickup Time</h3><h5><a href="">Schedule Now</a></h5></div>
+                <div class="col-sm-4 step"><h3 class="description"><div class="number"><span>2</span></div> Pack Up Your Items</h3><h5><a href="">Get Free Boxes Delivered</a></h5></div>
+                <div class="col-sm-4 step"><h3 class="description"><div class="number"><span>3</span></div> We'll Pick Up Your Boxes</h3></div>
             </div>
         </div>
 
@@ -40,69 +57,91 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
         <div class="section section-iu">
             <div class="row">
                 <div class="col-sm-4 col-sm-offset-1">
-                    <h2 class="title">Are You Ready To Clean Your House & Make Money?</h2>
+                    <h2 class="title">Clean Out Your House & Make Money!</h2>
                     <h5 class="description">You don't have to wait until Spring to clean out your house.
                         Using our service you can declutter your house and make money!</h5>
-                    <h5 class="description">Your items are sold on our premier online store.
+                    <h5 class="description">
                         Sit back and earn while we handle the sales process.</h5>
                     <h5 class="text-primary" style="font-weight: 400;">ReuseRat Pickup is 100% free!</h5>
                 </div>
                 <div class="col-sm-6 col-sm-offset-1">
-
-                    <h3 class="text-info"><strong>Get Paid</strong></h3>
-                    <h4>We sell your items on our premier online store.</h4>
-                    <h4>We split the sale 50/50.</h4>
-                    <h4>If an item doesn't sell in 90 days, we'll return it to you for free.</h4>
-                    <h4>Cash out funds with our easy to use dashboard!</h4>
-
-                        <h5><small>*Items typically sell in 10-60 days.</small>
-                        <br><small>*We can ship back unsold items if you want it back.</small>
-                        </h5>
-                    <br>
-
-                    <h3 class="text-info"><strong>Can I Donate My Items?</strong></h3>
-                    <h4>You can donate your items through ReuseRat.</h4>
-                    <h4>We will be happy to give it to any charity organizations.</h4>
-                    <small>If your items is not compliant with our Accepted Items checklist and
-                       <br> you are ready to donate them ,we will be happy to do it for you. </small></h4>
+                   <img class="img-rounded img-responsive" src="{% static 'images/pickup/lv4.jpg' %}">
 
                 </div>
             </div>
         </div>
+
+        <div class="section section-iu">
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-1">
+                   <img class="img-rounded img-responsive" src="{% static 'images/pickup/box.png' %}">
+                </div>
+                <div class="col-sm-6 col-sm-offset-1">
+                    <h2 class="title">Your Life Made Easier</h2>
+                    <h3 class="text-info"><strong>Get Paid</strong></h3>
+                    <h4 class="description">We split the sale 50/50.</h4>
+                    <h4 class="description">Cash out with Paypal, Direct Deposit, or Check.</h4>
+                    <h4 class="description">Monitor items on our easy to use dashboard!</h4>
+
+
+                    <br><br>
+                    <h3 class="text-info"><strong>Free Your Used Items</strong></h3>
+                    <h4 class="description">If an item doesn't sell in 90 days, we'll return it to you for free.</h4>
+
+                    <h4 class="description">You can also opt to donate your unsold items.</h4>
+                    <h4 class="description">We are happy to donate eligable items to charity organizations.</h4>
+                    <small class="description">*Items typically sell in 10-60 days</small>
+                </div>
+            </div>
+        </div>
+
 
 
         <div class="section text-center">
             <div class="row">
                 <div class="col-sm-12">
                     <h2 class="title">Schedule Your Box Drop Off &amp; Pickup Now</h2>
-                    <h4>1) We will drop off boxes to your address. We just request that someone is present to let us in.</h4>
-                    <h4>2) After scheduling your box drop off, you'll receive an email to schedule your pick up time.</h4>
-                    <h4>3) All of your details are kept secure &amp; confidential. No spam, ever! </h4>
+                    <h3 class="description">Get boxes for free or schedule a pickup directly.</h3>
+                    <h3 class="description">All details are kept secure &amp; confidential. No spam, ever - we promise! </h3>
+                    <br>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-12">
-<a href="https://reuserat.youcanbook.me" target="_blank" class="btn btn-primary btn-raised btn-lg">
-                                Schedule Box Drop Off Now <i class="material-icons">launch</i>
-                            <div class="ripple-container"></div></a>                </div>
-                <a href="https://reuserat-pickup.youcanbook.me/" target="_blank" class="btn btn-primary btn-raised btn-lg">
-                                Schedule Pickup Now <i class="material-icons">launch</i>
-                            <div class="ripple-container"></div></a>
+                    <a href="{{ EXTERNAL_URLS.SITE.schedule_boxes }}"
+                       target="_blank"
+                       class="btn btn-primary btn-raised btn-lg track-schedule-click">
+                        Schedule Box Drop Off
+                        <i class="material-icons">launch</i>
+                        <div class="ripple-container"></div>
+                    </a>
+
+                    <a href="{{ EXTERNAL_URLS.SITE.schedule_pickup }}"
+                       target="_blank"
+                       class="btn btn-primary btn-raised btn-lg track-schedule-click">
+                        Schedule Pickup Now
+                        <i class="material-icons">launch</i>
+                                <div class="ripple-container"></div>
+                    </a>
+
+                </div>
+
+
             </div>
         </div>
 
         <div class="section section-items">
             <div class="row">
 
-                <div class="col-sm-4 col-sm-offset-1">
+                <div class="col-sm-4 col-sm-offset-2">
                     <h2 class="title">What Items Do You Accept?</h2>
                     <h5 class="description">Items qualify if they can fit into a 18 in x 24 in box.</h5>
                     <h5 class="description">However, there are exceptions for some large items that we also accept:</h5>
                     <h5 class="description">TVs, Mini Fridges, Microwaves, and Computer Monitors are all eligible for pickups.</h5>
                 </div>
 
-                <div class="col-sm-6 col-sm-offset-1">
-                    <h3 class="text-success"><strong>Allowed Items</strong> <small>(not an exhaustive list)</small></h3>
+                <div class="col-sm-4 col-sm-offset-1">
+                    <h3 class="text-success"><strong>Allowed Items</strong></h3>
                     <ul>
                         <li><i class='fa fa-check text-success'></i> TVs</li>
                         <li><i class='fa fa-check text-success'></i> Speakers</li>
@@ -112,10 +151,11 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
                         <li><i class='fa fa-check text-success'></i> Jewelry & Watches</li>
                         <li><i class='fa fa-check text-success'></i> Crafts & Glass Items</li>
                         <li><i class='fa fa-check text-success'></i> Video Game Systems &amp; Games</li>
-                        <li><i class='fa fa-check text-success'></i> Kids Stuff</li>
+                        <li><i class='fa fa-check text-success'></i> Kids Items</li>
                         <li><i class='fa fa-check text-success'></i> Appliances (Microwaves, Coffee Makers, Etc.)</li>
                         <li><i class='fa fa-check text-success'></i> Dorm Items (Lights, Small Tables, Etc.)</li>
                         <li><i class='fa fa-check text-success'></i> Items smaller than 18 in x 24 in</li>
+                        <li id='full-list'><a data-toggle="modal" data-target="#full-list-modal"  title="All Items" data-original-title="All Items">See Full List</a></li>
 
                     </ul>
                     <br>
@@ -135,9 +175,16 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
         </div>
 
 
+    <div class="row section-logo-bar">
+        <div class="col-sm-12">
+            {% include 'pages/snippets/logo-bar.html' %}
+        </div>
+    </div>
+
+
  <div class='section section-bonus row'>
      <div class='col-sm-6 col-sm-offset-2 text-left'>
-         <div><h2>Sharing is Caring <i style='position: relative; top: -2px;' class='fa fa-heart text-danger'></i></h3>
+         <div><h2>Sharing is Caring <i style='position: relative; top: -2px;' class='fa fa-heart text-danger'></i></h2>
             <h4 class= style='font-weight: 400;'><strong>Referral Bonus</strong> - Any friend that refers your name in the sign up form below scores you an incredible bonus!</h4>
             <h4 class="description">You'll get paid a <strong class='text-success'>10% bonus</strong> for every item they sell.</h4>
             <h4 class="description">They will make <strong class='text-success'>10% more</strong> by using you as a referrer.</h4>
@@ -158,3 +205,31 @@ background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
         </div>
     </div>
 {% endblock content %}
+
+{% block modal %}
+<!-- Start Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="full-list-modal" aria-labelledby="full-list-modal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<i class="material-icons">clear</i>
+				</button>
+				<h4 class="modal-title">ReuseRat All Eligible Items</h4>
+			</div>
+			<div class="modal-body">
+                {% include 'pages/snippets/circle_tabs.html' %}
+			</div>
+
+		</div>
+	</div>
+</div>
+<!--  End Modal -->
+
+{% endblock modal %}
+
+{% block javascript %}
+    {{ block.super }}
+
+
+{% endblock javascript %}

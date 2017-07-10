@@ -27,10 +27,14 @@ urlpatterns = [
     # Knowledge Base
     url(r'^knowledge/', include('reuserat.knowledge.urls', namespace='knowledge')),
 
-    # Pickup Page
+    # Third Party tracking, analytics, & more
+    url(r'^tp/', include('reuserat.third_party.urls', namespace='third_party')),
+
+                  # Pickup Page
     url(r'^pickup/', TemplateView.as_view(template_name='pages/pickup.html'), name='pickup'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

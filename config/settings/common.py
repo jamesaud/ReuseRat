@@ -338,7 +338,9 @@ EXTERNAL_URLS = {
     'SITE':{
         'store': 'https://reuserat.com',
         'seller': 'https://sell.reuserat.com',
-        'blog': 'https://reuserat.com/blogs/news'}
+        'blog': 'https://reuserat.com/blogs/news',
+        'schedule_pickup': 'https://reuserat-pickup.youcanbook.me',
+        'schedule_boxes': 'https://reuserat.youcanbook.me'}
 }
 
 
@@ -366,8 +368,8 @@ SPLIT_PERCENT_PER_SALE = .5  # A number from 0 to 1, how much the customer gets 
 
 # Stripe Company Account API Keys.
 # See your keys here: https://dashboard.stripe.com/account/apikeys
-STRIPE_TEST_SECRET_KEY  = env('STRIPE_TEST_SECRET_KEY', default=None)
-STRIPE_TEST_PUBLISHABLE_KEY = env('STRIPE_TEST_PUBLISHABLE_KEY', default=None)
+STRIPE_SECRET_KEY  = env('STRIPE_SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
 
 # Fake test Stripe data
 STRIPE_TEST_ACCOUNT_NUMBER = '000123456789'
@@ -382,9 +384,9 @@ PAYPAL_MODE = env('PAYPAL_MODE', default="sandbox") # Or Production
 
 
 # Check API Lob
-LOB_LIVE_API_KEY=env('LOB_LIVE_API_KEY',default=None)
-LOB_TEST_API_KEY=env('LOB_TEST_API_KEY',default=None)
-LOB_API_VERSION = env('LOB_API_VERSION',default=None)
+LOB_LIVE_API_KEY=env('LOB_LIVE_API_KEY')
+LOB_TEST_API_KEY=env('LOB_TEST_API_KEY', default=None)
+LOB_API_VERSION = env('LOB_API_VERSION', default=None)
 
 # For the Shipping 'TO' address
 WAREHOUSE_NAME = 'ReuseRat Inc.'
@@ -400,3 +402,4 @@ COMPANY_ADDRESS_LINE_APT= 'Apt #5'
 COMPANY_ZIP = '47408'
 COMPANY_CITY = 'Bloomington'
 COMPANY_STATE = 'IN'
+

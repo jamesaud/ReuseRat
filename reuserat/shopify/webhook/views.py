@@ -10,7 +10,9 @@ from django.views.generic import View, TemplateView
 from reuserat.shopify.webhook import signals
 from .decorators import webhook, app_proxy
 from .helpers import get_signal_name_for_topic
+from config.logging import setup_logger
 
+setup_logger()
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
@@ -42,7 +44,7 @@ class ShopifyWebhookBaseView(View):
             print("SINGAL NAME - WEBHOOK.VIEWS.PY", signal_name)
 
         except AttributeError as e:
-            logger.error("Encountered Shopify Webhook Signal Error: {0}".format(e))
+            logger.error("Encountered Shopify Webhook Signal Error: {0}".format(e), exc_info=True)
             raise SuspiciousOperation
 
 

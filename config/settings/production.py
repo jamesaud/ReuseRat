@@ -196,6 +196,7 @@ LOGGING = {
         'sentry': {
             'level': 'INFO',
             'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            'dsn': SENTRY_DSN,
         },
         'console': {
             'level': 'DEBUG',
@@ -233,6 +234,7 @@ RAVEN_CONFIG = {
 }
 
 SENTRY_AUTO_LOG_STACKS = True
+
 
 
 # Custom Admin URL, use {% url 'admin:index' %}

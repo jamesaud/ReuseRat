@@ -16,15 +16,13 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
 
-  <!-- third party tracking tags -->
-    <script src="{% static 'js/third_party_scripts.min.js' %}"></script>
-    {% include 'snippets/_header_js_tags.html' %}
 
     {% block css %}
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+
         <link type='text/css' href="{% static 'css/project.css' %}" rel="stylesheet">
 
     {% endblock %}
@@ -32,11 +30,25 @@
 
     <link rel="shortcut icon" href="{%  static 'favicon/favicon.ico' %}">
 
+    {% block header-js %}
+
+        {# don't run facebook pixel in development #}
+        {% if not debug %}
+    <!-- third party tracking that belongs in the header -->
+      {% include 'third_party/ad_conversion_tags/facebook_ads/facebook_pixel.html' %}
+        {% endif %}
+
+      <script src="{% static 'js/third_party/google-analytics.min.js' %}"></script>
+
+
+
+    {% endblock header-js %}
   </head>
 
 {% block body-tag %}
 <body>
 {% endblock %}
+
 
 {% block messages %}
       {% if messages %}
@@ -56,7 +68,7 @@
           {% endfor %}
       {% endif %}
 {% endblock messages %}
-
+{% block navbar %}
       <nav id="main-navigation" class="navbar navbar-transparent navbar-absolute">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -153,7 +165,7 @@
             </div>
         </div>
       </nav>
-
+    {% endblock navbar %}
 
     <div>
 
@@ -306,7 +318,20 @@
 
       <!-- place project specific Javascript in this file -->
       <script src="{% static 'js/project.min.js' %}"></script>
-      <script src="{% static 'js/mouseflow_code.min.js' %}"></script>
+
+
+      <!-- THIRD PARTY TRACKING -->
+      <script src="{% static 'js/third_party/mouseflow_code.min.js' %}"></script>
+
+      <!-- google ad conversion tracking -->
+      <script type="text/javascript"
+         src="//www.googleadservices.com/pagead/conversion_async.js">
+      </script>
+
+        <!-- conversion tracking -->
+        <script src="{% static 'js/third_party/ad_conversion_tags/tracking.js' %}"></script>
+
+
     {% endblock javascript %}
   </body>
 </html>
