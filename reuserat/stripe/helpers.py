@@ -6,6 +6,13 @@ import time
 
 
 
+import logging
+
+from config.logging import setup_logger
+
+setup_logger()
+logger = logging.getLogger(__name__)
+
 
 
 # Creating Managed Connected Account in Stripe
@@ -35,6 +42,8 @@ def create_account(ip_addr=None):
     acct_instance = StripeAccount(account_id=acct['id'],
                                   secret_key=acct['keys']['secret'],
                                   publishable_key=acct['keys']['publishable'])
+
+    logger.error("In stripe/helpers.py/create_account -- account created",account)
     acct_instance.save()
     return acct_instance
 
@@ -77,7 +86,9 @@ def update_payment_info(account_id, account_token, user_object):
 
     account.external_accounts.create(external_account=account_token,
                                      default_for_currency=True, )
-
+    logger.error("In stripe/helpers.py/update_payment_info --- Updated Payment Info stripe,and actual thing", account.legal_entity.address.line2,user_object.address.address_apartment)
+    logger.error("In stripe/helpers.py/update_payment_info --- Updated Payment Info stripe,and actual thing",account.legal_entity.address.city, user_object.address.city)
+    logger.error("In stripe/helpers.py/update_payment_info --- and actual thing",user_object.address,user_object.birth_date,user_object.first_name)
     account.save()
     return account['id']
 
