@@ -84,6 +84,8 @@ class TestUserCompleteSignup(BaseUserTestCase):
         user = self.request.user
         response = self.view.as_view()(self.request)
 
+        self.assertEqual(1, 2)
+
         # Make sure the user was updated appropriately
         self.assertEqual(user.first_name, user_update_data['first_name'])
         self.assertEqual(user.last_name, user_update_data['last_name'])

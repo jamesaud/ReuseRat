@@ -1,1 +1,11 @@
-{}
+{
+  "reuserat/users/tests/test_views.py::TestCashOut::test_cashout_check": true,
+  "reuserat/users/tests/test_views.py::TestCashOut::test_cashout_direct_deposit": true,
+  "reuserat/users/tests/test_views.py::TestUpdatePaymentInformation::test_check_updated": true,
+  "reuserat/users/tests/test_views.py::TestUpdatePaymentInformation::test_paypal_account": true,
+  "reuserat/users/tests/test_views.py::TestUpdatePaymentInformation::test_stripe_updated": true,
+  "reuserat/users/tests/test_views.py::TestUserCompleteSignup::test_fields_added": true,
+  "reuserat/users/tests/test_views.py::TestUserCompleteSignup::test_stripe_paypal_added": true,
+  "reuserat/users/tests/test_views.py::TestUserRedirectView::test_get_redirect_url": true,
+  "reuserat/users/tests/test_views.py::TestUserUpdateView::test_get_success_url": true
+}

@@ -343,6 +343,8 @@ EXTERNAL_URLS = {
         'schedule_boxes': 'https://reuserat.youcanbook.me'}
 }
 
+# Set Production to false
+PRODUCTION = False
 
 
 # ENV LOADED KEYS AND SETTINGS

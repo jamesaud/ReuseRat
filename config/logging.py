@@ -4,7 +4,8 @@ import logging
 
 
 def setup_logger():
-    if not settings.DEBUG:
+    # Check if in production mode
+    if settings.PRODUCTION:
         from raven.handlers.logging import SentryHandler
         from raven.conf import setup_logging
 
