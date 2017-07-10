@@ -4,13 +4,11 @@ from django.test import RequestFactory
 from test_plus.test import TestCase
 from reuserat.users.tests.factories import UserFactory
 from reuserat.shipments.tests.factories import ShipmentFactory
-from reuserat.shopify.models import Status, Webhook
+from reuserat.shopify.models import Status
 from reuserat.shopify.tests.factories import ItemFactory, ItemOrderDetailsFactory
 from reuserat.shopify.webhook.helpers import get_hmac
 from reuserat.stripe.helpers import cents_to_dollars, dollars_to_cents
 from reuserat.stripe.models import TransactionPaymentTypeChoices, TransactionTypeChoices
-from django.conf import settings
-from .. import receivers as r
 from ..views import *
 from ...models import Item
 
@@ -151,21 +149,27 @@ class TestProductDelete(BaseWebhookTestCase):
         response = self.send_request()
         self.assertFalse(Item.objects.filter(pk=self.item.id).exists())
 
-class TestOrderReceiver(BaseWebhookTestCase):
+
+
+class TestFulfillmentsReceiver(BaseWebhookTestCase):
 
     def setUp(self):
-         # simulate shopify order received json request
-        body = '{"id":4869750532,"email":"jj@jj.com","closed_at":null,"created_at":"2017-03-04T16:50:26-05:00","updated_at":"2017-03-04T16:50:26-05:00","number":3,"note":"","token":"7b3edb00e35755881daae9701a0c7015","gateway":"manual","test":false,"total_price":"1.07","subtotal_price":"1.00","total_weight":454,"total_tax":"0.07","taxes_included":false,"currency":"USD","financial_status":"paid","confirmed":true,"total_discounts":"0.00","total_line_items_price":"1.00","cart_token":null,"buyer_accepts_marketing":false,"name":"#1003","referring_site":null,"landing_site":null,"cancelled_at":null,"cancel_reason":null,"total_price_usd":"1.07","checkout_token":null,"reference":null,"user_id":112270404,"location_id":21386820,"source_identifier":null,"source_url":null,"processed_at":"2017-03-04T16:50:26-05:00","device_id":null,"browser_ip":null,"landing_site_ref":null,"order_number":1003,"discount_codes":[],"note_attributes":[],"payment_gateway_names":["manual"],"processing_method":"manual","checkout_id":null,"source_name":"shopify_draft_order","fulfillment_status":null,"tax_lines":[{"title":"IN State Tax","price":"0.07","rate":0.07}],"tags":"","contact_email":null,"order_status_url":null,"line_items":[{"id":9473954756,"variant_id":36372184260,"title":"testest","quantity":1,"price":"1.00","grams":454,"sku":"9-4","variant_title":null,"vendor":"ReuseRat","fulfillment_service":"manual","product_id":10013286724,"requires_shipping":true,"taxable":true,"gift_card":false,"name":"testest","variant_inventory_management":"shopify","properties":[],"product_exists":true,"fulfillable_quantity":1,"total_discount":"0.00","fulfillment_status":null,"tax_lines":[{"title":"IN State Tax","price":"0.07","rate":0.07}]}],"shipping_lines":[],"fulfillments":[],"refunds":[]}'
+        body = '{"id":123456,"order_id":820982911946154500,"status":"pending","created_at":"2017-07-10T13:09:15-04:00","service":null,"updated_at":"2017-07-10T13:09:15-04:00","tracking_company":"UPS","shipment_status":null,"email":"jon@doe.ca","destination":{"first_name":"Steve","address1":"123 Shipping Street","phone":"555-555-SHIP","city":"Shippington","zip":"K2P0S0","province":"Kentucky","country":"United States","last_name":"Shipper","address2":null,"company":"Shipping Company","latitude":null,"longitude":null,"name":"Steve Shipper","country_code":"US","province_code":"KY"},"tracking_number":"1z827wk74630","tracking_numbers":["1z827wk74630"],"tracking_url":"http://wwwapps.ups.com/etracking/tracking.cgi?InquiryNumber1=1z827wk74630&TypeOfInquiryNumber=T&AcceptUPSLicenseAgreement=yes&submit=Track","tracking_urls":["http://wwwapps.ups.com/etracking/tracking.cgi?InquiryNumber1=1z827wk74630&TypeOfInquiryNumber=T&AcceptUPSLicenseAgreement=yes&submit=Track"],"receipt":{},"line_items":[{"id":866550311766439000,"variant_id":null,"title":"Apples to Apples Junior!","quantity":1,"price":"5.00","grams":680,"sku":"A353","variant_title":null,"vendor":null,"fulfillment_service":"manual","product_id":10083851844,"requires_shipping":true,"taxable":true,"gift_card":false,"name":"Apples to Apples Junior!","variant_inventory_management":null,"properties":[],"product_exists":true,"fulfillable_quantity":1,"total_discount":"0.00","fulfillment_status":null,"tax_lines":[]},{"id":141249953214522980,"variant_id":null,"title":"Legacy Of Love Sisters Figurine by Kim Lawrence. Gregg Gift Company","quantity":1,"price":"7.99","grams":1451,"sku":"32-22","variant_title":null,"vendor":null,"fulfillment_service":"manual","product_id":11360551364,"requires_shipping":true,"taxable":true,"gift_card":false,"name":"Legacy Of Love Sisters Figurine by Kim Lawrence. Gregg Gift Company","variant_inventory_management":null,"properties":[],"product_exists":true,"fulfillable_quantity":1,"total_discount":"5.00","fulfillment_status":null,"tax_lines":[]}]}'
         self.body = json.loads(body)
-        self.item = ItemFactory(name=self.body['line_items'][0]['name']) # Set to the json name
-        self.user = UserFactory()  # Create user with valid stripe account to transfer funds over to.
+
+        # Create an item in our database, set the user to the shipment
+        self.user = UserFactory()
+        self.item = ItemFactory(name=self.body['line_items'][0]['name'])
         self.item.id = self.body['line_items'][0]['product_id']
         self.item.save()
         self.item.shipment.user = self.user
         self.item.shipment.save()
-        super().setUp(body=self.body, topic='orders/paid')  # Set up the update request
 
-    def test_order_payment(self):
+        # Set up the webhook with the correct call
+        super().setUp(body=self.body, topic='fulfillments/create')
+
+
+    def test_payment_to_user(self):
         """Calls Stripe API"""
         response = self.send_request()
 
@@ -178,7 +182,8 @@ class TestOrderReceiver(BaseWebhookTestCase):
         self.assertIsNotNone(item.itemorderdetails.transfer_id)
 
         # Test that the Stripe transfer was successful
-        self.assertEqual(dollars_to_cents(float(self.body['line_items'][0]['price'])) * settings.SPLIT_PERCENT_PER_SALE, self.user.stripe_account.retrieve_balance())
+        self.assertEqual(dollars_to_cents(float(self.body['line_items'][0]['price'])) * settings.SPLIT_PERCENT_PER_SALE,
+                         self.user.stripe_account.retrieve_balance())
 
         # Test the transaction object that should be created
         transaction = self.user.transaction_set.first()
@@ -187,10 +192,12 @@ class TestOrderReceiver(BaseWebhookTestCase):
         self.assertEqual(TransactionPaymentTypeChoices.ITEM_SOLD, transaction.payment_type)
         self.assertEqual(TransactionTypeChoices.IN, transaction.type)
         self.assertEqual(transaction.message, 'Paid for selling the item: ' + self.body['line_items'][0]['name'])
-       # self.assertTrue(Webhook.objects.get(webhook_id=self.body['id']))
 
-        # Test webhook exception called the second time the request is sent. We can check and make sure the funds should not be added to a user's account.
-        response = self.send_request()
-        self.assertEqual(transaction.amount, balance_in_dollars) # The transaction amount should not be added a second time.
+        #  We can check and make sure the funds should not be added to a user's account if request comes a second time.
+        current_balance = self.user.get_current_balance()
+        self.send_request()
+        new_balance = self.user.get_current_balance() # Should be the same as current balance
+        self.assertEqual(current_balance, new_balance)  # Don't pay the user twice if we already heard a fulfillment webhook.
+
 
 

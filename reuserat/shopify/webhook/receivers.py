@@ -1,4 +1,4 @@
-from reuserat.shopify.models import Item, Status, ItemOrderDetails, Webhook
+from reuserat.shopify.models import Item, Status, ItemOrderDetails
 from reuserat.shipments.models import Shipment
 from reuserat.users.models import User
 from reuserat.stripe.models import Transaction, TransactionPaymentTypeChoices, TransactionTypeChoices
@@ -68,11 +68,6 @@ class ProductReceivers(AbstractShopifyReceiver):
     @classmethod
     def item_delete(cls, sender, **kwargs):
         shopify_json = cls._get_shopify_json(kwargs)
-        print(shopify_json)
-        print("ASETASTSA")
-        # When we were deleting a product ,the json data only includes the product_id.
-        #item = cls._get_item(shopify_json)  this was there before.
-
         try:
             item = Item.objects.get(pk=shopify_json['id'])
         except Exception as e:
@@ -122,6 +117,92 @@ class ProductReceivers(AbstractShopifyReceiver):
         raise ValueError("JSON sku is not formatted as expected: {}".format(json_data))
 
 
+
+class FulfillmentReceivers(AbstractShopifyReceiver):
+    """
+    This class is responsible for handling Fulfillment related webhooks
+    """
+
+    @classmethod
+    def _item_already_paid(cls, item):
+        """
+        We need to make sure not to pay a user twice if we get a webhook twice with the same item.
+        :type item: Item
+        """
+        return True if item.status == Status.SOLD else False
+
+    @classmethod
+    def _update_item_status(cls, item):
+        """
+        Update the item after it's purchased.
+        :type item: Item
+        """
+        item.status = Status.SOLD
+        item.save()
+
+    @classmethod
+    def _create_transaction(cls, item, user, amount_in_cents):
+        transaction = Transaction(user=user,
+                                  payment_type=TransactionPaymentTypeChoices.ITEM_SOLD,
+                                  amount=cents_to_dollars(amount_in_cents),
+                                  type=TransactionTypeChoices.IN,
+                                  message='Paid for selling the item: ' + item.name)
+        transaction.save()
+
+    @classmethod
+    def _create_item_order_details(self, item, transfer_id, shopify_json):
+        item_order_details = ItemOrderDetails(order_data=shopify_json, item=item,
+                                              transfer_id=transfer_id)
+        item_order_details.save()
+
+    @classmethod
+    def fulfillment_create(cls, sender, **kwargs):
+        print("TESTS inside fulfillment")
+        shopify_json = cls._get_shopify_json(kwargs)
+        item_list = shopify_json['line_items']
+        # Guarantee a webhook isn't repeated. Error is raised if it already exists.
+
+        for item in item_list:
+            try:
+                item_object = Item.objects.get(pk=item['product_id'])
+            except Item.DoesNotExist as e:
+                # This could happen if we add items manually to Shopify that don't belong to users. In that case, it is okay skip over.
+                # However, we should log the occurences to make sure nothing is wrong.
+                logger.error(
+                    "FAILED TO GET ITEM {0} FROM DATABASE. | Shopify Json: {1} | Error {2}".format(item, shopify_json,
+                                                                                                   e), exc_info=True)
+            else:
+                # The user was already paid for the item, so skip to the next item
+                if cls._item_already_paid(item_object):
+                    logger.warning("Item already paid for, received fulfillment webhook trying to pay again for item: {0} | {1}"\
+                                   .format(item, shopify_json))
+                    continue
+
+
+                # Else, pay the user
+                user = item_object.shipment.user
+                # Create transfer, give the user a their cut of the sale.
+                item_price = dollars_to_cents(float(item['price']))  # Stripe takes cents!
+                try:
+                    amount_cents_for_user = int(item_price * settings.SPLIT_PERCENT_PER_SALE)  # Give the user 50%. If we do referrals, we can give more money to the associated referring user here.
+                    transfer_id = create_transfer_to_customer(account_id=user.stripe_account.account_id,
+                                                              balance_in_cents=amount_cents_for_user,
+                                                              description='{0} Sold Item {1}'.format(
+                                                                  user.get_full_name(), item_object.name))
+                except StripeError as e:
+                    logger.error(
+                        "FAILED TO CREATE CHARGE FOR ITEM: {0} | Shopify Json: {1} | Error: {2} | User: {3}".format(
+                            item, shopify_json, e, user.get_full_name()), exc_info=True)
+                    raise
+                else:
+                    cls._create_transaction(item_object, user, amount_cents_for_user)
+                    cls._update_item_status(item_object)
+                    cls._create_item_order_details(item_object, transfer_id, shopify_json)
+
+
+
+
+
 class OrderReceivers(AbstractShopifyReceiver):
     """
     This class is responsible for handling order related webhooks from Shopify
@@ -143,7 +224,6 @@ class OrderReceivers(AbstractShopifyReceiver):
         item_list = shopify_json['line_items']
         # Guarantee a webhook isn't repeated. Error is raised if it already exists.
 
-
         for item in item_list:
             try:
                 item_object = Item.objects.get(pk=item['product_id'])
@@ -152,7 +232,6 @@ class OrderReceivers(AbstractShopifyReceiver):
                 # However, we should log the occurences to make sure nothing is wrong.
                 logger.error("FAILED TO GET ITEM {0} FROM DATABASE. | Shopify Json: {1} | Error {2}".format(item, shopify_json, e), exc_info=True)
             else:
-                print("THE ITEM EXISTS")
                 item_object.status = Status.SOLD
                 user = item_object.shipment.user
                 # Create transfer, give the user a their cut of the sale.

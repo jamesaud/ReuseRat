@@ -43,7 +43,6 @@ def create_account(ip_addr):
                                   secret_key=acct['keys']['secret'],
                                   publishable_key=acct['keys']['publishable'])
 
-    logger.error("In stripe/helpers.py/create_account -- account created", account)
     acct_instance.save()
     return acct_instance
 

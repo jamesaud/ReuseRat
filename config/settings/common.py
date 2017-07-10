@@ -382,7 +382,7 @@ PAYPAL_CLIENT_ID=env('PAYPAL_CLIENT_ID', default=None)
 PAYPAL_SECRET=env('PAYPAL_SECRET', default=None)
 
 PAYPAL_SANDBOX_BUYER_EMAIL = env('PAYPAL_SANDBOX_BUYER_EMAIL', default="trashandtreasure67-buyer@gmail.com")
-PAYPAL_MODE = env('PAYPAL_MODE', default="sandbox") # Or Production
+PAYPAL_MODE = env('PAYPAL_MODE') # Or Production
 
 
 # Check API Lob
