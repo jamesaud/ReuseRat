@@ -9,8 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from localflavor.us import models as usmodels
 from reuserat.stripe.models import StripeAccount, PaypalAccount
 from reuserat.stripe.helpers import retrieve_balance, cents_to_dollars
-import stripe
-from django.conf import settings
+from django.core.validators import RegexValidator
 
 
 class PaymentChoices:
@@ -26,7 +25,7 @@ class PaymentChoices:
 class Address(models.Model):
     address_line = models.CharField(_('Address Line'), max_length=30, blank=False, null=False)
     address_apartment = models.CharField(_('Apartment #'), max_length=30, blank=True, null=True)
-    city =models.CharField(_('City'),max_length=50, blank=False, null=False)
+    city = models.CharField(_('City'),max_length=50, blank=False, null=False)
     state = usmodels.USStateField(blank=False, null=False)
     zipcode = usmodels.USZipCodeField(max_length=20, blank=False, null=False)
     country = models.CharField(_('Country'), max_length=30, blank=True, null=False, default ="US") #Stripe only accepts US accounts
@@ -56,6 +55,12 @@ class User(AbstractUser):
     payment_type = models.CharField(_('Payment Type'), choices=PaymentChoices.CHOICES, max_length=255, blank=False, default="Check")
     phone = usmodels.PhoneNumberField(blank=False, null=True)
     birth_date = models.DateField(_('Birth Date'), blank=False, null=True)
+    ssn_last_four = models.CharField(_('Last 4 Digits of SSN'),
+                                     max_length=4,
+                                     validators=[RegexValidator(regex='^[\d]{4}$', message='Length has to be 4', code='nomatch')],
+                                     blank=False,
+                                     null=True)
+
 
     # Payment options
     stripe_account = models.OneToOneField(StripeAccount, on_delete=models.CASCADE, null=True)

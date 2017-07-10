@@ -16,7 +16,7 @@ class UserCompleteSignupForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'payment_type', 'phone', 'birth_date')
+        fields = ('first_name', 'last_name', 'payment_type', 'phone', 'birth_date', 'ssn_last_four')
         widgets = {
             'payment_type': forms.RadioSelect(),
         }

@@ -58,14 +58,14 @@ def retrieve_balance(secret_key):
 def update_account(account_id,
                    first_name=None,
                    last_name=None,
-                   business_name=None,
                    address_line=None,
                    address_city=None,
                    address_state=None,
                    address_zip=None,
                    dob_day=None,
                    dob_month=None,
-                   dob_year=None):
+                   dob_year=None,
+                   ssn_last_four=None):
 
     stripe.api_key = settings.STRIPE_SECRET_KEY  # REAL KEY HERE
     account = stripe.Account.retrieve(account_id)
@@ -82,14 +82,19 @@ def update_account(account_id,
         account.legal_entity.dob.day = '{:02d}'.format(dob_day)
     if dob_month:
         account.legal_entity.dob.month = '{:02d}'.format(dob_month)
+
     account.legal_entity.dob.year = dob_year or account.legal_entity.dob.year
 
     account.legal_entity.first_name = first_name or account.legal_entity.first_name
     account.legal_entity.last_name = last_name or account.legal_entity.last_name
 
-    account.legal_entity.type = "individual"
+    # Debugging
+    print(dir(account.legal_entity))
+    print(account.legal_entity.__dict__)
 
-    logger.error("In stripe/helpers.py/update_payment_info -- about to create", account_id)
+    account.legal_entity.ssn_last_4 = ssn_last_four
+
+    account.legal_entity.type = "individual"
 
     account.save()
     return account['id']

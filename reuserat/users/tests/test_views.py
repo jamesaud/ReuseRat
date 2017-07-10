@@ -94,6 +94,7 @@ class TestUserCompleteSignup(BaseUserTestCase):
         self.assertEqual(str(user.birth_date.day), user_update_data['birth_date_day'])
         self.assertEqual(str(user.birth_date.month), user_update_data['birth_date_month'])
         self.assertEqual(str(user.birth_date.year), user_update_data['birth_date_year'])
+        self.assertEqual(str(user.ssn_last_four), user_update_data['ssn_last_four'])
 
         self.assertEqual(user.address.address_line, user_address_data['address_line'])
         self.assertEqual(user.address.address_apartment, str(user_address_data['address_apartment']))
@@ -120,7 +121,8 @@ class TestUserCompleteSignup(BaseUserTestCase):
         self.assertEqual(account.legal_entity.dob.day, self.user.birth_date.day)
         self.assertEqual(account.legal_entity.dob.month, self.user.birth_date.month)
         self.assertEqual(account.legal_entity.dob.year, self.user.birth_date.year)
-
+        #self.assertEqual(account.legal_entity.ssn_last_4, self.user.ssn_last_four)
+        self.assertTrue(account.legal_entity.ssn_last_4_provided)
 
     def test_stripe_paypal_added(self):
         response = self.view.as_view()(self.request)

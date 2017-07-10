@@ -72,8 +72,9 @@
 		                        <div class="tab-content">
 		                            <div class="tab-pane" id="about">
 		                              <div class="row">
+                                          <div class="col-sm-12">
                                       <h4 class="info-text"> Let's start with the basic information</h4>
-
+                                        </div>
 		                                	<div class="col-sm-10 col-sm-offset-1">
 												<div class="input-group">
 													<span class="input-group-addon">
@@ -86,7 +87,7 @@
 
 												<div class="input-group">
 													<span class="input-group-addon">
-														<i class="material-icons">record_voice_over</i>
+														<i class="material-icons">face</i>
 													</span>
 													<div class="form-group label-floating">
 			                            				{{user_form.last_name|as_crispy_field}}
@@ -106,17 +107,24 @@
                                           <div class="col-sm-10 col-sm-offset-1">
 												<div class="input-group">
 													<span class="input-group-addon">
-														<i class="material-icons">phone</i>
+														<i class="material-icons">date_range</i>
 													</span>
 													<div class="form-group label-floating date-input">
 			                                        {{user_form.birth_date|as_crispy_field}}
 			                                        </div>
 												</div>
 		                                	</div>
-
-                                      <div class='col-sm-10 col-sm-offset-1 text-center'>
-                                        <p><span class='asterisk'>*</span>You can change your email from dashboard</p>
-                                      </div>
+                                          <div class="col-sm-10 col-sm-offset-1">
+												<div class="input-group">
+													<span class="input-group-addon">
+														<i class="material-icons">confirmation_number</i>
+													</span>
+													<div class="form-group label-floating">
+			                                        {{user_form.ssn_last_four|as_crispy_field}}
+			                                        </div>
+												</div>
+                                              <p class="pull-right"><a href="#" data-toggle="tooltip" title="Our payment processor, Stripe, for security, requires we collect your birth date and SSN last four digits.">Why do you need this information?</a></p>
+		                                	</div>
 
 		                            	</div> <!-- /row -->
 		                            </div> <!-- /tab-pane -->
