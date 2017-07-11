@@ -157,7 +157,7 @@ class FulfillmentReceivers(AbstractShopifyReceiver):
 
     @classmethod
     def fulfillment_create(cls, sender, **kwargs):
-        logger.info("Fulfillment Triggered")
+        logger.error("Fulfillment Triggered")
         logger.error("Fulfillment Triggered")
 
         shopify_json = cls._get_shopify_json(kwargs)
@@ -165,7 +165,7 @@ class FulfillmentReceivers(AbstractShopifyReceiver):
         # Guarantee a webhook isn't repeated. Error is raised if it already exists.
 
         for item in item_list:
-            logger.info("Trying to fulfill item: " + item)
+            logger.error("Trying to fulfill item: " + item)
             try:
                 item_object = Item.objects.get(pk=item['product_id'])
             except Item.DoesNotExist as e:
@@ -188,6 +188,7 @@ class FulfillmentReceivers(AbstractShopifyReceiver):
                 item_price = dollars_to_cents(float(item['price']))  # Stripe takes cents!
                 try:
                     amount_cents_for_user = int(item_price * settings.SPLIT_PERCENT_PER_SALE)  # Give the user 50%. If we do referrals, we can give more money to the associated referring user here.
+                    logger.error("CREATING TRANSFER TO CUSTOMER")
                     transfer_id = create_transfer_to_customer(account_id=user.stripe_account.account_id,
                                                               balance_in_cents=amount_cents_for_user,
                                                               description='{0} Sold Item {1}'.format(
@@ -198,67 +199,8 @@ class FulfillmentReceivers(AbstractShopifyReceiver):
                             item, shopify_json, e, user.get_full_name()), exc_info=True)
                     raise
                 else:
-                    logger.info("Creating transaction information")
+                    logger.error("Creating transaction information")
                     cls._create_transaction(item_object, user, amount_cents_for_user)
                     cls._update_item_status(item_object)
                     cls._create_item_order_details(item_object, transfer_id, shopify_json)
-
-
-
-
-
-class OrderReceivers(AbstractShopifyReceiver):
-    """
-    This class is responsible for handling order related webhooks from Shopify
-    """
-
-    def _validate_webhook(self, webhook_id):
-        try:
-            Webhook.objects.get(pk=webhook_id)
-        except Webhook.DoesNotExist:
-            logger.error("WEBHOOK Already Exists! This is a duplicate! {}".format(webhook_id), exc_info=True)
-            raise Exception("WEBHOOK Already Exists! This is a duplicate! {}".format(webhook_id))
-        else:
-            webhook = Webhook(pk=webhook_id)
-            webhook.save()
-
-    @classmethod
-    def order_payment(cls, sender, **kwargs):
-        shopify_json = cls._get_shopify_json(kwargs)
-        item_list = shopify_json['line_items']
-        # Guarantee a webhook isn't repeated. Error is raised if it already exists.
-
-        for item in item_list:
-            try:
-                item_object = Item.objects.get(pk=item['product_id'])
-            except Item.DoesNotExist as e:
-                # This could happen if we add items manually to Shopify that don't belong to users. In that case, it is okay skip over.
-                # However, we should log the occurences to make sure nothing is wrong.
-                logger.error("FAILED TO GET ITEM {0} FROM DATABASE. | Shopify Json: {1} | Error {2}".format(item, shopify_json, e), exc_info=True)
-            else:
-                item_object.status = Status.SOLD
-                user = item_object.shipment.user
-                # Create transfer, give the user a their cut of the sale.
-                item_price = dollars_to_cents(float(item['price'])) # Stripe takes cents!
-                try:
-                    amount_cents_for_user = int(item_price * settings.SPLIT_PERCENT_PER_SALE)  # Give the user 50%. If we do referrals, we can give more money to the associated referring user here.
-                    transfer_id = create_transfer_to_customer(account_id=user.stripe_account.account_id,
-                                                              balance_in_cents=amount_cents_for_user,
-                                                              description='{0} Sold Item {1}'.format(user.get_full_name(), item_object.name))
-                except StripeError as e:
-                    logger.error("FAILED TO CREATE CHARGE FOR ITEM: {0} | Shopify Json: {1} | Error: {2} | User: {3}".format(item, shopify_json, e, user.get_full_name()), exc_info=True)
-                    raise
-                else:
-
-                    transaction = Transaction(user=user,
-                                              payment_type=TransactionPaymentTypeChoices.ITEM_SOLD,
-                                              amount=cents_to_dollars(amount_cents_for_user),
-                                              type=TransactionTypeChoices.IN,
-                                              message='Paid for selling the item: ' + item_object.name)
-                    # Update the charge id of the item ,for future reference
-                    # Save updated objects
-                    item_object.save()
-                    transaction.save()
-                    item_order_details = ItemOrderDetails(order_data=shopify_json, item=item_object, transfer_id=transfer_id)
-                    item_order_details.save()
 
