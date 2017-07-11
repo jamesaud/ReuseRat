@@ -171,7 +171,7 @@ class FulfillmentReceivers(AbstractShopifyReceiver):
 
 
         for item in item_list:
-            logger.error("Trying to fulfill item: " + item)
+            logger.error("Trying to fulfill item: {}".format(item))
             try:
                 item_object = Item.objects.get(pk=item['product_id'])
             except Item.DoesNotExist as e:
@@ -183,7 +183,7 @@ class FulfillmentReceivers(AbstractShopifyReceiver):
             else:
                 # The user was already paid for the item, so skip to the next item
                 if cls._item_already_paid(item_object):
-                    logger.warning("Item already paid for, received fulfillment webhook trying to pay again for item: {0} | {1}"\
+                    logger.error("Item already paid for, received fulfillment webhook trying to pay again for item: {0} | {1}"\
                                    .format(item, shopify_json))
                     continue
 
