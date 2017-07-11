@@ -161,8 +161,14 @@ class FulfillmentReceivers(AbstractShopifyReceiver):
         logger.error("Fulfillment Triggered")
 
         shopify_json = cls._get_shopify_json(kwargs)
+
+        logger.error("shopify json Triggered")
+
         item_list = shopify_json['line_items']
         # Guarantee a webhook isn't repeated. Error is raised if it already exists.
+
+        logger.error("item list Triggered")
+
 
         for item in item_list:
             logger.error("Trying to fulfill item: " + item)
