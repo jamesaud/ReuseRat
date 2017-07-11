@@ -10,6 +10,6 @@ def setup_logger():
         from raven.conf import setup_logging
 
         handler = SentryHandler(settings.SENTRY_DSN)
-        handler.setLevel(logging.INFO)
+        handler.setLevel(logging.DEBUG)
 
         setup_logging(handler)
