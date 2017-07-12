@@ -87,9 +87,6 @@ def update_account(account_id,
     account.legal_entity.first_name = first_name or account.legal_entity.first_name
     account.legal_entity.last_name = last_name or account.legal_entity.last_name
 
-    # Debugging
-    print(dir(account.legal_entity))
-    print(account.legal_entity.__dict__)
 
     account.legal_entity.ssn_last_4 = ssn_last_four
 
