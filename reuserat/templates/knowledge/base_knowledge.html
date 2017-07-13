@@ -13,10 +13,6 @@
 
 {% endblock %}
 
-{% block header-top-style %}
-background-image: url('{% static "images/gradient-wallpaper.jpg" %}') !important;
-{% endblock %}
-
 {% block content %}
 <nav class="navbar navbar-default navbar-sub">
     <div class="container">
@@ -41,7 +37,7 @@ background-image: url('{% static "images/gradient-wallpaper.jpg" %}') !important
       <ul  class="nav navbar-nav navbar-left">
         <li class="{% block questions-active %} {% endblock %}">
             <a href="{% url 'knowledge:questions' %}">
-                <i class="material-icons">question_answer</i>              
+                <i class="material-icons">question_answer</i>
                 Common Questions
             </a>
         </li>
