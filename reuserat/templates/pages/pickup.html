@@ -17,12 +17,12 @@
 {% endblock css %}
 
 {% block header-top-style %}
-    background-image: url('{% static "images/pickup/pickupgirl.jpeg" %}');
+    background-image: url('{% static "images/pickup/pickupgirlblur-min.jpg" %}');
 {% endblock %}
 
 {% block header-title %}
     <h1>Free Pickup Service</h1>
-    <h2 class='subtitle' style="font-weight: 400;">We Sell Your Stuff, You Get Paid</h2>
+    <h2 class='subtitle' style="font-weight: 400;">We Sell Your Items, You Get Paid</h2>
     <h3 style='color: ghostwhite;'>Available in <strong>Bloomington, IN</strong> and <strong>Indiana University</strong></h3>
 
     <a href="{{ EXTERNAL_URLS.SITE.schedule_pickup }}"
@@ -48,7 +48,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-4 step"><h3 class="description"><div class="number"><span>1</span></div> Schedule Your Pickup Time</h3><h5><a href="{{ EXTERNAL_URLS.SITE.schedule_pickup }}">Schedule Now</a></h5></div>
-                <div class="col-sm-4 step"><h3 class="description"><div class="number"><span>2</span></div> Pack Up Your Items</h3><h5><a href="">Get Free Boxes Delivered</a></h5></div>
+                <div class="col-sm-4 step"><h3 class="description"><div class="number"><span>2</span></div> Pack Up Your Items</h3><h5><a href="{{ EXTERNAL_URLS.SITE.schedule_boxes }}">Get Free Boxes Delivered</a></h5></div>
                 <div class="col-sm-4 step"><h3 class="description"><div class="number"><span>3</span></div> We'll Pick Up Your Boxes</h3></div>
             </div>
         </div>
