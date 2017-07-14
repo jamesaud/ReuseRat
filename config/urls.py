@@ -32,9 +32,9 @@ urlpatterns = [
 
                   # Pickup Page
     url(r'^pickup/', TemplateView.as_view(template_name='pages/pickup.html'), name='pickup'),
+    url(r'^privacy-policy/', TemplateView.as_view(template_name='pages/privacypolicy.htm'), name='privacy-policy'),
 
-
-    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

@@ -22,9 +22,11 @@
 
 {% block header-title %}
     <h1>Free Pickup Service</h1>
-    <h2 class='subtitle' style="font-weight: 400;">We Sell Your Items, You Get Paid</h2>
-    <h3 style='color: ghostwhite;'>Available in <strong>Bloomington, IN</strong> and <strong>Indiana University</strong></h3>
+    <h2 class='subtitle'>We Sell Your <span class="hidden">Items</span>
 
+        <span id="type-it" class="type-it"></span>
+</h2>
+    <h3 style='color: ghostwhite;'>Available in <strong>Bloomington, IN</strong> and <strong>Indiana University</strong></h3>
     <a href="{{ EXTERNAL_URLS.SITE.schedule_pickup }}"
                        target="_blank"
                        class="btn btn-primary btn-raised btn-danger btn-lg track-schedule-click">
@@ -184,7 +186,7 @@
  <div class='section section-bonus row'>
      <div class='col-sm-6 col-sm-offset-2 text-left'>
          <div><h2>Sharing is Caring <i style='position: relative; top: -2px;' class='fa fa-heart text-danger'></i></h2>
-            <h4 class= style='font-weight: 400;'><strong>Referral Bonus</strong> - Any friend that refers your name in the sign up form below scores you an incredible bonus!</h4>
+            <h4 style='font-weight: 400;'><strong>Referral Bonus</strong> - Any friend that refers your name during a pickup scores you an incredible bonus!</h4>
             <h4 class="description">You'll get paid a <strong class='text-success'>10% bonus</strong> for every item they sell.</h4>
             <h4 class="description">They will make <strong class='text-success'>10% more</strong> by using you as a referrer.</h4>
             <h4 class="description">There is no limit to the amount of referrals!</h4>
@@ -229,6 +231,78 @@
 
 {% block javascript %}
     {{ block.super }}
+    <script src="{% static 'typeit/dist/typeit.min.js' %}"></script>
 
+    <script>
+        var url = new URLSearchParams(window.location.search);
+        var keyword = url.get('keyword'); // 'mdn query string'
 
+    </script>
+
+    <script>
+    var video_games_keyword = "videogames";
+    var audio_keyword = "audio";
+    var typeit = $('.type-it').typeIt();
+
+    var typeit_phrase = function(phrase){
+        return typeit.tiType(phrase).tiPause().tiDelete()
+    };
+
+    var finale = function() {
+        /* Always run this at the end */
+            typeit
+            .tiType("Items To Make The World A Better Place")
+            .tiPause(1000)
+            .tiDelete(12)
+            .tiType("Cleaner Place")
+            .tiPause(1000)
+            .tiDelete(15)
+            .tiType("More Sustainable");
+    };
+
+    var standard = function(){
+        typeit_phrase("TVs & Monitors");
+        typeit_phrase("MacBooks & Laptops");
+        typeit_phrase("iPads & Tablets");
+        typeit_phrase('Video Game Consoles &amp; Games');
+        typeit_phrase("iPhones &amp; Androids");
+        typeit_phrase("Music Players");
+        typeit_phrase("Headphones & Earbuds");
+        typeit_phrase("Audio Equipment");
+        typeit_phrase("Household Appliances");
+        typeit_phrase("Jewlery");
+    };
+
+    if (keyword === video_games_keyword) {
+            typeit_phrase("PS4");
+            typeit_phrase("Xbox One");
+            typeit_phrase("Nintendo Switch");
+            typeit_phrase("3DS &amp; 2DS");
+            typeit_phrase("Games");
+            typeit_phrase("Retro Consoles &amp; Games");
+            typeit_phrase("Accessories");
+            
+            standard();
+            finale();
+    }
+
+    else if (keyword === audio_keyword){
+        typeit_phrase("Headphones &amp; Earbuds");
+        typeit_phrase("Speakers, Amplifiers &amp; Receivers");
+        typeit_phrase("Keyboards &amp; Synthesizers");
+        typeit_phrase("Microphones");
+        typeit_phrase("Midi Instruments");
+        typeit_phrase("Effect Pedals");
+        typeit_phrase("DJ Equipment");
+        typeit_phrase("Mixboards");
+
+        standard();
+        finale();
+    }
+
+    else {
+        standard();
+        finale();
+    }
+    </script>
 {% endblock javascript %}

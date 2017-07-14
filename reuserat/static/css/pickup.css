@@ -6,6 +6,8 @@
     -o-filter: blur(5px);
     -ms-filter: blur(5px);
     filter: blur(5px); }
+  .wrapper > .header .subtitle {
+    font-weight: 300; }
 
 .description {
   color: #757575; }
@@ -47,3 +49,11 @@
 
 #full-list {
   font-style: italic; }
+
+#type-it {
+  background-color: rgba(33, 150, 243, 0.5);
+  font-weight: 400;
+  padding-left: 6px;
+  padding-right: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px; }

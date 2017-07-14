@@ -194,6 +194,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     str(APPS_DIR.path('static')),
     str(ROOT_DIR('bower_components')),
+    str(ROOT_DIR('node_modules')),
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
