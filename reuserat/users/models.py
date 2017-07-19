@@ -11,7 +11,6 @@ from reuserat.stripe.models import StripeAccount, PaypalAccount
 from reuserat.stripe.helpers import retrieve_balance, cents_to_dollars
 from django.core.validators import RegexValidator
 
-
 class PaymentChoices:
     CHECK = 'Check'
     DIRECT_DEPOSIT = 'Direct Deposit'
@@ -63,8 +62,8 @@ class User(AbstractUser):
 
 
     # Payment options
-    stripe_account = models.OneToOneField(StripeAccount, on_delete=models.CASCADE, null=True)
-    paypal_account = models.OneToOneField(PaypalAccount, on_delete=models.CASCADE, null=True)
+    stripe_account = models.OneToOneField(StripeAccount, on_delete=models.SET_NULL, null=True)
+    paypal_account = models.OneToOneField(PaypalAccount, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.username
@@ -81,7 +80,7 @@ class User(AbstractUser):
         return self.emailaddress_set.filter(primary=True).first() or None
 
     def has_completed_signup(self):
-        return True if self.address and self.payment_type else False
+        return True if self.address and self.payment_type and self.ssn_last_four else False
 
     def get_verified_emails(self):
         return self.emailaddress_set.filter(verified=True)

@@ -18,3 +18,4 @@ deploy:
   app: reuseratseller
   on:
     repo: jamesaud/ReuseRat
+  script: travis/deploy.sh

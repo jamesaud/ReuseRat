@@ -7,6 +7,7 @@ from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from .models import User
 from reuserat.shipments.models import Shipment
+from reuserat.stripe.models import StripeAccount
 
 
 
@@ -47,7 +48,7 @@ class MyUserAdmin(AuthUserAdmin):
     add_form = MyUserCreationForm
     fieldsets = (
             ('User Profile', {
-                 'fields': ('first_name','last_name', 'email', 'phone', 'address', 'payment_type')
+                 'fields': ('first_name','last_name', 'email', 'phone', 'address', 'payment_type', 'stripe_account', 'ssn_last_four', 'birth_date')
               }),
     ) + AuthUserAdmin.fieldsets
     list_display = ('email', 'first_name', 'last_name', 'is_superuser')

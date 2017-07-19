@@ -23,7 +23,22 @@
 
 
 {% block messages %}
-{%  endblock %}
+    {# Only display the message if the user needs to fill out new information #}
+      {% if messages %}
+          {% for message in messages %}
+                {% if 'warning' in message.tags %}
+
+              <div class="alert  {% if 'error' in message.tags %} alert-danger {% endif %}{% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
+                <div class='alert-icon'>
+                  <i class="material-icons">
+                   warning
+                  </i></div>
+                {{ message }}
+                </div>
+              {% endif %}
+          {% endfor %}
+        {% endif %}
+{% endblock messages %}
 
 
 

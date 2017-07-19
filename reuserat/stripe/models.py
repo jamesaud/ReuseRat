@@ -54,6 +54,9 @@ class StripeAccount(models.Model):
         from .helpers import retrieve_balance # Avoid circular import collision.
         return retrieve_balance(self.secret_key)
 
+    def __str__(self):
+        return "Account ID: {0}".format(self.account_id)
+
 
 class PaypalAccount(models.Model):
     email = models.OneToOneField(EmailAddress)

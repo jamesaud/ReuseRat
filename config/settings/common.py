@@ -71,7 +71,10 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'reuserat.custom_middleware.middleware.FixMissingStripeAccountMiddleWare',
 )
+
+
 
 # MIGRATIONS CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -170,7 +173,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # Your stuff: custom template context processors go here
                 "reuserat.context_processors.project_processors.variables",
-
             ],
             'libraries' : {
                 'project_tags': 'reuserat.template_tags.tags',

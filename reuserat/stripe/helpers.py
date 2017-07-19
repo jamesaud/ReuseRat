@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 # Creating Managed Connected Account in Stripe
-def create_account(ip_addr):
+def create_account(ip_addr) -> StripeAccount:
     """
     Creates a Stripe Connected account for the user, and creates an instance of StripeAccount in our DB.
     :param ip_addr: The ip_address of the user, used to sign the Connected Stripe Account agreement.
@@ -88,7 +88,7 @@ def update_account(account_id,
     account.legal_entity.last_name = last_name or account.legal_entity.last_name
 
 
-    account.legal_entity.ssn_last_4 = ssn_last_four
+    account.legal_entity.ssn_last_4 = ssn_last_four or account.legal_entity.ssn_last_4
 
     account.legal_entity.type = "individual"
 
