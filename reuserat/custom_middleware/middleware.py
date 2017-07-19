@@ -25,9 +25,9 @@ class FixMissingStripeAccountMiddleWare:
     def __call__(self, request):
         # Code to be executed for each request before
         # the view (and later middleware) are called.
-
         # So the sign up view will work
-        if request.user.is_authenticated and self.has_partial_account(request.user):
+
+        if request.user.is_authenticated and request.user.has_completed_signup() and (not self.has_valid_stripe_account(request.user)):
             user = request.user
 
             # Prepare user to redo the user_complete_signup_view by deleteing their stripe and paypal objects.
@@ -39,13 +39,18 @@ class FixMissingStripeAccountMiddleWare:
                 # Account didn't exist in the first place.
                 pass
 
-            try:
-                user.paypal_account.delete()
-                user.paypal_account = None
-                user.save()
-            except AttributeError:
-                # Paypal account didn't exist
-                pass
+            stripe_account_instance = create_account(request.META['REMOTE_ADDR'])
+            user.stripe_account = stripe_account_instance
+            user.save()
+
+            update_account(user.stripe_account.account_id,
+                                          first_name=user.first_name,
+                                          last_name=user.last_name,
+                                          address_line=user.address.get_full_address_line(),
+                                          address_city=user.address.city,
+                                          address_state=user.address.state,
+                                          address_zip=user.address.zipcode,
+                                          )
 
             logging.info("Fixing Stripe Account for User: {}".format(user))
 
@@ -56,16 +61,10 @@ class FixMissingStripeAccountMiddleWare:
         return response
 
 
-    @staticmethod
-    def has_partial_account(user: User):
-        if user.first_name and (not user.ssn_last_four):
-            return True
-        else:
-            return False
 
     @staticmethod
     def has_valid_stripe_account(user: User):
-        if not user.stripe_account:
+        if not user.stripe_account or (user.stripe_account.account_id is None):
             return False
 
         if settings.PRODUCTION:

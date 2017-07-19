@@ -10,13 +10,10 @@ from django.forms import extras
 
 
 class UserCompleteSignupForm(forms.ModelForm):
-    birth_date = forms.DateField(required=True,
-                                label='Birth Date',
-                                widget=extras.SelectDateWidget(years=[y for y in range(1930,2017)]))
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'payment_type', 'phone', 'birth_date', 'ssn_last_four')
+        fields = ('first_name', 'last_name', 'payment_type', 'phone')
         widgets = {
             'payment_type': forms.RadioSelect(),
         }

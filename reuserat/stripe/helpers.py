@@ -82,13 +82,15 @@ def update_account(account_id,
     if dob_month:
         account.legal_entity.dob.month = '{:02d}'.format(dob_month)
 
-    account.legal_entity.dob.year = dob_year or account.legal_entity.dob.year
+    if dob_year:
+        account.legal_entity.dob.year = dob_year
 
     account.legal_entity.first_name = first_name or account.legal_entity.first_name
     account.legal_entity.last_name = last_name or account.legal_entity.last_name
 
 
-    account.legal_entity.ssn_last_4 = ssn_last_four or account.legal_entity.ssn_last_4
+    if ssn_last_four:
+        account.legal_entity.ssn_last_4 = ssn_last_four
 
     account.legal_entity.type = "individual"
 

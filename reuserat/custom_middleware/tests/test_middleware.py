@@ -1,5 +1,5 @@
 from test_plus.test import TestCase
-from reuserat.users.tests.factories import UserFactory, EmailAddressFactory
+from reuserat.users.tests.factories import BaseUserFactory, EmailAddressFactory
 from django.test import RequestFactory
 from reuserat.users.views import UserDetailView
 from django.test import override_settings
@@ -14,9 +14,7 @@ class TestFixMissingStripeAccount(TestCase):
     def setUp(self):
         super().setUp()
 
-        self.user = UserFactory()
-        self.user.ssn_last_four = None
-        self.user.save()
+        self.user = BaseUserFactory()
         self.factory = RequestFactory()
         mock_request = Mock()
 
@@ -25,12 +23,10 @@ class TestFixMissingStripeAccount(TestCase):
 
 
     def test_middleware_working(self):
-        self.assertTrue(self.user.stripe_account)
-        self.assertTrue(self.user.paypal_account)
+        self.assertIsNone(self.user.stripe_account)
         request = self.factory.get('/fake-url')
         request.user = self.user
         response = self.middleware.__call__(request)
-        self.assertIsNone(self.user.stripe_account)
-        self.assertIsNone(self.user.paypal_account)
+        self.assertIsNotNone(self.user.stripe_account)
 
 

@@ -127,10 +127,6 @@ class UserCompleteSignupView(UserUpdateMixin):
                                       address_city=user.address.city,
                                       address_state=user.address.state,
                                       address_zip=user.address.zipcode,
-                                      dob_day=user.birth_date.day,
-                                      dob_month=user.birth_date.month,
-                                      dob_year=user.birth_date.year,
-                                      ssn_last_four=user.ssn_last_four
                                       )
 
         # Create default paypal account for the user.

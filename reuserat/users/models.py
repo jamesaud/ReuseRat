@@ -53,13 +53,6 @@ class User(AbstractUser):
     last_name = models.CharField(_('Last Name'), blank=False, null=True, max_length=255)
     payment_type = models.CharField(_('Payment Type'), choices=PaymentChoices.CHOICES, max_length=255, blank=False, default="Check")
     phone = usmodels.PhoneNumberField(blank=False, null=True)
-    birth_date = models.DateField(_('Birth Date'), blank=False, null=True)
-    ssn_last_four = models.CharField(_('Last 4 Digits of SSN'),
-                                     max_length=4,
-                                     validators=[RegexValidator(regex='^[\d]{4}$', message='Length has to be 4', code='nomatch')],
-                                     blank=False,
-                                     null=True)
-
 
     # Payment options
     stripe_account = models.OneToOneField(StripeAccount, on_delete=models.SET_NULL, null=True)
@@ -80,7 +73,7 @@ class User(AbstractUser):
         return self.emailaddress_set.filter(primary=True).first() or None
 
     def has_completed_signup(self):
-        return True if self.address and self.payment_type and self.ssn_last_four else False
+        return True if self.address and self.payment_type else False
 
     def get_verified_emails(self):
         return self.emailaddress_set.filter(verified=True)
