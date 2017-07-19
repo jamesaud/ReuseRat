@@ -53,6 +53,8 @@ class User(AbstractUser):
     last_name = models.CharField(_('Last Name'), blank=False, null=True, max_length=255)
     payment_type = models.CharField(_('Payment Type'), choices=PaymentChoices.CHOICES, max_length=255, blank=False, default="Check")
     phone = usmodels.PhoneNumberField(blank=False, null=True)
+    birth_date = models.DateField(_('Birth Date'), blank=False, null=True)
+
 
     # Payment options
     stripe_account = models.OneToOneField(StripeAccount, on_delete=models.SET_NULL, null=True)
@@ -73,7 +75,7 @@ class User(AbstractUser):
         return self.emailaddress_set.filter(primary=True).first() or None
 
     def has_completed_signup(self):
-        return True if self.address and self.payment_type else False
+        return True if self.address and self.payment_types else False
 
     def get_verified_emails(self):
         return self.emailaddress_set.filter(verified=True)
