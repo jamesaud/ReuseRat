@@ -39,6 +39,7 @@ class BaseUserFactory(factory.django.DjangoModelFactory):
     last_name = factory.Sequence(lambda n: 'Doe-{0}'.format(n))
     payment_type = PaymentChoices.CHECK
     phone = factory.Sequence(lambda n: '123-555-%04d' % n)
+    birth_date = datetime.date(2001, 5, 5)
 
     class Meta:
         model = User

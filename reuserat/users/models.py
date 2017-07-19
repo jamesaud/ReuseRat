@@ -75,7 +75,7 @@ class User(AbstractUser):
         return self.emailaddress_set.filter(primary=True).first() or None
 
     def has_completed_signup(self):
-        return True if self.address and self.payment_types else False 
+        return True if self.address and self.payment_type else False
 
     def get_verified_emails(self):
         return self.emailaddress_set.filter(verified=True)
