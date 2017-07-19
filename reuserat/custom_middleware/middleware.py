@@ -44,13 +44,16 @@ class FixMissingStripeAccountMiddleWare:
             user.save()
 
             update_account(user.stripe_account.account_id,
-                                          first_name=user.first_name,
-                                          last_name=user.last_name,
-                                          address_line=user.address.get_full_address_line(),
-                                          address_city=user.address.city,
-                                          address_state=user.address.state,
-                                          address_zip=user.address.zipcode,
-                                          )
+                           first_name=user.first_name,
+                           last_name=user.last_name,
+                           address_line=user.address.get_full_address_line(),
+                           address_city=user.address.city,
+                           address_state=user.address.state,
+                           address_zip=user.address.zipcode,
+                           dob_day=user.birth_date.day,
+                           dob_month=user.birth_date.month,
+                           dob_year=user.birth_date.year,
+                            )
 
             logging.info("Fixing Stripe Account for User: {}".format(user))
 

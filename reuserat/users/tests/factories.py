@@ -79,6 +79,9 @@ class FormUpdateUserFactory(dict):
                      'last_name': 'test',
                      'payment_type': PaymentChoices.DIRECT_DEPOSIT,
                      'phone': '812-444-5555',
+                     'birth_date_month': '5',
+                     'birth_date_day': '5',
+                     'birth_date_year': '2001',
                      })
 
 
