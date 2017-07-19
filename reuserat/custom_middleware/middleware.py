@@ -47,8 +47,6 @@ class FixMissingStripeAccountMiddleWare:
                 # Paypal account didn't exist
                 pass
 
-            messages.add_message(request, messages.WARNING, "Please Verify All Of The Following Information Is Correct")
-
             logging.info("Fixing Stripe Account for User: {}".format(user))
 
         response = self.get_response(request)
