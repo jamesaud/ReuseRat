@@ -22,30 +22,33 @@ active
             <div class="head header-{{transaction_type_css_lookup | get_item:transaction.type}}"></div> <!-- the banner color -->
             <div class='card-data'>
               <div class="row">
-                {% with tracking_number=transaction.retrieve_tracking_number %}
                   <div class="col-sm-9">
                       <h3>{{transaction.payment_type }}</h3>
                       <h5>{{transaction.created}}</h5>
-                      {% if tracking_number is None %}
-                        <h5> The check has not been sent yet!!Keep an eye out for your tracking number</h5>
-                      {% else %}
-                          <a href="https://track.aftership.com/usps/{{ tracking_number }}?" target="_blank" class='btn btn-simple btn-primary btn-outline btn-sm'>
-                            <strong>Track {{ tracking_number }}</strong>
-                            </a>
-                      {% endif %}
+                     <h5>{{ transaction.message }}</h5>
                   </div>
-                {% endwith %}
                   <div class="col-sm-3 ">
                     <span class="label pull-right label-{{transaction_type_css_lookup | get_item:transaction.type}}">${{ transaction.amount }} {{transaction.type}}</span></h5>
                   </div>
               </div>
-                                <hr>
 
-              <div class="row">
-                  <div class="col-sm-12">
-                      <p>{{ transaction.message }}</p>
+              {% if transaction.check_id %}
+                 <hr>
+                  <div class="row">
+                      <div class="col-sm-12">
+                            {% with tracking_number=transaction.retrieve_tracking_number %} {# call the external api once #}
+
+                                  {% if tracking_number is None %}
+                                    <p> The check has not been sent yet! Keep an eye out for your tracking number</p>
+                                  {% else %}
+                                      <a href="https://track.aftership.com/usps/{{ tracking_number }}?" target="_blank" class='btn btn-simple btn-primary btn-outline btn-sm'>
+                                        <strong>Track {{ tracking_number }}</strong>
+                                        </a>
+                                  {% endif %}
+                              {% endwith %}
+                      </div>
                   </div>
-              </div>
+             {% endif %}
             </div> <!-- /card-content -->
         </div>
 

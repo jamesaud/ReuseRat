@@ -86,3 +86,8 @@ class Transaction(models.Model):
             return retrieve_tracking_number(self.check_id)
         except lob.error.InvalidRequestError:
             return None
+
+    @property
+    def payment_type_choices(self):
+        from reuserat.users.models import PaymentChoices
+        return PaymentChoices
