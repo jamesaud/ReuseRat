@@ -9,7 +9,7 @@ setup_logger()
 logger = logging.getLogger(__name__)
 
 # TODO: Provide your API Key, keep this secure when we go live
-lob.api_key = settings.LOB_TEST_API_KEY
+lob.api_key = settings.LOB_LIVE_API_KEY
 # set an api version (optional)
 lob.api_version = settings.LOB_API_VERSION
 
@@ -58,7 +58,7 @@ def create_check(customer_name, address_line1, address_line2, city, state, zipco
             bank_account=lob.BankAccount.list(limit=1, offset=0)['data'][0]['id'],
             # logo = open('reuserat_logo.jpeg', 'rb'),
             amount=amount,
-            memo='test deposit',
+            memo='Deposit for your cash out',
         )
 
     except Exception as e:

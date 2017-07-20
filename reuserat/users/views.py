@@ -348,7 +348,7 @@ class UpdatePaymentInformation(LoginUserCompleteSignupRequiredMixin, TemplateVie
 
 
 class CashOutView(LoginRequiredMixin, View):
-    http_method_names = ['post']
+    http_method_names = ['post']  # Only accept post
 
     def post(self, *args, **kwargs):
         """All the 'use_<whatever>' functions should return a Transaction object, or raise an error."""

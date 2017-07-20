@@ -158,7 +158,6 @@ class FulfillmentReceivers(AbstractShopifyReceiver):
     @classmethod
     def fulfillment_create(cls, sender, **kwargs):
         logger.error("Fulfillment Triggered")
-        logger.error("Fulfillment Triggered")
 
         shopify_json = cls._get_shopify_json(kwargs)
 
