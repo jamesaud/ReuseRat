@@ -61,8 +61,7 @@ def make_payment_paypal(batch_id, receiver_email, amount_in_dollars, note):
     })
 
     if payout.create(sync_mode=True):
-        print("PAYING OUT")
-        print(payout)
+
         error = payout.items[0].errors
         if error:
             # Lookup tohe error class, or create New error class based on the type of Paypal Error

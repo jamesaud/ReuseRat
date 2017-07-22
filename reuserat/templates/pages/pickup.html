@@ -236,12 +236,18 @@
     <script>
         var url = new URLSearchParams(window.location.search);
         var keyword = url.get('keyword'); // 'mdn query string'
+        var instrument_type = url.get('instrument_type'); // 'mdn query string'
+
 
     </script>
 
     <script>
     var video_games_keyword = "videogames";
     var audio_keyword = "audio";
+    var instruments_keyword = "instruments";
+    var which_instrument = "instrument_type";
+    var instrument_type_guitar = "guitar";
+
     var typeit = $('.type-it').typeIt();
 
     var typeit_phrase = function(phrase){
@@ -300,9 +306,32 @@
         finale();
     }
 
+        else if (keyword === instruments_keyword){
+            if (instrument_type == "guitar"){
+               typeit_phrase("Electric Guitars");
+               typeit_phrase("Acoustic Guitars");
+               typeit_phrase("Classical Guitars");
+               typeit_phrase("Woodwinds & Brass");
+               typeit_phrase("Strings & Percussion");
+                typeit_phrase("All Instruments");
+
+            }
+
+            else{
+               typeit_phrase("Instruments");
+               typeit_phrase("Woodwinds & Brass");
+               typeit_phrase("Strings & Percussion");
+               typeit_phrase("Guitars");
+            }
+
+        standard();
+        finale();
+    }
+
     else {
         standard();
         finale();
     }
+
     </script>
 {% endblock javascript %}
