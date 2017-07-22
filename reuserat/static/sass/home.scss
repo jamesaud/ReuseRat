@@ -174,9 +174,9 @@ footer{
   padding-left: 20px;
   @media screen and (min-width: 992px){
     div{
-      position: absolute; 
-      top: -70px; 
-      left: 18px;
+      // position: absolute; 
+      // top: -80px; 
+    //   left: 18px;
     }
   }
   a{
@@ -188,5 +188,15 @@ footer{
       font-style: italic;
     }
   }
+    h2{
+        font-weight: 500;
+    }
 }
 
+.header-text{
+    @media screen and (min-width: 992px){
+        top: -40px;
+        position: relative;
+    }
+ 
+}

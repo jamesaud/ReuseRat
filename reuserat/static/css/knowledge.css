@@ -12,8 +12,10 @@
 .main {
   padding-top: 0; }
 
-.navbar-sub .navbar-brand {
-  padding-top: 10px !important; }
+.navbar-sub {
+  background-color: #333333; }
+  .navbar-sub .navbar-brand {
+    padding-top: 10px !important; }
 
 .knowledge-body h4, .knowledge-body h5 {
   margin-left: 20px; }

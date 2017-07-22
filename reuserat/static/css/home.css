@@ -125,11 +125,6 @@ footer {
 
 #bloomington {
   padding-left: 20px; }
-  @media screen and (min-width: 992px) {
-    #bloomington div {
-      position: absolute;
-      top: -70px;
-      left: 18px; } }
   #bloomington a {
     color: #FFF64A;
     font-weight: 500; }
@@ -137,3 +132,10 @@ footer {
       text-decoration: none;
       border-bottom: 3px solid white;
       font-style: italic; }
+  #bloomington h2 {
+    font-weight: 500; }
+
+@media screen and (min-width: 992px) {
+  .header-text {
+    top: -40px;
+    position: relative; } }
