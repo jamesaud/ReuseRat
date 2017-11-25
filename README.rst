@@ -1,7 +1,9 @@
 ReuseRat
 ========
 
-Sell your junk, get paid
+Sell your items, get paid.
+
+This repo used to be private due to security concerns. ReuseRat is no longer in business so the repo is now public.
 
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
      :target: https://github.com/pydanny/cookiecutter-django/
