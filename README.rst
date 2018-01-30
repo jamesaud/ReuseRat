@@ -3,6 +3,8 @@ ReuseRat
 
 Sell your items, get paid.
 
+See it live at:   https://sell.reuserat.com
+
 This repo used to be private due to security concerns. ReuseRat is no longer in business so the repo is now public.
 
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
