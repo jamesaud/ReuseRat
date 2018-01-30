@@ -14,6 +14,10 @@ Please read the wiki to learn about the development process:
 
 https://github.com/jamesaud/ReuseRat/wiki
 
+A related AWS Lambda project for decreasing prices weekly:
+
+https://github.com/jamesaud/ReuseRat-Lambda/blob/master/lambda_function.py
+
 Settings
 --------
 
