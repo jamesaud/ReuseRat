@@ -10,15 +10,9 @@ This repo used to be private due to security concerns. ReuseRat is no longer in 
      :alt: Built with Cookiecutter Django
 
 
-:License: None. Not Open Source Code.
+Please read the wiki to learn about the development process: 
 
-If you wish to use code in this project, simply shoot me an email at audretschjames@gmail.com and I'll likely give permission.
-
-We are aware that this project being public is a security risk. As of April this project will cease to be updated publically.
-
-Please checkout 'development' branch for the latest good stuff.
-
-Please read the wiki to learn about the development process.
+https://github.com/jamesaud/ReuseRat/wiki
 
 Settings
 --------
